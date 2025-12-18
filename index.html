@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Landing</title>
 
-  <!-- Font close to screenshot -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -15,29 +14,148 @@
       --hdr-h:74px;
       --ink:#ffffff;
       --muted:rgba(255,255,255,.70);
-      --line:rgba(255,255,255,.10);
+
       --btn1:#5b2a86;
       --btn2:#3f1d66;
       --btnStroke:rgba(255,255,255,.14);
+
+      /* Reveal orb position + size (animated in JS) */
+      --light-x: 50%;
+      --light-y: 45%;
+      --reveal-size: 280px;
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
+
     body{
       margin:0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:#050509; /* header.js also paints the hero background */
+      background:#050509;
       color:var(--ink);
     }
 
-    /* This matches the spacing in the screenshot */
+    /* =========================
+       HEADER
+       ========================= */
+    .site-header{
+      position:fixed;
+      top:0; left:0; right:0;
+      height:var(--hdr-h);
+      display:flex;
+      align-items:center;
+      z-index:50;
+      background: rgba(5,5,9,.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .hdr-inner{
+      width:min(1180px, 100%);
+      margin:0 auto;
+      padding:0 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+
+    .brand-badge{
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      background:#fff;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .brand-badge img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      padding:6px;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .nav a{
+      color:rgba(255,255,255,.85);
+      text-decoration:none;
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      padding:10px 8px;
+      border-radius:10px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .nav a:hover{
+      color:#fff;
+      background: rgba(255,255,255,.06);
+    }
+
+    @media (max-width: 760px){
+      .nav{ display:none; }
+    }
+
+    /* =========================
+       HERO
+       ========================= */
     main.hero{
+      position:relative;
       min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
       padding: calc(var(--hdr-h) + 90px) 24px 90px;
+      overflow:hidden;
+      isolation:isolate;
+      background:#050509; /* no glow */
+    }
+
+    /* Hidden background image that only becomes visible inside the moving reveal orb */
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: url("assets/mini.png") center / cover no-repeat;
+      pointer-events:none;
+      z-index:0;
+
+      -webkit-mask-image: radial-gradient(
+        circle var(--reveal-size) at var(--light-x) var(--light-y),
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,0.90) 30%,
+        rgba(0,0,0,0.25) 55%,
+        rgba(0,0,0,0) 75%
+      );
+      mask-image: radial-gradient(
+        circle var(--reveal-size) at var(--light-x) var(--light-y),
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,0.90) 30%,
+        rgba(0,0,0,0.25) 55%,
+        rgba(0,0,0,0) 75%
+      );
+
+      filter: contrast(1.05) saturate(1.05);
+      transform: translateZ(0);
     }
 
     .hero-inner{
@@ -47,6 +165,8 @@
       flex-direction:column;
       align-items:center;
       gap:26px;
+      position:relative;
+      z-index:2;
     }
 
     h1{
@@ -80,11 +200,10 @@
       cursor:pointer;
       box-shadow: 0 18px 70px rgba(124,58,237,.22);
       transition: transform .18s ease, filter .18s ease;
+      text-decoration:none;
     }
     .hero-btn:hover{ transform: translateY(-1px); filter:brightness(1.06); }
     .hero-btn:active{ transform: translateY(0px) scale(.99); }
-
-    .hero-btn svg{opacity:.95}
 
     .hero-link{
       display:inline-block;
@@ -103,17 +222,36 @@
       border-color: rgba(255,255,255,.45);
     }
 
-    /* Optional: make sure anchors don't hide behind sticky header */
     section{ scroll-margin-top: calc(var(--hdr-h) + 18px); }
+
+    @media (prefers-reduced-motion: reduce){
+      .hero::before{
+        -webkit-mask-image: radial-gradient(circle 260px at 50% 45%, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%);
+        mask-image: radial-gradient(circle 260px at 50% 45%, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%);
+      }
+    }
   </style>
 </head>
 
 <body id="top">
-  <!-- Header mounts here (injected by js/header.js) -->
-  <div id="siteHeader"></div>
+  <header class="site-header">
+    <div class="hdr-inner">
+      <a class="brand" href="#top" aria-label="Home">
+        <span class="brand-badge">
+          <img src="assets/dva-logo.png" alt="Logo">
+        </span>
+      </a>
 
-  <!-- HERO (first part of website like screenshot) -->
-  <main class="hero">
+      <nav class="nav" aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hero" id="hero">
     <div class="hero-inner">
       <h1>
         Creative Intuition and<br/>
@@ -134,13 +272,112 @@
     </div>
   </main>
 
-  <!-- Dummy anchors so nav clicks work for now -->
   <section id="work"></section>
   <section id="about"></section>
   <section id="services"></section>
   <section id="contact"></section>
 
-  <!-- IMPORTANT: load the header (includes the moving purple light background for .hero) -->
-  <script src="js/header.js"></script>
+  <script>
+  (function () {
+    const root = document.documentElement;
+    const hero = document.getElementById("hero");
+
+    // ==== Tunables ====
+    const BASE_SIZE = 290;     // px
+    const SIZE_WAVE = 55;      // px
+    const SPEED = 0.55;        // auto-flight speed
+    const EDGE_PAD = 6;        // keep orb inside %
+
+    // Hover takeover behavior (no wobble)
+    const HOVER_IN_SPEED  = 6.0;   // how fast takeover engages
+    const HOVER_OUT_SPEED = 4.0;   // how fast it releases back to auto
+    const MOUSE_FILTER    = 0.12;  // mouse smoothing (lower = smoother, less jitter)
+    const ORB_FOLLOW      = 0.10;  // orb smoothing while hovering (lower = smoother)
+
+    const prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduce) return;
+
+    let t0 = performance.now();
+
+    // orb pos in %
+    let curX = 50, curY = 45;
+
+    // raw mouse target in %
+    let mouseTX = 50, mouseTY = 45;
+
+    // filtered mouse (this removes jitter)
+    let mouseFX = 50, mouseFY = 45;
+
+    // state
+    let isHovering = false;
+    let hoverPower = 0; // 0..1
+
+    function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+    function setMouseFromEvent(e){
+      const rect = hero.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      mouseTX = clamp(x, EDGE_PAD, 100 - EDGE_PAD);
+      mouseTY = clamp(y, EDGE_PAD, 100 - EDGE_PAD);
+    }
+
+    hero.addEventListener("mouseenter", () => { isHovering = true; });
+    hero.addEventListener("mouseleave", () => { isHovering = false; });
+    hero.addEventListener("mousemove", setMouseFromEvent, { passive:true });
+
+    function frame(now){
+      const dt = Math.min(0.033, (now - t0) / 1000);
+      t0 = now;
+
+      // Smoothly blend into/out of hover control (no snapping)
+      const inRate  = 1 - Math.exp(-HOVER_IN_SPEED  * dt);
+      const outRate = 1 - Math.exp(-HOVER_OUT_SPEED * dt);
+      hoverPower = isHovering
+        ? (hoverPower + (1 - hoverPower) * inRate)
+        : (hoverPower + (0 - hoverPower) * outRate);
+
+      // Auto-flight target (same vibe as before)
+      const time = now * 0.00022 * SPEED;
+      const autoX = 50
+        + 34 * Math.sin(time * 1.05)
+        + 10 * Math.sin(time * 2.20 + 1.3);
+      const autoY = 45
+        + 22 * Math.cos(time * 0.95 + 0.7)
+        + 9  * Math.sin(time * 1.85);
+
+      // Filter mouse to remove hand jitter / micro-movements
+      // (applies even while hovering so it stays stable)
+      mouseFX += (mouseTX - mouseFX) * MOUSE_FILTER;
+      mouseFY += (mouseTY - mouseFY) * MOUSE_FILTER;
+
+      // Blend target between auto and filtered mouse
+      const targetX = autoX * (1 - hoverPower) + mouseFX * hoverPower;
+      const targetY = autoY * (1 - hoverPower) + mouseFY * hoverPower;
+
+      // Move orb:
+      // - in auto mode it naturally glides
+      // - in hover mode it follows with smooth lerp (no “spring wobble”)
+      const follow = (1 - hoverPower) * 0.045 + hoverPower * ORB_FOLLOW;
+      curX += (targetX - curX) * follow;
+      curY += (targetY - curY) * follow;
+
+      curX = clamp(curX, EDGE_PAD, 100 - EDGE_PAD);
+      curY = clamp(curY, EDGE_PAD, 100 - EDGE_PAD);
+
+      // Size breathing
+      const size = BASE_SIZE + SIZE_WAVE * (0.5 + 0.5 * Math.sin(time * 2.3 + 0.9));
+
+      root.style.setProperty("--light-x", curX.toFixed(3) + "%");
+      root.style.setProperty("--light-y", curY.toFixed(3) + "%");
+      root.style.setProperty("--reveal-size", size.toFixed(0) + "px");
+
+      requestAnimationFrame(frame);
+    }
+
+    requestAnimationFrame(frame);
+  })();
+</script>
+
 </body>
 </html>
