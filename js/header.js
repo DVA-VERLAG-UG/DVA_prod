@@ -1,208 +1,334 @@
 // js/header.js
-(function () {
-  const LOGO_SRC = "assets/dva-logo.png";
+(() => {
+  const ROUTES = {
+    de: { home:"/de/", about:"/de/ueber-uns/", contact:"/de/kontakt/", projects:"/de/projekte/", services:"/de/pakete-dienste/", process:"/de/prozess/", blog:"/de/blog/" },
+    en: { home:"/en/", about:"/en/about/", contact:"/en/contact/", projects:"/en/projects/", services:"/en/services/", process:"/en/process/", blog:"/en/blog/" },
+    tr: { home:"/tr/", about:"/tr/hakkimizda/", contact:"/tr/iletisim/", projects:"/tr/projeler/", services:"/tr/hizmetler/", process:"/tr/surec/", blog:"/tr/blog/" },
+    fr: { home:"/fr/", about:"/fr/a-propos/", contact:"/fr/contact/", projects:"/fr/projets/", services:"/fr/services/", process:"/fr/processus/", blog:"/fr/blog/" },
+  };
 
-  /* =========================
-     FAVICON (KEEP PROPORTIONS)
-     ========================= */
-  function setFaviconWithAspectRatio(src) {
-    const size = 64;
-    const canvas = document.createElement("canvas");
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext("2d");
+  const LABELS = {
+    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"Pakete & Dienste", process:"Prozess", blog:"Blog" },
+    en: { about:"About", contact:"Contact", projects:"Projects", services:"Services", process:"Process", blog:"Blog" },
+    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"Hizmetler", process:"Süreç", blog:"Blog" },
+    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"Services", process:"Processus", blog:"Blog" },
+  };
 
-    const img = new Image();
-    img.onload = () => {
-      ctx.clearRect(0, 0, size, size);
+  const LOGO_SRC = "/assets/images/dva-logo.png";
 
-      // keep aspect ratio (contain)
-      const scale = Math.min(size / img.width, size / img.height);
-      const w = img.width * scale;
-      const h = img.height * scale;
-      const x = (size - w) / 2;
-      const y = (size - h) / 2;
-
-      ctx.drawImage(img, x, y, w, h);
-
-      // replace favicon
-      document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']")
-        .forEach(el => el.remove());
-
-      const link = document.createElement("link");
-      link.rel = "icon";
-      link.type = "image/png";
-      link.href = canvas.toDataURL("image/png");
-      document.head.appendChild(link);
-    };
-
-    img.src = src;
+  function getLang() {
+    const m = location.pathname.match(/^\/(de|en|tr|fr)(\/|$)/);
+    return m ? m[1] : "de";
   }
 
-  setFaviconWithAspectRatio(LOGO_SRC);
-
-  /* =========================
-     STYLES
-     ========================= */
-  const css = `
-    :root{
-      --bg:#050509;
-      --line:rgba(255,255,255,.08);
-      --text:rgba(255,255,255,.88);
-      --muted:rgba(255,255,255,.55);
-      --purple:#7c3aed;
-      --purple2:#a855f7;
-      --max:1180px;
-      --hdr-h:74px;
+  function getPageKey(path, lang) {
+    const r = ROUTES[lang];
+    for (const [k, v] of Object.entries(r)) {
+      if (path === v || path.startsWith(v)) return k;
     }
+    return "home";
+  }
 
-    /* Header */
-    .site-header{
-      position:fixed;
-      inset:0 0 auto 0;
-      height:var(--hdr-h);
-      z-index:1000;
-      display:flex;
-      align-items:center;
-      border-bottom:1px solid var(--line);
-      background: rgba(0,0,0,.35);
-      backdrop-filter: blur(10px);
-    }
+  function headerHTML(lang) {
+    return `
+      <style>
+        :root{ --hdr-h:72px; --max:1180px; }
 
-    .site-header .inner{
-      width:min(var(--max), calc(100% - 48px));
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:22px;
-      padding: 0 32px;
-    }
+        .hdr{
+          position:fixed;
+          inset:0 0 auto 0;
+          height:var(--hdr-h);
+          z-index:100;
+          background:transparent;
+          pointer-events:none;
+        }
+        .hdr-inner{
+          pointer-events:auto;
+          height:100%;
+          width:min(var(--max), calc(100% - 40px));
+          margin:0 auto;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:16px;
+        }
 
-    /* Logo with white background */
-    .brand{
-      display:flex;
-      align-items:center;
-      padding:6px 10px;
-      background:#fff;
-      border-radius:12px;
-      text-decoration:none;
-    }
+        .brand{
+          display:flex; align-items:center; gap:12px;
+          color:#fff; text-decoration:none;
+          font-weight:700;
+          letter-spacing:.2px;
+          min-width: 200px;
+        }
+        .brand img{
+          width:36px; height:36px;
+          object-fit:contain;
+          display:block;
+          filter: drop-shadow(0 10px 26px rgba(0,0,0,.55));
+        }
+        .brand span{
+          font-size:14px;
+          opacity:.95;
+          text-shadow: 0 10px 26px rgba(0,0,0,.55);
+        }
 
-    .brand img{
-      display:block;
-      height:26px;
-      width:auto;
-    }
+        .right{ display:flex; align-items:center; gap:14px; }
 
-    .nav{
-      display:flex;
-      gap:24px;
-      margin-left:auto;
-      margin-right:auto;
-    }
+        .langs{
+          display:flex; align-items:center; gap:8px;
+          color:#fff; font-weight:800; font-size:12px;
+          letter-spacing:.08em; text-transform:uppercase;
+          text-shadow: 0 10px 26px rgba(0,0,0,.55);
+          user-select:none;
+        }
+        .langs a{ color:#fff; opacity:.70; text-decoration:none; }
+        .langs a.is-active{ opacity:1; }
+        .langs .sep{ opacity:.35; font-weight:700; }
 
-    .nav a{
-      color:var(--text);
-      text-decoration:none;
-      font-weight:600;
-      font-size:14px;
-      opacity:.9;
-    }
+        .burger{
+          width:42px; height:42px;
+          display:grid; place-items:center;
+          border:0; background:transparent;
+          cursor:pointer; padding:0;
+        }
+        .burger .icon{
+          width:22px; height:14px;
+          display:flex; flex-direction:column;
+          justify-content:space-between;
+          filter: drop-shadow(0 10px 26px rgba(0,0,0,.55));
+        }
+        .burger .icon i{
+          display:block; height:2px;
+          border-radius:999px;
+          background:rgba(255,255,255,.95);
+        }
 
-    .nav a:hover{opacity:1}
+        /* ==========================
+           EXTRA TRANSPARENT GLASS + SLOWER ANIM
+           ========================== */
 
-    .langs{
-      display:flex;
-      gap:12px;
-      font-size:13px;
-      font-weight:700;
-    }
+        .overlay{
+          position:fixed; inset:0;
+          /* much lighter overlay so you see the background */
+          background:
+            radial-gradient(900px 700px at 80% 15%, rgba(255,255,255,.08), rgba(0,0,0,.02)),
+            rgba(0,0,0,.02);
+          opacity:0;
+          pointer-events:none;
+          transition: opacity .10s ease; /* slower */
+          z-index:200;
+        }
+        .overlay.is-open{ opacity:1; pointer-events:auto; }
 
-    .langs a{
-      color:var(--muted);
-      text-decoration:none;
-    }
+        .drawer{
+          position:fixed; top:0; right:0;
+          height:100%;
+          width:min(380px, 90vw);
+          padding:18px 18px 22px;
+          z-index:201;
 
-    .langs a.is-active{color:var(--purple2)}
+          /* even more transparent glass */
+          background:
+            linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+            radial-gradient(900px 650px at 30% 10%, rgba(255,255,255,.008), rgba(255,255,255,0)),
+            radial-gradient(900px 700px at 80% 80%, rgba(120,190,255,.04), rgba(0,0,0,0));
+          border-left: 1px solid rgba(255,255,255,.10);
 
-    @media (max-width:920px){
-      .nav,.langs{display:none}
-    }
+          box-shadow:
+            -16px 0 60px rgba(0,0,0,.28),
+            inset 0 1px 0 rgba(255,255,255,.14);
 
-    /* Hero background */
-    .hero{
-      position:relative;
-      min-height:100vh;
-      padding: calc(var(--hdr-h) + 70px) 20px 80px;
-      background: linear-gradient(180deg, #020203, #07070b 55%, #020203);
-      overflow:hidden;
-    }
+          backdrop-filter: blur(2px) saturate(1.55);
+          -webkit-backdrop-filter: blur(26px) saturate(1.55);
 
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:-40%;
-      background:
-        radial-gradient(420px 420px at var(--lx,65%) var(--ly,55%),
-          rgba(124,58,237,.55),
-          rgba(168,85,247,.22),
-          transparent 70%);
-      animation: floatLight 9s ease-in-out infinite;
-    }
+          transform: translateX(112%);
+          /* slower + premium easing */
+          transition: transform .55s cubic-bezier(.16, 1, .12, 1);
+        }
+        .drawer.is-open{ transform: translateX(0); }
 
-    @keyframes floatLight{
-      0%{transform:translate(-1%,-1%)}
-      50%{transform:translate(1.5%,1%)}
-      100%{transform:translate(-1%,-1%)}
-    }
-  `;
+        .drawer::before{
+          content:"";
+          position:absolute;
+          inset:0;
+          pointer-events:none;
+          opacity:.08; /* even subtler grain */
+          mix-blend-mode: overlay;
+          background-image:
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.70' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+        }
 
-  const style = document.createElement("style");
-  style.textContent = css;
-  document.head.appendChild(style);
+        .drawer::after{
+          content:"";
+          position:absolute;
+          top:0; left:0;
+          width:1px; height:100%;
+          background: linear-gradient(to bottom, rgba(255,255,255,.18), rgba(255,255,255,.03));
+          opacity:.7;
+          pointer-events:none;
+        }
 
-  /* =========================
-     HEADER MARKUP
-     ========================= */
-  const headerHTML = `
-    <header class="site-header">
-      <div class="inner">
-        <a class="brand" href="#top">
-          <img src="${LOGO_SRC}" alt="DVA Logo">
-        </a>
+        .drawer-top{
+          position:relative;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:12px;
+          margin-bottom:12px;
+          color:#fff;
+        }
+        .drawer-top .title{
+          font-weight:900;
+          letter-spacing:.02em;
+          text-shadow: 0 12px 28px rgba(0,0,0,.28);
+        }
 
-        <nav class="nav">
-          <a href="#work">Work</a>
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        .close{
+          width:42px; height:42px;
+          border-radius:14px;
+          border:0;
+          background: rgba(255,255,255,.05);
+          color:#fff;
+          cursor:pointer;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow:
+            0 12px 30px rgba(0,0,0,.20),
+            inset 0 1px 0 rgba(255,255,255,.14);
+        }
+        .close:hover{ filter: brightness(1.08); }
 
-        <div class="langs">
-          <a class="is-active">ENG</a>
-          <a>TUR</a>
-          <a>GER</a>
-          <a>FR</a>
+        .drawer nav{
+          position:relative;
+          display:flex;
+          flex-direction:column;
+          gap:6px;
+          padding-top:6px;
+        }
+
+        /* menu items: no borders, very minimal */
+        .drawer nav a{
+          padding:14px 10px;
+          border-radius:14px;
+          color:rgba(255,255,255,.92);
+          text-decoration:none;
+          font-weight:850;
+          letter-spacing:.01em;
+
+          background: transparent;
+          border: 0;
+          box-shadow: none;
+
+          transition: background .20s ease, transform .20s ease, color .20s ease;
+        }
+        .drawer nav a:hover{
+          background: rgba(255,255,255,.07);
+          transform: translateX(-2px);
+          color:#fff;
+        }
+        .drawer nav a.is-active{
+          background: rgba(120,190,255,.12);
+          color:#fff;
+        }
+
+        @media (max-width: 520px){
+          .brand span{ display:none; }
+        }
+      </style>
+
+      <div class="hdr">
+        <div class="hdr-inner">
+          <a class="brand" href="${ROUTES[lang].home}" aria-label="Homepage">
+            <img src="${LOGO_SRC}" alt="DVAYD Publishing Logo" />
+            <span>DVAYD Publishing</span>
+          </a>
+
+          <div class="right">
+            <div class="langs" aria-label="Language switch">
+              <a data-lang="de">DE</a><span class="sep">|</span>
+              <a data-lang="en">EN</a><span class="sep">|</span>
+              <a data-lang="tr">TR</a><span class="sep">|</span>
+              <a data-lang="fr">FR</a>
+            </div>
+
+            <button class="burger" type="button" aria-label="Menu" aria-expanded="false">
+              <span class="icon" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+            </button>
+          </div>
         </div>
       </div>
-    </header>
-  `;
 
-  const mount = document.getElementById("siteHeader") || document.body;
-  mount.insertAdjacentHTML("afterbegin", headerHTML);
+      <div class="overlay" data-overlay></div>
 
-  /* =========================
-     PURPLE LIGHT MOTION
-     ========================= */
-  let lx = 65, ly = 55;
-  function animate() {
-    const t = Date.now() * 0.00018;
-    lx = 50 + Math.sin(t) * 18;
-    ly = 50 + Math.cos(t * 1.12) * 14;
-    document.documentElement.style.setProperty("--lx", `${lx}%`);
-    document.documentElement.style.setProperty("--ly", `${ly}%`);
-    requestAnimationFrame(animate);
+      <aside class="drawer" data-drawer aria-label="Menu">
+        <div class="drawer-top">
+          <div class="title">Menü</div>
+          <button class="close" type="button" data-close aria-label="Close">✕</button>
+        </div>
+
+        <nav>
+          <a href="${ROUTES[lang].about}" data-nav>${LABELS[lang].about}</a>
+          <a href="${ROUTES[lang].projects}" data-nav>${LABELS[lang].projects}</a>
+          <a href="${ROUTES[lang].services}" data-nav>${LABELS[lang].services}</a>
+          <a href="${ROUTES[lang].process}" data-nav>${LABELS[lang].process}</a>
+          <a href="${ROUTES[lang].blog}" data-nav>${LABELS[lang].blog}</a>
+          <a href="${ROUTES[lang].contact}" data-nav>${LABELS[lang].contact}</a>
+        </nav>
+      </aside>
+    `;
   }
-  animate();
+
+  function init() {
+    const mount = document.getElementById("site-header");
+    if (!mount) return;
+
+    const lang = getLang();
+    mount.innerHTML = headerHTML(lang);
+
+    const overlay = mount.querySelector("[data-overlay]");
+    const drawer = mount.querySelector("[data-drawer]");
+    const burger = mount.querySelector(".burger");
+    const closeBtn = mount.querySelector("[data-close]");
+
+    const open = () => {
+      burger.setAttribute("aria-expanded", "true");
+      overlay.classList.add("is-open");
+      drawer.classList.add("is-open");
+      document.documentElement.style.overflow = "hidden";
+    };
+    const close = () => {
+      burger.setAttribute("aria-expanded", "false");
+      overlay.classList.remove("is-open");
+      drawer.classList.remove("is-open");
+      document.documentElement.style.overflow = "";
+    };
+
+    burger.addEventListener("click", () => {
+      const isOpen = burger.getAttribute("aria-expanded") === "true";
+      isOpen ? close() : open();
+    });
+    overlay.addEventListener("click", close);
+    closeBtn.addEventListener("click", close);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+
+    // Active nav highlight
+    const path = location.pathname;
+    mount.querySelectorAll("[data-nav]").forEach(a => {
+      const href = a.getAttribute("href");
+      const active = path === href || path.startsWith(href);
+      a.classList.toggle("is-active", active);
+    });
+
+    // Language switch keeps same page type
+    const pageKey = getPageKey(path, lang);
+    mount.querySelectorAll("[data-lang]").forEach(a => {
+      const targetLang = a.dataset.lang;
+      a.href = (ROUTES[targetLang] && ROUTES[targetLang][pageKey]) || ROUTES[targetLang].home;
+      a.classList.toggle("is-active", targetLang === lang);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
 })();
