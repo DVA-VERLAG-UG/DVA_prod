@@ -369,6 +369,89 @@
       .trustbar{ margin-top: 14px; }
       .trustbar-items{ grid-template-columns: 1fr; }
     }
+ /* ======================
+   BELOW THE FOLD: HORIZONTAL SCROLL SLIDER
+   ====================== */
+.placeholder-section{
+  height: 200vh;            /* steuert wie „lang“ der Slide ist */
+  position: relative;
+}
+
+/* sticky viewport */
+.placeholder-sticky{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* horizontal track */
+.placeholder-track{
+  height: 100%;
+  width: 200vw;             /* 2 Slides */
+  display: flex;
+  will-change: transform;
+  transform: translateX(0);
+}
+
+/* slides */
+.placeholder-slide{
+  width: 100vw;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* images */
+.slide-a{
+  background-image: url("/assets/images/platzhalter.jpg");
+}
+.slide-b{
+  background-image: url("/assets/images/beispiel_1.jpg");
+}
+
+/* optional premium overlay */
+.placeholder-slide::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(
+    rgba(0,0,0,.18),
+    rgba(0,0,0,.18)
+  );
+  pointer-events:none;
+}
+
+
+/* ======================
+   CURSOR TEXT (for placeholder section)
+   ====================== */
+.cursor-text{
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10000;
+
+  font-weight: 900;
+  letter-spacing: .06em;
+  font-size: 28px;
+  color: #ffffff;
+
+  text-shadow: 0 16px 40px rgba(0,0,0,.45);
+  white-space: nowrap;
+
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+
+@media (hover: none){
+  .cursor-text{ display:none; }
+}
+
   </style>
 </head>
 
@@ -424,46 +507,21 @@
         </div>
 
       </div>
-    </section>
-  </main>
-  
+</section>
 
-<main>
-  <section class="hero">…</section>
-
-  <!-- BELOW THE FOLD -->
-  <section class="section section-intro" id="about">
-    <div class="container">
-      <h2>Wie wir arbeiten</h2>
-      <p>Kurzer erklärender Text …</p>
+<section class="placeholder-section" id="placeholder">
+  <div class="placeholder-sticky">
+    <div class="placeholder-track" aria-hidden="true">
+      <div class="placeholder-slide slide-a"></div>
+      <div class="placeholder-slide slide-b"></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section section-services" id="services">
-    <div class="container">
-      <!-- cards -->
-    </div>
-  </section>
 
-  <section class="section section-process" id="process">
-    <div class="container">
-      <!-- steps -->
-    </div>
-  </section>
-
-  <section class="section section-projects" id="projects">
-    <div class="container">
-      <!-- project grid -->
-    </div>
-  </section>
-
-  <section class="section section-cta" id="cta">
-    <div class="container">
-      <!-- final CTA -->
-    </div>
-  </section>
 </main>
 
+  
 
 
 
@@ -473,41 +531,143 @@
 
 
 
-  <div class="cursor-invert" id="cursorInvert" aria-hidden="true"></div>
 
-  <script>
-    (function(){
-      const cursor = document.getElementById("cursorInvert");
-      if (!cursor) return;
 
-      let x = window.innerWidth / 2, y = window.innerHeight / 2;
-      let tx = x, ty = y;
-      let rafId = null;
+<div class="cursor-invert" id="cursorInvert" aria-hidden="true"></div>
+<div class="cursor-text" id="cursorText" aria-hidden="true"></div>
 
-      function animate(){
-        x += (tx - x) * 0.14;
-        y += (ty - y) * 0.14;
-        cursor.style.left = x + "px";
-        cursor.style.top = y + "px";
-        rafId = requestAnimationFrame(animate);
+
+<script>
+  (function(){
+    const circle = document.getElementById("cursorInvert");
+    const textEl = document.getElementById("cursorText"); // <- du brauchst das Element!
+    const section = document.getElementById("placeholder");
+    const track = document.querySelector(".placeholder-track");
+    const placeholder = document.getElementById("placeholder");
+
+
+    if (!circle || !textEl || !section || !track) return;
+
+    // ---------- cursor movement (smoothed) ----------
+    let x = window.innerWidth / 2, y = window.innerHeight / 2;
+    let tx = x, ty = y;
+    let rafId = null;
+
+    function animateCursor(){
+      x += (tx - x) * 0.14;
+      y += (ty - y) * 0.14;
+
+      circle.style.left = x + "px";
+      circle.style.top  = y + "px";
+
+      textEl.style.left = x + "px";
+      textEl.style.top  = y + "px";
+
+      rafId = requestAnimationFrame(animateCursor);
+    }
+
+    window.addEventListener("mousemove", (e) => {
+      tx = e.clientX;
+      ty = e.clientY;
+      if (!rafId) rafId = requestAnimationFrame(animateCursor);
+    }, { passive: true });
+
+    // ---------- typewriter ----------
+    let typeTimer = null;
+    let currentWord = "";
+
+    function typeWord(word){
+      if (word === currentWord) return;
+      currentWord = word;
+
+      clearInterval(typeTimer);
+      textEl.textContent = "";
+      let i = 0;
+
+      typeTimer = setInterval(() => {
+        textEl.textContent += word[i];
+        i++;
+        if (i >= word.length) clearInterval(typeTimer);
+      }, 55);
+    }
+
+    // ---------- mode: circle vs text ----------
+    let inPlaceholder = false;
+
+    function setModeText(initialWord){
+  inPlaceholder = true;
+  circle.style.opacity = "0";
+  textEl.style.opacity = "1";
+  typeWord(initialWord);
+}
+
+    function setModeCircle(){
+      inPlaceholder = false;
+      textEl.style.opacity = "0";
+      circle.style.opacity = "1";
+      currentWord = "";
+      clearInterval(typeTimer);
+    }
+
+    // Circle grows on hover (only outside placeholder section)
+    document.addEventListener("mouseover", (e) => {
+      if (!inPlaceholder && e.target.closest(".btn, a, .trust-item")) {
+        circle.classList.add("is-big");
       }
+    });
+    document.addEventListener("mouseout", (e) => {
+      if (!inPlaceholder && e.target.closest(".btn, a, .trust-item")) {
+        circle.classList.remove("is-big");
+      }
+    });
 
-      window.addEventListener("mousemove", (e) => {
-        tx = e.clientX;
-        ty = e.clientY;
-        if (!rafId) rafId = requestAnimationFrame(animate);
-      }, { passive: true });
+    // ---------- scroll-driven slide animation ----------
+    
+    function clamp01(v){ return Math.max(0, Math.min(1, v)); }
 
-      document.addEventListener("mouseover", (e) => {
-        if (e.target.closest(".btn, a, .trust-item")) cursor.classList.add("is-big");
-      });
-      document.addEventListener("mouseout", (e) => {
-        if (e.target.closest(".btn, a, .trust-item")) cursor.classList.remove("is-big");
-      });
+    function updateSlider(){
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight;
 
-      window.addEventListener("mouseleave", () => cursor.style.opacity = "0");
-      window.addEventListener("mouseenter", () => cursor.style.opacity = "1");
-    })();
-  </script>
+      // progress 0..1 through the section while sticky is active
+      const start = 0;                  // when top hits top
+      const end = section.offsetHeight - vh;  // total scrollable distance inside
+      const scrolled = -rect.top;       // how much we've scrolled into section
+      const p = clamp01(scrolled / end);
+
+      // translate track (0 -> -100vw)
+      const shift = -p * window.innerWidth;
+      track.style.transform = `translateX(${shift}px)`;
+
+      // inside section? (while sticky is on screen)
+      const inside = rect.top <= 0 && rect.bottom >= vh;
+
+      if (inside) {
+        setModeText();
+        // word switches around the middle
+        if (p < 0.5) typeWord("platzhalter");
+        else typeWord("beispiel_1");
+      } else {
+        setModeCircle();
+      }
+    }
+
+    window.addEventListener("scroll", updateSlider, { passive: true });
+    window.addEventListener("resize", updateSlider);
+    updateSlider();
+
+    // hide/show when leaving window
+    window.addEventListener("mouseleave", () => {
+      circle.style.opacity = "0";
+      textEl.style.opacity = "0";
+    });
+    window.addEventListener("mouseenter", () => {
+      if (inPlaceholder) textEl.style.opacity = "1";
+      else circle.style.opacity = "1";
+    });
+  })();
+</script>
+
+
 </body>
 </html>
