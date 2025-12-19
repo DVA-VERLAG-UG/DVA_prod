@@ -12,258 +12,364 @@
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
   <link rel="stylesheet" href="/assets/css/style.css">
-
- <style>
-  :root{
-    --hdr-h:72px;
-    --max:1180px;
-
-    --ink:#ffffff;
-    --muted:rgba(255,255,255,.99);
-
-    /* glass button + hover tint */
-    --glass-a: rgba(255,255,255,.22);
-    --glass-b: rgba(255,255,255,.08);
-    --glass-border: rgba(255,255,255,.28);
-
-    --hover-violet: rgba(139,92,246,.28);
-    --hover-violet-border: rgba(139,92,246,.40);
-
-    --ghost: rgba(255,255,255,.14);
-    --ghost-hover: rgba(255,255,255,.18);
-  }
-
-  *{ box-sizing:border-box; }
-  body{
-    margin:0;
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    color:var(--ink);
-    background:#000;
-  }
-  a{ color:inherit; text-decoration:none; }
-
-  /* ======================
-     HERO – FULL BLEED
-     ====================== */
-  .hero{
-    position:relative;
-    height:100vh;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    overflow:hidden;
-  }
-
-  .hero::before{
-    content:"";
-    position:absolute;
-    inset:-40px 0 -40px 0; /* bleed => no bars */
-    background:
-      /* readability overlay (tune alpha here) */
-      linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
-      url("/assets/images/library.jpg") center top / cover no-repeat;
-  }
-  .hero::after{ content:none; }
-
-  .hero-content{
-  position:relative;
-  width:min(var(--max), calc(100% - 40px));
-  margin:0 auto;
-  padding:64px 0;
-  max-width:780px;
-  text-align: center; /* ✅ TEXT ZENTRIERT */
-}
-
-
-  /* ======================
-     TYPOGRAPHY
-     ====================== */
-  .kicker{
-    font-size:12px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    opacity:.88;
-    margin-bottom:14px;
-    text-shadow: 0 14px 28px rgba(0,0,0,.38);
-  }
-
- h1{
-  margin:0 0 16px;
-  font-size:clamp(34px, 4.6vw, 56px);
-  line-height:1.06;                 /* minimal entspannter */
-  letter-spacing:-.03em;
-  font-weight:800;
-  color:#ffffff;                    /* explizit reines Weiß */
-
-  text-shadow:
-    0 1px 1px rgba(255,255,255,.35), /* hebt Weiß optisch an */
-    0 18px 40px rgba(0,0,0,.42);     /* Tiefe & Lesbarkeit */
-}
-
-
- .sub{
-  margin: 0 auto 26px;     /* ✅ auto links/rechts => wirklich zentriert */
-  text-align: center;       /* ✅ Text zentriert */
-  max-width: 60ch;          /* ✅ schöne Lesebreite */
-  width: 100%;              /* ✅ füllt Container, vermeidet “komische” Inline-Breiten */
-  display: block;           /* ✅ Block erzwingen */
-  font-size: 16.5px;
-  line-height: 1.65;
-  color: var(--muted);
-  text-shadow: 0 14px 28px rgba(0,0,0,.32);
-}
-
-
-  .actions{
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content: center; /* ✅ BUTTONS ZENTRIERT */
-}
-
-
-  /* ======================
-     CTA BUTTONS – LIQUID GLASS + PREMIUM HOVER
-     ====================== */
-  .btn{
-    position:relative;
-    overflow:hidden;              /* keeps sheen inside */
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:13px 18px;
-    border-radius:999px;
-    font-weight:850;
-    font-size:13px;
-    border:1px solid transparent;
-    cursor:pointer;
-    white-space:nowrap;
-    transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
-  }
-
-  /* subtle moving sheen */
-  .btn::before{
-    content:"";
-    position:absolute;
-    inset:-2px;
-    opacity:0;
-    transform: translateX(-14px);
-    transition: opacity .18s ease, transform .28s ease;
-    background: linear-gradient(
-      120deg,
-      rgba(255,255,255,0) 0%,
-      rgba(255,255,255,.16) 35%,
-      rgba(255,255,255,0) 70%
-    );
-    pointer-events:none;
-  }
-
-  .btn.primary{
-    background: linear-gradient(135deg, var(--glass-a), var(--glass-b));
-    color:#fff;
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(10px) saturate(1.4);
-    -webkit-backdrop-filter: blur(10px) saturate(1.4);
-    box-shadow:
-      0 10px 30px rgba(0,0,0,.30),
-      inset 0 1px 0 rgba(255,255,255,.25);
-  }
-
-  .btn.ghost{
-    background: var(--ghost);
-    color:#fff;
-    border: 1px solid rgba(255,255,255,.16);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-  }
-
-  /* general hover motion */
-  .btn:hover{
-    filter:brightness(1.10);
-    transform: translateY(-1px);
-  }
-  .btn:hover::before{
-    opacity:1;
-    transform: translateX(14px);
-  }
-
-  /* premium readable hover backgrounds */
-  .btn.primary:hover{
-    background: var(--hover-violet);
-    border-color: var(--hover-violet-border);
-    color:#fff; /* keep readable */
-    box-shadow:
-      0 14px 40px rgba(0,0,0,.35),
-      inset 0 1px 0 rgba(255,255,255,.30);
-  }
-.btn.ghost:hover{
-  background: var(--hover-violet);
-  border-color: var(--hover-violet-border);
-  color:#fff;
-}
-
-
-  @media (max-width: 520px){
-    .hero-content{ padding:48px 0; }
-    .btn{ width:100%; }
-  }
-
-  /* ======================
-     HERO ANIMATION
-     ====================== */
-  @media (prefers-reduced-motion: no-preference){
-    .anim{
-      opacity:0;
-      transform: translateY(10px);
-      animation: fadeUp .75s cubic-bezier(.2,.9,.2,1) forwards;
-    }
-    .d1{ animation-delay: .05s; }
-    .d2{ animation-delay: .14s; }
-    .d3{ animation-delay: .22s; }
-    .d4{ animation-delay: .30s; }
-
-    @keyframes fadeUp{
-      to{ opacity:1; transform: translateY(0); }
-    }
-  }
-
-  /* ======================
-     CURSOR INVERT CIRCLE (30x30 + grows on hover)
-     ====================== */
-  .cursor-invert{
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 20px;
-    height: 20px;
-    border-radius: 999px;
-    pointer-events: none;
-    z-index: 9999;
-
-    transform: translate(-50%, -50%);
-
-    backdrop-filter: invert(1);
-    -webkit-backdrop-filter: invert(1);
-
-    border: 1px solid rgba(255,255,255,.20);
-
-    transition: width .18s ease, height .18s ease, border-color .18s ease, opacity .18s ease;
-  }
-
-  .cursor-invert.is-big{
-    width: 34px;
-    height: 34px;
-    border-color: rgba(255,255,255,.28);
-  }
-
-  @media (hover: none){
-    .cursor-invert{ display:none; }
-  }
-</style>
-
-
   <script src="/js/header.js" defer></script>
+
+  <style>
+    :root{
+      --hdr-h:72px;
+      --max:1180px;
+
+      --ink:#ffffff;
+      --muted:rgba(255,255,255,.99);
+
+      /* CTA glass + hover tint */
+      --glass-a: rgba(255,255,255,.22);
+      --glass-b: rgba(255,255,255,.08);
+      --glass-border: rgba(255,255,255,.28);
+
+      --hover-violet: rgba(139,92,246,.28);
+      --hover-violet-border: rgba(139,92,246,.40);
+
+      --ghost: rgba(255,255,255,.14);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background:#000;
+    }
+    a{ color:inherit; text-decoration:none; }
+
+    /* ======================
+       HERO – FULL BLEED
+       ====================== */
+    .hero{
+      position:relative;
+      height:100vh;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-40px 0 -40px 0; /* bleed => no bars */
+      background:
+        linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
+        url("/assets/images/library.jpg") center top / cover no-repeat;
+    }
+    .hero::after{ content:none; }
+
+    .hero-content{
+      position:relative;
+      width:min(var(--max), calc(100% - 40px));
+      margin:0 auto;
+      padding:64px 0;
+      max-width:780px;
+      text-align:center;
+    }
+
+    /* ======================
+       TYPOGRAPHY
+       ====================== */
+    .kicker{
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      opacity:.88;
+      margin-bottom:14px;
+      text-shadow: 0 14px 28px rgba(0,0,0,.38);
+    }
+
+    h1{
+      margin:0 0 16px;
+      font-size:clamp(34px, 4.6vw, 56px);
+      line-height:1.06;
+      letter-spacing:-.03em;
+      font-weight:800;
+      color:#ffffff;
+      text-shadow:
+        0 1px 1px rgba(255,255,255,.35),
+        0 18px 40px rgba(0,0,0,.42);
+    }
+
+    .sub{
+      margin:0 auto 26px;
+      max-width:60ch;
+      width:100%;
+      display:block;
+      font-size:16.5px;
+      line-height:1.65;
+      color:var(--muted);
+      text-shadow: 0 14px 28px rgba(0,0,0,.32);
+    }
+
+    .actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* ======================
+       CTA BUTTONS – LIQUID GLASS
+       ====================== */
+    .btn{
+      position:relative;
+      overflow:hidden;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:13px 18px;
+      border-radius:999px;
+      font-weight:850;
+      font-size:13px;
+      border:1px solid transparent;
+      cursor:pointer;
+      white-space:nowrap;
+      transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
+    }
+
+    /* sheen */
+    .btn::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      opacity:0;
+      transform: translateX(-14px);
+      transition: opacity .18s ease, transform .28s ease;
+      background: linear-gradient(
+        120deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,.16) 35%,
+        rgba(255,255,255,0) 70%
+      );
+      pointer-events:none;
+    }
+
+    .btn.primary{
+      background: linear-gradient(135deg, var(--glass-a), var(--glass-b));
+      color:#fff;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px) saturate(1.25);
+      -webkit-backdrop-filter: blur(8px) saturate(1.25);
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.25);
+    }
+
+    .btn.ghost{
+      background: var(--ghost);
+      color:#fff;
+      border: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .btn:hover{
+      filter:brightness(1.10);
+      transform: translateY(-1px);
+    }
+    .btn:hover::before{
+      opacity:1;
+      transform: translateX(14px);
+    }
+
+    .btn.primary:hover,
+    .btn.ghost:hover{
+      background: var(--hover-violet);
+      border-color: var(--hover-violet-border);
+      color:#fff;
+      box-shadow:
+        0 14px 40px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.30);
+    }
+
+    @media (max-width: 520px){
+      .hero-content{ padding:48px 0; }
+      .btn{ width:100%; }
+    }
+
+    /* ======================
+       HERO ANIMATION
+       ====================== */
+    @media (prefers-reduced-motion: no-preference){
+      .anim{
+        opacity:0;
+        transform: translateY(10px);
+        animation: fadeUp .75s cubic-bezier(.2,.9,.2,1) forwards;
+      }
+      .d1{ animation-delay: .05s; }
+      .d2{ animation-delay: .14s; }
+      .d3{ animation-delay: .22s; }
+      .d4{ animation-delay: .30s; }
+
+      @keyframes fadeUp{
+        to{ opacity:1; transform: translateY(0); }
+      }
+    }
+
+    /* ======================
+       CURSOR INVERT CIRCLE
+       ====================== */
+    .cursor-invert{
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      backdrop-filter: invert(1);
+      -webkit-backdrop-filter: invert(1);
+      border: 1px solid rgba(255,255,255,.20);
+      transition: width .18s ease, height .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+    .cursor-invert.is-big{
+      width: 34px;
+      height: 34px;
+      border-color: rgba(255,255,255,.28);
+    }
+    @media (hover: none){
+      .cursor-invert{ display:none; }
+    }
+
+    /* ======================
+       TRUST BAR – CLEARER GLASS (LESS MILKY)
+       ====================== */
+    .trustbar{
+  margin-top: 18px;
+  padding: 14px 14px;
+  border-radius: 18px;
+
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.0);
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  box-shadow: none;
+}
+
+
+
+    .trustbar-items{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap:10px;
+    }
+
+    /* TRUST CARDS – SAME STYLE FAMILY AS CTA, BUT CLEARER */
+    .trust-item{
+  position: relative;
+  overflow: hidden;
+
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+
+  padding: 12px 10px;
+  border-radius: 14px;
+
+  /* 🔥 GLEICHES GLAS WIE CTA */
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,.25),
+    rgba(255,255,255,.1)
+  );
+  border: 1px solid rgba(255,255,255,.28);
+
+  backdrop-filter: blur(8px) saturate(1.25);
+  -webkit-backdrop-filter: blur(8px) saturate(1.25);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.25);
+
+  text-align:center;
+  cursor:pointer;
+  user-select:none;
+
+  transition:
+    transform .18s ease,
+    filter .18s ease,
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+
+    .trust-item::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      opacity:0;
+      transform: translateX(-14px);
+      transition: opacity .18s ease, transform .28s ease;
+      background: linear-gradient(
+        120deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,.16) 35%,
+        rgba(255,255,255,0) 70%
+      );
+      pointer-events:none;
+    }
+
+    .trust-item:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.10);
+      background: var(--hover-violet);
+      border-color: var(--hover-violet-border);
+      box-shadow:
+        0 14px 40px rgba(0,0,0,.32),
+        inset 0 1px 0 rgba(255,255,255,.28);
+    }
+    .trust-item:hover::before{
+      opacity:1;
+      transform: translateX(14px);
+    }
+
+    .trust-icon{
+  display:grid;
+  place-items:center;
+}
+
+    .trust-icon img{
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      display:block;
+      filter: brightness(1.12) contrast(1.06);
+    }
+
+    .trust-text{
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.3;
+  max-width: 12ch;
+
+  color: #ffffff;               /* ✅ weiß */
+  text-shadow: 0 12px 26px rgba(0,0,0,.28);  /* ✅ bessere Lesbarkeit */
+}
+
+
+    @media (max-width: 900px){
+      .trustbar-items{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px){
+      .trustbar{ margin-top: 14px; }
+      .trustbar-items{ grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 
 <body>
@@ -284,14 +390,45 @@
           <a href="/de/kontakt/" class="btn primary">Jetzt veröffentlichen</a>
           <a href="/de/projekte/" class="btn ghost">Pakete entdecken</a>
         </div>
+
+        <div class="trustbar anim d4">
+          <div class="trustbar-items">
+            <div class="trust-item">
+              <div class="trust-icon">
+                <img src="/assets/icons/schutz.png" alt="Autorenrechte">
+              </div>
+              <div class="trust-text">100 % Autorenrechte</div>
+            </div>
+
+            <div class="trust-item">
+              <div class="trust-icon">
+                <img src="/assets/icons/internet.png" alt="Internationaler Verlag">
+              </div>
+              <div class="trust-text">DE &amp; TR Verlag</div>
+            </div>
+
+            <div class="trust-item">
+              <div class="trust-icon">
+                <img src="/assets/icons/beratung.png" alt="Persönliche Beratung">
+              </div>
+              <div class="trust-text">Persönliche Beratung</div>
+            </div>
+
+            <div class="trust-item">
+              <div class="trust-icon">
+                <img src="/assets/icons/preis.png" alt="Transparente Preise">
+              </div>
+              <div class="trust-text">Transparente Preise</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   </main>
 
-  <!-- Cursor invert circle -->
   <div class="cursor-invert" id="cursorInvert" aria-hidden="true"></div>
 
-  <!-- Cursor script -->
   <script>
     (function(){
       const cursor = document.getElementById("cursorInvert");
@@ -315,25 +452,16 @@
         if (!rafId) rafId = requestAnimationFrame(animate);
       }, { passive: true });
 
-      // grow on button hover
       document.addEventListener("mouseover", (e) => {
-  if (e.target.closest("a, .btn, button")) {
-    cursor.classList.add("is-big");
-  }
-});
-
-document.addEventListener("mouseout", (e) => {
-  if (e.target.closest("a, .btn, button")) {
-    cursor.classList.remove("is-big");
-  }
-});
-
+        if (e.target.closest(".btn, a, .trust-item")) cursor.classList.add("is-big");
+      });
+      document.addEventListener("mouseout", (e) => {
+        if (e.target.closest(".btn, a, .trust-item")) cursor.classList.remove("is-big");
+      });
 
       window.addEventListener("mouseleave", () => cursor.style.opacity = "0");
       window.addEventListener("mouseenter", () => cursor.style.opacity = "1");
     })();
   </script>
-
 </body>
 </html>
-
