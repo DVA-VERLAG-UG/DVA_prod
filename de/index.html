@@ -7,168 +7,333 @@
   <title>DVAYD Publishing – Dein Buch, deine Geschichte</title>
   <meta name="description" content="Dein Buch, deine Geschichte – weltweit veröffentlicht mit DVAYD. Publishing, Design und Marketing aus einer Hand." />
 
-  <!-- ✅ FAVICON -->
+  <!-- Favicon (nur EINMAL) -->
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
-  <!-- Global styles (can stay minimal for now) -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <style>
-    :root{
-      --hdr-h:72px;
-      --max:1180px;
-      --ink:#ffffff;
-      --muted:rgba(255,255,255,.85);
-      --btn:#1f6fff;
-      --btn-ghost:rgba(255,255,255,.16);
-    }
+ <style>
+  :root{
+    --hdr-h:72px;
+    --max:1180px;
 
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-      color:var(--ink);
-      background:#000;
-    }
-    a{ color:inherit; text-decoration:none; }
+    --ink:#ffffff;
+    --muted:rgba(255,255,255,.99);
 
+    /* glass button + hover tint */
+    --glass-a: rgba(255,255,255,.22);
+    --glass-b: rgba(255,255,255,.08);
+    --glass-border: rgba(255,255,255,.28);
 
+    --hover-violet: rgba(139,92,246,.28);
+    --hover-violet-border: rgba(139,92,246,.40);
 
-    /* ======================
-       HERO – FULL BLEED, BRIGHTER
-       ====================== */
-.hero{
+    --ghost: rgba(255,255,255,.14);
+    --ghost-hover: rgba(255,255,255,.18);
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:var(--ink);
+    background:#000;
+  }
+  a{ color:inherit; text-decoration:none; }
+
+  /* ======================
+     HERO – FULL BLEED
+     ====================== */
+  .hero{
+    position:relative;
+    height:100vh;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+  }
+
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:-40px 0 -40px 0; /* bleed => no bars */
+    background:
+      /* readability overlay (tune alpha here) */
+      linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
+      url("/assets/images/library.jpg") center top / cover no-repeat;
+  }
+  .hero::after{ content:none; }
+
+  .hero-content{
   position:relative;
-  height: 100vh;       /* ✅ nimmt den ganzen Bildschirm */
-  min-height: 100vh;   /* ✅ fallback */
+  width:min(var(--max), calc(100% - 40px));
+  margin:0 auto;
+  padding:64px 0;
+  max-width:780px;
+  text-align: center; /* ✅ TEXT ZENTRIERT */
+}
+
+
+  /* ======================
+     TYPOGRAPHY
+     ====================== */
+  .kicker{
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    opacity:.88;
+    margin-bottom:14px;
+    text-shadow: 0 14px 28px rgba(0,0,0,.38);
+  }
+
+ h1{
+  margin:0 0 16px;
+  font-size:clamp(34px, 4.6vw, 56px);
+  line-height:1.06;                 /* minimal entspannter */
+  letter-spacing:-.03em;
+  font-weight:800;
+  color:#ffffff;                    /* explizit reines Weiß */
+
+  text-shadow:
+    0 1px 1px rgba(255,255,255,.35), /* hebt Weiß optisch an */
+    0 18px 40px rgba(0,0,0,.42);     /* Tiefe & Lesbarkeit */
+}
+
+
+ .sub{
+  margin: 0 auto 26px;     /* ✅ auto links/rechts => wirklich zentriert */
+  text-align: center;       /* ✅ Text zentriert */
+  max-width: 60ch;          /* ✅ schöne Lesebreite */
+  width: 100%;              /* ✅ füllt Container, vermeidet “komische” Inline-Breiten */
+  display: block;           /* ✅ Block erzwingen */
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--muted);
+  text-shadow: 0 14px 28px rgba(0,0,0,.32);
+}
+
+
+  .actions{
   display:flex;
+  gap:14px;
+  flex-wrap:wrap;
   align-items:center;
-  overflow:hidden;
+  justify-content: center; /* ✅ BUTTONS ZENTRIERT */
 }
 
 
-    /* BACKGROUND IMAGE – MUCH LESS SHADING */
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:-40px 0 -40px 0; /* ✅ extra “bleed” nach oben/unten damit nie ein Balken entsteht */
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0,0,0,.45) 0%,
-      rgba(0,0,0,.25) 45%,
-      rgba(0,0,0,.35) 100%
-    ),
-    url("/assets/images/library.jpg") center top / cover no-repeat;
+  /* ======================
+     CTA BUTTONS – LIQUID GLASS + PREMIUM HOVER
+     ====================== */
+  .btn{
+    position:relative;
+    overflow:hidden;              /* keeps sheen inside */
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:13px 18px;
+    border-radius:999px;
+    font-weight:850;
+    font-size:13px;
+    border:1px solid transparent;
+    cursor:pointer;
+    white-space:nowrap;
+    transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
+  }
+
+  /* subtle moving sheen */
+  .btn::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    opacity:0;
+    transform: translateX(-14px);
+    transition: opacity .18s ease, transform .28s ease;
+    background: linear-gradient(
+      120deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,.16) 35%,
+      rgba(255,255,255,0) 70%
+    );
+    pointer-events:none;
+  }
+
+  .btn.primary{
+    background: linear-gradient(135deg, var(--glass-a), var(--glass-b));
+    color:#fff;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px) saturate(1.4);
+    -webkit-backdrop-filter: blur(10px) saturate(1.4);
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.30),
+      inset 0 1px 0 rgba(255,255,255,.25);
+  }
+
+  .btn.ghost{
+    background: var(--ghost);
+    color:#fff;
+    border: 1px solid rgba(255,255,255,.16);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  /* general hover motion */
+  .btn:hover{
+    filter:brightness(1.10);
+    transform: translateY(-1px);
+  }
+  .btn:hover::before{
+    opacity:1;
+    transform: translateX(14px);
+  }
+
+  /* premium readable hover backgrounds */
+  .btn.primary:hover{
+    background: var(--hover-violet);
+    border-color: var(--hover-violet-border);
+    color:#fff; /* keep readable */
+    box-shadow:
+      0 14px 40px rgba(0,0,0,.35),
+      inset 0 1px 0 rgba(255,255,255,.30);
+  }
+.btn.ghost:hover{
+  background: var(--hover-violet);
+  border-color: var(--hover-violet-border);
+  color:#fff;
 }
 
 
-    /* REMOVE HEAVY DARK OVERLAY COMPLETELY */
-    .hero::after{
-      content:none;
-    }
+  @media (max-width: 520px){
+    .hero-content{ padding:48px 0; }
+    .btn{ width:100%; }
+  }
 
-    .hero-content{
-      position:relative;
-      width:min(var(--max), calc(100% - 40px));
-      margin:0 auto;
-      padding:64px 0;
-      max-width:760px;
+  /* ======================
+     HERO ANIMATION
+     ====================== */
+  @media (prefers-reduced-motion: no-preference){
+    .anim{
+      opacity:0;
+      transform: translateY(10px);
+      animation: fadeUp .75s cubic-bezier(.2,.9,.2,1) forwards;
     }
+    .d1{ animation-delay: .05s; }
+    .d2{ animation-delay: .14s; }
+    .d3{ animation-delay: .22s; }
+    .d4{ animation-delay: .30s; }
 
-    .kicker{
-      font-size:12px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      opacity:.85;
-      margin-bottom:14px;
+    @keyframes fadeUp{
+      to{ opacity:1; transform: translateY(0); }
     }
+  }
 
-    h1{
-      margin:0 0 16px;
-      font-size:clamp(30px, 4.5vw, 52px);
-      line-height:1.05;
-      letter-spacing:-.02em;
-    }
+  /* ======================
+     CURSOR INVERT CIRCLE (30x30 + grows on hover)
+     ====================== */
+  .cursor-invert{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 9999;
 
-    .sub{
-      margin:0 0 26px;
-      font-size:16px;
-      line-height:1.6;
-      color:var(--muted);
-      max-width:62ch;
-    }
+    transform: translate(-50%, -50%);
 
-    .actions{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
+    backdrop-filter: invert(1);
+    -webkit-backdrop-filter: invert(1);
 
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:13px 18px;
-      border-radius:999px;
-      font-weight:800;
-      font-size:13px;
-      border:1px solid transparent;
-      cursor:pointer;
-      white-space:nowrap;
-    }
+    border: 1px solid rgba(255,255,255,.20);
 
-    .btn.primary{
-      background:var(--btn);
-      color:#fff;
-    }
+    transition: width .18s ease, height .18s ease, border-color .18s ease, opacity .18s ease;
+  }
 
-    .btn.ghost{
-      background:var(--btn-ghost);
-      color:#fff;
-      backdrop-filter: blur(4px);
-    }
+  .cursor-invert.is-big{
+    width: 34px;
+    height: 34px;
+    border-color: rgba(255,255,255,.28);
+  }
 
-    .btn:hover{
-      filter:brightness(1.06);
-    }
+  @media (hover: none){
+    .cursor-invert{ display:none; }
+  }
+</style>
 
-    @media (max-width: 520px){
-      .hero-content{ padding:48px 0; }
-      .btn{ width:100%; }
-    }
-  </style>
 
-  <!-- Header JS injects transparent header + menu -->
   <script src="/js/header.js" defer></script>
 </head>
 
 <body>
-
-  <!-- Header injected via header.js -->
   <header id="site-header"></header>
 
   <main>
     <section class="hero">
       <div class="hero-content">
-        <div class="kicker">DVAYD Publishing</div>
+        <div class="kicker anim d1">DVAYD Publishing</div>
 
-        <h1>Dein Buch, deine Geschichte – weltweit veröffentlicht mit DVAYD.</h1>
+        <h1 class="anim d2">Dein Buch, deine Geschichte – Weltweit veröffentlicht mit DVAYD.</h1>
 
-        <p class="sub">
-          Wir begleiten Autorinnen und Autoren von der Idee bis zur Veröffentlichung.
-          Als Brücke zwischen Europa und der Türkei vereinen wir Publishing,
-          Design und Marketing unter einem Dach.
+        <p class="sub anim d3">
+          Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
         </p>
 
-        <div class="actions">
+        <div class="actions anim d4">
           <a href="/de/kontakt/" class="btn primary">Jetzt veröffentlichen</a>
-          <a href="/de/projekte/" class="btn ghost">Unsere Projekte</a>
+          <a href="/de/projekte/" class="btn ghost">Pakete entdecken</a>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- Cursor invert circle -->
+  <div class="cursor-invert" id="cursorInvert" aria-hidden="true"></div>
+
+  <!-- Cursor script -->
+  <script>
+    (function(){
+      const cursor = document.getElementById("cursorInvert");
+      if (!cursor) return;
+
+      let x = window.innerWidth / 2, y = window.innerHeight / 2;
+      let tx = x, ty = y;
+      let rafId = null;
+
+      function animate(){
+        x += (tx - x) * 0.14;
+        y += (ty - y) * 0.14;
+        cursor.style.left = x + "px";
+        cursor.style.top = y + "px";
+        rafId = requestAnimationFrame(animate);
+      }
+
+      window.addEventListener("mousemove", (e) => {
+        tx = e.clientX;
+        ty = e.clientY;
+        if (!rafId) rafId = requestAnimationFrame(animate);
+      }, { passive: true });
+
+      // grow on button hover
+      document.addEventListener("mouseover", (e) => {
+  if (e.target.closest("a, .btn, button")) {
+    cursor.classList.add("is-big");
+  }
+});
+
+document.addEventListener("mouseout", (e) => {
+  if (e.target.closest("a, .btn, button")) {
+    cursor.classList.remove("is-big");
+  }
+});
+
+
+      window.addEventListener("mouseleave", () => cursor.style.opacity = "0");
+      window.addEventListener("mouseenter", () => cursor.style.opacity = "1");
+    })();
+  </script>
+
 </body>
 </html>
+

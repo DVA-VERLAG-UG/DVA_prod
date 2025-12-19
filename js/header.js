@@ -42,6 +42,13 @@
           background:transparent;
           pointer-events:none;
         }
+          /* Scroll state: still minimal, but adds premium legibility */
+.hdr.is-scrolled{
+  background: rgba(0,0,0,.10);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+}
+
         .hdr-inner{
           pointer-events:auto;
           height:100%;
