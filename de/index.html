@@ -40,13 +40,16 @@
       background:#000;
     }
     a{ color:inherit; text-decoration:none; }
+    html, body, * { cursor: none !important; }
 
-    /* Hide OS cursor so only custom cursor shows */
-    /* Cursor nur auf Geräten mit Hover verstecken */
-@media (hover: hover) and (pointer: fine){
-  html, body { cursor: none; }
-}
 
+    /* IMPORTANT UPDATE:
+       OS Cursor NUR ausblenden, wenn JS die Klasse "has-custom-cursor" gesetzt hat.
+       Sonst riskierst du "gar keinen Cursor", wenn JS nicht startet / blockiert wird. */
+    @media (hover: hover) and (pointer: fine){
+      html.has-custom-cursor,
+      html.has-custom-cursor body { cursor: none; }
+    }
 
     /* ======================
        HERO – FULL BLEED
@@ -190,7 +193,7 @@
     }
 
     /* ======================
-       CURSOR INVERT CIRCLE
+       CURSOR (ROBUST + ALWAYS VISIBLE)
        ====================== */
     .cursor-invert{
       position: fixed;
@@ -200,12 +203,16 @@
       height: 20px;
       border-radius: 999px;
       pointer-events: none;
-      z-index: 9999;
+      z-index: 999999;           /* höher, damit nichts drüber liegt */
       transform: translate(-50%, -50%);
-      backdrop-filter: invert(1);
-      -webkit-backdrop-filter: invert(1);
-      border: 1px solid rgba(255,255,255,.20);
+
+      /* UPDATE: statt backdrop-filter invert (kann unsichtbar sein) */
+      background: rgba(255,255,255,.85);
+      mix-blend-mode: difference;
+
+      border: 1px solid rgba(255,255,255,.15);
       transition: width .18s ease, height .18s ease, border-color .18s ease, opacity .18s ease;
+      opacity: 1;                /* wichtig: nicht bei 0 starten */
     }
     .cursor-invert.is-big{
       width: 34px;
@@ -217,10 +224,37 @@
       height: 34px;
       border-color: rgba(255,255,255,.28);
       background: center / 18px 18px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 11V5a2 2 0 1 1 4 0v6h1V3a2 2 0 1 1 4 0v8h1V6a2 2 0 1 1 4 0v8c0 4-3 7-7 7H12c-3 0-5-2-5-5v-5z'/%3E%3C/svg%3E");
+      mix-blend-mode: normal;
     }
 
     @media (hover: none){
       .cursor-invert{ display:none; }
+    }
+
+    /* ======================
+       CURSOR TEXT
+       ====================== */
+    .cursor-text{
+      position: fixed;
+      left: 0;
+      top: 0;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1000000;
+
+      font-weight: 900;
+      letter-spacing: .06em;
+      font-size: 28px;
+      color: #ffffff;
+
+      text-shadow: 0 16px 40px rgba(0,0,0,.45);
+      white-space: nowrap;
+
+      opacity: 0;
+      transition: opacity .15s ease;
+    }
+    @media (hover: none){
+      .cursor-text{ display:none; }
     }
 
     /* ======================
@@ -323,7 +357,7 @@
        BELOW THE FOLD: HORIZONTAL SCROLL SLIDER
        ====================== */
     .placeholder-section{
-      height: 300vh; /* was 250vh */
+      height: 300vh;
       position: relative;
     }
     .placeholder-sticky{
@@ -377,33 +411,7 @@
     .slide-c{ --bg: url("/assets/images/beispiel_2.jpg"); }
 
     /* ======================
-       CURSOR TEXT (for placeholder section)
-       ====================== */
-    .cursor-text{
-      position: fixed;
-      left: 0;
-      top: 0;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 10000;
-
-      font-weight: 900;
-      letter-spacing: .06em;
-      font-size: 28px;
-      color: #ffffff;
-
-      text-shadow: 0 16px 40px rgba(0,0,0,.45);
-      white-space: nowrap;
-
-      opacity: 0;
-      transition: opacity .15s ease;
-    }
-    @media (hover: none){
-      .cursor-text{ display:none; }
-    }
-
-    /* ======================
-       SHOWCASE SECTION (like screenshot, glass + purple card)
+       SHOWCASE SECTION
        ====================== */
     .showcase{
       position: relative;
@@ -416,7 +424,6 @@
       overflow: hidden;
     }
 
-    /* Dark band at bottom like screenshot */
     .showcase::after{
       content:"";
       position:absolute;
@@ -434,7 +441,6 @@
       z-index: 1;
     }
 
-    /* logo rows */
     .logo-cloud{
       display: grid;
       gap: 18px;
@@ -451,7 +457,6 @@
       gap: 28px 34px;
     }
 
-    /* simple “logo” placeholder (replace with real SVG/img) */
     .logo-pill{
       font-weight: 800;
       letter-spacing: .02em;
@@ -460,7 +465,6 @@
       user-select:none;
     }
 
-    /* floating card */
     .showcase-card{
       width: min(980px, 100%);
       margin: 0 auto;
@@ -471,7 +475,6 @@
       gap: 26px;
       align-items: center;
 
-      /* glass + violet */
       background:
         radial-gradient(700px 380px at 30% 20%, rgba(255,255,255,.22), transparent 60%),
         linear-gradient(135deg, rgba(99,102,241,.92), rgba(139,92,246,.88));
@@ -483,7 +486,7 @@
       backdrop-filter: blur(14px) saturate(1.2);
       -webkit-backdrop-filter: blur(14px) saturate(1.2);
 
-      transform: translateY(54px); /* makes it “float” into the dark band */
+      transform: translateY(54px);
     }
 
     .profile{
@@ -524,14 +527,8 @@
       line-height: 1.75;
       margin: 0;
     }
-    .quote::before{
-      content:"“";
-      opacity:.95;
-    }
-    .quote::after{
-      content:"”";
-      opacity:.95;
-    }
+    .quote::before{ content:"“"; opacity:.95; }
+    .quote::after{ content:"”"; opacity:.95; }
 
     @media (max-width: 900px){
       .showcase-card{
@@ -594,7 +591,6 @@
       </div>
     </section>
 
-    <!-- NEW: Showcase section (logos + purple glass card) -->
     <section class="showcase" id="showcase">
       <div class="showcase-inner">
         <div class="logo-cloud" aria-label="Bekannt aus">
@@ -631,7 +627,6 @@
           </p>
         </div>
 
-        <!-- optional CTA under card (remove if you don't want it) -->
         <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-top: 84px;">
           <a href="/de/kontakt/" class="btn primary">Kostenloses Gespräch</a>
           <a href="/de/projekte/" class="btn ghost">Pakete ansehen</a>
@@ -650,66 +645,60 @@
   const textEl = document.getElementById("cursorText");
   const section = document.getElementById("placeholder");
   const track = document.querySelector(".placeholder-track");
-  if (!circle || !textEl || !section || !track) return;
 
-  const slides = Array.from(track.querySelectorAll(".placeholder-slide"));
-  const MAX_MOVE = 14;
-  const HOVER_SCALE = 1.06;
+  // Cursor-Grundfunktion soll IMMER laufen (selbst wenn placeholder/track fehlen)
+  if (!circle || !textEl) return;
+
+  // Nur Touch-Geräte ausschließen (robuster als pointer:fine / hover:fine Kombi)
+  if (window.matchMedia("(hover: none)").matches) return;
+
+  // OS Cursor nur verstecken, wenn wir wirklich aktiv sind
+  document.documentElement.classList.add("has-custom-cursor");
 
   // ---------- cursor movement (smoothed) ----------
   let x = window.innerWidth / 2, y = window.innerHeight / 2;
   let tx = x, ty = y;
-  let rafId = null;
 
-  function animateCursor(){
-    x += (tx - x) * 0.14;
-    y += (ty - y) * 0.14;
-
+  function render(){
     circle.style.left = x + "px";
     circle.style.top  = y + "px";
     textEl.style.left = x + "px";
     textEl.style.top  = y + "px";
-
-    rafId = requestAnimationFrame(animateCursor);
   }
+  render();
+
+  (function loop(){
+    x += (tx - x) * 0.18;
+    y += (ty - y) * 0.18;
+    render();
+    requestAnimationFrame(loop);
+  })();
 
   window.addEventListener("mousemove", (e) => {
     tx = e.clientX;
     ty = e.clientY;
-    if (!rafId) rafId = requestAnimationFrame(animateCursor);
-  }, { passive: true });
+  }, { passive:true });
 
   // ---------- typewriter ----------
   let typeTimer = null;
   let currentWord = "";
-
   function typeWord(word){
-    if (!word) return;
-    if (word === currentWord) return;
-
+    if (!word || word === currentWord) return;
     currentWord = word;
     clearInterval(typeTimer);
     textEl.textContent = "";
     let i = 0;
-
     typeTimer = setInterval(() => {
-      textEl.textContent += word[i];
+      textEl.textContent += (word[i] ?? "");
       i++;
       if (i >= word.length) clearInterval(typeTimer);
     }, 55);
   }
 
-  // ---------- helpers ----------
-  function resetAllSlides(){
-    slides.forEach(s => {
-      s.style.setProperty("--px", "0px");
-      s.style.setProperty("--py", "0px");
-      s.style.setProperty("--scale", "1");
-    });
-  }
+  // ---------- modes ----------
+  let inPlaceholderHover = false;
 
   function setCursorVisible(){
-    if (window.matchMedia("(hover: none)").matches) return; // mobile ignore
     if (inPlaceholderHover) {
       textEl.style.opacity = "1";
       circle.style.opacity = "0";
@@ -718,9 +707,43 @@
       textEl.style.opacity = "0";
     }
   }
+  setCursorVisible();
 
-  // ---------- modes ----------
-  let inPlaceholderHover = false;
+  // circle grows on hover outside placeholder hover
+  document.addEventListener("mouseover", (e) => {
+    if (!inPlaceholderHover && e.target.closest(".btn, a, .trust-item")) {
+      circle.classList.add("is-big");
+    }
+  });
+  document.addEventListener("mouseout", (e) => {
+    if (!inPlaceholderHover && e.target.closest(".btn, a, .trust-item")) {
+      circle.classList.remove("is-big");
+    }
+  });
+
+  // window enter/leave
+  window.addEventListener("mouseleave", () => {
+    circle.style.opacity = "0";
+    textEl.style.opacity = "0";
+  });
+  window.addEventListener("mouseenter", () => {
+    setCursorVisible();
+  });
+
+  // ---------- placeholder slider logic only if elements exist ----------
+  if (!section || !track) return;
+
+  const slides = Array.from(track.querySelectorAll(".placeholder-slide"));
+  const MAX_MOVE = 14;
+  const HOVER_SCALE = 1.06;
+
+  function resetAllSlides(){
+    slides.forEach(s => {
+      s.style.setProperty("--px", "0px");
+      s.style.setProperty("--py", "0px");
+      s.style.setProperty("--scale", "1");
+    });
+  }
 
   function showText(word){
     inPlaceholderHover = true;
@@ -736,19 +759,6 @@
     resetAllSlides();
   }
 
-  // circle grows on hover outside placeholder hover
-  document.addEventListener("mouseover", (e) => {
-    if (!inPlaceholderHover && e.target.closest(".btn, a, .trust-item")) {
-      circle.classList.add("is-big");
-    }
-  });
-  document.addEventListener("mouseout", (e) => {
-    if (!inPlaceholderHover && e.target.closest(".btn, a, .trust-item")) {
-      circle.classList.remove("is-big");
-    }
-  });
-
-  // show/hide in slider area
   section.addEventListener("mouseenter", () => showText("platzhalter"));
   section.addEventListener("mouseleave", () => showCircle());
 
@@ -767,14 +777,13 @@
 
     track.style.transform = `translateX(${-p * 2 * window.innerWidth}px)`;
 
-    // keep hover effects synced even when scrolling without mouse movement
     applyHoverEffectsFromMouse();
 
     const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
     if (!stickyVisible || !inPlaceholderHover) resetAllSlides();
   }
 
-  window.addEventListener("scroll", updateSlider, { passive: true });
+  window.addEventListener("scroll", updateSlider, { passive:true });
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
@@ -817,22 +826,9 @@
     });
   }
 
-  window.addEventListener("mousemove", applyHoverEffectsFromMouse, { passive: true });
-
-  // window enter/leave
-  window.addEventListener("mouseleave", () => {
-    circle.style.opacity = "0";
-    textEl.style.opacity = "0";
-    resetAllSlides();
-  });
-  window.addEventListener("mouseenter", () => {
-    setCursorVisible();
-  });
-
-  // initial
-  setCursorVisible();
+  window.addEventListener("mousemove", applyHoverEffectsFromMouse, { passive:true });
 })();
-</script>
+  </script>
 
 </body>
 </html>
