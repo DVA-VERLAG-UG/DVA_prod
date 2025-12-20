@@ -22,7 +22,6 @@
       --ink:#ffffff;
       --muted:rgba(255,255,255,.99);
 
-      /* CTA glass + hover tint */
       --glass-a: rgba(255,255,255,.22);
       --glass-b: rgba(255,255,255,.08);
       --glass-border: rgba(255,255,255,.28);
@@ -41,9 +40,9 @@
       background:#000;
     }
     a{ color:inherit; text-decoration:none; }
-    /* OPTIONAL (recommended): hide the OS cursor so only your custom cursor shows */
-html, body { cursor: none; }
 
+    /* Hide OS cursor so only custom cursor shows (desktop only visually; ok) */
+    html, body { cursor: none; }
 
     /* ======================
        HERO – FULL BLEED
@@ -56,11 +55,10 @@ html, body { cursor: none; }
       align-items:center;
       overflow:hidden;
     }
-
     .hero::before{
       content:"";
       position:absolute;
-      inset:-40px 0 -40px 0; /* bleed => no bars */
+      inset:-40px 0 -40px 0;
       background:
         linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
         url("/assets/images/library.jpg") center top / cover no-repeat;
@@ -76,9 +74,6 @@ html, body { cursor: none; }
       text-align:center;
     }
 
-    /* ======================
-       TYPOGRAPHY
-       ====================== */
     .kicker{
       font-size:12px;
       letter-spacing:.16em;
@@ -119,9 +114,6 @@ html, body { cursor: none; }
       justify-content:center;
     }
 
-    /* ======================
-       CTA BUTTONS – LIQUID GLASS
-       ====================== */
     .btn{
       position:relative;
       overflow:hidden;
@@ -138,7 +130,6 @@ html, body { cursor: none; }
       transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
     }
 
-    /* sheen */
     .btn::before{
       content:"";
       position:absolute;
@@ -165,7 +156,6 @@ html, body { cursor: none; }
         0 10px 30px rgba(0,0,0,.30),
         inset 0 1px 0 rgba(255,255,255,.25);
     }
-
     .btn.ghost{
       background: var(--ghost);
       color:#fff;
@@ -178,10 +168,7 @@ html, body { cursor: none; }
       filter:brightness(1.10);
       transform: translateY(-1px);
     }
-    .btn:hover::before{
-      opacity:1;
-      transform: translateX(14px);
-    }
+    .btn:hover::before{ opacity:1; transform: translateX(14px); }
 
     .btn.primary:hover,
     .btn.ghost:hover{
@@ -196,25 +183,6 @@ html, body { cursor: none; }
     @media (max-width: 520px){
       .hero-content{ padding:48px 0; }
       .btn{ width:100%; }
-    }
-
-    /* ======================
-       HERO ANIMATION
-       ====================== */
-    @media (prefers-reduced-motion: no-preference){
-      .anim{
-        opacity:0;
-        transform: translateY(10px);
-        animation: fadeUp .75s cubic-bezier(.2,.9,.2,1) forwards;
-      }
-      .d1{ animation-delay: .05s; }
-      .d2{ animation-delay: .14s; }
-      .d3{ animation-delay: .22s; }
-      .d4{ animation-delay: .30s; }
-
-      @keyframes fadeUp{
-        to{ opacity:1; transform: translateY(0); }
-      }
     }
 
     /* ======================
@@ -240,22 +208,19 @@ html, body { cursor: none; }
       height: 34px;
       border-color: rgba(255,255,255,.28);
     }
-    /* Show a pointing-hand icon when hovering clickable things */
-.cursor-invert.is-hand{
-  width: 34px;
-  height: 34px;
-  border-color: rgba(255,255,255,.28);
+    .cursor-invert.is-hand{
+      width: 34px;
+      height: 34px;
+      border-color: rgba(255,255,255,.28);
+      background: center / 18px 18px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 11V5a2 2 0 1 1 4 0v6h1V3a2 2 0 1 1 4 0v8h1V6a2 2 0 1 1 4 0v8c0 4-3 7-7 7H12c-3 0-5-2-5-5v-5z'/%3E%3C/svg%3E");
+    }
 
-  background: center / 18px 18px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 11V5a2 2 0 1 1 4 0v6h1V3a2 2 0 1 1 4 0v8h1V6a2 2 0 1 1 4 0v8c0 4-3 7-7 7H12c-3 0-5-2-5-5v-5z'/%3E%3C/svg%3E");
-}
-
-    
     @media (hover: none){
       .cursor-invert{ display:none; }
     }
 
     /* ======================
-       TRUST BAR – CLEARER GLASS
+       TRUST BAR
        ====================== */
     .trustbar{
       margin-top: 18px;
@@ -267,40 +232,31 @@ html, body { cursor: none; }
       -webkit-backdrop-filter: none;
       box-shadow: none;
     }
-
     .trustbar-items{
       display:grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap:10px;
     }
-
     .trust-item{
       position: relative;
       overflow: hidden;
-
       display:flex;
       flex-direction: column;
       align-items:center;
       justify-content:center;
       gap: 8px;
-
       padding: 12px 10px;
       border-radius: 14px;
-
       background: linear-gradient(135deg, rgba(255,255,255,.25), rgba(255,255,255,.10));
       border: 1px solid rgba(255,255,255,.28);
-
       backdrop-filter: blur(8px) saturate(1.25);
       -webkit-backdrop-filter: blur(8px) saturate(1.25);
-
       box-shadow:
         0 10px 30px rgba(0,0,0,.30),
         inset 0 1px 0 rgba(255,255,255,.25);
-
       text-align:center;
       cursor:pointer;
       user-select:none;
-
       transition:
         transform .18s ease,
         filter .18s ease,
@@ -308,7 +264,6 @@ html, body { cursor: none; }
         border-color .18s ease,
         box-shadow .18s ease;
     }
-
     .trust-item::before{
       content:"";
       position:absolute;
@@ -324,7 +279,6 @@ html, body { cursor: none; }
       );
       pointer-events:none;
     }
-
     .trust-item:hover{
       transform: translateY(-1px);
       filter: brightness(1.10);
@@ -334,10 +288,7 @@ html, body { cursor: none; }
         0 14px 40px rgba(0,0,0,.32),
         inset 0 1px 0 rgba(255,255,255,.28);
     }
-    .trust-item:hover::before{
-      opacity:1;
-      transform: translateX(14px);
-    }
+    .trust-item:hover::before{ opacity:1; transform: translateX(14px); }
 
     .trust-icon{ display:grid; place-items:center; }
     .trust-icon img{
@@ -347,7 +298,6 @@ html, body { cursor: none; }
       display:block;
       filter: brightness(1.12) contrast(1.06);
     }
-
     .trust-text{
       font-size: 12px;
       font-weight: 800;
@@ -369,17 +319,15 @@ html, body { cursor: none; }
        BELOW THE FOLD: HORIZONTAL SCROLL SLIDER
        ====================== */
     .placeholder-section{
-      height: 200vh;            /* tune for slower/faster slide */
+      height: 200vh;
       position: relative;
     }
-
     .placeholder-sticky{
       position: sticky;
       top: 0;
       height: 100vh;
       overflow: hidden;
     }
-
     .placeholder-track{
       height: 100%;
       width: 300vw;
@@ -388,19 +336,29 @@ html, body { cursor: none; }
       transform: translateX(0);
     }
 
+    /* Slides: vars controlled by JS (mouse controls parallax, hover controls zoom) */
     .placeholder-slide{
       width: 100vw;
       height: 100vh;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
       position: relative;
+      overflow: hidden;
+
+      --bg: none;
+      --px: 0px;
+      --py: 0px;
+      --scale: 1;
     }
 
-    .slide-a{ background-image: url("/assets/images/platzhalter.jpg"); }
-    .slide-b{ background-image: url("/assets/images/beispiel_1.jpg"); }
-    .slide-c{ background-image: url("/assets/images/beispiel_2.jpg"); }
-
+    .placeholder-slide::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: var(--bg) center / cover no-repeat;
+      transform: translate3d(var(--px), var(--py), 0) scale(var(--scale));
+      transition: transform .18s ease; /* responsive to mouse */
+      will-change: transform;
+      z-index: 1;
+    }
 
     .placeholder-slide::before{
       content:"";
@@ -408,7 +366,12 @@ html, body { cursor: none; }
       inset:0;
       background: linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.18));
       pointer-events:none;
+      z-index: 2;
     }
+
+    .slide-a{ --bg: url("/assets/images/platzhalter.jpg"); }
+    .slide-b{ --bg: url("/assets/images/beispiel_1.jpg"); }
+    .slide-c{ --bg: url("/assets/images/beispiel_2.jpg"); }
 
     /* ======================
        CURSOR TEXT (for placeholder section)
@@ -445,7 +408,6 @@ html, body { cursor: none; }
     <section class="hero">
       <div class="hero-content">
         <div class="kicker anim d1">DVAYD Publishing</div>
-
         <h1 class="anim d2">Dein Buch, deine Geschichte – Weltweit veröffentlicht mit DVAYD.</h1>
 
         <p class="sub anim d3">
@@ -460,30 +422,19 @@ html, body { cursor: none; }
         <div class="trustbar anim d4">
           <div class="trustbar-items">
             <div class="trust-item">
-              <div class="trust-icon">
-                <img src="/assets/icons/schutz.png" alt="Autorenrechte">
-              </div>
+              <div class="trust-icon"><img src="/assets/icons/schutz.png" alt="Autorenrechte"></div>
               <div class="trust-text">100 % Autorenrechte</div>
             </div>
-
             <div class="trust-item">
-              <div class="trust-icon">
-                <img src="/assets/icons/internet.png" alt="Internationaler Verlag">
-              </div>
+              <div class="trust-icon"><img src="/assets/icons/internet.png" alt="Internationaler Verlag"></div>
               <div class="trust-text">DE &amp; TR Vertrieb</div>
             </div>
-
             <div class="trust-item">
-              <div class="trust-icon">
-                <img src="/assets/icons/beratung.png" alt="Persönliche Beratung">
-              </div>
+              <div class="trust-icon"><img src="/assets/icons/beratung.png" alt="Persönliche Beratung"></div>
               <div class="trust-text">Persönliche Betreuung</div>
             </div>
-
             <div class="trust-item">
-              <div class="trust-icon">
-                <img src="/assets/icons/preis.png" alt="Transparente Preise">
-              </div>
+              <div class="trust-icon"><img src="/assets/icons/preis.png" alt="Transparente Preise"></div>
               <div class="trust-text">Transparente Fixpreise</div>
             </div>
           </div>
@@ -513,6 +464,10 @@ html, body { cursor: none; }
       const section = document.getElementById("placeholder");
       const track = document.querySelector(".placeholder-track");
       if (!circle || !textEl || !section || !track) return;
+
+      const slides = Array.from(track.querySelectorAll(".placeholder-slide"));
+      const MAX_MOVE = 14;
+      const HOVER_SCALE = 1.06;
 
       // ---------- cursor movement (smoothed) ----------
       let x = window.innerWidth / 2, y = window.innerHeight / 2;
@@ -568,12 +523,21 @@ html, body { cursor: none; }
         typeWord(word);
       }
 
+      function resetAllSlides(){
+        slides.forEach(s => {
+          s.style.setProperty("--px", "0px");
+          s.style.setProperty("--py", "0px");
+          s.style.setProperty("--scale", "1");
+        });
+      }
+
       function showCircle(){
         inPlaceholderHover = false;
         textEl.style.opacity = "0";
         circle.style.opacity = "1";
         currentWord = "";
         clearInterval(typeTimer);
+        resetAllSlides();
       }
 
       // Circle grows on hover (only outside placeholder hover)
@@ -588,56 +552,94 @@ html, body { cursor: none; }
         }
       });
 
-      // Hover behavior: show text immediately when the user hovers the image area
+      // show text when entering slider area; hide when leaving
       section.addEventListener("mouseenter", () => showText("platzhalter"));
       section.addEventListener("mouseleave", () => showCircle());
 
-      // ---------- scroll-driven slide animation ----------
+      // ---------- scroll-driven slide animation (unchanged behavior) ----------
       function clamp01(v){ return Math.max(0, Math.min(1, v)); }
+      let lastP = 0;
 
       function updateSlider(){
         const rect = section.getBoundingClientRect();
         const vh = window.innerHeight;
 
-        const end = section.offsetHeight - vh;  // total scrollable distance inside
+        const end = section.offsetHeight - vh;
         const scrolled = -rect.top;
         const p = clamp01(end > 0 ? (scrolled / end) : 0);
+        lastP = p;
 
-        // slide (0 -> -100vw)
+        // 3 slides => move 0..-200vw
         track.style.transform = `translateX(${-p * 2 * window.innerWidth}px)`;
 
-
-        // if the sticky viewport is on screen and the user is hovering, switch word earlier
+        // While scrolling but not hovering the slider: no hover effect
         const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
-
-        if (stickyVisible && inPlaceholderHover){
-  const mouseX = tx; // aktuelle Mausposition
-  const slideWidth = window.innerWidth;
-
-  // aktuelle horizontale Verschiebung
-  const offsetX = p * 2 * slideWidth;
-
-  // Mausposition relativ zum Track
-  const relativeX = mouseX + offsetX;
-
-  const slideIndex = Math.floor(relativeX / slideWidth);
-
-  if (slideIndex === 0) typeWord("platzhalter");
-  else if (slideIndex === 1) typeWord("beispiel_1");
-  else if (slideIndex === 2) typeWord("beispiel_2");
-}
-
-
+        if (!stickyVisible || !inPlaceholderHover) {
+          resetAllSlides();
+        }
       }
 
       window.addEventListener("scroll", updateSlider, { passive: true });
       window.addEventListener("resize", updateSlider);
       updateSlider();
 
-      // hide/show when leaving window
+      // ---------- Mouse-controlled zoom + parallax (NOT scroll-controlled) ----------
+      function wordForIndex(i){
+        return i === 0 ? "platzhalter" : (i === 1 ? "beispiel_1" : "beispiel_2");
+      }
+
+      function applyHoverEffectsFromMouse(){
+        if (!inPlaceholderHover) return;
+
+        const rect = section.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
+        if (!stickyVisible) {
+          resetAllSlides();
+          return;
+        }
+
+        // Determine which slide is under the cursor (based on scroll position + mouse x)
+        const slideW = window.innerWidth;
+        const offsetX = lastP * 2 * slideW;      // how much the track is shifted (in px)
+        const relativeX = tx + offsetX;          // cursor x inside the "virtual track"
+        const slideIndex = Math.max(0, Math.min(2, Math.floor(relativeX / slideW)));
+
+        // Update cursor text (only based on actual image under mouse)
+        typeWord(wordForIndex(slideIndex));
+
+        // Mouse position relative to the ACTIVE slide (center = neutral)
+        const slideLeftInViewport = (slideIndex * slideW) - offsetX;
+        const localX = tx - slideLeftInViewport; // 0..slideW within that slide
+        const localY = ty;                       // within viewport
+
+        const nx = (localX - slideW / 2) / (slideW / 2); // -1..1
+        const ny = (localY - vh / 2) / (vh / 2);         // -1..1
+
+        // Apply effects: ONLY to hovered slide; others reset
+        slides.forEach((s, i) => {
+          if (i !== slideIndex) {
+            s.style.setProperty("--px", "0px");
+            s.style.setProperty("--py", "0px");
+            s.style.setProperty("--scale", "1");
+            return;
+          }
+
+          // zoom jumps to 1.06 on hover, movement is mouse-controlled (opposite direction)
+          s.style.setProperty("--scale", String(HOVER_SCALE));
+          s.style.setProperty("--px", (-nx * MAX_MOVE).toFixed(2) + "px");
+          s.style.setProperty("--py", (-ny * MAX_MOVE * 0.75).toFixed(2) + "px"); // slightly less vertical
+        });
+      }
+
+      // Run on mousemove so the image responds directly to the mouse
+      window.addEventListener("mousemove", applyHoverEffectsFromMouse, { passive: true });
+
+      // When leaving window
       window.addEventListener("mouseleave", () => {
         circle.style.opacity = "0";
         textEl.style.opacity = "0";
+        resetAllSlides();
       });
       window.addEventListener("mouseenter", () => {
         if (inPlaceholderHover) textEl.style.opacity = "1";
