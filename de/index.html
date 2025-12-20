@@ -41,6 +41,9 @@
       background:#000;
     }
     a{ color:inherit; text-decoration:none; }
+    /* OPTIONAL (recommended): hide the OS cursor so only your custom cursor shows */
+html, body { cursor: none; }
+
 
     /* ======================
        HERO – FULL BLEED
@@ -237,6 +240,16 @@
       height: 34px;
       border-color: rgba(255,255,255,.28);
     }
+    /* Show a pointing-hand icon when hovering clickable things */
+.cursor-invert.is-hand{
+  width: 34px;
+  height: 34px;
+  border-color: rgba(255,255,255,.28);
+
+  background: center / 18px 18px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 11V5a2 2 0 1 1 4 0v6h1V3a2 2 0 1 1 4 0v8h1V6a2 2 0 1 1 4 0v8c0 4-3 7-7 7H12c-3 0-5-2-5-5v-5z'/%3E%3C/svg%3E");
+}
+
+    
     @media (hover: none){
       .cursor-invert{ display:none; }
     }
@@ -455,21 +468,21 @@
               <div class="trust-icon">
                 <img src="/assets/icons/internet.png" alt="Internationaler Verlag">
               </div>
-              <div class="trust-text">DE &amp; TR Verlag</div>
+              <div class="trust-text">DE &amp; TR Vertrieb</div>
             </div>
 
             <div class="trust-item">
               <div class="trust-icon">
                 <img src="/assets/icons/beratung.png" alt="Persönliche Beratung">
               </div>
-              <div class="trust-text">Persönliche Beratung</div>
+              <div class="trust-text">Persönliche Betreuung</div>
             </div>
 
             <div class="trust-item">
               <div class="trust-icon">
                 <img src="/assets/icons/preis.png" alt="Transparente Preise">
               </div>
-              <div class="trust-text">Transparente Preise</div>
+              <div class="trust-text">Transparente Fixpreise</div>
             </div>
           </div>
         </div>
