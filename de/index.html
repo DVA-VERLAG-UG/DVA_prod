@@ -382,7 +382,7 @@ html, body { cursor: none; }
 
     .placeholder-track{
       height: 100%;
-      width: 200vw;
+      width: 300vw;
       display: flex;
       will-change: transform;
       transform: translateX(0);
@@ -399,6 +399,8 @@ html, body { cursor: none; }
 
     .slide-a{ background-image: url("/assets/images/platzhalter.jpg"); }
     .slide-b{ background-image: url("/assets/images/beispiel_1.jpg"); }
+    .slide-c{ background-image: url("/assets/images/beispiel_2.jpg"); }
+
 
     .placeholder-slide::before{
       content:"";
@@ -494,6 +496,7 @@ html, body { cursor: none; }
         <div class="placeholder-track" aria-hidden="true">
           <div class="placeholder-slide slide-a"></div>
           <div class="placeholder-slide slide-b"></div>
+          <div class="placeholder-slide slide-c"></div>
         </div>
       </div>
     </section>
@@ -601,16 +604,30 @@ html, body { cursor: none; }
         const p = clamp01(end > 0 ? (scrolled / end) : 0);
 
         // slide (0 -> -100vw)
-        track.style.transform = `translateX(${-p * window.innerWidth}px)`;
+        track.style.transform = `translateX(${-p * 2 * window.innerWidth}px)`;
+
 
         // if the sticky viewport is on screen and the user is hovering, switch word earlier
         const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
 
         if (stickyVisible && inPlaceholderHover){
-          // switch earlier (tune threshold)
-          if (p < 0.30) typeWord("platzhalter");
-          else typeWord("beispiel_1");
-        }
+  const mouseX = tx; // aktuelle Mausposition
+  const slideWidth = window.innerWidth;
+
+  // aktuelle horizontale Verschiebung
+  const offsetX = p * 2 * slideWidth;
+
+  // Mausposition relativ zum Track
+  const relativeX = mouseX + offsetX;
+
+  const slideIndex = Math.floor(relativeX / slideWidth);
+
+  if (slideIndex === 0) typeWord("platzhalter");
+  else if (slideIndex === 1) typeWord("beispiel_1");
+  else if (slideIndex === 2) typeWord("beispiel_2");
+}
+
+
       }
 
       window.addEventListener("scroll", updateSlider, { passive: true });
