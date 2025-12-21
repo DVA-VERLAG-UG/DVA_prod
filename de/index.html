@@ -40,16 +40,16 @@
       background:#000;
     }
     a{ color:inherit; text-decoration:none; }
-    html, body, * { cursor: none !important; }
+
 
 
     /* IMPORTANT UPDATE:
        OS Cursor NUR ausblenden, wenn JS die Klasse "has-custom-cursor" gesetzt hat.
        Sonst riskierst du "gar keinen Cursor", wenn JS nicht startet / blockiert wird. */
-    @media (hover: hover) and (pointer: fine){
-      html.has-custom-cursor,
-      html.has-custom-cursor body { cursor: none; }
-    }
+   /* OS Cursor IMMER sichtbar lassen */
+html, body { cursor: auto; }
+a, button, .btn, .trust-item, [role="button"] { cursor: pointer; }
+
 
     /* ======================
        HERO – FULL BLEED
