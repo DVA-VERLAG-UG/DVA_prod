@@ -409,6 +409,110 @@ a, button, .btn, .trust-item, [role="button"] { cursor: pointer; }
     .slide-a{ --bg: url("/assets/images/platzhalter.jpg"); }
     .slide-b{ --bg: url("/assets/images/beispiel_1.jpg"); }
     .slide-c{ --bg: url("/assets/images/beispiel_2.jpg"); }
+    /* ===== Slider Heading (sticky inside slider) ===== */
+.slider-head{
+  position:absolute;
+  left:0; right:0;
+  top: calc(var(--hdr-h) + 16px);
+  z-index: 5;
+  width: min(var(--max), calc(100% - 40px));
+  margin: 0 auto;
+  pointer-events:none; /* Überschrift blockiert keine Hover-Effekte */
+}
+
+.slider-kicker{
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .85;
+  text-shadow: 0 16px 40px rgba(0,0,0,.45);
+}
+
+.slider-title{
+  margin: 10px 0 0;
+  font-size: clamp(22px, 3.2vw, 38px);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  font-weight: 900;
+  text-shadow: 0 18px 44px rgba(0,0,0,.55);
+}
+
+/* ===== Text overlay per slide ===== */
+.slide-overlay{
+  position:absolute;
+  inset:0;
+  z-index: 3;
+
+  display:flex;
+  align-items:center;        /* ⬅️ vertikal mittig */
+  justify-content:flex-end;  /* ⬅️ rechts */
+
+  padding: 0 64px 0 64px;    /* mehr Luft rechts */
+  pointer-events:none;
+}
+
+
+
+
+.slide-card{
+  width: min(860px, 100%);
+  border-radius: 18px;
+  padding: 18px 18px;
+  background: linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
+  border: 1px solid rgba(255,255,255,.28);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 26px 70px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.18);
+
+  /* Startzustand (unsichtbar) */
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .35s ease, transform .45s cubic-bezier(.2,.9,.2,1);
+}
+
+.slide-card{
+  width: min(640px, 92vw);   /* ⬅️ größer */
+  padding: 26px 28px;        /* ⬅️ mehr Raum */
+}
+
+
+
+.slide-card h3{
+  margin: 10px 0 8px;
+  font-size: 18px;
+  letter-spacing: -.01em;
+}
+.slide-card p{
+  margin: 0;
+  line-height: 1.65;
+  color: rgba(255,255,255,.95);
+}
+
+.slide-chip{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+/* ✅ Wenn ein Slide aktiv ist, kommt die Textcard rein */
+.placeholder-slide.is-active .slide-card{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 520px){
+  .slider-head{ top: calc(var(--hdr-h) + 12px); }
+  .slide-overlay{ padding-bottom: 26px; }
+  .slide-card{ padding: 14px 14px; }
+}
+
 
     /* ======================
        SHOWCASE SECTION
@@ -537,6 +641,17 @@ a, button, .btn, .trust-item, [role="button"] { cursor: pointer; }
         transform: translateY(44px);
       }
     }
+    @media (max-width: 700px){
+  .slide-overlay{
+    justify-content:center;
+    padding: 0 16px 24px;
+  }
+
+  .slide-card{
+    width: min(860px, 100%);
+  }
+}
+
   </style>
 </head>
 
@@ -582,14 +697,65 @@ a, button, .btn, .trust-item, [role="button"] { cursor: pointer; }
     </section>
 
     <section class="placeholder-section" id="placeholder">
-      <div class="placeholder-sticky">
-        <div class="placeholder-track" aria-hidden="true">
-          <div class="placeholder-slide slide-a"></div>
-          <div class="placeholder-slide slide-b"></div>
-          <div class="placeholder-slide slide-c"></div>
+  <div class="placeholder-sticky">
+    <!-- ✅ Überschrift bleibt im Slider-Bereich sticky sichtbar -->
+    <div class="slider-head">
+      <div class="slider-kicker">Sektion 3 • Verkaufsargumentation</div>
+      <h2 class="slider-title">Warum Autoren auf DVAYD vertrauen</h2>
+    </div>
+
+    <div class="placeholder-track" aria-label="Slider DVAYD">
+      <!-- Slide 1 -->
+      <div class="placeholder-slide slide-a">
+        <div class="slide-overlay">
+          <div class="slide-card">
+            <div class="slide-chip">Familienverlag</div>
+            <h3>Persönlich statt anonym.</h3>
+            <p>
+              Wir sind kein anonymer Großverlag. Bei uns bist du Teil der Familie.
+              Wir begleiten dich mit Herzblut durch den gesamten Prozess – von der ersten Zeile bis zur Veröffentlichung.
+            </p>
+          </div>
         </div>
       </div>
-    </section>
+
+      <!-- Slide 2 -->
+      <div class="placeholder-slide slide-b">
+        <div class="slide-overlay">
+          <div class="slide-card">
+            <div class="slide-chip">Brücke DE ↔ TR</div>
+            <h3>Deutschland & Türkei – ein Plan.</h3>
+            <p>
+              Exklusiv bei uns: Veröffentliche dein Werk simultan in Europa und der Türkei.
+              Wir kennen beide Märkte und öffnen dir die Tür zum internationalen Erfolg.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="placeholder-slide slide-c">
+        <div class="slide-overlay">
+          <div class="slide-card">
+            <div class="slide-chip">Reichweite & Handel</div>
+            <h3>Vom Manuskript in den Handel.</h3>
+            <p>
+              Lektorat, Design, ISBN, Listing (Amazon & Buchhandel) und optional Marketing:
+              Dein Buch wird professionell veröffentlicht – weltweit bestellbar.
+            </p>
+
+            <div class="seo-row" aria-label="SEO Keywords">
+              <span class="seo-tag">Self-Publishing Türkei</span>
+              <span class="seo-tag">Buchverlag Deutschland Türkei</span>
+              <span class="seo-tag">Buch international verkaufen</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <section class="showcase" id="showcase">
       <div class="showcase-inner">
@@ -745,6 +911,11 @@ a, button, .btn, .trust-item, [role="button"] { cursor: pointer; }
     });
   }
 
+  function setActiveSlide(idx){
+  slides.forEach((s,i) => s.classList.toggle("is-active", i === idx));
+}
+
+
   function showText(word){
     inPlaceholderHover = true;
     setCursorVisible();
@@ -759,7 +930,7 @@ a, button, .btn, .trust-item, [role="button"] { cursor: pointer; }
     resetAllSlides();
   }
 
-  section.addEventListener("mouseenter", () => showText("platzhalter"));
+  section.addEventListener("mouseenter", () => showText("Familie"));
   section.addEventListener("mouseleave", () => showCircle());
 
   // ---------- scroll-driven slider ----------
@@ -777,7 +948,13 @@ a, button, .btn, .trust-item, [role="button"] { cursor: pointer; }
 
     track.style.transform = `translateX(${-p * 2 * window.innerWidth}px)`;
 
+    // ✅ Active slide based on scroll progress
+const idx = Math.max(0, Math.min(2, Math.round(p * 2)));
+setActiveSlide(idx);
+
+
     applyHoverEffectsFromMouse();
+
 
     const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
     if (!stickyVisible || !inPlaceholderHover) resetAllSlides();
@@ -787,9 +964,10 @@ a, button, .btn, .trust-item, [role="button"] { cursor: pointer; }
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  function wordForIndex(i){
-    return i === 0 ? "platzhalter" : (i === 1 ? "beispiel_1" : "beispiel_2");
-  }
+ function wordForIndex(i){
+  return i === 0 ? "Familie" : (i === 1 ? "DE↔TR" : "Erfolg");
+}
+
 
   function applyHoverEffectsFromMouse(){
     if (!inPlaceholderHover) return;
