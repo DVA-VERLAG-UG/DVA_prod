@@ -30,6 +30,10 @@
       --hover-violet-border: rgba(139,92,246,.40);
 
       --ghost: rgba(255,255,255,.14);
+      --surface:
+    radial-gradient(900px 520px at 15% 20%, rgba(139,92,246,.10), transparent 60%),
+    radial-gradient(700px 420px at 85% 40%, rgba(99,102,241,.08), transparent 62%),
+    #f6f7fb;
     }
 
     *{ box-sizing:border-box; }
@@ -441,12 +445,8 @@
     .process-glass{
       position: relative;
       padding: 110px 20px 90px;
-      background:
-        radial-gradient(900px 520px at 20% 25%, rgba(139,92,246,.10), transparent 62%),
-        radial-gradient(800px 440px at 80% 35%, rgba(0,0,0,.05), transparent 60%),
-        #f6f7fb;
-      color: #111827;
-      overflow:hidden;
+      background: var(--surface); 
+
     }
 
     .process-glass-inner{
@@ -621,10 +621,7 @@
 
 .logo-section{
   padding: 40px 20px;
-  background:
-    radial-gradient(900px 520px at 20% 25%, rgba(139,92,246,.10), transparent 62%),
-    radial-gradient(800px 440px at 80% 35%, rgba(0,0,0,.05), transparent 60%),
-    #f6f7fb;
+  background: var(--surface);
 }
 
 
