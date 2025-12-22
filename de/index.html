@@ -692,12 +692,24 @@
   overflow-x: auto;
   scroll-behavior: smooth;
 
-  /* ✅ FIX: links/rechts gleiche Lücke wie zwischen den Cards */
+  /* ✅ sichtbare Innenabstände */
   padding: 12px 18px 14px;
+
+  /* ✅ wichtig für Snap: Start/Ende respektieren Padding */
+  scroll-padding-left: 18px;
+  scroll-padding-right: 18px;
 
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
+
+/* ✅ echter Spacer, damit links/rechts garantiert Luft ist */
+.seo-track::before,
+.seo-track::after{
+  content:"";
+  flex: 0 0 0px; /* bleibt 0, weil padding + scroll-padding schon arbeiten */
+}
+
 
 
     .seo-track::-webkit-scrollbar{ display:none; }
@@ -782,13 +794,36 @@
     }
 
     .seo-actions{
-  display: flex;
+  display:flex;
   gap: 12px;
-  justify-content: flex-end;   /* ✅ nach rechts */
-  align-items: center;
-  margin-top: 18px;
-  flex-wrap: wrap;
+  justify-content:flex-end;
+  align-items:center;
+  margin-top: 14px;
+
+  /* ✅ CTA-Zeile wirkt wie Teil vom Container */
+  padding: 14px 18px 6px;
+  border-top: 1px solid rgba(17,24,39,.08);
 }
+
+/* ✅ Buttons in Sektion 6 wie Sektion 4 */
+.seo-section .btn{
+  color: rgba(17,24,39,.92);
+  border-color: rgba(17,24,39,.14);
+}
+.seo-section .btn.primary{
+  background: linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
+  box-shadow: 0 16px 40px rgba(0,0,0,.10);
+}
+.seo-section .btn.ghost{
+  background: rgba(255,255,255,.55);
+}
+.seo-section .btn.primary:hover,
+.seo-section .btn.ghost:hover{
+  background: linear-gradient(135deg, rgba(139,92,246,.22), rgba(99,102,241,.16));
+  border-color: rgba(99,102,241,.25);
+  color: rgba(17,24,39,.95);
+}
+
 
     /* === SEO Carousel: Tall cards like "case studies" === */
 .seo-card{
@@ -1081,134 +1116,117 @@
         </div>
 
         <div class="seo-shell" aria-label="Wissenswertes Karussell">
-          <button class="seo-nav prev" type="button" aria-label="Zurück">‹</button>
+  <button class="seo-nav prev" type="button" aria-label="Zurück">‹</button>
 
-          <div class="seo-viewport" tabindex="0">
-            <div class="seo-track">
+  <div class="seo-viewport" tabindex="0">
+    <div class="seo-track">
 
-              <a class="seo-card" href="/de/blog/isbn-fuer-amazon/">
-  <div class="seo-media" style="background:url('/assets/blog/isbn.jpg') center/cover no-repeat;">
-    <div class="seo-badge">ISBN & Amazon</div>
-  </div>
-
-  <div class="seo-body">
-    <h3>Brauche ich eine ISBN für Amazon?</h3>
-    <p>
-      Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf.
-      Wir erklären, wann du eine ISBN brauchst, wann nicht – und welche Entscheidung langfristig
-      sinnvoll ist, wenn du professionell veröffentlichen willst.
-    </p>
-    <span class="seo-link">Mehr lesen →</span>
-  </div>
-</a>
-
-
-
-              <a class="seo-card" href="/de/blog/buchvertrieb-tuerkei/">
-  <div class="seo-media" style="background:url('/assets/blog/tuerkei-vertrieb.jpg') center/cover no-repeat;">
-    <div class="seo-badge">Vertrieb TR</div>
-  </div>
-
-  <div class="seo-body">
-    <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
-    <p>
-      Buchhandel, Online-Plattformen, kulturelle Unterschiede:
-      Der türkische Markt folgt eigenen Regeln.
-      Wir zeigen dir, wie Vertrieb wirklich funktioniert – und warum lokale Expertise
-      entscheidend für Reichweite und Verkäufe ist.
-    </p>
-    <span class="seo-link">Mehr lesen →</span>
-  </div>
-</a>
-
-
-
-             <a class="seo-card" href="/de/blog/self-publishing-vs-verlag/">
-  <div class="seo-media" style="background:url('/assets/blog/selfpublishing-verlag.jpg') center/cover no-repeat;">
-    <div class="seo-badge">Vergleich</div>
-  </div>
-
-  <div class="seo-body">
-    <h3>Self-Publishing oder klassischer Verlag?</h3>
-    <p>
-      Freiheit vs. Struktur, Kontrolle vs. Unterstützung:
-      Beide Wege haben klare Vor- und Nachteile.
-      Wir vergleichen transparent Kosten, Rechte und Erfolgschancen –
-      damit du den Weg wählst, der zu deinem Buch passt.
-    </p>
-    <span class="seo-link">Mehr lesen →</span>
-  </div>
-</a>
-
-
-
-              <a class="seo-card" href="/de/blog/lektorat-oder-korrektorat/">
-  <div class="seo-media" style="background:url('/assets/blog/lektorat.jpg') center/cover no-repeat;">
-    <div class="seo-badge">Qualität</div>
-  </div>
-
-  <div class="seo-body">
-    <h3>Lektorat oder Korrektorat – was brauchst du wirklich?</h3>
-    <p>
-      Rechtschreibung allein macht noch kein gutes Buch.
-      Wir erklären den Unterschied zwischen Lektorat und Korrektorat,
-      wann welche Leistung sinnvoll ist – und warum Qualität
-      über den Erfolg deines Buches entscheidet.
-    </p>
-    <span class="seo-link">Mehr lesen →</span>
-  </div>
-</a>
-
-
-
-            <a class="seo-card" href="/de/blog/cover-design-worauf-achten/">
-  <div class="seo-media" style="background:url('/assets/blog/cover-design.jpg') center/cover no-repeat;">
-    <div class="seo-badge">Design</div>
-  </div>
-
-  <div class="seo-body">
-    <h3>Was macht ein Cover wirklich verkaufsstark?</h3>
-    <p>
-      Leser entscheiden in Sekunden.
-      Farben, Typografie und Genre-Signale müssen sofort wirken.
-      Wir zeigen, welche Design-Fehler Autoren häufig machen –
-      und wie ein Cover Vertrauen und Neugier erzeugt.
-    </p>
-    <span class="seo-link">Mehr lesen →</span>
-  </div>
-</a>
-
-
-
-              <a class="seo-card" href="/de/blog/buch-marketing-start/">
-  <div class="seo-media" style="background:url('/assets/blog/buch-marketing.jpg') center/cover no-repeat;">
-    <div class="seo-badge">Marketing</div>
-  </div>
-
-  <div class="seo-body">
-    <h3>Buch-Marketing starten – auch ohne großes Budget</h3>
-    <p>
-      Sichtbarkeit entsteht nicht zufällig.
-      Wir zeigen dir einfache, realistische Schritte für den Buch-Launch:
-      von Positionierung über Social Proof bis zu Reichweite –
-      ohne teure Werbung oder leere Versprechen.
-    </p>
-    <span class="seo-link">Mehr lesen →</span>
-  </div>
-</a>
-
-
-
-            </div>
-          </div>
-
-          <button class="seo-nav next" type="button" aria-label="Weiter">›</button>
+      <a class="seo-card" href="/de/blog/isbn-fuer-amazon/">
+        <div class="seo-media" style="background:url('/assets/blog/isbn.jpg') center/cover no-repeat;">
+          <div class="seo-badge">ISBN & Amazon</div>
         </div>
-
-        <div class="seo-actions">
-          <a class="btn primary" href="/de/blog/">Alle Artikel ansehen</a>
-          <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
+        <div class="seo-body">
+          <h3>Brauche ich eine ISBN für Amazon?</h3>
+          <p>
+            Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf.
+            Wir erklären, wann du eine ISBN brauchst, wann nicht – und welche Entscheidung langfristig
+            sinnvoll ist, wenn du professionell veröffentlichen willst.
+          </p>
+          <span class="seo-link">Mehr lesen →</span>
         </div>
+      </a>
+
+      <a class="seo-card" href="/de/blog/buchvertrieb-tuerkei/">
+        <div class="seo-media" style="background:url('/assets/blog/tuerkei-vertrieb.jpg') center/cover no-repeat;">
+          <div class="seo-badge">Vertrieb TR</div>
+        </div>
+        <div class="seo-body">
+          <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
+          <p>
+            Buchhandel, Online-Plattformen, kulturelle Unterschiede:
+            Der türkische Markt folgt eigenen Regeln.
+            Wir zeigen dir, wie Vertrieb wirklich funktioniert – und warum lokale Expertise
+            entscheidend für Reichweite und Verkäufe ist.
+          </p>
+          <span class="seo-link">Mehr lesen →</span>
+        </div>
+      </a>
+
+      <a class="seo-card" href="/de/blog/self-publishing-vs-verlag/">
+        <div class="seo-media" style="background:url('/assets/blog/selfpublishing-verlag.jpg') center/cover no-repeat;">
+          <div class="seo-badge">Vergleich</div>
+        </div>
+        <div class="seo-body">
+          <h3>Self-Publishing oder klassischer Verlag?</h3>
+          <p>
+            Freiheit vs. Struktur, Kontrolle vs. Unterstützung:
+            Beide Wege haben klare Vor- und Nachteile.
+            Wir vergleichen transparent Kosten, Rechte und Erfolgschancen –
+            damit du den Weg wählst, der zu deinem Buch passt.
+          </p>
+          <span class="seo-link">Mehr lesen →</span>
+        </div>
+      </a>
+
+      <a class="seo-card" href="/de/blog/lektorat-oder-korrektorat/">
+        <div class="seo-media" style="background:url('/assets/blog/lektorat.jpg') center/cover no-repeat;">
+          <div class="seo-badge">Qualität</div>
+        </div>
+        <div class="seo-body">
+          <h3>Lektorat oder Korrektorat – was brauchst du wirklich?</h3>
+          <p>
+            Rechtschreibung allein macht noch kein gutes Buch.
+            Wir erklären den Unterschied zwischen Lektorat und Korrektorat,
+            wann welche Leistung sinnvoll ist – und warum Qualität
+            über den Erfolg deines Buches entscheidet.
+          </p>
+          <span class="seo-link">Mehr lesen →</span>
+        </div>
+      </a>
+
+      <a class="seo-card" href="/de/blog/cover-design-worauf-achten/">
+        <div class="seo-media" style="background:url('/assets/blog/cover-design.jpg') center/cover no-repeat;">
+          <div class="seo-badge">Design</div>
+        </div>
+        <div class="seo-body">
+          <h3>Was macht ein Cover wirklich verkaufsstark?</h3>
+          <p>
+            Leser entscheiden in Sekunden.
+            Farben, Typografie und Genre-Signale müssen sofort wirken.
+            Wir zeigen, welche Design-Fehler Autoren häufig machen –
+            und wie ein Cover Vertrauen und Neugier erzeugt.
+          </p>
+          <span class="seo-link">Mehr lesen →</span>
+        </div>
+      </a>
+
+      <a class="seo-card" href="/de/blog/buch-marketing-start/">
+        <div class="seo-media" style="background:url('/assets/blog/buch-marketing.jpg') center/cover no-repeat;">
+          <div class="seo-badge">Marketing</div>
+        </div>
+        <div class="seo-body">
+          <h3>Buch-Marketing starten – auch ohne großes Budget</h3>
+          <p>
+            Sichtbarkeit entsteht nicht zufällig.
+            Wir zeigen dir einfache, realistische Schritte für den Buch-Launch:
+            von Positionierung über Social Proof bis zu Reichweite –
+            ohne teure Werbung oder leere Versprechen.
+          </p>
+          <span class="seo-link">Mehr lesen →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <button class="seo-nav next" type="button" aria-label="Weiter">›</button>
+
+  <!-- ✅ CTA's jetzt IM GLAS-CONTAINER -->
+  <div class="seo-actions">
+    <a class="btn primary" href="/de/blog/">Alle Artikel ansehen</a>
+    <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
+  </div>
+
       </div>
     </section>
   </main>
