@@ -590,6 +590,25 @@
       position: relative;
       z-index: 1;
     }
+    /* SECTION 4: Überschrift schwarz + links ausrichten */
+.process-glass .pg-head{
+  margin: 0 0 22px;     /* statt "0 auto ..." -> nicht mehr zentriert */
+  text-align: left;
+}
+
+.process-glass .pg-title{
+  color: #111827;       /* schwarz/dunkel */
+  text-shadow: none;    /* falls irgendwo noch ein Schatten greift */
+}
+
+.process-glass .pg-kicker{
+  color: rgba(17,24,39,.55);  /* optional: dunkler, passend */
+}
+
+.process-glass .pg-sub{
+  color: rgba(17,24,39,.70);  /* passt zu deinem Rest */
+}
+
 
     /* Buttons in Sektion 4 besser lesbar (auf hellem Hintergrund) */
     .process-glass .btn{ color: rgba(17,24,39,.92); border-color: rgba(17,24,39,.14); }
@@ -1040,6 +1059,18 @@
 .footer-grid{ display:grid !important; grid-template-columns: 1fr 1fr 1fr 1fr !important; gap:24px !important; }
 .footer-link{ display:block !important; padding:6px 0 !important; }
 
+/* Sektion 6 bündig zu Sektion 4 */
+.seo-inner{
+  max-width: 1060px;        /* wie .process-glass-inner */
+  margin: 0 auto;
+  width: min(var(--max), calc(100% - 40px));
+}
+
+.seo-head{
+  max-width: 820px;         /* wie .pg-head */
+  margin: 0 0 18px;         /* nicht zentrieren */
+  text-align: left;
+}
 
     
   </style>
