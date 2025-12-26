@@ -1,17 +1,17 @@
 // js/header.js
 (() => {
   const ROUTES = {
-    de: { home:"/de/", about:"/de/ueber-uns/", contact:"/de/kontakt/", projects:"/de/projekte/", services:"/de/pakete-dienste/", process:"/de/prozess/", blog:"/de/blog/" },
-    en: { home:"/en/", about:"/en/about/", contact:"/en/contact/", projects:"/en/projects/", services:"/en/services/", process:"/en/process/", blog:"/en/blog/" },
-    tr: { home:"/tr/", about:"/tr/hakkimizda/", contact:"/tr/iletisim/", projects:"/tr/projeler/", services:"/tr/hizmetler/", process:"/tr/surec/", blog:"/tr/blog/" },
-    fr: { home:"/fr/", about:"/fr/a-propos/", contact:"/fr/contact/", projects:"/fr/projets/", services:"/fr/services/", process:"/fr/processus/", blog:"/fr/blog/" },
+    de: { home:"/de/", about:"/de/ueber-uns/", contact:"/de/kontakt/", projects:"/de/projekte/", services:"/de/configurator/", process:"/de/prozess/", blog:"/de/blog/" },
+    en: { home:"/en/", about:"/en/about/", contact:"/en/contact/", projects:"/en/projects/", services:"/en/configurator/", process:"/en/process/", blog:"/en/blog/" },
+    tr: { home:"/tr/", about:"/tr/hakkimizda/", contact:"/tr/iletisim/", projects:"/tr/projeler/", services:"/tr/configurator/", process:"/tr/surec/", blog:"/tr/blog/" },
+    fr: { home:"/fr/", about:"/fr/a-propos/", contact:"/fr/contact/", projects:"/fr/projets/", services:"/fr/configurator/", process:"/fr/processus/", blog:"/fr/blog/" },
   };
 
   const LABELS = {
-    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"Pakete & Dienste", process:"Prozess", blog:"Blog" },
-    en: { about:"About", contact:"Contact", projects:"Projects", services:"Services", process:"Process", blog:"Blog" },
-    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"Hizmetler", process:"Süreç", blog:"Blog" },
-    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"Services", process:"Processus", blog:"Blog" },
+    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"configurator", process:"Prozess", blog:"Blog" },
+    en: { about:"About", contact:"Contact", projects:"Projects", services:"configurator", process:"Process", blog:"Blog" },
+    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"configurator", process:"Süreç", blog:"Blog" },
+    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"configurator", process:"Processus", blog:"Blog" },
   };
 
   const LOGO_SRC = "/assets/images/dva-logo.png";
