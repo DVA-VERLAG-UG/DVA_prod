@@ -1,213 +1,1611 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verlags-Konfigurator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --bg: #f1f5f9;
-            --card-bg: #ffffff;
-            --text: #0f172a;
-            --border: #cbd5e1;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); padding: 20px; }
-        .main-container { max-width: 1200px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 30px; }
+  <!-- SEO -->
+  <title>Verlags-Konfigurator | DVAYD Publishing</title>
+  <meta name="description" content="Stelle dein individuelles Verlags-Paket zusammen und sende eine unverbindliche Terminanfrage an DVAYD Publishing." />
 
-        .builder-layout { display: grid; grid-template-columns: 1fr 380px; gap: 25px; }
+  <!-- Canonical -->
+  <link rel="canonical" href="https://www.dvayd.com/de/konfigurator/" />
 
-        .category-box { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .category-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 8px; }
+  <!-- Open Graph -->
+  <meta property="og:title" content="Verlags-Konfigurator | DVAYD Publishing">
+  <meta property="og:description" content="Konfiguriere dein Buch-Projekt und frage einen Termin bei DVAYD Publishing an.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.dvayd.com/de/konfigurator/">
+  <meta property="og:image" content="https://www.dvayd.com/assets/images/og-konfigurator.jpg">
 
-        .draggable-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; min-height: 50px; }
+  <!-- Favicon (nur EINMAL) -->
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
-        .item-card { 
-            background: white; border: 1px solid var(--border); padding: 12px; border-radius: 8px; 
-            cursor: grab; transition: all 0.2s; position: relative; font-size: 0.9rem;
-        }
-        .item-card:hover { border-color: var(--primary); background: #f8fafc; }
-        .item-name { font-weight: 600; display: block; }
-        .item-price { font-weight: 700; color: var(--primary); margin-top: 5px; display: block; }
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="/assets/css/style.css">
 
-        /* Summary Panel */
-        .summary-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: sticky; top: 20px; border: 2px solid var(--primary); }
-        .drop-zone { min-height: 300px; background: #f8fafc; border: 2px dashed var(--primary); border-radius: 10px; padding: 10px; margin: 15px 0; }
-        .drop-zone .item-card { grid-template-columns: 1fr; margin-bottom: 8px; cursor: default; width: auto; }
-        
-        .total-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.5rem; border-top: 2px solid #eee; padding-top: 15px; }
-        .placeholder-text { color: #94a3b8; text-align: center; padding-top: 100px; font-style: italic; }
-        .btn-buy { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 700; margin-top: 15px; cursor: pointer; }
-        
-        .remove-btn { position: absolute; top: 5px; right: 5px; color: #ef4444; cursor: pointer; display: none; }
-        .drop-zone .remove-btn { display: block; }
-    </style>
-</head>
-<body>
+  <!-- Header / Footer Injection -->
+  <script src="/js/header.js" defer></script>
+  <script src="/js/footer.js" defer></script>
 
-<div class="main-container">
-    <header>
-        <h1>Buch-Veröffentlichung Konfigurator</h1>
-        <p>Ziehen Sie pro Kategorie eine Option in Ihr Paket. Alte Wahlen werden automatisch ersetzt.</p>
-    </header>
 
-    <div class="builder-layout">
-        <div class="options-column">
-            
-            <div class="category-box">
-                <div class="category-title">Korrektur / Lektorat</div>
-                <div class="draggable-list" data-cat="lektorat">
-                    <div class="item-card" data-price="0" data-cat="lektorat">
-                        <span class="item-name">Light-Korrektur</span>
-                        <span class="item-price">0 €</span>
-                    </div>
-                    <div class="item-card" data-price="450" data-cat="lektorat">
-                        <span class="item-name">Lektorat (1-2 Runden)</span>
-                        <span class="item-price">450 €</span>
-                    </div>
-                    <div class="item-card" data-price="850" data-cat="lektorat">
-                        <span class="item-name">Intensiv-Lektorat</span>
-                        <span class="item-price">850 €</span>
-                    </div>
-                </div>
-            </div>
+  <style>
+    :root{
+      --max:1180px;
 
-            <div class="category-box">
-                <div class="category-title">Cover Design</div>
-                <div class="draggable-list" data-cat="cover">
-                    <div class="item-card" data-price="0" data-cat="cover">
-                        <span class="item-name">Basic-Cover (Template)</span>
-                        <span class="item-price">0 €</span>
-                    </div>
-                    <div class="item-card" data-price="350" data-cat="cover">
-                        <span class="item-name">Custom-Cover (Entwürfe)</span>
-                        <span class="item-price">350 €</span>
-                    </div>
-                    <div class="item-card" data-price="650" data-cat="cover">
-                        <span class="item-name">Premium-Cover (Illustration)</span>
-                        <span class="item-price">650 €</span>
-                    </div>
-                </div>
-            </div>
+      /* SaaS UI */
+      --bg: #cfe1f4;          /* soft blue */
+      --panel: #eaf2ff;       /* lighter blue tint */
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: rgba(15,23,42,.62);
+      --border: rgba(15,23,42,.10);
+      --shadow: 0 22px 60px rgba(2, 16, 41, .18);
+      --shadow-soft: 0 14px 30px rgba(2, 16, 41, .12);
 
-            <div class="category-box">
-                <div class="category-title">Satz (Buchsatz/Layout)</div>
-                <div class="draggable-list" data-cat="satz">
-                    <div class="item-card" data-price="150" data-cat="satz">
-                        <span class="item-name">eBook-Satz (Standard)</span>
-                        <span class="item-price">150 €</span>
-                    </div>
-                    <div class="item-card" data-price="300" data-cat="satz">
-                        <span class="item-name">Print + eBook-Satz</span>
-                        <span class="item-price">300 €</span>
-                    </div>
-                </div>
-            </div>
+      --primary: #2563eb;
+      --success: #22c55e;
 
-            <div class="category-box">
-                <div class="category-title">ISBN</div>
-                <div class="draggable-list" data-cat="isbn">
-                    <div class="item-card" data-price="0" data-cat="isbn">
-                        <span class="item-name">Eigen-ISBN (KDP)</span>
-                        <span class="item-price">0 €</span>
-                    </div>
-                    <div class="item-card" data-price="99" data-cat="isbn">
-                        <span class="item-name">Verlags-ISBN</span>
-                        <span class="item-price">99 €</span>
-                    </div>
-                </div>
-            </div>
+      /* tier colors (like your request) */
+      --tier-starter: #ffffff; /* white */
+      --tier-plus: #eef2f7;    /* silver */
+      --tier-deluxe: #f6d365;  /* gold */
+      --tier-eutr: #dbeafe;    /* premium bluish */
 
-            <div class="category-box">
-                <div class="category-title">Marketing & Launch</div>
-                <div class="draggable-list" data-cat="marketing">
-                    <div class="item-card" data-price="0" data-cat="marketing">
-                        <span class="item-name">Basis Social Media Post</span>
-                        <span class="item-price">0 €</span>
-                    </div>
-                    <div class="item-card" data-price="499" data-cat="marketing">
-                        <span class="item-name">Launch-Kampagne (Meta/Amazon)</span>
-                        <span class="item-price">499 €</span>
-                    </div>
-                    <div class="item-card" data-price="799" data-cat="marketing">
-                        <span class="item-name">Dualer Launch (EU + TR)</span>
-                        <span class="item-price">799 €</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="summary-column">
-            <div class="summary-card">
-                <h3>Ihr Paket-Inhalt</h3>
-                <div id="packet-dropzone" class="drop-zone">
-                    <div class="placeholder-text">Optionen hierher ziehen</div>
-                </div>
-                <div class="total-row">
-                    <span>Gesamt:</span>
-                    <span id="total-price">0 €</span>
-                </div>
-                <button class="btn-buy">Konfiguration abschließen</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    const dropzone = document.getElementById('packet-dropzone');
-    const totalPriceEl = document.getElementById('total-price');
-
-    function updatePrice() {
-        let total = 0;
-        const items = dropzone.querySelectorAll('.item-card');
-        items.forEach(item => total += parseInt(item.getAttribute('data-price')));
-        totalPriceEl.innerText = total + ' €';
-        
-        const placeholder = dropzone.querySelector('.placeholder-text');
-        if(items.length > 0 && placeholder) placeholder.style.display = 'none';
-        else if(items.length === 0 && placeholder) placeholder.style.display = 'block';
+      --radius: 16px;
     }
 
-    // Alle Kategorien initialisieren
-    document.querySelectorAll('.draggable-list').forEach(list => {
-        new Sortable(list, {
-            group: { name: 'shared', pull: 'clone', put: false },
-            sort: false,
-            animation: 150
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 20% 10%, #eaf2ff 0%, transparent 60%),
+                  radial-gradient(900px 540px at 85% 40%, #e7f0ff 0%, transparent 62%),
+                  var(--bg);
+      color: var(--ink);
+    }
+
+    .wrap{
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 110px 0 90px; /* space under your injected header */
+    }
+
+    .page-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom: 18px;
+    }
+    .page-title{
+      margin:0;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -.02em;
+      font-weight: 900;
+    }
+    .page-sub{
+      margin:6px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 70ch;
+    }
+
+    /* top tabs (like screenshot) */
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .tab{
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(15,23,42,.78);
+      cursor:pointer;
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .tab:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .tab.active{
+      background: #ffffff;
+      border-color: rgba(37,99,235,.25);
+      color: rgba(15,23,42,.92);
+      box-shadow: 0 10px 22px rgba(2,16,41,.10);
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns: 320px 1fr 360px; /* left / center / right like screenshot */
+      gap: 18px;
+      align-items:start;
+    }
+
+    /* LEFT PANEL */
+    .left-panel{
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .left-title{
+      margin: 2px 0 10px;
+      font-weight: 950;
+      letter-spacing: -.01em;
+      font-size: 13px;
+      color: rgba(15,23,42,.80);
+      text-transform: uppercase;
+    }
+
+    .cat-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top: 10px;
+    }
+    .cat-btn{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(15,23,42,.08);
+      cursor:pointer;
+      transition: transform .12s ease, filter .12s ease, border-color .12s ease;
+      text-align:left;
+    }
+    .cat-btn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .cat-btn.active{
+      border-color: rgba(37,99,235,.25);
+      box-shadow: 0 10px 22px rgba(2,16,41,.08);
+    }
+    .cat-btn span{
+      font-weight: 900;
+      color: rgba(15,23,42,.88);
+      font-size: 13px;
+    }
+    .cat-chip{
+      font-size: 11px;
+      font-weight: 900;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.10);
+      border: 1px solid rgba(37,99,235,.15);
+      color: rgba(15,23,42,.78);
+      white-space:nowrap;
+    }
+
+    /* CENTER PANEL */
+    .center-panel{
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      min-height: 520px;
+    }
+
+    .center-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 12px;
+    }
+    .center-head h2{
+      margin:0;
+      font-size: 15px;
+      font-weight: 1000;
+      color: rgba(15,23,42,.88);
+    }
+    .hint{
+      color: rgba(15,23,42,.60);
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .options{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .opt{
+      position:relative;
+      background: var(--card);
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(2,16,41,.06);
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      min-height: 120px;
+    }
+    .opt:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(2,16,41,.10);
+      border-color: rgba(37,99,235,.20);
+    }
+    .opt.selected{
+      border-color: rgba(34,197,94,.35);
+      box-shadow: 0 18px 42px rgba(2,16,41,.12);
+    }
+
+    .tier{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size: 11px;
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,.10);
+      color: rgba(15,23,42,.78);
+      background: var(--tier-starter);
+    }
+    .tier.plus{ background: var(--tier-plus); }
+    .tier.deluxe{ background: linear-gradient(180deg, #ffe6a3, var(--tier-deluxe)); }
+    .tier.eutr{ background: var(--tier-eutr); }
+
+    .opt-title{
+      margin-top: 10px;
+      font-weight: 1000;
+      font-size: 13px;
+      color: rgba(15,23,42,.92);
+      line-height: 1.25;
+    }
+    .opt-desc{
+      margin-top: 6px;
+      color: rgba(15,23,42,.60);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .opt-price{
+      position:absolute;
+      right:10px;
+      bottom:10px;
+      font-weight: 1000;
+      color: rgba(15,23,42,.80);
+      background: rgba(37,99,235,.08);
+      border: 1px solid rgba(37,99,235,.12);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .check{
+      position:absolute;
+      top:10px;
+      right:10px;
+      width:26px;
+      height:26px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.22);
+      color: rgba(15,23,42,.80);
+      opacity:0;
+      transform: scale(.96);
+      transition: opacity .12s ease, transform .12s ease;
+      font-weight: 1000;
+    }
+    .opt.selected .check{
+      opacity:1;
+      transform: scale(1);
+    }
+
+    /* RIGHT SUMMARY */
+    .summary{
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      position: sticky;
+      top: 92px; /* sits below header */
+      align-self:start;
+    }
+
+    .sum-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 10px;
+    }
+    .sum-head h3{
+      margin:0;
+      font-size: 14px;
+      font-weight: 1000;
+      color: rgba(15,23,42,.88);
+    }
+    .sum-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size: 11px;
+      font-weight: 1000;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(34,197,94,.10);
+      border: 1px solid rgba(34,197,94,.16);
+      color: rgba(15,23,42,.78);
+      white-space:nowrap;
+    }
+
+    .sum-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .sum-item{
+      background: var(--card);
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 14px;
+      padding: 10px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      box-shadow: 0 10px 22px rgba(2,16,41,.06);
+    }
+    .sum-left{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+    .sum-cat{
+      font-size: 11px;
+      font-weight: 1000;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(15,23,42,.55);
+    }
+    .sum-name{
+      font-size: 12.5px;
+      font-weight: 1000;
+      color: rgba(15,23,42,.90);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 220px;
+    }
+    .sum-tier{
+      width: fit-content;
+      font-size: 10px;
+      font-weight: 1000;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,.10);
+      color: rgba(15,23,42,.75);
+      background: var(--tier-starter);
+    }
+    .sum-tier.plus{ background: var(--tier-plus); }
+    .sum-tier.deluxe{ background: linear-gradient(180deg, #ffe6a3, var(--tier-deluxe)); }
+    .sum-tier.eutr{ background: var(--tier-eutr); }
+
+    .sum-right{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:8px;
+      flex:0 0 auto;
+    }
+    .sum-price{
+      font-weight: 1000;
+      color: rgba(15,23,42,.82);
+      font-size: 12.5px;
+    }
+    .sum-remove{
+      border:none;
+      cursor:pointer;
+      font-weight: 1000;
+      font-size: 11px;
+      color: rgba(15,23,42,.70);
+      background: rgba(15,23,42,.06);
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+
+    .empty{
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.75);
+      border: 1px dashed rgba(15,23,42,.15);
+      color: rgba(15,23,42,.65);
+      font-style: italic;
+      text-align:center;
+    }
+
+    .total{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      border-top: 1px solid rgba(15,23,42,.10);
+      padding-top: 12px;
+      margin-top: 10px;
+      font-weight: 1000;
+      color: rgba(15,23,42,.88);
+    }
+
+    .btn-row{
+      display:flex;
+      gap:10px;
+      margin-top: 12px;
+    }
+
+    .btn{
+      width:100%;
+      border:none;
+      cursor:pointer;
+      border-radius: 12px;
+      padding: 12px 12px;
+      font-weight: 1000;
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .btn:active{ transform: translateY(0); }
+
+    .btn.primary{
+      background: rgba(37,99,235,.92);
+      color:#fff;
+      box-shadow: 0 14px 26px rgba(2,16,41,.14);
+    }
+    .btn.ghost{
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(15,23,42,.10);
+      color: rgba(15,23,42,.80);
+    }
+
+    /* Modal form */
+    .modal{
+      position: fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 9999;
+      background: rgba(2, 8, 23, .45);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .modal.open{ display:flex; }
+    .modal-card{
+      width: min(760px, 100%);
+      background: #ffffff;
+      border-radius: 18px;
+      border: 1px solid rgba(15,23,42,.12);
+      box-shadow: 0 30px 90px rgba(2,16,41,.30);
+      overflow:hidden;
+    }
+    .modal-head{
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom: 1px solid rgba(15,23,42,.10);
+      background: rgba(37,99,235,.06);
+    }
+    .modal-head strong{
+      font-weight: 1000;
+      color: rgba(15,23,42,.90);
+    }
+    .modal-close{
+      border:none;
+      cursor:pointer;
+      background: rgba(15,23,42,.06);
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 1000;
+      color: rgba(15,23,42,.80);
+    }
+    .modal-body{
+      padding: 14px 16px 16px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    label{
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(15,23,42,.75);
+    }
+    input, textarea, select{
+      width:100%;
+      border-radius: 12px;
+      border: 1px solid rgba(15,23,42,.14);
+      padding: 11px 12px;
+      font: inherit;
+      background: #fff;
+      outline:none;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .note{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(15,23,42,.60);
+      line-height: 1.5;
+    }
+
+    /* responsive */
+    @media (max-width: 1020px){
+      .layout{ grid-template-columns: 1fr; }
+      .summary{ position: relative; top:0; }
+      .tabs{ justify-content:flex-start; }
+      .page-head{ flex-direction:column; align-items:flex-start; }
+    }
+    @media (max-width: 640px){
+      .wrap{ width: calc(100% - 24px); padding-top: 94px; }
+      .options{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr; }
+      .summary{ position: sticky; top: 74px; }
+    }
+    /* ======================
+   Projection Chart (stable height, SaaS style)
+   ====================== */
+.chart-shell{
+  margin: 14px 0 18px;
+}
+
+.chart-card{
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 14px;
+}
+
+.chart-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom: 10px;
+}
+
+.chart-kicker{
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: rgba(15,23,42,.60);
+}
+
+.chart-title{
+  margin: 6px 0 6px;
+  font-size: 16px;
+  font-weight: 1000;
+  color: rgba(15,23,42,.92);
+}
+
+.chart-sub{
+  margin: 0;
+  color: rgba(15,23,42,.62);
+  font-size: 12.5px;
+  line-height: 1.5;
+  max-width: 72ch;
+}
+
+.chart-metrics{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.metric{
+  min-width: 140px;
+  background: #fff;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 14px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 22px rgba(2,16,41,.06);
+}
+
+.metric-label{
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(15,23,42,.55);
+}
+
+.metric-value{
+  margin-top: 6px;
+  font-weight: 1000;
+  color: rgba(15,23,42,.90);
+}
+
+.chart-frame{
+  /* ensures chart doesn't "wobble" when data changes */
+  height: 260px;
+  border-radius: 14px;
+  overflow:hidden;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(15,23,42,.10);
+  box-shadow: 0 10px 22px rgba(2,16,41,.06);
+  position: relative;
+}
+
+#projChart{
+  width:100%;
+  height: 220px; /* stable */
+  display:block;
+}
+
+.chart-x{
+  height: 40px; /* stable */
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 0 12px 8px;
+  color: rgba(15,23,42,.55);
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: .06em;
+}
+
+@media (max-width: 640px){
+  .chart-head{ flex-direction:column; }
+  .chart-metrics{ justify-content:flex-start; }
+  .metric{ min-width: 150px; }
+}
+/* ======================
+   MOBILE ACCORDION MODE
+   ====================== */
+.mobile-accordion{ display:none; }
+
+@media (max-width: 1020px){
+  /* hide desktop left+center on mobile/tablet */
+  .left-panel, .center-panel{ display:none; }
+
+  .mobile-accordion{ display:block; }
+
+  .acc{
+    background: rgba(255,255,255,.55);
+    border: 1px solid rgba(255,255,255,.75);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .acc-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding: 14px 14px;
+    border:none;
+    background: transparent;
+    cursor:pointer;
+    text-align:left;
+  }
+
+  .acc-left{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    min-width:0;
+  }
+
+  .acc-title{
+    font-weight: 1000;
+    color: rgba(15,23,42,.92);
+    font-size: 14px;
+    letter-spacing: -.01em;
+  }
+
+  .acc-meta{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+
+  .acc-pill{
+    font-size: 11px;
+    font-weight: 1000;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(37,99,235,.10);
+    border: 1px solid rgba(37,99,235,.15);
+    color: rgba(15,23,42,.78);
+  }
+
+  .acc-chosen{
+    font-size: 11px;
+    font-weight: 1000;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(34,197,94,.10);
+    border: 1px solid rgba(34,197,94,.16);
+    color: rgba(15,23,42,.78);
+    max-width: 64vw;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .acc-arrow{
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display:grid;
+    place-items:center;
+    background: rgba(15,23,42,.06);
+    border: 1px solid rgba(15,23,42,.10);
+    font-weight: 1000;
+    color: rgba(15,23,42,.72);
+    flex: 0 0 auto;
+    transition: transform .18s ease;
+  }
+
+  .acc.open .acc-arrow{ transform: rotate(180deg); }
+
+  .acc-body{
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height .28s ease;
+    border-top: 1px solid rgba(15,23,42,.08);
+    background: rgba(255,255,255,.65);
+  }
+
+  .acc.open .acc-body{
+    max-height: 1200px; /* big enough for all options */
+  }
+
+  .acc-inner{
+    padding: 12px;
+  }
+
+  .acc-inner .options{
+    grid-template-columns: 1fr; /* mobile: single column cards */
+  }
+
+  .acc-inner .hintline{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom: 10px;
+    color: rgba(15,23,42,.62);
+    font-weight: 900;
+    font-size: 12px;
+  }
+
+  /* Summary stays sticky on mobile already — keep it */
+}
+/* FIX: Text überlappt Preis-Badge in den Options-Cards */
+.opt{
+  padding-bottom: 52px;          /* Platz für den Preis unten */
+}
+
+.opt-desc{
+  padding-right: 82px;           /* Platz rechts für die Preis-Pill */
+}
+
+/* optional: Preis-Pill minimal kleiner, falls du willst */
+.opt-price{
+  right: 12px;
+  bottom: 12px;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+
+  </style>
+</head>
+
+<body>
+  <!-- header.js injects header -->
+   <header id="site-header"></header>
+
+  <main class="wrap">
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Verlags-Konfigurator</h1>
+        <p class="page-sub">Wähle pro Kategorie eine Option. Danach klickst du auf <b>„Termin anfragen“</b> – das Formular wird per <b>Netlify Forms</b> an deine E-Mail gesendet.</p>
+      </div>
+
+      <div class="tabs" aria-label="Pakete">
+        <button class="tab active" type="button" data-pkg="starter">Basic Package</button>
+        <button class="tab" type="button" data-pkg="plus">Print & eBook</button>
+        <button class="tab" type="button" data-pkg="deluxe">Premium</button>
+        <button class="tab" type="button" data-pkg="eutr">EU–TR Dual</button>
+      </div>
+    </div>
+
+    <section class="chart-shell" aria-label="Prognose">
+  <div class="chart-card">
+    <div class="chart-head">
+      <div>
+        <div class="chart-kicker">Prognose</div>
+        <h2 class="chart-title">Projektierte Verkaufszahlen (12 Monate)</h2>
+        <p class="chart-sub">Beispielhafte Modellkurven – je nach Paket variiert die erwartete Reichweite (ohne Garantie).</p>
+      </div>
+
+      <div class="chart-metrics">
+        <div class="metric">
+          <div class="metric-label">Paket</div>
+          <div class="metric-value" id="chartPkg">Starter</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Prognose (12M)</div>
+          <div class="metric-value" id="chartTotal">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-frame">
+      <svg id="projChart" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Prognose Chart">
+        <!-- grid -->
+        <g id="grid"></g>
+
+        <!-- line + area -->
+        <path id="area" d="" fill="rgba(37,99,235,.14)"></path>
+        <path id="line" d="" fill="none" stroke="rgba(37,99,235,.95)" stroke-width="3.5" stroke-linecap="round"></path>
+
+        <!-- dots -->
+        <g id="dots"></g>
+      </svg>
+
+      <div class="chart-x">
+        <span>Monat 1</span><span>Monat 3</span><span>Monat 6</span><span>Monat 9</span><span>Monat 12</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <section class="layout">
+      <!-- LEFT: categories list -->
+      <aside class="left-panel">
+        <div class="left-title">Kategorien</div>
+        <div class="cat-list" id="catList"></div>
+      </aside>
+
+      <!-- CENTER: options for active category -->
+      <section class="center-panel">
+        <div class="center-head">
+          <h2 id="activeCatTitle">Kategorie</h2>
+          <div class="hint">Click to select (1 Auswahl)</div>
+        </div>
+        <div class="options" id="activeOptions"></div>
+      </section>
+
+      <!-- MOBILE: accordion categories + options -->
+<section class="mobile-accordion" id="mobileAccordion" aria-label="Kategorien (Mobile)"></section>
+
+
+
+
+      <!-- RIGHT: summary -->
+      <aside class="summary">
+        <div class="sum-head">
+          <h3>Package Summary</h3>
+          <div class="sum-badge"><span style="color:var(--success)">✓</span> Auswahl gespeichert</div>
+        </div>
+
+        <div class="sum-list" id="summaryList">
+          <div class="empty" id="emptyState">Noch keine Auswahl – wähle links eine Kategorie.</div>
+        </div>
+
+        <div class="total">
+          <span>Geschätzter Preis:</span>
+          <span id="totalPrice">0 €</span>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn ghost" type="button" id="resetBtn">Reset</button>
+          <button class="btn primary" type="button" id="bookBtn">Termin anfragen</button>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- MODAL: Netlify Form -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Termin anfragen">
+      <div class="modal-head">
+        <strong>Termin anfragen</strong>
+        <button class="modal-close" type="button" id="closeModal">Schließen</button>
+      </div>
+      <div class="modal-body">
+        <!-- Netlify Forms -->
+        <form name="terminanfrage" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="terminanfrage" />
+          <p style="display:none">
+            <label>Don’t fill this out: <input name="bot-field" /></label>
+          </p>
+
+          <div class="grid">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" required placeholder="Vor- und Nachname" />
+            </div>
+            <div class="field">
+              <label for="email">E-Mail</label>
+              <input id="email" name="email" type="email" required placeholder="name@mail.com" />
+            </div>
+            <div class="field">
+              <label for="phone">Telefon (optional)</label>
+              <input id="phone" name="phone" placeholder="+49 ..." />
+            </div>
+            <div class="field">
+              <label for="when">Wunschtermin</label>
+              <input id="when" name="wunschtermin" required placeholder="z.B. Mo 18:00 oder 2–3 Slots" />
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:10px">
+            <label for="notes">Nachricht / Kurzbeschreibung</label>
+            <textarea id="notes" name="nachricht" placeholder="Worum geht es? Genre, Umfang, Ziel, Deadline …"></textarea>
+          </div>
+
+          <!-- This will include the selected configuration as JSON + text -->
+          <input type="hidden" name="paket_konfiguration" id="configField" value="" />
+          <input type="hidden" name="preis_schaetzung" id="priceField" value="" />
+
+          <div class="modal-actions">
+            <button class="btn ghost" type="button" id="cancelBtn">Abbrechen</button>
+            <button class="btn primary" type="submit">Anfrage senden</button>
+          </div>
+
+          <div class="note">
+            Hinweis: Das ist kein Checkout. Deine Anfrage wird an DVAYD gesendet und ihr vereinbart anschließend einen Termin.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer.js injects footer -->
+
+  <script>
+    /* =========================
+       DATA (Categories + Options)
+       ========================= */
+    const CATS = [
+      { key:"zielgruppe", label:"Zielgruppe" },
+      { key:"lektorat", label:"Korrektur / Lektorat" },
+      { key:"cover", label:"Cover Design" },
+      { key:"satz", label:"Satz (Layout)" },
+      { key:"epub", label:"eBook-Konvertierung (ePUB)" },
+      { key:"print", label:"Print-Veröffentlichung" },
+      { key:"isbn", label:"ISBN" },
+      { key:"distribution", label:"Distribution" },
+      { key:"klappe", label:"Klappentext / Kurzvita" },
+      { key:"marketing", label:"Marketing" },
+      { key:"social", label:"Social Media / PR" },
+      { key:"support", label:"Support" },
+      { key:"rechte", label:"Rechte" },
+    ];
+
+    // You can adjust prices/texts anytime
+    const OPTIONS = {
+      zielgruppe: [
+        { id:"ziel_starter", tier:"starter", name:"Debütautor:innen, schneller Start (eBook)", desc:"Schnell live gehen mit schlankem Setup.", price:0 },
+        { id:"ziel_plus", tier:"plus", name:"Print + eBook, professionelle Veröffentlichung", desc:"Mehr Qualität & Kanäle.", price:0 },
+        { id:"ziel_deluxe", tier:"deluxe", name:"Anspruchsvolle Projekte, Premium-Launch", desc:"Premium-Produktion & Setup.", price:0 },
+        { id:"ziel_eutr", tier:"eutr", name:"EU + Türkei gleichzeitig veröffentlichen", desc:"Duale Distribution & Launch.", price:0 },
+      ],
+      lektorat: [
+        { id:"lek_starter", tier:"starter", name:"Light-Korrektur (optional)", desc:"Basis-Check.", price:0 },
+        { id:"lek_plus", tier:"plus", name:"Lektorat (stilistisch, 1–2 Runden)", desc:"Stil, Klarheit, Flow.", price:450 },
+        { id:"lek_deluxe", tier:"deluxe", name:"Intensiv-Lektorat (mehrere Runden + Schlusskorrektur)", desc:"Mehrere Runden + Finish.", price:850 },
+        { id:"lek_eutr", tier:"eutr", name:"— (separat zubuchbar)", desc:"Optional je nach Bedarf.", price:0 },
+      ],
+      cover: [
+        { id:"cov_starter", tier:"starter", name:"Basic-Cover (Template)", desc:"Schnell & clean.", price:0 },
+        { id:"cov_plus", tier:"plus", name:"Custom-Cover (Recherche + Entwürfe)", desc:"Individuell & zielgruppengerecht.", price:350 },
+        { id:"cov_deluxe", tier:"deluxe", name:"Premium-Cover-Art (Illustration/Stock-Lizenz)", desc:"High-end Optik.", price:650 },
+        { id:"cov_eutr", tier:"eutr", name:"Übernimmt gewähltes Cover (Starter/Plus/Deluxe)", desc:"Aus dem Basispaket.", price:0 },
+      ],
+      satz: [
+        { id:"satz_starter", tier:"starter", name:"eBook-Satz (Standard)", desc:"Für eBook optimiert.", price:150 },
+        { id:"satz_plus", tier:"plus", name:"Print + eBook-Satz", desc:"Druckreif + eBook.", price:300 },
+        { id:"satz_deluxe", tier:"deluxe", name:"Print + eBook-Satz (inkl. Tabellen/Abbildungen)", desc:"Premium-Umfang.", price:450 },
+        { id:"satz_eutr", tier:"eutr", name:"Übernimmt Satz (Starter/Plus/Deluxe)", desc:"Aus dem Basispaket.", price:0 },
+      ],
+      epub: [
+        { id:"epub_starter", tier:"starter", name:"ePUB-Konvertierung", desc:"Upload-ready.", price:0 },
+        { id:"epub_plus", tier:"plus", name:"ePUB-Konvertierung", desc:"Optimiert für mehrere Shops.", price:0 },
+        { id:"epub_deluxe", tier:"deluxe", name:"ePUB-Konvertierung", desc:"Premium-Checks.", price:0 },
+        { id:"epub_eutr", tier:"eutr", name:"ePUB-Konvertierung", desc:"Für duale Plattformen.", price:0 },
+      ],
+      print: [
+        { id:"print_starter", tier:"starter", name:"— (optional zubuchbar)", desc:"Starter ist eBook-fokussiert.", price:0 },
+        { id:"print_plus", tier:"plus", name:"Print Setup (KDP Print)", desc:"Paperback Setup + Upload-Support.", price:249 },
+        { id:"print_deluxe", tier:"deluxe", name:"Print Setup (KDP Print)", desc:"Premium-Checks im Launch-Kontext.", price:249 },
+        { id:"print_eutr", tier:"eutr", name:"Print (EU + TR Distribution)", desc:"Duale Print-Verfügbarkeit.", price:399 },
+      ],
+      isbn: [
+        { id:"isbn_starter", tier:"starter", name:"KDP-ASIN (eBook) / ISBN optional", desc:"ISBN nicht zwingend nötig.", price:0 },
+        { id:"isbn_plus", tier:"plus", name:"Wahlrecht: Eigen-ISBN oder Verlags-ISBN", desc:"Flexibel je nach Strategie.", price:99 },
+        { id:"isbn_deluxe", tier:"deluxe", name:"Wahlrecht: Eigen-ISBN oder Verlags-ISBN", desc:"Premium-Setup.", price:99 },
+        { id:"isbn_eutr", tier:"eutr", name:"Wahlrecht: Eigen-ISBN oder Verlags-ISBN", desc:"Duales Setup.", price:99 },
+      ],
+      distribution: [
+        { id:"dist_starter", tier:"starter", name:"Amazon KDP (eBook)", desc:"Schneller KDP-Start.", price:0 },
+        { id:"dist_plus", tier:"plus", name:"KDP + Aggregator (Tolino/Apple/Google)", desc:"Mehr Shops.", price:199 },
+        { id:"dist_deluxe", tier:"deluxe", name:"KDP + Aggregator + Author Central Setup", desc:"Premium-Setup.", price:349 },
+        { id:"dist_eutr", tier:"eutr", name:"Duale Distribution: EU + TR Shops/Plattformen", desc:"Zwei Märkte parallel.", price:499 },
+      ],
+      klappe: [
+        { id:"kla_starter", tier:"starter", name:"—", desc:"Nicht enthalten (optional).", price:0 },
+        { id:"kla_plus", tier:"plus", name:"Klappentext", desc:"Backcover + Shops.", price:150 },
+        { id:"kla_deluxe", tier:"deluxe", name:"Klappentext + Kurzvita + Landing/Autorenseite", desc:"Premium-Texte & Assets.", price:350 },
+        { id:"kla_eutr", tier:"eutr", name:"Anpassung Metadaten für TR/EU", desc:"Keywords/Shop-Texte dual.", price:250 },
+      ],
+      marketing: [
+        { id:"mkt_starter", tier:"starter", name:"— (optional zubuchbar)", desc:"Basis ohne Ads.", price:0 },
+        { id:"mkt_plus", tier:"plus", name:"Optional (Add-on)", desc:"Launch-Add-ons nach Bedarf.", price:199 },
+        { id:"mkt_deluxe", tier:"deluxe", name:"Launch-Kampagne inkl. Reporting (Amazon/Meta)", desc:"Ads + Reporting.", price:499 },
+        { id:"mkt_eutr", tier:"eutr", name:"Dualer Launch (TR + EU, ohne Übersetzung)", desc:"Duale Kampagne.", price:799 },
+      ],
+      social: [
+        { id:"soc_starter", tier:"starter", name:"1 Basis-Post (optional)", desc:"Kleines Startsignal.", price:0 },
+        { id:"soc_plus", tier:"plus", name:"Optional", desc:"Social/PR Add-ons.", price:149 },
+        { id:"soc_deluxe", tier:"deluxe", name:"Kampagne + Report", desc:"Plan + Reporting.", price:299 },
+        { id:"soc_eutr", tier:"eutr", name:"Social/PR für beide Märkte (Basis)", desc:"EU & TR Basics.", price:349 },
+      ],
+      support: [
+        { id:"sup_starter", tier:"starter", name:"—", desc:"Support optional.", price:0 },
+        { id:"sup_plus", tier:"plus", name:"Optional (Add-on)", desc:"Support nach Bedarf.", price:199 },
+        { id:"sup_deluxe", tier:"deluxe", name:"Supportphase (z. B. 90 Tage nach Launch)", desc:"Begleitung nach Launch.", price:299 },
+        { id:"sup_eutr", tier:"eutr", name:"Dual-Reporting zur Erstphase", desc:"Zwei Märkte begleiten.", price:399 },
+      ],
+      rechte: [
+        { id:"recht_any", tier:"starter", name:"100% beim Autor", desc:"Du behältst alle Rechte.", price:0 },
+      ]
+    };
+
+    const PRESETS = {
+      starter: {
+        zielgruppe: "ziel_starter",
+        lektorat: "lek_starter",
+        cover: "cov_starter",
+        satz: "satz_starter",
+        epub: "epub_starter",
+        print: "print_starter",
+        isbn: "isbn_starter",
+        distribution: "dist_starter",
+        klappe: "kla_starter",
+        marketing: "mkt_starter",
+        social: "soc_starter",
+        support: "sup_starter",
+        rechte: "recht_any"
+      },
+      plus: {
+        zielgruppe: "ziel_plus",
+        lektorat: "lek_plus",
+        cover: "cov_plus",
+        satz: "satz_plus",
+        epub: "epub_plus",
+        print: "print_plus",
+        isbn: "isbn_plus",
+        distribution: "dist_plus",
+        klappe: "kla_plus",
+        marketing: "mkt_plus",
+        social: "soc_plus",
+        support: "sup_plus",
+        rechte: "recht_any"
+      },
+      deluxe: {
+        zielgruppe: "ziel_deluxe",
+        lektorat: "lek_deluxe",
+        cover: "cov_deluxe",
+        satz: "satz_deluxe",
+        epub: "epub_deluxe",
+        print: "print_deluxe",
+        isbn: "isbn_deluxe",
+        distribution: "dist_deluxe",
+        klappe: "kla_deluxe",
+        marketing: "mkt_deluxe",
+        social: "soc_deluxe",
+        support: "sup_deluxe",
+        rechte: "recht_any"
+      },
+      eutr: {
+        zielgruppe: "ziel_eutr",
+        lektorat: "lek_eutr",
+        cover: "cov_eutr",
+        satz: "satz_eutr",
+        epub: "epub_eutr",
+        print: "print_eutr",
+        isbn: "isbn_eutr",
+        distribution: "dist_eutr",
+        klappe: "kla_eutr",
+        marketing: "mkt_eutr",
+        social: "soc_eutr",
+        support: "sup_eutr",
+        rechte: "recht_any"
+      }
+    };
+
+    /* =========================
+       STATE
+       ========================= */
+    const selectedByCat = new Map();
+    let activeCat = CATS[0].key;
+
+    const catListEl = document.getElementById("catList");
+    const activeCatTitleEl = document.getElementById("activeCatTitle");
+    const activeOptionsEl = document.getElementById("activeOptions");
+    const summaryListEl = document.getElementById("summaryList");
+    const emptyStateEl = document.getElementById("emptyState");
+    const totalPriceEl = document.getElementById("totalPrice");
+
+    const modal = document.getElementById("modal");
+    const configField = document.getElementById("configField");
+    const priceField = document.getElementById("priceField");
+
+    function euro(n){ return `${Number(n||0)} €`; }
+
+    function findOption(cat, id){
+      return (OPTIONS[cat] || []).find(o => o.id === id);
+    }
+
+    function setActiveCat(cat){
+      activeCat = cat;
+      renderCategories();
+      renderActiveOptions();
+    }
+
+    function selectOption(cat, optionId){
+      const opt = findOption(cat, optionId);
+      if(!opt) return;
+      selectedByCat.set(cat, {cat, ...opt});
+      renderActiveOptions();
+      renderSummary();
+    }
+
+    function resetAll(){
+      selectedByCat.clear();
+      renderActiveOptions();
+      renderSummary();
+      // also reset active tab to starter visual only
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelector('.tab[data-pkg="starter"]')?.classList.add("active");
+    }
+
+    function applyPreset(key){
+      selectedByCat.clear();
+      const preset = PRESETS[key];
+      Object.keys(preset).forEach(cat => selectOption(cat, preset[cat]));
+      renderCategories();
+      renderActiveOptions();
+      renderSummary();
+    }
+
+    /* =========================
+       RENDER
+       ========================= */
+    function renderCategories(){
+      catListEl.innerHTML = "";
+      CATS.forEach(c => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "cat-btn" + (c.key === activeCat ? " active" : "");
+        const chosen = selectedByCat.get(c.key);
+        btn.innerHTML = `
+          <span>${c.label}</span>
+          <span class="cat-chip">${chosen ? "✓ gewählt" : "wählen"}</span>
+        `;
+        btn.addEventListener("click", () => setActiveCat(c.key));
+        catListEl.appendChild(btn);
+      });
+    }
+
+    function tierLabel(tier){
+      if(tier==="starter") return "Starter";
+      if(tier==="plus") return "Plus";
+      if(tier==="deluxe") return "Deluxe";
+      if(tier==="eutr") return "EU/TR";
+      return tier;
+    }
+
+    function renderActiveOptions(){
+      const catMeta = CATS.find(x => x.key === activeCat);
+      activeCatTitleEl.textContent = catMeta ? catMeta.label : "Kategorie";
+
+      const list = OPTIONS[activeCat] || [];
+      const chosen = selectedByCat.get(activeCat)?.id;
+
+      activeOptionsEl.innerHTML = "";
+      list.forEach(opt => {
+        const card = document.createElement("div");
+        card.className = "opt" + (opt.id === chosen ? " selected" : "");
+        card.setAttribute("role","button");
+        card.setAttribute("tabindex","0");
+        card.innerHTML = `
+          <span class="tier ${opt.tier === "starter" ? "" : opt.tier}">${tierLabel(opt.tier)}</span>
+          <div class="opt-title">${opt.name}</div>
+          <div class="opt-desc">${opt.desc || ""}</div>
+          <div class="opt-price">${euro(opt.price)}</div>
+          <div class="check">✓</div>
+        `;
+        card.addEventListener("click", () => selectOption(activeCat, opt.id));
+        card.addEventListener("keydown", (e) => {
+          if(e.key==="Enter" || e.key===" "){ e.preventDefault(); selectOption(activeCat, opt.id); }
         });
-    });
+        activeOptionsEl.appendChild(card);
+      });
+    }
 
-    // Zielzone initialisieren
-    new Sortable(dropzone, {
-        group: 'shared',
-        animation: 150,
-        onAdd: function (evt) {
-            const newItem = evt.item;
-            const category = newItem.getAttribute('data-cat');
-            
-            // Check: Existiert diese Kategorie schon im Paket?
-            dropzone.querySelectorAll('.item-card').forEach(item => {
-                if (item !== newItem && item.getAttribute('data-cat') === category) {
-                    item.remove(); // Alte Wahl der gleichen Kategorie entfernen
-                }
-            });
+    function renderSummary(){
+      summaryListEl.innerHTML = "";
+      let total = 0;
 
-            // Entfernen-Button für die Kopie im Paket
-            if(!newItem.querySelector('.remove-btn')) {
-                const btn = document.createElement('i');
-                btn.className = 'fas fa-times-circle remove-btn';
-                btn.onclick = () => { newItem.remove(); updatePrice(); };
-                newItem.appendChild(btn);
-            }
-            updatePrice();
+      const chosenCats = CATS.filter(c => selectedByCat.has(c.key)).map(c => c.key);
+
+      if(chosenCats.length === 0){
+        summaryListEl.appendChild(emptyStateEl);
+        emptyStateEl.style.display = "block";
+        totalPriceEl.textContent = "0 €";
+        return;
+      }
+      emptyStateEl.style.display = "none";
+
+      chosenCats.forEach(cat => {
+        const it = selectedByCat.get(cat);
+        total += Number(it.price || 0);
+
+        const row = document.createElement("div");
+        row.className = "sum-item";
+        row.innerHTML = `
+          <div class="sum-left">
+            <div class="sum-cat">${CATS.find(c => c.key===cat)?.label || cat}</div>
+            <div class="sum-name" title="${it.name}">${it.name}</div>
+            <div class="sum-tier ${it.tier}">${tierLabel(it.tier)}</div>
+          </div>
+          <div class="sum-right">
+            <div class="sum-price">${euro(it.price)}</div>
+            <button class="sum-remove" type="button" data-cat="${cat}">Entfernen</button>
+          </div>
+        `;
+        summaryListEl.appendChild(row);
+      });
+
+      totalPriceEl.textContent = euro(total);
+
+      summaryListEl.querySelectorAll(".sum-remove").forEach(btn => {
+        btn.addEventListener("click", () => {
+          selectedByCat.delete(btn.dataset.cat);
+          renderCategories();
+          renderActiveOptions();
+          renderSummary();
+        });
+      });
+    }
+
+    /* =========================
+       MODAL + Netlify payload
+       ========================= */
+    function openModal(){
+      // pack selection into hidden field for Netlify email
+      const obj = {};
+      CATS.forEach(c => {
+        if(selectedByCat.has(c.key)){
+          const it = selectedByCat.get(c.key);
+          obj[c.key] = { name: it.name, tier: it.tier, price: it.price };
         }
-    });
-</script>
+      });
 
+      configField.value = JSON.stringify(obj, null, 0);
+      priceField.value = totalPriceEl.textContent;
+
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(){
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+    }
+
+    document.getElementById("bookBtn").addEventListener("click", openModal);
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    document.getElementById("cancelBtn").addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      resetAll();
+      renderCategories();
+      renderSummary();
+    });
+
+    // Tabs -> presets
+    document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    const pkg = tab.dataset.pkg;
+    applyPreset(pkg);
+
+    const vals = projectionForPackage(pkg);
+    renderChart(vals, pkgLabelFromKey(pkg));
+  });
+});
+
+
+    /* =========================
+   Projection Chart (SVG)
+   ========================= */
+
+// deterministic curve generator (stable per package, no random wobble)
+function projectionForPackage(pkg){
+  // You can tune these to your taste — they are just illustrative.
+  const profiles = {
+    starter: { base: 2,  growth: 1.10, boost: 0.9 },
+    plus:    { base: 4,  growth: 1.16, boost: 1.1 },
+    deluxe:  { base: 6,  growth: 1.22, boost: 1.25 },
+    eutr:    { base: 7,  growth: 1.26, boost: 1.35 },
+  };
+  const p = profiles[pkg] || profiles.starter;
+
+  // 12 months projection - smooth exponential-ish curve with gentle ramp
+  const arr = [];
+  for(let m=1; m<=12; m++){
+    const ramp = 1 - Math.exp(-m/3.2);        // smooth ramp in first months
+    const val  = (p.base + (Math.pow(p.growth, m) * 10 * p.boost)) * ramp;
+    arr.push(Math.round(val));
+  }
+  return arr;
+}
+
+function renderChart(values, pkgLabel){
+  const svg = document.getElementById("projChart");
+  const line = document.getElementById("line");
+  const area = document.getElementById("area");
+  const dots = document.getElementById("dots");
+  const grid = document.getElementById("grid");
+
+  const W = 900, H = 220;        // matches svg viewBox height for chart
+  const padX = 28, padY = 18;
+  const innerW = W - padX*2;
+  const innerH = H - padY*2;
+
+  // clear
+  dots.innerHTML = "";
+  grid.innerHTML = "";
+
+  const maxV = Math.max(...values, 1);
+  const minV = 0;
+
+  // grid lines (stable)
+  const lines = 4;
+  for(let i=0; i<=lines; i++){
+    const y = padY + (innerH * i/lines);
+    const g = document.createElementNS("http://www.w3.org/2000/svg","line");
+    g.setAttribute("x1", padX);
+    g.setAttribute("x2", padX + innerW);
+    g.setAttribute("y1", y);
+    g.setAttribute("y2", y);
+    g.setAttribute("stroke", "rgba(15,23,42,.08)");
+    g.setAttribute("stroke-width", "1");
+    grid.appendChild(g);
+  }
+
+  // points
+  const pts = values.map((v, i) => {
+    const x = padX + (innerW * (i/(values.length-1)));
+    const y = padY + innerH - ((v - minV) / (maxV - minV || 1)) * innerH;
+    return {x,y,v};
+  });
+
+  // path
+  const d = pts.map((p, idx) => `${idx===0 ? "M" : "L"} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(" ");
+  line.setAttribute("d", d);
+
+  // area
+  const areaD = `${d} L ${padX + innerW} ${padY + innerH} L ${padX} ${padY + innerH} Z`;
+  area.setAttribute("d", areaD);
+
+  // dots (with subtle labels on last point)
+  pts.forEach((p, i) => {
+    const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c.setAttribute("cx", p.x);
+    c.setAttribute("cy", p.y);
+    c.setAttribute("r", i === pts.length-1 ? "5.2" : "3.8");
+    c.setAttribute("fill", "rgba(37,99,235,.95)");
+    c.setAttribute("stroke", "white");
+    c.setAttribute("stroke-width", "2");
+    dots.appendChild(c);
+  });
+
+  // metrics text
+  document.getElementById("chartPkg").textContent = pkgLabel;
+  const total = values.reduce((a,b)=>a+b,0);
+  document.getElementById("chartTotal").textContent = `${total} Verkäufe`;
+}
+
+function pkgLabelFromKey(key){
+  if(key==="starter") return "Starter";
+  if(key==="plus") return "Plus";
+  if(key==="deluxe") return "Deluxe";
+  if(key==="eutr") return "EU–TR Dual";
+  return "Starter";
+
+  const mobileAccordionEl = document.getElementById("mobileAccordion");
+
+function isMobileLayout(){
+  return window.matchMedia("(max-width: 1020px)").matches;
+}
+
+function openOnlyAccordion(catKey){
+  if(!mobileAccordionEl) return;
+  mobileAccordionEl.querySelectorAll(".acc").forEach(el => {
+    const k = el.getAttribute("data-cat");
+    if(k === catKey) el.classList.add("open");
+    else el.classList.remove("open");
+  });
+}
+
+function renderMobileAccordion(){
+  if(!mobileAccordionEl) return;
+
+  // only render in mobile/tablet layout
+  if(!isMobileLayout()){
+    mobileAccordionEl.innerHTML = "";
+    return;
+  }
+
+  mobileAccordionEl.innerHTML = "";
+
+  CATS.forEach((c, idx) => {
+    const chosen = selectedByCat.get(c.key);
+    const chosenText = chosen ? chosen.name : "Noch nicht gewählt";
+
+    const wrap = document.createElement("div");
+    wrap.className = "acc" + (c.key === activeCat ? " open" : "");
+    wrap.setAttribute("data-cat", c.key);
+
+    wrap.innerHTML = `
+      <button class="acc-btn" type="button">
+        <div class="acc-left">
+          <div class="acc-title">${c.label}</div>
+          <div class="acc-meta">
+            <span class="acc-pill">${chosen ? "✓ gewählt" : "wählen"}</span>
+            <span class="acc-chosen" title="${chosenText}">${chosenText}</span>
+          </div>
+        </div>
+        <div class="acc-arrow">⌄</div>
+      </button>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <div class="hintline">
+            <span>Option auswählen</span>
+            <span style="opacity:.8">1 Auswahl</span>
+          </div>
+          <div class="options" data-acc-options="${c.key}"></div>
+        </div>
+      </div>
+    `;
+
+    // header click => open this, close others
+    wrap.querySelector(".acc-btn").addEventListener("click", () => {
+      activeCat = c.key;              // keep state in sync
+      openOnlyAccordion(c.key);
+      renderMobileAccordion();        // rerender to refresh options
+    });
+
+    mobileAccordionEl.appendChild(wrap);
+
+    // render options list inside this accordion
+    const optHost = wrap.querySelector(`[data-acc-options="${c.key}"]`);
+    const list = OPTIONS[c.key] || [];
+    const chosenId = chosen?.id;
+
+    optHost.innerHTML = "";
+    list.forEach(opt => {
+      const card = document.createElement("div");
+      card.className = "opt" + (opt.id === chosenId ? " selected" : "");
+      card.setAttribute("role","button");
+      card.setAttribute("tabindex","0");
+      card.innerHTML = `
+        <span class="tier ${opt.tier === "starter" ? "" : opt.tier}">${tierLabel(opt.tier)}</span>
+        <div class="opt-title">${opt.name}</div>
+        <div class="opt-desc">${opt.desc || ""}</div>
+        <div class="opt-price">${euro(opt.price)}</div>
+        <div class="check">✓</div>
+      `;
+
+      card.addEventListener("click", () => {
+        selectOption(c.key, opt.id);
+
+        // OPTIONAL: after selecting, auto-advance to next category
+        const next = CATS[idx + 1]?.key;
+        if(next){
+          activeCat = next;
+          // scroll to next accordion
+          requestAnimationFrame(() => {
+            renderMobileAccordion();
+            openOnlyAccordion(next);
+            mobileAccordionEl.querySelector(`.acc[data-cat="${next}"]`)?.scrollIntoView({behavior:"smooth", block:"start"});
+          });
+        } else {
+          // last category: close all and keep summary visible
+          openOnlyAccordion(c.key);
+          renderMobileAccordion();
+        }
+      });
+
+      card.addEventListener("keydown", (e) => {
+        if(e.key==="Enter" || e.key===" "){ e.preventDefault(); card.click(); }
+      });
+
+      optHost.appendChild(card);
+    });
+  });
+
+  // ensure only one open
+  openOnlyAccordion(activeCat);
+}
+
+}
+
+
+    /* =========================
+       INIT
+       ========================= */
+    renderCategories();
+    renderActiveOptions();
+    renderSummary();
+    // initial preset starter
+    applyPreset("starter");
+    renderChart(projectionForPackage("starter"), pkgLabelFromKey("starter"));
+  </script>
+  <footer id="site-footer"></footer>
 </body>
+
 </html>
