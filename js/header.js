@@ -211,6 +211,29 @@
           .site-search{ display:none; }
         }
 
+        /* ==========================
+   SEARCH DROPDOWN: ACTIVE CLICKED RESULT
+   ========================== */
+
+.search-dd .result{
+  transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.search-dd .result.is-active{
+  background: rgba(255,255,255,.18);
+  box-shadow:
+    0 12px 40px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.25);
+  transform: translateY(-1px);
+  animation: resultPulse .25s ease-out;
+}
+
+@keyframes resultPulse{
+  from{ transform: scale(.98); }
+  to{ transform: scale(1); }
+}
+
+
         .langs{
           display:flex; align-items:center; gap:8px;
           color:#fff; font-weight:800; font-size:12px;
@@ -302,6 +325,29 @@
           .brand span{ display:none; }
           .langs{ display:none; }
         }
+        /* Remove Pagefind highlight <mark> styling */
+.search-dd mark{
+  background: rgba(255,255,255,.12);
+  color:#fff;
+  border-radius:6px;
+  padding:0 4px;
+}
+
+/* Active (clicked) search result */
+.search-dd .result.is-active{
+  background: rgba(255,255,255,.18);
+  box-shadow:
+    0 12px 40px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.25);
+  transform: translateY(-1px);
+}
+
+/* smooth interaction */
+.search-dd .result{
+  transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+
       </style>
 
       <div class="hdr">
@@ -380,6 +426,127 @@
     const drawer = mount.querySelector("[data-drawer]");
     const burger = mount.querySelector(".burger");
     const closeBtn = mount.querySelector("[data-close]");
+
+    /* ==========================
+   SEARCH DROPDOWN (stays on page)
+   ========================== */
+
+const input = mount.querySelector("#site-search-input");
+const dd = mount.querySelector("#site-search-dd");
+
+let ddOpen = false;
+let activeIndex = -1;
+let lastQuery = "";
+
+function openDD(){
+  if (!dd) return;
+  dd.style.display = "block";
+  ddOpen = true;
+}
+function closeDD(){
+  if (!dd) return;
+  dd.style.display = "none";
+  ddOpen = false;
+  activeIndex = -1;
+  dd.querySelectorAll(".result.is-active").forEach(el => el.classList.remove("is-active"));
+}
+
+function setActive(el){
+  if (!dd) return;
+  dd.querySelectorAll(".result.is-active").forEach(x => x.classList.remove("is-active"));
+  if (el) el.classList.add("is-active");
+}
+
+async function runSearch(q){
+  if (!dd) return;
+  const query = (q || "").trim();
+  lastQuery = query;
+
+  if (!query){
+    dd.innerHTML = "";
+    closeDD();
+    return;
+  }
+
+  // Pagefind must exist
+  if (!window.pagefind){
+    dd.innerHTML = `<div class="search-msg">Pagefind konnte nicht geladen werden.</div>`;
+    openDD();
+    return;
+  }
+
+  // search
+  const res = await window.pagefind.search(query);
+  const items = res.results.slice(0, 6);
+
+  if (!items.length){
+    dd.innerHTML = `<div class="search-msg">Keine Ergebnisse für <strong>${escapeHTML(query)}</strong></div>`;
+    openDD();
+    return;
+  }
+
+  // load data
+  const data = await Promise.all(items.map(r => r.data()));
+
+  dd.innerHTML = data.map((d, i) => {
+    const title = d.meta?.title || d.url;
+    const excerpt = (d.excerpt || "").trim();
+    return `
+      <a class="result" href="${d.url}" data-idx="${i}">
+        <div class="r-title">${title}</div>
+        ${excerpt ? `<div class="r-excerpt">${excerpt}</div>` : ""}
+      </a>
+    `;
+  }).join("");
+
+  // CLICK HANDLING: highlight clicked result
+  dd.querySelectorAll(".result").forEach(a => {
+    a.addEventListener("click", () => {
+      setActive(a); // ✅ this is the click highlight
+      // optional: closeDD();  // uncomment if you want dropdown to close after click
+    });
+  });
+
+  openDD();
+}
+
+function debounce(fn, ms=140){
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), ms);
+  };
+}
+
+const debouncedSearch = debounce((val) => runSearch(val), 160);
+
+if (input && dd){
+  input.addEventListener("input", (e) => {
+    activeIndex = -1;
+    debouncedSearch(e.target.value);
+  });
+
+  input.addEventListener("focus", () => {
+    if (dd.innerHTML.trim()) openDD();
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener("click", (e) => {
+    if (!ddOpen) return;
+    const inside = e.target.closest(".site-search");
+    if (!inside) closeDD();
+  });
+}
+
+/* helpers */
+function escapeHTML(str){
+  return (str || "").replace(/[&<>"']/g, (m) => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+  }[m]));
+}
+
+
+    
 
     const openMenu = () => {
       burger.setAttribute("aria-expanded", "true");
