@@ -349,18 +349,18 @@
 
           <div class="right">
             <!-- NEW: Search button -->
-            <form class="site-search" action="${SEARCH_PATH}" method="GET" role="search">
+            <form class="site-search" action="/search/">
   <input
     type="search"
     name="q"
     placeholder="Suchbegriff eingeben"
-    aria-label="Suchbegriff eingeben"
+    aria-label="Suche"
   />
-<button type="submit" class="search-icon" aria-label="${LABELS[lang].search}">
-  <img src="/assets/icons/lupe.png" alt="" />
-</button>
-
+  <button type="submit" class="search-icon">
+    <img src="/assets/icons/lupe.png" alt="" />
+  </button>
 </form>
+
 
 
             <div class="langs" aria-label="Language switch">
