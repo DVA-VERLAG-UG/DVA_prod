@@ -8,13 +8,16 @@
   };
 
   const LABELS = {
-    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"configurator", process:"Prozess", blog:"Blog" },
-    en: { about:"About", contact:"Contact", projects:"Projects", services:"configurator", process:"Process", blog:"Blog" },
-    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"configurator", process:"Süreç", blog:"Blog" },
-    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"configurator", process:"Processus", blog:"Blog" },
+    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"configurator", process:"Prozess", blog:"Blog", search:"Suche" },
+    en: { about:"About", contact:"Contact", projects:"Projects", services:"configurator", process:"Process", blog:"Blog", search:"Search" },
+    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"configurator", process:"Süreç", blog:"Blog", search:"Ara" },
+    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"configurator", process:"Processus", blog:"Blog", search:"Recherche" },
   };
 
   const LOGO_SRC = "/assets/images/dva-logo.png";
+
+  // Global search page (you currently use /search/)
+  const SEARCH_PATH = "/search/";
 
   function getLang() {
     const m = location.pathname.match(/^\/(de|en|tr|fr)(\/|$)/);
@@ -42,7 +45,6 @@
           background:transparent;
           pointer-events:none;
 
-          /* NEW: smooth show/hide */
           transform: translateY(0);
           transition:
             transform .28s cubic-bezier(.2,.9,.2,1),
@@ -51,13 +53,9 @@
             -webkit-backdrop-filter .18s ease;
           will-change: transform;
         }
-
-        /* NEW: hide when scrolling down */
         .hdr.is-hidden{
           transform: translateY(calc(-1 * var(--hdr-h)));
         }
-
-        /* Scroll state: still minimal, but adds premium legibility */
         .hdr.is-scrolled{
           background: rgba(0,0,0,.10);
           backdrop-filter: blur(10px) saturate(1.2);
@@ -95,6 +93,118 @@
         }
 
         .right{ display:flex; align-items:center; gap:14px; }
+        /* ==========================
+   HEADER SEARCH FIELD
+   ========================== */
+.site-search{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  height:44px;
+  min-width:260px;
+  padding:0 10px 0 14px;
+
+  border-radius:16px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+
+  box-shadow:
+    0 14px 40px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.18);
+
+  transition: background .2s ease, box-shadow .2s ease;
+}
+
+.site-search:hover{
+  background: rgba(255,255,255,.12);
+}
+
+.site-search input{
+  flex:1;
+  height:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+
+  color:#fff;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.01em;
+}
+
+.site-search input::placeholder{
+  color: rgba(255,255,255,.75);
+  font-weight:500;
+}
+
+/* Search icon inside field (no border, integrated) */
+.site-search .search-icon{
+  position:relative;
+  width:34px;
+  height:34px;
+  margin-right:2px;
+
+  border:0;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+
+  display:grid;
+  place-items:center;
+
+  /* no separation line */
+  box-shadow:none;
+}
+
+.site-search .search-icon img{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  opacity:.88;
+  filter:
+    drop-shadow(0 6px 14px rgba(0,0,0,.35))
+    brightness(1.05);
+
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+.site-search .search-icon:hover img{
+  opacity:1;
+  transform: scale(1.08);
+}
+
+.site-search button:hover{
+  filter: brightness(1.1);
+  transform: scale(1.05);
+}
+
+/* Mobile: hide search, keep icon feel clean */
+@media (max-width: 820px){
+  .site-search{
+    display:none;
+  }
+}
+  
+
+
+        /* NEW: Search button */
+        .search-btn{
+          width:42px; height:42px;
+          display:grid; place-items:center;
+          border-radius:14px;
+          background: rgba(255,255,255,.06);
+          border: 1px solid rgba(255,255,255,.10);
+          color:#fff;
+          text-decoration:none;
+          cursor:pointer;
+          box-shadow: 0 12px 30px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.12);
+          filter: drop-shadow(0 10px 26px rgba(0,0,0,.25));
+        }
+        .search-btn:hover{ filter: brightness(1.08) drop-shadow(0 10px 26px rgba(0,0,0,.25)); }
 
         .langs{
           display:flex; align-items:center; gap:8px;
@@ -162,27 +272,6 @@
         }
         .drawer.is-open{ transform: translateX(0); }
 
-        .drawer::before{
-          content:"";
-          position:absolute;
-          inset:0;
-          pointer-events:none;
-          opacity:.08;
-          mix-blend-mode: overlay;
-          background-image:
-            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.70' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-        }
-
-        .drawer::after{
-          content:"";
-          position:absolute;
-          top:0; left:0;
-          width:1px; height:100%;
-          background: linear-gradient(to bottom, rgba(255,255,255,.18), rgba(255,255,255,.03));
-          opacity:.7;
-          pointer-events:none;
-        }
-
         .drawer-top{
           position:relative;
           display:flex;
@@ -247,6 +336,7 @@
 
         @media (max-width: 520px){
           .brand span{ display:none; }
+          .langs{ display:none; } /* optional: hide language row on very small screens */
         }
       </style>
 
@@ -258,6 +348,21 @@
           </a>
 
           <div class="right">
+            <!-- NEW: Search button -->
+            <form class="site-search" action="${SEARCH_PATH}" method="GET" role="search">
+  <input
+    type="search"
+    name="q"
+    placeholder="Suchbegriff eingeben"
+    aria-label="Suchbegriff eingeben"
+  />
+<button type="submit" class="search-icon" aria-label="${LABELS[lang].search}">
+  <img src="/assets/icons/lupe.png" alt="" />
+</button>
+
+</form>
+
+
             <div class="langs" aria-label="Language switch">
               <a data-lang="de">DE</a><span class="sep">|</span>
               <a data-lang="en">EN</a><span class="sep">|</span>
@@ -283,6 +388,9 @@
         </div>
 
         <nav>
+          <!-- NEW: Search inside drawer too -->
+          <a href="${SEARCH_PATH}" data-nav-search>${LABELS[lang].search}</a>
+
           <a href="${ROUTES[lang].about}" data-nav>${LABELS[lang].about}</a>
           <a href="${ROUTES[lang].projects}" data-nav>${LABELS[lang].projects}</a>
           <a href="${ROUTES[lang].services}" data-nav>${LABELS[lang].services}</a>
@@ -301,7 +409,7 @@
     const lang = getLang();
     mount.innerHTML = headerHTML(lang);
 
-    const hdr = mount.querySelector(".hdr");          // NEW
+    const hdr = mount.querySelector(".hdr");
     const overlay = mount.querySelector("[data-overlay]");
     const drawer = mount.querySelector("[data-drawer]");
     const burger = mount.querySelector(".burger");
@@ -312,7 +420,7 @@
       overlay.classList.add("is-open");
       drawer.classList.add("is-open");
       document.documentElement.style.overflow = "hidden";
-      hdr.classList.remove("is-hidden"); // NEW: keep header visible while menu is open
+      hdr.classList.remove("is-hidden");
     };
     const close = () => {
       burger.setAttribute("aria-expanded", "false");
@@ -329,7 +437,12 @@
     closeBtn.addEventListener("click", close);
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
-    // Active nav highlight
+    // Close drawer when clicking any nav link (including search)
+    mount.querySelectorAll("aside.drawer a").forEach(a => {
+      a.addEventListener("click", () => close());
+    });
+
+    // Active nav highlight (for your internal pages)
     const path = location.pathname;
     mount.querySelectorAll("[data-nav]").forEach(a => {
       const href = a.getAttribute("href");
@@ -346,25 +459,22 @@
     });
 
     /* ==========================
-       NEW: COLLAPSE ON SCROLL DOWN,
+       COLLAPSE ON SCROLL DOWN,
        SHOW ON SCROLL UP
        ========================== */
-
     let lastY = window.scrollY || 0;
     let ticking = false;
 
-    const SCROLL_ON_AT = 8;        // ab wann "is-scrolled" aktiv wird
-    const HIDE_AFTER = 120;        // erst nach etwas Scroll "weg"
-    const DELTA = 6;               // kleine Zitterbewegungen ignorieren
+    const SCROLL_ON_AT = 8;
+    const HIDE_AFTER = 120;
+    const DELTA = 6;
 
     function onScroll() {
       const y = window.scrollY || 0;
       const menuOpen = burger.getAttribute("aria-expanded") === "true";
 
-      // scrolled style
       hdr.classList.toggle("is-scrolled", y > SCROLL_ON_AT);
 
-      // wenn Menü offen: Header nicht verstecken
       if (menuOpen) {
         lastY = y;
         return;
@@ -374,10 +484,8 @@
       if (Math.abs(diff) < DELTA) return;
 
       if (diff > 0 && y > HIDE_AFTER) {
-        // runter scrollen -> verstecken
         hdr.classList.add("is-hidden");
       } else {
-        // hoch scrollen -> zeigen
         hdr.classList.remove("is-hidden");
       }
 
@@ -394,7 +502,6 @@
       }
     }, { passive: true });
 
-    // initial state
     onScroll();
   }
 

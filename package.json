@@ -1,0 +1,10 @@
+{
+  "name": "dvayd-site",
+  "private": true,
+  "devDependencies": {
+    "pagefind": "^1.0.0"
+  },
+  "scripts": {
+    "build": "npx pagefind --site ."
+  }
+}

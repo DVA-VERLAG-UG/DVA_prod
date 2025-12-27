@@ -1077,6 +1077,10 @@
 </head>
 
 <body>
+
+  <div id="search"></div>
+
+
   <header id="site-header"></header>
 
   <main>
@@ -1638,5 +1642,14 @@
 })();
   </script>
 <footer id="site-footer"></footer>
+
+<link rel="stylesheet" href="/_pagefind/pagefind-ui.css">
+<script src="/_pagefind/pagefind-ui.js"></script>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    new PagefindUI({ element: "#search", showSubResults: true });
+  });
+</script>
+
 </body>
 </html>
