@@ -837,6 +837,82 @@
   font-size: 12px;
   padding: 6px 10px;
 }
+/* ======================
+   PACKAGE SWITCH (above summary)
+   ====================== */
+.package-switch{
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  margin-bottom: 14px;
+}
+
+.ps-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom: 10px;
+}
+
+.ps-head h3{
+  margin:0;
+  font-size: 14px;
+  font-weight: 1000;
+  color: rgba(15,23,42,.88);
+}
+
+.ps-reset{
+  border:none;
+  cursor:pointer;
+  font-weight: 1000;
+  font-size: 11px;
+  color: rgba(15,23,42,.75);
+  background: rgba(15,23,42,.06);
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+.ps-tabs{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap:8px;
+}
+
+.ps-tab{
+  padding: 10px 10px;
+  border-radius: 12px;
+  font-weight: 1000;
+  font-size: 12px;
+  cursor:pointer;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(15,23,42,.10);
+  color: rgba(15,23,42,.78);
+  transition: transform .12s ease, filter .12s ease, border-color .12s ease;
+}
+
+.ps-tab:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+.ps-tab.active{
+  border-color: rgba(37,99,235,.25);
+  color: rgba(15,23,42,.92);
+  box-shadow: 0 10px 22px rgba(2,16,41,.10);
+}
+
+/* Mobile */
+@media (max-width: 1020px){
+  .ps-tabs{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 
   </style>
@@ -927,10 +1003,23 @@
 
       <!-- RIGHT: summary -->
       <aside class="summary">
-        <div class="sum-head">
-          <h3>Package Summary</h3>
-          <div class="sum-badge"><span style="color:var(--success)">✓</span> Auswahl gespeichert</div>
-        </div>
+          <!-- ✅ PACKAGE SELECTOR (inside summary, above Package Summary) -->
+  <div class="package-switch">
+    <div class="ps-head">
+      <h3>Paket wählen</h3>
+      <button class="ps-reset" type="button" id="resetBtnTop">Reset</button>
+    </div>
+
+    <div class="ps-tabs">
+      <button class="ps-tab active" type="button" data-pkg="starter">Starter</button>
+      <button class="ps-tab" type="button" data-pkg="plus">Plus</button>
+      <button class="ps-tab" type="button" data-pkg="deluxe">Deluxe</button>
+      <button class="ps-tab" type="button" data-pkg="eutr">EU–TR</button>
+    </div>
+  </div>
+
+ 
+        
 
         <div class="sum-list" id="summaryList">
           <div class="empty" id="emptyState">Noch keine Auswahl – wähle links eine Kategorie.</div>
@@ -1593,6 +1682,50 @@ function renderMobileAccordion(){
 }
 
 }
+/* =========================
+   PACKAGE SWITCH (Summary)
+   ========================= */
+document.querySelectorAll(".ps-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    // visual active
+    document.querySelectorAll(".ps-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    // sync top tabs too
+    document.querySelectorAll(".tab").forEach(t => {
+      t.classList.toggle("active", t.dataset.pkg === tab.dataset.pkg);
+    });
+
+    const pkg = tab.dataset.pkg;
+    applyPreset(pkg);
+    renderChart(
+      projectionForPackage(pkg),
+      pkgLabelFromKey(pkg)
+    );
+  });
+});
+
+// Reset button (top)
+document.getElementById("resetBtnTop")?.addEventListener("click", () => {
+  resetAll();
+  renderCategories();
+  renderSummary();
+
+  // reset visuals (package tabs)
+  document.querySelectorAll(".ps-tab").forEach(t => t.classList.remove("active"));
+  document.querySelector('.ps-tab[data-pkg="starter"]')?.classList.add("active");
+
+  // reset top tabs
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelector('.tab[data-pkg="starter"]')?.classList.add("active");
+
+  renderChart(
+    projectionForPackage("starter"),
+    pkgLabelFromKey("starter")
+  );
+});
+
+
 
 
     /* =========================
