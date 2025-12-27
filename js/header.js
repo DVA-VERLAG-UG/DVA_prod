@@ -8,17 +8,14 @@
   };
 
   const LABELS = {
-    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"Konfigurator", process:"Prozess", blog:"Blog", search:"Suche", placeholder:"Suchbegriff eingeben", noResults:"Keine Ergebnisse" },
-    en: { about:"About", contact:"Contact", projects:"Projects", services:"Configurator", process:"Process", blog:"Blog", search:"Search", placeholder:"Type to search", noResults:"No results" },
-    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"Konfigüratör", process:"Süreç", blog:"Blog", search:"Ara", placeholder:"Arama terimi girin", noResults:"Sonuç yok" },
-    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"Configurateur", process:"Processus", blog:"Blog", search:"Recherche", placeholder:"Entrez un mot-clé", noResults:"Aucun résultat" },
+    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"Konfigurator", process:"Prozess", blog:"Blog", search:"Suche" },
+    en: { about:"About", contact:"Contact", projects:"Projects", services:"Configurator", process:"Process", blog:"Blog", search:"Search" },
+    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"Configurator", process:"Süreç", blog:"Blog", search:"Ara" },
+    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"Configurator", process:"Processus", blog:"Blog", search:"Recherche" },
   };
 
   const LOGO_SRC = "/assets/images/dva-logo.png";
-  const SEARCH_ICON = "/assets/icons/lupe.png";
-
-  // If you still keep /search/ as a dedicated page, you can keep this link in the drawer:
-  const SEARCH_PAGE = "/search/";
+  const PAGEFIND_MODULE_PATH = "/_pagefind/pagefind.js"; // ESM module
 
   function getLang() {
     const m = location.pathname.match(/^\/(de|en|tr|fr)(\/|$)/);
@@ -34,8 +31,6 @@
   }
 
   function headerHTML(lang) {
-    const t = LABELS[lang] || LABELS.de;
-
     return `
       <style>
         :root{ --hdr-h:72px; --max:1180px; }
@@ -44,16 +39,11 @@
           position:fixed;
           inset:0 0 auto 0;
           height:var(--hdr-h);
-          z-index:9999; /* keep header ALWAYS above page content */
+          z-index:100;
           background:transparent;
           pointer-events:none;
-
           transform: translateY(0);
-          transition:
-            transform .28s cubic-bezier(.2,.9,.2,1),
-            background .18s ease,
-            backdrop-filter .18s ease,
-            -webkit-backdrop-filter .18s ease;
+          transition: transform .28s cubic-bezier(.2,.9,.2,1), background .18s ease, backdrop-filter .18s ease;
           will-change: transform;
         }
         .hdr.is-hidden{ transform: translateY(calc(-1 * var(--hdr-h))); }
@@ -77,9 +67,8 @@
         .brand{
           display:flex; align-items:center; gap:12px;
           color:#fff; text-decoration:none;
-          font-weight:700;
-          letter-spacing:.2px;
-          min-width: 200px;
+          font-weight:700; letter-spacing:.2px;
+          min-width:200px;
         }
         .brand img{
           width:36px; height:36px;
@@ -93,16 +82,10 @@
           text-shadow: 0 10px 26px rgba(0,0,0,.55);
         }
 
-        .right{
-          display:flex;
-          align-items:center;
-          justify-content:flex-end;
-          gap:14px;
-          min-width: 420px;
-        }
+        .right{ display:flex; align-items:center; gap:14px; }
 
         /* ==========================
-           HEADER SEARCH (INLINE + DROPDOWN)
+           HEADER SEARCH (DROPDOWN)
            ========================== */
         .site-search{
           position:relative;
@@ -111,29 +94,22 @@
           gap:10px;
 
           height:46px;
-          width: min(520px, 45vw); /* wider */
-          padding:0 10px 0 14px;
+          width: min(420px, 42vw);
+          padding:0 10px 0 16px;
 
           border-radius:18px;
-          background: rgba(255,255,255,.10);
-          border: 1px solid rgba(255,255,255,.16);
+          background: rgba(255,255,255,.08);
+          border: 1px solid rgba(255,255,255,.14);
 
-          backdrop-filter: blur(16px) saturate(1.5);
-          -webkit-backdrop-filter: blur(16px) saturate(1.5);
+          backdrop-filter: blur(14px) saturate(1.4);
+          -webkit-backdrop-filter: blur(14px) saturate(1.4);
 
-          box-shadow:
-            0 16px 46px rgba(0,0,0,.22),
-            inset 0 1px 0 rgba(255,255,255,.18);
+          box-shadow: 0 14px 40px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.18);
+          transition: background .2s ease, box-shadow .2s ease;
 
-          transition: background .2s ease, box-shadow .2s ease, border-color .2s ease;
+          z-index: 9999; /* IMPORTANT: above hero */
         }
-        .site-search:focus-within{
-          background: rgba(255,255,255,.14);
-          border-color: rgba(255,255,255,.22);
-          box-shadow:
-            0 20px 62px rgba(0,0,0,.26),
-            inset 0 1px 0 rgba(255,255,255,.20);
-        }
+        .site-search:hover{ background: rgba(255,255,255,.12); }
 
         .site-search input{
           flex:1;
@@ -146,14 +122,12 @@
           font-size:14px;
           font-weight:650;
           letter-spacing:.01em;
-          min-width: 180px;
         }
         .site-search input::placeholder{
           color: rgba(255,255,255,.75);
-          font-weight:550;
+          font-weight:500;
         }
 
-        /* icon inside field (no button border) */
         .site-search .search-icon{
           width:36px;
           height:36px;
@@ -163,123 +137,86 @@
           cursor:pointer;
           display:grid;
           place-items:center;
-          border-radius:12px;
         }
         .site-search .search-icon img{
           width:18px;
           height:18px;
           object-fit:contain;
-          opacity:.92;
+          opacity:.9;
           filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)) brightness(1.05);
           transition: opacity .15s ease, transform .15s ease;
         }
-        .site-search .search-icon:hover img{
-          opacity:1;
-          transform: scale(1.08);
-        }
+        .site-search .search-icon:hover img{ opacity:1; transform: scale(1.08); }
 
-        /* dropdown results */
+        /* Dropdown panel (does NOT push layout) */
         .search-dd{
           position:absolute;
           top: calc(100% + 10px);
           right:0;
           width: 100%;
-          max-height: min(62vh, 520px);
+          max-height: 52vh;
           overflow:auto;
-
-          z-index:10000; /* ABOVE header + everything */
-          display:none;
 
           border-radius:18px;
           background: rgba(0,0,0,.55);
-          border: 1px solid rgba(255,255,255,.14);
+          border: 1px solid rgba(255,255,255,.12);
 
-          backdrop-filter: blur(20px) saturate(1.6);
-          -webkit-backdrop-filter: blur(20px) saturate(1.6);
+          backdrop-filter: blur(18px) saturate(1.35);
+          -webkit-backdrop-filter: blur(18px) saturate(1.35);
 
-          box-shadow:
-            0 30px 90px rgba(0,0,0,.50),
-            inset 0 1px 0 rgba(255,255,255,.12);
+          box-shadow: 0 30px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.10);
+
+          padding: 10px;
+          display:none;
         }
         .search-dd.is-open{ display:block; }
 
-        .search-dd .dd-head{
-          padding: 10px 12px 8px;
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:10px;
-          color: rgba(255,255,255,.85);
-          font-weight:750;
-          font-size:12px;
-          letter-spacing:.02em;
-        }
-        .search-dd .dd-clear{
-          border:0;
-          background: rgba(255,255,255,.08);
-          color:#fff;
-          font-weight:800;
-          font-size:12px;
-          padding:8px 10px;
-          border-radius:12px;
-          cursor:pointer;
-        }
-        .search-dd .dd-clear:hover{ filter: brightness(1.08); }
-
-        .search-dd .dd-list{
-          padding: 0 8px 10px;
-          display:flex;
-          flex-direction:column;
-          gap:6px;
-        }
-
-        .search-dd a.dd-item{
+        .dd-row{
           display:block;
           padding: 12px 12px;
-          border-radius:14px;
+          border-radius: 14px;
           text-decoration:none;
-          color:#fff;
-          background: rgba(255,255,255,.06);
-          border: 1px solid rgba(255,255,255,.08);
-          transition: transform .15s ease, background .15s ease, border-color .15s ease;
+          color: rgba(255,255,255,.92);
+          transition: background .15s ease, transform .15s ease;
         }
-        .search-dd a.dd-item:hover{
-          background: rgba(255,255,255,.09);
-          border-color: rgba(255,255,255,.14);
+        .dd-row:hover{
+          background: rgba(255,255,255,.07);
           transform: translateY(-1px);
+          color:#fff;
         }
-        .search-dd .dd-title{
-          font-weight:900;
-          font-size:13px;
+        .dd-title{
+          font-weight:850;
           letter-spacing:.01em;
-          margin-bottom:4px;
+          margin-bottom: 4px;
+          line-height:1.2;
         }
-        .search-dd .dd-url{
-          font-size:11px;
-          opacity:.70;
-          margin-bottom:6px;
-          word-break: break-all;
-        }
-        .search-dd .dd-excerpt{
+        .dd-meta{
           font-size:12px;
+          opacity:.75;
           line-height:1.35;
-          opacity:.88;
         }
-
-        .search-dd .dd-empty{
-          padding: 14px 12px 16px;
-          color: rgba(255,255,255,.85);
+        .dd-empty{
+          padding: 10px 12px;
+          color: rgba(255,255,255,.75);
+          font-weight:600;
+        }
+        .dd-loading{
+          padding: 10px 12px;
+          color: rgba(255,255,255,.80);
           font-weight:700;
         }
 
-        /* languages */
+        /* Mobile */
+        @media (max-width: 820px){
+          .site-search{ display:none; }
+        }
+
         .langs{
           display:flex; align-items:center; gap:8px;
           color:#fff; font-weight:800; font-size:12px;
           letter-spacing:.08em; text-transform:uppercase;
           text-shadow: 0 10px 26px rgba(0,0,0,.55);
           user-select:none;
-          white-space: nowrap;
         }
         .langs a{ color:#fff; opacity:.70; text-decoration:none; }
         .langs a.is-active{ opacity:1; }
@@ -305,9 +242,7 @@
 
         .overlay{
           position:fixed; inset:0;
-          background:
-            radial-gradient(900px 700px at 80% 15%, rgba(255,255,255,.08), rgba(0,0,0,.02)),
-            rgba(0,0,0,.02);
+          background: radial-gradient(900px 700px at 80% 15%, rgba(255,255,255,.08), rgba(0,0,0,.02)), rgba(0,0,0,.02);
           opacity:0;
           pointer-events:none;
           transition: opacity .10s ease;
@@ -321,27 +256,19 @@
           width:min(380px, 90vw);
           padding:18px 18px 22px;
           z-index:201;
-
-          background:
-            linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
-            radial-gradient(900px 650px at 30% 10%, rgba(255,255,255,.008), rgba(255,255,255,0)),
-            radial-gradient(900px 700px at 80% 80%, rgba(120,190,255,.04), rgba(0,0,0,0));
+          background: linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+                      radial-gradient(900px 650px at 30% 10%, rgba(255,255,255,.008), rgba(255,255,255,0)),
+                      radial-gradient(900px 700px at 80% 80%, rgba(120,190,255,.04), rgba(0,0,0,0));
           border-left: 1px solid rgba(255,255,255,.10);
-
-          box-shadow:
-            -16px 0 60px rgba(0,0,0,.28),
-            inset 0 1px 0 rgba(255,255,255,.14);
-
-          backdrop-filter: blur(2px) saturate(1.55);
+          box-shadow: -16px 0 60px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.14);
+          backdrop-filter: blur(26px) saturate(1.55);
           -webkit-backdrop-filter: blur(26px) saturate(1.55);
-
           transform: translateX(112%);
           transition: transform .55s cubic-bezier(.16, 1, .12, 1);
         }
         .drawer.is-open{ transform: translateX(0); }
 
         .drawer-top{
-          position:relative;
           display:flex;
           align-items:center;
           justify-content:space-between;
@@ -349,11 +276,7 @@
           margin-bottom:12px;
           color:#fff;
         }
-        .drawer-top .title{
-          font-weight:900;
-          letter-spacing:.02em;
-          text-shadow: 0 12px 28px rgba(0,0,0,.28);
-        }
+        .drawer-top .title{ font-weight:900; letter-spacing:.02em; }
 
         .close{
           width:42px; height:42px;
@@ -362,44 +285,19 @@
           background: rgba(255,255,255,.05);
           color:#fff;
           cursor:pointer;
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          box-shadow:
-            0 12px 30px rgba(0,0,0,.20),
-            inset 0 1px 0 rgba(255,255,255,.14);
+          box-shadow: 0 12px 30px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.14);
         }
-        .close:hover{ filter: brightness(1.08); }
 
-        .drawer nav{
-          position:relative;
-          display:flex;
-          flex-direction:column;
-          gap:6px;
-          padding-top:6px;
-        }
+        .drawer nav{ display:flex; flex-direction:column; gap:6px; padding-top:6px; }
         .drawer nav a{
           padding:14px 10px;
           border-radius:14px;
           color:rgba(255,255,255,.92);
           text-decoration:none;
           font-weight:850;
-          letter-spacing:.01em;
-          background: transparent;
-          transition: background .20s ease, transform .20s ease, color .20s ease;
         }
-        .drawer nav a:hover{
-          background: rgba(255,255,255,.07);
-          transform: translateX(-2px);
-          color:#fff;
-        }
+        .drawer nav a:hover{ background: rgba(255,255,255,.07); }
 
-        @media (max-width: 980px){
-          .right{ min-width: auto; }
-          .site-search{ width: min(420px, 42vw); }
-        }
-        @media (max-width: 820px){
-          .site-search{ display:none; }
-        }
         @media (max-width: 520px){
           .brand span{ display:none; }
           .langs{ display:none; }
@@ -414,24 +312,18 @@
           </a>
 
           <div class="right">
-            <form class="site-search" id="site-search-form" role="search" autocomplete="off">
+            <form class="site-search" role="search" autocomplete="off">
               <input
                 id="site-search-input"
                 type="search"
-                placeholder="${t.placeholder}"
-                aria-label="${t.search}"
+                placeholder="Suchbegriff eingeben"
+                aria-label="${LABELS[lang].search}"
               />
-              <button type="submit" class="search-icon" aria-label="${t.search}">
-                <img src="${SEARCH_ICON}" alt="" />
+              <button type="submit" class="search-icon" aria-label="${LABELS[lang].search}">
+                <img src="/assets/icons/lupe.png" alt="" />
               </button>
 
-              <div class="search-dd" id="site-search-dd" aria-label="Suchergebnisse">
-                <div class="dd-head">
-                  <span id="site-search-meta"> </span>
-                  <button type="button" class="dd-clear" id="site-search-clear">Löschen</button>
-                </div>
-                <div class="dd-list" id="site-search-list"></div>
-              </div>
+              <div class="search-dd" id="site-search-dd"></div>
             </form>
 
             <div class="langs" aria-label="Language switch">
@@ -442,9 +334,7 @@
             </div>
 
             <button class="burger" type="button" aria-label="Menu" aria-expanded="false">
-              <span class="icon" aria-hidden="true">
-                <i></i><i></i><i></i>
-              </span>
+              <span class="icon" aria-hidden="true"><i></i><i></i><i></i></span>
             </button>
           </div>
         </div>
@@ -457,68 +347,27 @@
           <div class="title">Menü</div>
           <button class="close" type="button" data-close aria-label="Close">✕</button>
         </div>
-
         <nav>
-          <a href="${SEARCH_PAGE}">${t.search}</a>
-          <a href="${ROUTES[lang].about}" data-nav>${t.about}</a>
-          <a href="${ROUTES[lang].projects}" data-nav>${t.projects}</a>
-          <a href="${ROUTES[lang].services}" data-nav>${t.services}</a>
-          <a href="${ROUTES[lang].process}" data-nav>${t.process}</a>
-          <a href="${ROUTES[lang].blog}" data-nav>${t.blog}</a>
-          <a href="${ROUTES[lang].contact}" data-nav>${t.contact}</a>
+          <a href="${ROUTES[lang].about}">${LABELS[lang].about}</a>
+          <a href="${ROUTES[lang].projects}">${LABELS[lang].projects}</a>
+          <a href="${ROUTES[lang].services}">${LABELS[lang].services}</a>
+          <a href="${ROUTES[lang].process}">${LABELS[lang].process}</a>
+          <a href="${ROUTES[lang].blog}">${LABELS[lang].blog}</a>
+          <a href="${ROUTES[lang].contact}">${LABELS[lang].contact}</a>
         </nav>
       </aside>
     `;
   }
 
-  // ---------- Pagefind loader + helpers ----------
-  function loadPagefindOnce() {
-    if (window.pagefind) return Promise.resolve(window.pagefind);
-
-    // avoid duplicate script tags
-    const existing = document.querySelector('script[data-pagefind="1"]');
-    if (existing) {
-      return new Promise((resolve, reject) => {
-        const done = () => (window.pagefind ? resolve(window.pagefind) : reject(new Error("pagefind not available")));
-        existing.addEventListener("load", done, { once: true });
-        existing.addEventListener("error", reject, { once: true });
-      });
-    }
-
-    return new Promise((resolve, reject) => {
-      const s = document.createElement("script");
-      s.src = "/_pagefind/pagefind.js";
-      s.async = true;
-      s.defer = true;
-      s.dataset.pagefind = "1";
-      s.onload = () => {
-        if (window.pagefind) resolve(window.pagefind);
-        else reject(new Error("pagefind loaded but window.pagefind missing"));
-      };
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
-  }
-
-  function debounce(fn, ms = 180) {
+  // Simple debounce
+  function debounce(fn, wait = 180) {
     let t;
     return (...args) => {
       clearTimeout(t);
-      t = setTimeout(() => fn(...args), ms);
+      t = setTimeout(() => fn(...args), wait);
     };
   }
 
-  function safeText(str) {
-    return (str || "").toString();
-  }
-
-  function stripHtml(html) {
-    const d = document.createElement("div");
-    d.innerHTML = html || "";
-    return d.textContent || d.innerText || "";
-  }
-
-  // ---------- init ----------
   function init() {
     const mount = document.getElementById("site-header");
     if (!mount) return;
@@ -552,17 +401,9 @@
     });
     overlay.addEventListener("click", closeMenu);
     closeBtn.addEventListener("click", closeMenu);
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
-
-    // Active nav highlight
-    const path = location.pathname;
-    mount.querySelectorAll("[data-nav]").forEach(a => {
-      const href = a.getAttribute("href");
-      const active = path === href || path.startsWith(href);
-      a.classList.toggle("is-active", active);
-    });
 
     // Language switch keeps same page type
+    const path = location.pathname;
     const pageKey = getPageKey(path, lang);
     mount.querySelectorAll("[data-lang]").forEach(a => {
       const targetLang = a.dataset.lang;
@@ -570,28 +411,23 @@
       a.classList.toggle("is-active", targetLang === lang);
     });
 
-    // Collapse on scroll down, show on scroll up
+    // Header hide/show on scroll
     let lastY = window.scrollY || 0;
     let ticking = false;
-    const SCROLL_ON_AT = 8;
-    const HIDE_AFTER = 120;
-    const DELTA = 6;
+    const SCROLL_ON_AT = 8, HIDE_AFTER = 120, DELTA = 6;
 
     function onScroll() {
       const y = window.scrollY || 0;
       const menuOpen = burger.getAttribute("aria-expanded") === "true";
       hdr.classList.toggle("is-scrolled", y > SCROLL_ON_AT);
-
       if (menuOpen) { lastY = y; return; }
-
       const diff = y - lastY;
       if (Math.abs(diff) < DELTA) return;
-
       if (diff > 0 && y > HIDE_AFTER) hdr.classList.add("is-hidden");
       else hdr.classList.remove("is-hidden");
-
       lastY = y;
     }
+
     window.addEventListener("scroll", () => {
       if (!ticking) {
         window.requestAnimationFrame(() => { onScroll(); ticking = false; });
@@ -600,128 +436,127 @@
     }, { passive: true });
     onScroll();
 
-    // ---------- SEARCH DROPDOWN ----------
-    const t = LABELS[lang] || LABELS.de;
-
-    const form = mount.querySelector("#site-search-form");
+    /* ==========================
+       PAGEFIND DROPDOWN SEARCH
+       ========================== */
+    const form = mount.querySelector(".site-search");
     const input = mount.querySelector("#site-search-input");
     const dd = mount.querySelector("#site-search-dd");
-    const list = mount.querySelector("#site-search-list");
-    const meta = mount.querySelector("#site-search-meta");
-    const clearBtn = mount.querySelector("#site-search-clear");
 
-    let lastQuery = "";
-    let lastOpenByUser = false;
+    if (!form || !input || !dd) return;
+
+    let pagefindMod = null;
+    let pagefindLoading = false;
+
+    async function ensurePagefind() {
+      if (pagefindMod) return pagefindMod;
+      if (pagefindLoading) return null;
+      pagefindLoading = true;
+
+      try {
+        // dynamic import works in normal scripts; pagefind.js is ESM (fixes import.meta error)
+        pagefindMod = await import(PAGEFIND_MODULE_PATH);
+        // Some builds expose default; normalize
+        pagefindMod = pagefindMod?.default ? pagefindMod.default : pagefindMod;
+        return pagefindMod;
+      } catch (e) {
+        console.error("Pagefind failed to load:", e);
+        dd.classList.add("is-open");
+        dd.innerHTML = `<div class="dd-empty">Pagefind konnte nicht geladen werden.</div>`;
+        return null;
+      } finally {
+        pagefindLoading = false;
+      }
+    }
 
     function openDD() {
       dd.classList.add("is-open");
     }
     function closeDD() {
       dd.classList.remove("is-open");
-    }
-    function clearDD() {
-      list.innerHTML = "";
-      meta.textContent = "";
-      closeDD();
+      dd.innerHTML = "";
     }
 
-    clearBtn.addEventListener("click", () => {
-      input.value = "";
-      input.focus();
-      lastQuery = "";
-      clearDD();
-    });
+    function escapeHTML(s) {
+      return String(s || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
 
-    // IMPORTANT: prevent redirect
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      // If user hits Enter: just keep dropdown open (or open it)
-      if (input.value.trim().length >= 2) openDD();
-    });
+    async function runSearch(q) {
+      q = (q || "").trim();
+      if (!q) { closeDD(); return; }
 
-    // Close when clicking outside (but keep clicks inside)
-    document.addEventListener("pointerdown", (e) => {
-      if (!dd.classList.contains("is-open")) return;
-      const within = form.contains(e.target);
-      if (!within) closeDD();
-    });
+      openDD();
+      dd.innerHTML = `<div class="dd-loading">Suche…</div>`;
 
-    input.addEventListener("focus", () => {
-      lastOpenByUser = true;
-      if (list.children.length > 0) openDD();
-    });
-
-    // allow clicking results before closing
-    input.addEventListener("blur", () => {
-      setTimeout(() => {
-        if (!form.contains(document.activeElement)) closeDD();
-      }, 120);
-    });
-
-    const runSearch = debounce(async () => {
-      const q = input.value.trim();
-      lastQuery = q;
-
-      if (q.length < 2) {
-        clearDD();
+      const pf = await ensurePagefind();
+      if (!pf || typeof pf.search !== "function") {
+        dd.innerHTML = `<div class="dd-empty">Pagefind konnte nicht geladen werden.</div>`;
         return;
       }
 
-      meta.textContent = "Suche…";
-      openDD();
-
       try {
-        const pf = await loadPagefindOnce();
-
-        // Pagefind search
         const res = await pf.search(q);
+        const results = res?.results || [];
 
-        // user typed something else while we waited
-        if (input.value.trim() !== q) return;
-
-        const hits = res?.results || [];
-        meta.textContent = hits.length ? `${hits.length} Treffer` : t.noResults;
-
-        if (!hits.length) {
-          list.innerHTML = `<div class="dd-empty">${t.noResults}</div>`;
+        if (!results.length) {
+          dd.innerHTML = `<div class="dd-empty">Keine Ergebnisse für „${escapeHTML(q)}“</div>`;
           return;
         }
 
-        // Render top N results
-        const MAX = 7;
-        const slice = hits.slice(0, MAX);
+        const top = results.slice(0, 6);
+        const data = await Promise.all(top.map(r => r.data()));
 
-        const items = await Promise.all(slice.map(async (r) => {
-          const data = await r.data();
-          return {
-            url: data.url,
-            title: data.meta?.title || data.url,
-            excerpt: stripHtml(data.excerpt || "").slice(0, 140)
-          };
-        }));
+        dd.innerHTML = data.map(d => {
+          const url = d.url || "#";
+          const title = escapeHTML(d.meta?.title || d.title || url);
+          const excerpt = escapeHTML((d.excerpt || "").replace(/\s+/g, " ").trim());
+          const niceUrl = escapeHTML(url);
 
-        // still same query?
-        if (input.value.trim() !== q) return;
-
-        list.innerHTML = items.map(it => `
-          <a class="dd-item" href="${it.url}">
-            <div class="dd-title">${safeText(it.title)}</div>
-            <div class="dd-url">${safeText(it.url)}</div>
-            <div class="dd-excerpt">${safeText(it.excerpt)}</div>
-          </a>
-        `).join("");
-
-        // keep open if user is interacting
-        if (lastOpenByUser) openDD();
-      } catch (err) {
-        // show error in dropdown
-        meta.textContent = "Search error";
-        list.innerHTML = `<div class="dd-empty">Pagefind konnte nicht geladen werden.</div>`;
-        openDD();
+          return `
+            <a class="dd-row" href="${url}">
+              <div class="dd-title">${title}</div>
+              <div class="dd-meta">${excerpt ? excerpt : niceUrl}</div>
+            </a>
+          `;
+        }).join("");
+      } catch (e) {
+        console.error("Pagefind search error:", e);
+        dd.innerHTML = `<div class="dd-empty">Fehler bei der Suche.</div>`;
       }
-    }, 180);
+    }
 
-    input.addEventListener("input", runSearch);
+    const runSearchDebounced = debounce(runSearch, 220);
+
+    // Prevent navigation; keep on same page
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      runSearch(input.value);
+    });
+
+    input.addEventListener("focus", () => {
+      // warm up once when user interacts
+      ensurePagefind();
+      if (dd.innerHTML.trim()) openDD();
+    });
+
+    input.addEventListener("input", () => {
+      runSearchDebounced(input.value);
+    });
+
+    // Close on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeDD();
+    });
+
+    // Close when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!form.contains(e.target)) closeDD();
+    });
   }
 
   document.addEventListener("DOMContentLoaded", init);
