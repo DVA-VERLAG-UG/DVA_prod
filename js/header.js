@@ -8,15 +8,13 @@
   };
 
   const LABELS = {
-    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"configurator", process:"Prozess", blog:"Blog", search:"Suche" },
-    en: { about:"About", contact:"Contact", projects:"Projects", services:"configurator", process:"Process", blog:"Blog", search:"Search" },
-    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"configurator", process:"Süreç", blog:"Blog", search:"Ara" },
-    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"configurator", process:"Processus", blog:"Blog", search:"Recherche" },
+    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"Konfigurator", process:"Prozess", blog:"Blog", search:"Suche" },
+    en: { about:"About", contact:"Contact", projects:"Projects", services:"Configurator", process:"Process", blog:"Blog", search:"Search" },
+    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"Configurator", process:"Süreç", blog:"Blog", search:"Ara" },
+    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"Configurateur", process:"Processus", blog:"Blog", search:"Recherche" },
   };
 
   const LOGO_SRC = "/assets/images/dva-logo.png";
-
-  // Global search page (you currently use /search/)
   const SEARCH_PATH = "/search/";
 
   function getLang() {
@@ -41,7 +39,7 @@
           position:fixed;
           inset:0 0 auto 0;
           height:var(--hdr-h);
-          z-index:100;
+          z-index:1000;
           background:transparent;
           pointer-events:none;
 
@@ -53,9 +51,8 @@
             -webkit-backdrop-filter .18s ease;
           will-change: transform;
         }
-        .hdr.is-hidden{
-          transform: translateY(calc(-1 * var(--hdr-h)));
-        }
+        .hdr.is-hidden{ transform: translateY(calc(-1 * var(--hdr-h))); }
+
         .hdr.is-scrolled{
           background: rgba(0,0,0,.10);
           backdrop-filter: blur(10px) saturate(1.2);
@@ -93,118 +90,162 @@
         }
 
         .right{ display:flex; align-items:center; gap:14px; }
+
         /* ==========================
-   HEADER SEARCH FIELD
-   ========================== */
-.site-search{
-  display:flex;
-  align-items:center;
-  gap:10px;
+           HEADER SEARCH (GLASS) + DROPDOWN
+           ========================== */
+        .site-search{
+          position:relative;
+          display:flex;
+          align-items:center;
+          gap:10px;
 
-  height:44px;
-  min-width:260px;
-  padding:0 10px 0 14px;
+          height:46px;
+          width:min(420px, 42vw);
+          padding:0 10px 0 16px;
 
-  border-radius:16px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.14);
+          border-radius:999px;
 
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+          background:
+            radial-gradient(120% 140% at 18% 10%, rgba(255,255,255,.28), rgba(255,255,255,0) 55%),
+            radial-gradient(120% 140% at 80% 70%, rgba(120,190,255,.18), rgba(255,255,255,0) 55%),
+            linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
 
-  box-shadow:
-    0 14px 40px rgba(0,0,0,.22),
-    inset 0 1px 0 rgba(255,255,255,.18);
+          border: 1px solid rgba(255,255,255,.18);
 
-  transition: background .2s ease, box-shadow .2s ease;
-}
+          backdrop-filter: blur(18px) saturate(1.5);
+          -webkit-backdrop-filter: blur(18px) saturate(1.5);
 
-.site-search:hover{
-  background: rgba(255,255,255,.12);
-}
+          box-shadow:
+            0 18px 55px rgba(0,0,0,.24),
+            inset 0 1px 0 rgba(255,255,255,.22),
+            inset 0 -1px 0 rgba(0,0,0,.18);
 
-.site-search input{
-  flex:1;
-  height:100%;
-  border:0;
-  outline:0;
-  background:transparent;
-
-  color:#fff;
-  font-size:14px;
-  font-weight:600;
-  letter-spacing:.01em;
-}
-
-.site-search input::placeholder{
-  color: rgba(255,255,255,.75);
-  font-weight:500;
-}
-
-/* Search icon inside field (no border, integrated) */
-.site-search .search-icon{
-  position:relative;
-  width:34px;
-  height:34px;
-  margin-right:2px;
-
-  border:0;
-  background:transparent;
-  padding:0;
-  cursor:pointer;
-
-  display:grid;
-  place-items:center;
-
-  /* no separation line */
-  box-shadow:none;
-}
-
-.site-search .search-icon img{
-  width:18px;
-  height:18px;
-  object-fit:contain;
-  opacity:.88;
-  filter:
-    drop-shadow(0 6px 14px rgba(0,0,0,.35))
-    brightness(1.05);
-
-  transition: opacity .15s ease, transform .15s ease;
-}
-
-.site-search .search-icon:hover img{
-  opacity:1;
-  transform: scale(1.08);
-}
-
-.site-search button:hover{
-  filter: brightness(1.1);
-  transform: scale(1.05);
-}
-
-/* Mobile: hide search, keep icon feel clean */
-@media (max-width: 820px){
-  .site-search{
-    display:none;
-  }
-}
-  
-
-
-        /* NEW: Search button */
-        .search-btn{
-          width:42px; height:42px;
-          display:grid; place-items:center;
-          border-radius:14px;
-          background: rgba(255,255,255,.06);
-          border: 1px solid rgba(255,255,255,.10);
-          color:#fff;
-          text-decoration:none;
-          cursor:pointer;
-          box-shadow: 0 12px 30px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.12);
-          filter: drop-shadow(0 10px 26px rgba(0,0,0,.25));
+          transition: transform .18s ease, box-shadow .25s ease, background .25s ease;
+          overflow:hidden;
         }
-        .search-btn:hover{ filter: brightness(1.08) drop-shadow(0 10px 26px rgba(0,0,0,.25)); }
+
+        .site-search::before{
+          content:"";
+          position:absolute;
+          inset:-2px;
+          pointer-events:none;
+          opacity:0;
+          transform: translateX(-18px);
+          background: linear-gradient(
+            120deg,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,.22) 35%,
+            rgba(255,255,255,0) 70%
+          );
+          transition: opacity .18s ease, transform .35s ease;
+        }
+
+        .site-search:hover{ transform: translateY(-1px); }
+        .site-search:hover::before{ opacity:.95; transform: translateX(18px); }
+
+        .site-search input{
+          flex:1;
+          height:100%;
+          border:0;
+          outline:0;
+          background:transparent;
+
+          color:#fff;
+          font-size:14px;
+          font-weight:650;
+          letter-spacing:.01em;
+        }
+        .site-search input::placeholder{
+          color: rgba(255,255,255,.78);
+          font-weight:600;
+        }
+
+        /* Icon inside field (no border) */
+        .site-search .search-icon{
+          width:36px; height:36px;
+          border:0; background:transparent;
+          padding:0;
+          cursor:pointer;
+
+          display:grid;
+          place-items:center;
+
+          border-radius:999px;
+        }
+        .site-search .search-icon img{
+          width:18px;
+          height:18px;
+          object-fit:contain;
+          opacity:.90;
+          filter:
+            drop-shadow(0 6px 14px rgba(0,0,0,.35))
+            brightness(1.05);
+          transition: opacity .15s ease, transform .15s ease;
+        }
+        .site-search .search-icon:hover img{ opacity:1; transform: scale(1.08); }
+
+        /* Dropdown */
+        .search-dd{
+          position:absolute;
+          top: calc(100% + 10px);
+          right:0;
+          width: min(520px, 70vw);
+
+          display:none;
+          max-height: 380px;
+          overflow:auto;
+
+          border-radius:18px;
+
+          background:
+            radial-gradient(120% 140% at 18% 10%, rgba(255,255,255,.18), rgba(255,255,255,0) 55%),
+            linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+          border:1px solid rgba(255,255,255,.16);
+
+          backdrop-filter: blur(18px) saturate(1.5);
+          -webkit-backdrop-filter: blur(18px) saturate(1.5);
+
+          box-shadow:
+            0 26px 90px rgba(0,0,0,.40),
+            inset 0 1px 0 rgba(255,255,255,.18);
+
+          padding:10px;
+          z-index:9999;
+        }
+        .search-dd.is-open{ display:block; }
+
+        .search-item{
+          display:block;
+          padding:10px 12px;
+          border-radius:14px;
+          color:rgba(255,255,255,.92);
+          text-decoration:none;
+          font-weight:780;
+          letter-spacing:.01em;
+        }
+        .search-item:hover{
+          background: rgba(255,255,255,.08);
+          color:#fff;
+        }
+        .search-meta{
+          display:block;
+          margin-top:4px;
+          font-size:12px;
+          opacity:.78;
+          font-weight:650;
+        }
+        .search-empty{
+          padding:10px 12px;
+          opacity:.9;
+          font-weight:750;
+          color:rgba(255,255,255,.92);
+        }
+
+        /* Mobile: hide full search bar */
+        @media (max-width: 820px){
+          .site-search{ display:none; }
+        }
 
         .langs{
           display:flex; align-items:center; gap:8px;
@@ -243,7 +284,7 @@
           opacity:0;
           pointer-events:none;
           transition: opacity .10s ease;
-          z-index:200;
+          z-index:2000;
         }
         .overlay.is-open{ opacity:1; pointer-events:auto; }
 
@@ -252,7 +293,7 @@
           height:100%;
           width:min(380px, 90vw);
           padding:18px 18px 22px;
-          z-index:201;
+          z-index:2001;
 
           background:
             linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
@@ -336,7 +377,7 @@
 
         @media (max-width: 520px){
           .brand span{ display:none; }
-          .langs{ display:none; } /* optional: hide language row on very small screens */
+          .langs{ display:none; }
         }
       </style>
 
@@ -348,20 +389,19 @@
           </a>
 
           <div class="right">
-            <!-- NEW: Search button -->
-            <form class="site-search" action="/search/">
-  <input
-    type="search"
-    name="q"
-    placeholder="Suchbegriff eingeben"
-    aria-label="Suche"
-  />
-  <button type="submit" class="search-icon">
-    <img src="/assets/icons/lupe.png" alt="" />
-  </button>
-</form>
-
-
+            <form class="site-search" action="${SEARCH_PATH}" method="GET" role="search" autocomplete="off">
+              <input
+                id="site-search-input"
+                type="search"
+                name="q"
+                placeholder="Suchbegriff eingeben"
+                aria-label="${LABELS[lang].search}"
+              />
+              <button type="submit" class="search-icon" aria-label="${LABELS[lang].search}">
+                <img src="/assets/icons/lupe.png" alt="" />
+              </button>
+              <div class="search-dd" id="site-search-dd" aria-label="Suchergebnisse"></div>
+            </form>
 
             <div class="langs" aria-label="Language switch">
               <a data-lang="de">DE</a><span class="sep">|</span>
@@ -388,9 +428,7 @@
         </div>
 
         <nav>
-          <!-- NEW: Search inside drawer too -->
           <a href="${SEARCH_PATH}" data-nav-search>${LABELS[lang].search}</a>
-
           <a href="${ROUTES[lang].about}" data-nav>${LABELS[lang].about}</a>
           <a href="${ROUTES[lang].projects}" data-nav>${LABELS[lang].projects}</a>
           <a href="${ROUTES[lang].services}" data-nav>${LABELS[lang].services}</a>
@@ -437,12 +475,12 @@
     closeBtn.addEventListener("click", close);
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
-    // Close drawer when clicking any nav link (including search)
+    // Close drawer when clicking any nav link
     mount.querySelectorAll("aside.drawer a").forEach(a => {
       a.addEventListener("click", () => close());
     });
 
-    // Active nav highlight (for your internal pages)
+    // Active nav highlight
     const path = location.pathname;
     mount.querySelectorAll("[data-nav]").forEach(a => {
       const href = a.getAttribute("href");
@@ -457,6 +495,109 @@
       a.href = (ROUTES[targetLang] && ROUTES[targetLang][pageKey]) || ROUTES[targetLang].home;
       a.classList.toggle("is-active", targetLang === lang);
     });
+
+    /* ==========================
+       HEADER SEARCH DROPDOWN (PAGEFIND CORE)
+       ========================== */
+    const input = mount.querySelector("#site-search-input");
+    const dd = mount.querySelector("#site-search-dd");
+
+    let pagefindReady = false;
+    let debounceT = null;
+    let busy = false;
+
+    function openDD(){ dd.classList.add("is-open"); }
+    function closeDD(){ dd.classList.remove("is-open"); dd.innerHTML = ""; }
+
+    function escHtml(str){
+      return String(str).replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+      }[m]));
+    }
+
+    async function ensurePagefind(){
+      if (pagefindReady) return true;
+      await new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = "/_pagefind/pagefind.js";
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+      pagefindReady = true;
+      return true;
+    }
+
+    async function runSearch(q){
+      if (!q || q.length < 2){
+        closeDD();
+        return;
+      }
+      if (busy) return;
+      busy = true;
+
+      try{
+        await ensurePagefind();
+        if (!window.pagefind || !window.pagefind.search) throw new Error("pagefind missing");
+
+        const res = await window.pagefind.search(q, { limit: 6 });
+
+        if (!res || !res.results || res.results.length === 0){
+          dd.innerHTML = `<div class="search-empty">Keine Ergebnisse für „${escHtml(q)}“</div>`;
+          openDD();
+          return;
+        }
+
+        const items = await Promise.all(res.results.map(r => r.data()));
+        dd.innerHTML = items.map(item => {
+          const url = item.url || "#";
+          const title = item.meta?.title || item.title || url;
+          const excerpt = item.excerpt ? item.excerpt.replace(/<\/?[^>]+(>|$)/g, "") : "";
+          return `
+            <a class="search-item" href="${url}">
+              ${escHtml(title)}
+              ${excerpt ? `<span class="search-meta">${escHtml(excerpt.slice(0, 110))}${excerpt.length>110?"…":""}</span>` : ""}
+            </a>
+          `;
+        }).join("");
+
+        openDD();
+      }catch(e){
+        dd.innerHTML = `<div class="search-empty">Suche konnte nicht geladen werden.</div>`;
+        openDD();
+      }finally{
+        busy = false;
+      }
+    }
+
+    if (input && dd){
+      input.addEventListener("input", () => {
+        const q = input.value.trim();
+        clearTimeout(debounceT);
+        debounceT = setTimeout(() => runSearch(q), 140);
+      });
+
+      input.addEventListener("focus", () => {
+        const q = input.value.trim();
+        if (q.length >= 2) runSearch(q);
+      });
+
+      // close when clicking outside
+      document.addEventListener("click", (e) => {
+        const t = e.target;
+        if (!t) return;
+        // keep open when interacting with input or dropdown
+        if (mount.contains(t) && (t === input || dd.contains(t))) return;
+        closeDD();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeDD();
+      });
+
+      // When submitting, ensure it goes to /search/?q=...
+      // (default HTML submit is fine)
+    }
 
     /* ==========================
        COLLAPSE ON SCROLL DOWN,
@@ -475,6 +616,7 @@
 
       hdr.classList.toggle("is-scrolled", y > SCROLL_ON_AT);
 
+      // keep visible while menu open
       if (menuOpen) {
         lastY = y;
         return;
@@ -483,11 +625,8 @@
       const diff = y - lastY;
       if (Math.abs(diff) < DELTA) return;
 
-      if (diff > 0 && y > HIDE_AFTER) {
-        hdr.classList.add("is-hidden");
-      } else {
-        hdr.classList.remove("is-hidden");
-      }
+      if (diff > 0 && y > HIDE_AFTER) hdr.classList.add("is-hidden");
+      else hdr.classList.remove("is-hidden");
 
       lastY = y;
     }
