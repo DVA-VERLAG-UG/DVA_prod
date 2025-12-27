@@ -15,7 +15,9 @@
   };
 
   const LOGO_SRC = "/assets/images/dva-logo.png";
-  const PAGEFIND_MODULE_PATH = "/_pagefind/pagefind.js"; // ESM module
+
+  // Pagefind is ESM -> we load it via dynamic import (prevents import.meta errors)
+  const PAGEFIND_MODULE_PATH = "/_pagefind/pagefind.js";
 
   function getLang() {
     const m = location.pathname.match(/^\/(de|en|tr|fr)(\/|$)/);
@@ -36,14 +38,18 @@
         :root{ --hdr-h:72px; --max:1180px; }
 
         .hdr{
-          position:fixed;
-          inset:0 0 auto 0;
+          position:fixed; inset:0 0 auto 0;
           height:var(--hdr-h);
           z-index:100;
           background:transparent;
           pointer-events:none;
+
           transform: translateY(0);
-          transition: transform .28s cubic-bezier(.2,.9,.2,1), background .18s ease, backdrop-filter .18s ease;
+          transition:
+            transform .28s cubic-bezier(.2,.9,.2,1),
+            background .18s ease,
+            backdrop-filter .18s ease,
+            -webkit-backdrop-filter .18s ease;
           will-change: transform;
         }
         .hdr.is-hidden{ transform: translateY(calc(-1 * var(--hdr-h))); }
@@ -94,7 +100,7 @@
           gap:10px;
 
           height:46px;
-          width: min(420px, 42vw);
+          width: min(460px, 46vw);
           padding:0 10px 0 16px;
 
           border-radius:18px;
@@ -104,10 +110,14 @@
           backdrop-filter: blur(14px) saturate(1.4);
           -webkit-backdrop-filter: blur(14px) saturate(1.4);
 
-          box-shadow: 0 14px 40px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.18);
+          box-shadow:
+            0 14px 40px rgba(0,0,0,.22),
+            inset 0 1px 0 rgba(255,255,255,.18);
+
           transition: background .2s ease, box-shadow .2s ease;
 
-          z-index: 9999; /* IMPORTANT: above hero */
+          /* IMPORTANT: keep above hero */
+          z-index: 9999;
         }
         .site-search:hover{ background: rgba(255,255,255,.12); }
 
@@ -117,7 +127,6 @@
           border:0;
           outline:0;
           background:transparent;
-
           color:#fff;
           font-size:14px;
           font-weight:650;
@@ -128,9 +137,9 @@
           font-weight:500;
         }
 
+        /* icon button INSIDE field */
         .site-search .search-icon{
-          width:36px;
-          height:36px;
+          width:36px; height:36px;
           border:0;
           background:transparent;
           padding:0;
@@ -139,8 +148,7 @@
           place-items:center;
         }
         .site-search .search-icon img{
-          width:18px;
-          height:18px;
+          width:18px; height:18px;
           object-fit:contain;
           opacity:.9;
           filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)) brightness(1.05);
@@ -164,7 +172,9 @@
           backdrop-filter: blur(18px) saturate(1.35);
           -webkit-backdrop-filter: blur(18px) saturate(1.35);
 
-          box-shadow: 0 30px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.10);
+          box-shadow:
+            0 30px 90px rgba(0,0,0,.45),
+            inset 0 1px 0 rgba(255,255,255,.10);
 
           padding: 10px;
           display:none;
@@ -177,13 +187,22 @@
           border-radius: 14px;
           text-decoration:none;
           color: rgba(255,255,255,.92);
-          transition: background .15s ease, transform .15s ease;
+          transition: background .15s ease, transform .15s ease, box-shadow .15s ease;
         }
         .dd-row:hover{
           background: rgba(255,255,255,.07);
           transform: translateY(-1px);
           color:#fff;
         }
+
+        .dd-row.is-active{
+          background: rgba(255,255,255,.18);
+          box-shadow:
+            0 12px 40px rgba(0,0,0,.35),
+            inset 0 1px 0 rgba(255,255,255,.25);
+          transform: translateY(-1px);
+        }
+
         .dd-title{
           font-weight:850;
           letter-spacing:.01em;
@@ -195,44 +214,23 @@
           opacity:.75;
           line-height:1.35;
         }
-        .dd-empty{
-          padding: 10px 12px;
-          color: rgba(255,255,255,.75);
-          font-weight:600;
-        }
-        .dd-loading{
+        .dd-empty, .dd-loading{
           padding: 10px 12px;
           color: rgba(255,255,255,.80);
           font-weight:700;
         }
 
-        /* Mobile */
+        /* style highlight tag (optional, looks better than raw <mark>) */
+        .search-dd mark{
+          background: rgba(255,255,255,.12);
+          color:#fff;
+          border-radius:6px;
+          padding:0 4px;
+        }
+
         @media (max-width: 820px){
           .site-search{ display:none; }
         }
-
-        /* ==========================
-   SEARCH DROPDOWN: ACTIVE CLICKED RESULT
-   ========================== */
-
-.search-dd .result{
-  transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
-}
-
-.search-dd .result.is-active{
-  background: rgba(255,255,255,.18);
-  box-shadow:
-    0 12px 40px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.25);
-  transform: translateY(-1px);
-  animation: resultPulse .25s ease-out;
-}
-
-@keyframes resultPulse{
-  from{ transform: scale(.98); }
-  to{ transform: scale(1); }
-}
-
 
         .langs{
           display:flex; align-items:center; gap:8px;
@@ -265,7 +263,9 @@
 
         .overlay{
           position:fixed; inset:0;
-          background: radial-gradient(900px 700px at 80% 15%, rgba(255,255,255,.08), rgba(0,0,0,.02)), rgba(0,0,0,.02);
+          background:
+            radial-gradient(900px 700px at 80% 15%, rgba(255,255,255,.08), rgba(0,0,0,.02)),
+            rgba(0,0,0,.02);
           opacity:0;
           pointer-events:none;
           transition: opacity .10s ease;
@@ -279,9 +279,10 @@
           width:min(380px, 90vw);
           padding:18px 18px 22px;
           z-index:201;
-          background: linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
-                      radial-gradient(900px 650px at 30% 10%, rgba(255,255,255,.008), rgba(255,255,255,0)),
-                      radial-gradient(900px 700px at 80% 80%, rgba(120,190,255,.04), rgba(0,0,0,0));
+          background:
+            linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+            radial-gradient(900px 650px at 30% 10%, rgba(255,255,255,.008), rgba(255,255,255,0)),
+            radial-gradient(900px 700px at 80% 80%, rgba(120,190,255,.04), rgba(0,0,0,0));
           border-left: 1px solid rgba(255,255,255,.10);
           box-shadow: -16px 0 60px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.14);
           backdrop-filter: blur(26px) saturate(1.55);
@@ -292,12 +293,8 @@
         .drawer.is-open{ transform: translateX(0); }
 
         .drawer-top{
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:12px;
-          margin-bottom:12px;
-          color:#fff;
+          display:flex; align-items:center; justify-content:space-between;
+          gap:12px; margin-bottom:12px; color:#fff;
         }
         .drawer-top .title{ font-weight:900; letter-spacing:.02em; }
 
@@ -325,29 +322,6 @@
           .brand span{ display:none; }
           .langs{ display:none; }
         }
-        /* Remove Pagefind highlight <mark> styling */
-.search-dd mark{
-  background: rgba(255,255,255,.12);
-  color:#fff;
-  border-radius:6px;
-  padding:0 4px;
-}
-
-/* Active (clicked) search result */
-.search-dd .result.is-active{
-  background: rgba(255,255,255,.18);
-  box-shadow:
-    0 12px 40px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.25);
-  transform: translateY(-1px);
-}
-
-/* smooth interaction */
-.search-dd .result{
-  transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
-}
-
-
       </style>
 
       <div class="hdr">
@@ -358,6 +332,7 @@
           </a>
 
           <div class="right">
+            <!-- NOTE: no action, no redirect -->
             <form class="site-search" role="search" autocomplete="off">
               <input
                 id="site-search-input"
@@ -368,8 +343,7 @@
               <button type="submit" class="search-icon" aria-label="${LABELS[lang].search}">
                 <img src="/assets/icons/lupe.png" alt="" />
               </button>
-
-              <div class="search-dd" id="site-search-dd"></div>
+              <div class="search-dd" id="site-search-dd" aria-label="Suchergebnisse"></div>
             </form>
 
             <div class="langs" aria-label="Language switch">
@@ -405,13 +379,21 @@
     `;
   }
 
-  // Simple debounce
   function debounce(fn, wait = 180) {
     let t;
     return (...args) => {
       clearTimeout(t);
       t = setTimeout(() => fn(...args), wait);
     };
+  }
+
+  function escapeHTML(s) {
+    return String(s || "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
   }
 
   function init() {
@@ -428,126 +410,8 @@
     const closeBtn = mount.querySelector("[data-close]");
 
     /* ==========================
-   SEARCH DROPDOWN (stays on page)
-   ========================== */
-
-const input = mount.querySelector("#site-search-input");
-const dd = mount.querySelector("#site-search-dd");
-
-let ddOpen = false;
-let activeIndex = -1;
-let lastQuery = "";
-
-function openDD(){
-  if (!dd) return;
-  dd.style.display = "block";
-  ddOpen = true;
-}
-function closeDD(){
-  if (!dd) return;
-  dd.style.display = "none";
-  ddOpen = false;
-  activeIndex = -1;
-  dd.querySelectorAll(".result.is-active").forEach(el => el.classList.remove("is-active"));
-}
-
-function setActive(el){
-  if (!dd) return;
-  dd.querySelectorAll(".result.is-active").forEach(x => x.classList.remove("is-active"));
-  if (el) el.classList.add("is-active");
-}
-
-async function runSearch(q){
-  if (!dd) return;
-  const query = (q || "").trim();
-  lastQuery = query;
-
-  if (!query){
-    dd.innerHTML = "";
-    closeDD();
-    return;
-  }
-
-  // Pagefind must exist
-  if (!window.pagefind){
-    dd.innerHTML = `<div class="search-msg">Pagefind konnte nicht geladen werden.</div>`;
-    openDD();
-    return;
-  }
-
-  // search
-  const res = await window.pagefind.search(query);
-  const items = res.results.slice(0, 6);
-
-  if (!items.length){
-    dd.innerHTML = `<div class="search-msg">Keine Ergebnisse für <strong>${escapeHTML(query)}</strong></div>`;
-    openDD();
-    return;
-  }
-
-  // load data
-  const data = await Promise.all(items.map(r => r.data()));
-
-  dd.innerHTML = data.map((d, i) => {
-    const title = d.meta?.title || d.url;
-    const excerpt = (d.excerpt || "").trim();
-    return `
-      <a class="result" href="${d.url}" data-idx="${i}">
-        <div class="r-title">${title}</div>
-        ${excerpt ? `<div class="r-excerpt">${excerpt}</div>` : ""}
-      </a>
-    `;
-  }).join("");
-
-  // CLICK HANDLING: highlight clicked result
-  dd.querySelectorAll(".result").forEach(a => {
-    a.addEventListener("click", () => {
-      setActive(a); // ✅ this is the click highlight
-      // optional: closeDD();  // uncomment if you want dropdown to close after click
-    });
-  });
-
-  openDD();
-}
-
-function debounce(fn, ms=140){
-  let t;
-  return (...args) => {
-    clearTimeout(t);
-    t = setTimeout(() => fn(...args), ms);
-  };
-}
-
-const debouncedSearch = debounce((val) => runSearch(val), 160);
-
-if (input && dd){
-  input.addEventListener("input", (e) => {
-    activeIndex = -1;
-    debouncedSearch(e.target.value);
-  });
-
-  input.addEventListener("focus", () => {
-    if (dd.innerHTML.trim()) openDD();
-  });
-
-  // Close dropdown on outside click
-  document.addEventListener("click", (e) => {
-    if (!ddOpen) return;
-    const inside = e.target.closest(".site-search");
-    if (!inside) closeDD();
-  });
-}
-
-/* helpers */
-function escapeHTML(str){
-  return (str || "").replace(/[&<>"']/g, (m) => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
-  }[m]));
-}
-
-
-    
-
+       MENU OPEN/CLOSE
+       ========================== */
     const openMenu = () => {
       burger.setAttribute("aria-expanded", "true");
       overlay.classList.add("is-open");
@@ -568,8 +432,11 @@ function escapeHTML(str){
     });
     overlay.addEventListener("click", closeMenu);
     closeBtn.addEventListener("click", closeMenu);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
 
-    // Language switch keeps same page type
+    /* ==========================
+       LANG SWITCH
+       ========================== */
     const path = location.pathname;
     const pageKey = getPageKey(path, lang);
     mount.querySelectorAll("[data-lang]").forEach(a => {
@@ -578,20 +445,30 @@ function escapeHTML(str){
       a.classList.toggle("is-active", targetLang === lang);
     });
 
-    // Header hide/show on scroll
+    /* ==========================
+       HEADER HIDE/SHOW ON SCROLL
+       ========================== */
     let lastY = window.scrollY || 0;
     let ticking = false;
-    const SCROLL_ON_AT = 8, HIDE_AFTER = 120, DELTA = 6;
+
+    const SCROLL_ON_AT = 8;
+    const HIDE_AFTER = 120;
+    const DELTA = 6;
 
     function onScroll() {
       const y = window.scrollY || 0;
       const menuOpen = burger.getAttribute("aria-expanded") === "true";
+
       hdr.classList.toggle("is-scrolled", y > SCROLL_ON_AT);
+
       if (menuOpen) { lastY = y; return; }
+
       const diff = y - lastY;
       if (Math.abs(diff) < DELTA) return;
+
       if (diff > 0 && y > HIDE_AFTER) hdr.classList.add("is-hidden");
       else hdr.classList.remove("is-hidden");
+
       lastY = y;
     }
 
@@ -601,6 +478,7 @@ function escapeHTML(str){
         ticking = true;
       }
     }, { passive: true });
+
     onScroll();
 
     /* ==========================
@@ -609,88 +487,87 @@ function escapeHTML(str){
     const form = mount.querySelector(".site-search");
     const input = mount.querySelector("#site-search-input");
     const dd = mount.querySelector("#site-search-dd");
-
     if (!form || !input || !dd) return;
 
-    let pagefindMod = null;
-    let pagefindLoading = false;
+    let pf = null;
+    let pfLoading = false;
 
     async function ensurePagefind() {
-      if (pagefindMod) return pagefindMod;
-      if (pagefindLoading) return null;
-      pagefindLoading = true;
+      if (pf) return pf;
+      if (pfLoading) return null;
+      pfLoading = true;
 
       try {
-        // dynamic import works in normal scripts; pagefind.js is ESM (fixes import.meta error)
-        pagefindMod = await import(PAGEFIND_MODULE_PATH);
-        // Some builds expose default; normalize
-        pagefindMod = pagefindMod?.default ? pagefindMod.default : pagefindMod;
-        return pagefindMod;
+        // ESM dynamic import
+        const mod = await import(PAGEFIND_MODULE_PATH);
+        // normalize export
+        pf = mod?.default ?? mod;
+        return pf;
       } catch (e) {
         console.error("Pagefind failed to load:", e);
-        dd.classList.add("is-open");
-        dd.innerHTML = `<div class="dd-empty">Pagefind konnte nicht geladen werden.</div>`;
+        pf = null;
         return null;
       } finally {
-        pagefindLoading = false;
+        pfLoading = false;
       }
     }
 
-    function openDD() {
-      dd.classList.add("is-open");
-    }
+    function openDD() { dd.classList.add("is-open"); }
     function closeDD() {
       dd.classList.remove("is-open");
       dd.innerHTML = "";
+      dd.querySelectorAll(".dd-row.is-active").forEach(x => x.classList.remove("is-active"));
     }
 
-    function escapeHTML(s) {
-      return String(s || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    function setActive(el) {
+      dd.querySelectorAll(".dd-row.is-active").forEach(x => x.classList.remove("is-active"));
+      if (el) el.classList.add("is-active");
     }
 
     async function runSearch(q) {
-      q = (q || "").trim();
-      if (!q) { closeDD(); return; }
+      const query = (q || "").trim();
+      if (!query) { closeDD(); return; }
 
       openDD();
       dd.innerHTML = `<div class="dd-loading">Suche…</div>`;
 
-      const pf = await ensurePagefind();
-      if (!pf || typeof pf.search !== "function") {
+      const pagefind = await ensurePagefind();
+      if (!pagefind || typeof pagefind.search !== "function") {
         dd.innerHTML = `<div class="dd-empty">Pagefind konnte nicht geladen werden.</div>`;
         return;
       }
 
       try {
-        const res = await pf.search(q);
-        const results = res?.results || [];
+        const res = await pagefind.search(query);
+        const results = (res && res.results) ? res.results : [];
 
         if (!results.length) {
-          dd.innerHTML = `<div class="dd-empty">Keine Ergebnisse für „${escapeHTML(q)}“</div>`;
+          dd.innerHTML = `<div class="dd-empty">Keine Ergebnisse für „${escapeHTML(query)}“</div>`;
           return;
         }
 
         const top = results.slice(0, 6);
         const data = await Promise.all(top.map(r => r.data()));
 
-        dd.innerHTML = data.map(d => {
+        dd.innerHTML = data.map((d) => {
           const url = d.url || "#";
           const title = escapeHTML(d.meta?.title || d.title || url);
-          const excerpt = escapeHTML((d.excerpt || "").replace(/\s+/g, " ").trim());
-          const niceUrl = escapeHTML(url);
+          // excerpt may contain <mark> from pagefind – we keep it and style it
+          const excerpt = (d.excerpt || "").trim();
 
           return `
             <a class="dd-row" href="${url}">
               <div class="dd-title">${title}</div>
-              <div class="dd-meta">${excerpt ? excerpt : niceUrl}</div>
+              <div class="dd-meta">${excerpt ? excerpt : escapeHTML(url)}</div>
             </a>
           `;
         }).join("");
+
+        // click highlight
+        dd.querySelectorAll(".dd-row").forEach(a => {
+          a.addEventListener("click", () => setActive(a));
+        });
+
       } catch (e) {
         console.error("Pagefind search error:", e);
         dd.innerHTML = `<div class="dd-empty">Fehler bei der Suche.</div>`;
@@ -699,14 +576,14 @@ function escapeHTML(str){
 
     const runSearchDebounced = debounce(runSearch, 220);
 
-    // Prevent navigation; keep on same page
+    // prevent redirect
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       runSearch(input.value);
     });
 
     input.addEventListener("focus", () => {
-      // warm up once when user interacts
+      // pre-load module when user interacts
       ensurePagefind();
       if (dd.innerHTML.trim()) openDD();
     });
@@ -715,12 +592,10 @@ function escapeHTML(str){
       runSearchDebounced(input.value);
     });
 
-    // Close on Escape
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeDD();
     });
 
-    // Close when clicking outside
     document.addEventListener("click", (e) => {
       if (!form.contains(e.target)) closeDD();
     });
