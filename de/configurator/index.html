@@ -29,14 +29,13 @@
   <script src="/js/header.js" defer></script>
   <script src="/js/footer.js" defer></script>
 
-
   <style>
     :root{
       --max:1180px;
 
       /* SaaS UI */
-      --bg: #cfe1f4;          /* soft blue */
-      --panel: #eaf2ff;       /* lighter blue tint */
+      --bg: #cfe1f4;
+      --panel: #eaf2ff;
       --card: #ffffff;
       --ink: #0f172a;
       --muted: rgba(15,23,42,.62);
@@ -47,11 +46,11 @@
       --primary: #2563eb;
       --success: #22c55e;
 
-      /* tier colors (like your request) */
-      --tier-starter: #ffffff; /* white */
-      --tier-plus: #eef2f7;    /* silver */
-      --tier-deluxe: #f6d365;  /* gold */
-      --tier-eutr: #dbeafe;    /* premium bluish */
+      /* tier colors */
+      --tier-starter: #ffffff;
+      --tier-plus: #eef2f7;
+      --tier-deluxe: #f6d365;
+      --tier-eutr: #dbeafe;
 
       --radius: 16px;
     }
@@ -69,7 +68,7 @@
     .wrap{
       width: min(var(--max), calc(100% - 40px));
       margin: 0 auto;
-      padding: 110px 0 90px; /* space under your injected header */
+      padding: 110px 0 90px;
     }
 
     .page-head{
@@ -92,7 +91,7 @@
       max-width: 70ch;
     }
 
-    /* top tabs (like screenshot) */
+    /* top tabs */
     .tabs{
       display:flex;
       gap:10px;
@@ -123,7 +122,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns: 320px 1fr 360px; /* left / center / right like screenshot */
+      grid-template-columns: 320px 1fr 360px;
       gap: 18px;
       align-items:start;
     }
@@ -232,6 +231,7 @@
       border: 1px solid rgba(15,23,42,.10);
       border-radius: 14px;
       padding: 12px;
+      padding-bottom: 52px;   /* Platz für Preis */
       box-shadow: 0 10px 22px rgba(2,16,41,.06);
       cursor:pointer;
       transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
@@ -277,17 +277,19 @@
       color: rgba(15,23,42,.60);
       font-size: 12px;
       line-height: 1.35;
+      padding-right: 82px; /* Platz für Preis */
     }
     .opt-price{
       position:absolute;
-      right:10px;
-      bottom:10px;
+      right:12px;
+      bottom:12px;
       font-weight: 1000;
       color: rgba(15,23,42,.80);
       background: rgba(37,99,235,.08);
       border: 1px solid rgba(37,99,235,.12);
       padding: 6px 10px;
       border-radius: 999px;
+      font-size:12px;
     }
 
     .check{
@@ -323,8 +325,73 @@
       -webkit-backdrop-filter: blur(10px);
 
       position: sticky;
-      top: 92px; /* sits below header */
+      top: 92px;
       align-self:start;
+
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    /* PACKAGE SWITCH (inside summary, above list) */
+    .package-switch{
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .ps-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .ps-head h3{
+      margin:0;
+      font-size: 14px;
+      font-weight: 1000;
+      color: rgba(15,23,42,.88);
+    }
+    .ps-reset{
+      border:none;
+      cursor:pointer;
+      font-weight: 1000;
+      font-size: 11px;
+      color: rgba(15,23,42,.75);
+      background: rgba(15,23,42,.06);
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+    .ps-tabs{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap:8px;
+    }
+    .ps-tab{
+      padding: 10px 10px;
+      border-radius: 12px;
+      font-weight: 1000;
+      font-size: 12px;
+      cursor:pointer;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(15,23,42,.10);
+      color: rgba(15,23,42,.78);
+      transition: transform .12s ease, filter .12s ease, border-color .12s ease;
+    }
+    .ps-tab:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .ps-tab.active{
+      border-color: rgba(37,99,235,.25);
+      color: rgba(15,23,42,.92);
+      box-shadow: 0 10px 22px rgba(2,16,41,.10);
+    }
+    @media (max-width: 1020px){
+      .ps-tabs{ grid-template-columns: repeat(2, 1fr); }
     }
 
     .sum-head{
@@ -332,7 +399,6 @@
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      margin-bottom: 10px;
     }
     .sum-head h3{
       margin:0;
@@ -358,7 +424,6 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      margin-top: 10px;
     }
     .sum-item{
       background: var(--card);
@@ -447,7 +512,7 @@
       align-items:baseline;
       border-top: 1px solid rgba(15,23,42,.10);
       padding-top: 12px;
-      margin-top: 10px;
+      margin-top: 6px;
       font-weight: 1000;
       color: rgba(15,23,42,.88);
     }
@@ -455,7 +520,7 @@
     .btn-row{
       display:flex;
       gap:10px;
-      margin-top: 12px;
+      margin-top: 8px;
     }
 
     .btn{
@@ -481,7 +546,7 @@
       color: rgba(15,23,42,.80);
     }
 
-    /* Modal form */
+    /* Modal */
     .modal{
       position: fixed;
       inset:0;
@@ -526,26 +591,20 @@
       font-weight: 1000;
       color: rgba(15,23,42,.80);
     }
-    .modal-body{
-      padding: 14px 16px 16px;
-    }
+    .modal-body{ padding: 14px 16px 16px; }
 
     .grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
+    .field{ display:flex; flex-direction:column; gap:6px; }
     label{
       font-size: 12px;
       font-weight: 900;
       color: rgba(15,23,42,.75);
     }
-    input, textarea, select{
+    input, textarea{
       width:100%;
       border-radius: 12px;
       border: 1px solid rgba(15,23,42,.14);
@@ -555,11 +614,7 @@
       outline:none;
     }
     textarea{ min-height: 110px; resize: vertical; }
-    .modal-actions{
-      display:flex;
-      gap:10px;
-      margin-top: 12px;
-    }
+    .modal-actions{ display:flex; gap:10px; margin-top: 12px; }
     .note{
       margin-top: 10px;
       font-size: 12px;
@@ -567,366 +622,222 @@
       line-height: 1.5;
     }
 
-    /* responsive */
+    /* CHART */
+    .chart-shell{ margin: 14px 0 18px; }
+    .chart-card{
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 14px;
+    }
+    .chart-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom: 10px;
+    }
+    .chart-kicker{
+      font-size: 11px;
+      font-weight: 1000;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: rgba(15,23,42,.60);
+    }
+    .chart-title{
+      margin: 6px 0 6px;
+      font-size: 16px;
+      font-weight: 1000;
+      color: rgba(15,23,42,.92);
+    }
+    .chart-sub{
+      margin: 0;
+      color: rgba(15,23,42,.62);
+      font-size: 12.5px;
+      line-height: 1.5;
+      max-width: 72ch;
+    }
+    .chart-metrics{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .metric{
+      min-width: 140px;
+      background: #fff;
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 10px 22px rgba(2,16,41,.06);
+    }
+    .metric-label{
+      font-size: 11px;
+      font-weight: 1000;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(15,23,42,.55);
+    }
+    .metric-value{
+      margin-top: 6px;
+      font-weight: 1000;
+      color: rgba(15,23,42,.90);
+    }
+    .chart-frame{
+      height: 260px;
+      border-radius: 14px;
+      overflow:hidden;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 10px 22px rgba(2,16,41,.06);
+      position: relative;
+    }
+    #projChart{
+      width:100%;
+      height: 220px;
+      display:block;
+    }
+    .chart-x{
+      height: 40px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 0 12px 8px;
+      color: rgba(15,23,42,.55);
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: .06em;
+    }
+
+    /* MOBILE ACCORDION MODE */
+    .mobile-accordion{ display:none; }
+
     @media (max-width: 1020px){
       .layout{ grid-template-columns: 1fr; }
       .summary{ position: relative; top:0; }
       .tabs{ justify-content:flex-start; }
       .page-head{ flex-direction:column; align-items:flex-start; }
+
+      .left-panel, .center-panel{ display:none; }
+      .mobile-accordion{ display:block; }
+
+      .acc{
+        background: rgba(255,255,255,.55);
+        border: 1px solid rgba(255,255,255,.75);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        overflow: hidden;
+        margin-bottom: 12px;
+      }
+      .acc-btn{
+        width:100%;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        padding: 14px 14px;
+        border:none;
+        background: transparent;
+        cursor:pointer;
+        text-align:left;
+      }
+      .acc-left{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+      .acc-title{
+        font-weight: 1000;
+        color: rgba(15,23,42,.92);
+        font-size: 14px;
+        letter-spacing: -.01em;
+      }
+      .acc-meta{
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+        align-items:center;
+      }
+      .acc-pill{
+        font-size: 11px;
+        font-weight: 1000;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(37,99,235,.10);
+        border: 1px solid rgba(37,99,235,.15);
+        color: rgba(15,23,42,.78);
+      }
+      .acc-chosen{
+        font-size: 11px;
+        font-weight: 1000;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(34,197,94,.10);
+        border: 1px solid rgba(34,197,94,.16);
+        color: rgba(15,23,42,.78);
+        max-width: 64vw;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .acc-arrow{
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        display:grid;
+        place-items:center;
+        background: rgba(15,23,42,.06);
+        border: 1px solid rgba(15,23,42,.10);
+        font-weight: 1000;
+        color: rgba(15,23,42,.72);
+        flex: 0 0 auto;
+        transition: transform .18s ease;
+      }
+      .acc.open .acc-arrow{ transform: rotate(180deg); }
+      .acc-body{
+        max-height: 0px;
+        overflow: hidden;
+        transition: max-height .28s ease;
+        border-top: 1px solid rgba(15,23,42,.08);
+        background: rgba(255,255,255,.65);
+      }
+      .acc.open .acc-body{ max-height: 1400px; }
+      .acc-inner{ padding: 12px; }
+      .acc-inner .options{ grid-template-columns: 1fr; }
+      .acc-inner .hintline{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom: 10px;
+        color: rgba(15,23,42,.62);
+        font-weight: 900;
+        font-size: 12px;
+      }
     }
+
     @media (max-width: 640px){
       .wrap{ width: calc(100% - 24px); padding-top: 94px; }
-      .options{ grid-template-columns: 1fr; }
       .grid{ grid-template-columns: 1fr; }
       .summary{ position: sticky; top: 74px; }
+      .chart-head{ flex-direction:column; }
+      .chart-metrics{ justify-content:flex-start; }
     }
-    /* ======================
-   Projection Chart (stable height, SaaS style)
-   ====================== */
-.chart-shell{
-  margin: 14px 0 18px;
-}
-
-.chart-card{
-  background: rgba(255,255,255,.55);
-  border: 1px solid rgba(255,255,255,.75);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 14px;
-}
-
-.chart-head{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-  margin-bottom: 10px;
-}
-
-.chart-kicker{
-  font-size: 11px;
-  font-weight: 1000;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  color: rgba(15,23,42,.60);
-}
-
-.chart-title{
-  margin: 6px 0 6px;
-  font-size: 16px;
-  font-weight: 1000;
-  color: rgba(15,23,42,.92);
-}
-
-.chart-sub{
-  margin: 0;
-  color: rgba(15,23,42,.62);
-  font-size: 12.5px;
-  line-height: 1.5;
-  max-width: 72ch;
-}
-
-.chart-metrics{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
-
-.metric{
-  min-width: 140px;
-  background: #fff;
-  border: 1px solid rgba(15,23,42,.10);
-  border-radius: 14px;
-  padding: 10px 12px;
-  box-shadow: 0 10px 22px rgba(2,16,41,.06);
-}
-
-.metric-label{
-  font-size: 11px;
-  font-weight: 1000;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: rgba(15,23,42,.55);
-}
-
-.metric-value{
-  margin-top: 6px;
-  font-weight: 1000;
-  color: rgba(15,23,42,.90);
-}
-
-.chart-frame{
-  /* ensures chart doesn't "wobble" when data changes */
-  height: 260px;
-  border-radius: 14px;
-  overflow:hidden;
-  background: rgba(255,255,255,.75);
-  border: 1px solid rgba(15,23,42,.10);
-  box-shadow: 0 10px 22px rgba(2,16,41,.06);
-  position: relative;
-}
-
-#projChart{
-  width:100%;
-  height: 220px; /* stable */
-  display:block;
-}
-
-.chart-x{
-  height: 40px; /* stable */
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding: 0 12px 8px;
-  color: rgba(15,23,42,.55);
-  font-weight: 900;
-  font-size: 11px;
-  letter-spacing: .06em;
-}
-
-@media (max-width: 640px){
-  .chart-head{ flex-direction:column; }
-  .chart-metrics{ justify-content:flex-start; }
-  .metric{ min-width: 150px; }
-}
-/* ======================
-   MOBILE ACCORDION MODE
-   ====================== */
-.mobile-accordion{ display:none; }
-
-@media (max-width: 1020px){
-  /* hide desktop left+center on mobile/tablet */
-  .left-panel, .center-panel{ display:none; }
-
-  .mobile-accordion{ display:block; }
-
-  .acc{
-    background: rgba(255,255,255,.55);
-    border: 1px solid rgba(255,255,255,.75);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-
-  .acc-btn{
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding: 14px 14px;
-    border:none;
-    background: transparent;
-    cursor:pointer;
-    text-align:left;
-  }
-
-  .acc-left{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    min-width:0;
-  }
-
-  .acc-title{
-    font-weight: 1000;
-    color: rgba(15,23,42,.92);
-    font-size: 14px;
-    letter-spacing: -.01em;
-  }
-
-  .acc-meta{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    align-items:center;
-  }
-
-  .acc-pill{
-    font-size: 11px;
-    font-weight: 1000;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: rgba(37,99,235,.10);
-    border: 1px solid rgba(37,99,235,.15);
-    color: rgba(15,23,42,.78);
-  }
-
-  .acc-chosen{
-    font-size: 11px;
-    font-weight: 1000;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: rgba(34,197,94,.10);
-    border: 1px solid rgba(34,197,94,.16);
-    color: rgba(15,23,42,.78);
-    max-width: 64vw;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-
-  .acc-arrow{
-    width: 34px;
-    height: 34px;
-    border-radius: 999px;
-    display:grid;
-    place-items:center;
-    background: rgba(15,23,42,.06);
-    border: 1px solid rgba(15,23,42,.10);
-    font-weight: 1000;
-    color: rgba(15,23,42,.72);
-    flex: 0 0 auto;
-    transition: transform .18s ease;
-  }
-
-  .acc.open .acc-arrow{ transform: rotate(180deg); }
-
-  .acc-body{
-    max-height: 0px;
-    overflow: hidden;
-    transition: max-height .28s ease;
-    border-top: 1px solid rgba(15,23,42,.08);
-    background: rgba(255,255,255,.65);
-  }
-
-  .acc.open .acc-body{
-    max-height: 1200px; /* big enough for all options */
-  }
-
-  .acc-inner{
-    padding: 12px;
-  }
-
-  .acc-inner .options{
-    grid-template-columns: 1fr; /* mobile: single column cards */
-  }
-
-  .acc-inner .hintline{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom: 10px;
-    color: rgba(15,23,42,.62);
-    font-weight: 900;
-    font-size: 12px;
-  }
-
-  /* Summary stays sticky on mobile already — keep it */
-}
-/* FIX: Text überlappt Preis-Badge in den Options-Cards */
-.opt{
-  padding-bottom: 52px;          /* Platz für den Preis unten */
-}
-
-.opt-desc{
-  padding-right: 82px;           /* Platz rechts für die Preis-Pill */
-}
-
-/* optional: Preis-Pill minimal kleiner, falls du willst */
-.opt-price{
-  right: 12px;
-  bottom: 12px;
-  font-size: 12px;
-  padding: 6px 10px;
-}
-/* ======================
-   PACKAGE SWITCH (above summary)
-   ====================== */
-.package-switch{
-  background: rgba(255,255,255,.55);
-  border: 1px solid rgba(255,255,255,.75);
-  border-radius: var(--radius);
-  padding: 14px;
-  box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  margin-bottom: 14px;
-}
-
-.ps-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom: 10px;
-}
-
-.ps-head h3{
-  margin:0;
-  font-size: 14px;
-  font-weight: 1000;
-  color: rgba(15,23,42,.88);
-}
-
-.ps-reset{
-  border:none;
-  cursor:pointer;
-  font-weight: 1000;
-  font-size: 11px;
-  color: rgba(15,23,42,.75);
-  background: rgba(15,23,42,.06);
-  border: 1px solid rgba(15,23,42,.10);
-  border-radius: 999px;
-  padding: 6px 10px;
-}
-
-.ps-tabs{
-  display:grid;
-  grid-template-columns: repeat(4, minmax(0,1fr));
-  gap:8px;
-}
-
-.ps-tab{
-  padding: 10px 10px;
-  border-radius: 12px;
-  font-weight: 1000;
-  font-size: 12px;
-  cursor:pointer;
-  background: rgba(255,255,255,.75);
-  border: 1px solid rgba(15,23,42,.10);
-  color: rgba(15,23,42,.78);
-  transition: transform .12s ease, filter .12s ease, border-color .12s ease;
-}
-
-.ps-tab:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.02);
-}
-
-.ps-tab.active{
-  border-color: rgba(37,99,235,.25);
-  color: rgba(15,23,42,.92);
-  box-shadow: 0 10px 22px rgba(2,16,41,.10);
-}
-
-/* Mobile */
-@media (max-width: 1020px){
-  .ps-tabs{
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-
   </style>
 </head>
 
 <body>
-  <!-- header.js injects header -->
-   <header id="site-header"></header>
+  <header id="site-header"></header>
 
   <main class="wrap">
     <div class="page-head">
       <div>
         <h1 class="page-title">Verlags-Konfigurator</h1>
-        <p class="page-sub">Wähle pro Kategorie eine Option. Danach klickst du auf <b>„Termin anfragen“</b> – das Formular wird per <b>Netlify Forms</b> an deine E-Mail gesendet.</p>
+        <p class="page-sub">
+          Wähle pro Kategorie eine Option. Danach klickst du auf <b>„Termin anfragen“</b> –
+          das Formular wird per <b>Netlify Forms</b> an deine E-Mail gesendet.
+        </p>
       </div>
 
       <div class="tabs" aria-label="Pakete">
@@ -938,55 +849,49 @@
     </div>
 
     <section class="chart-shell" aria-label="Prognose">
-  <div class="chart-card">
-    <div class="chart-head">
-      <div>
-        <div class="chart-kicker">Prognose</div>
-        <h2 class="chart-title">Projektierte Verkaufszahlen (12 Monate)</h2>
-        <p class="chart-sub">Beispielhafte Modellkurven – je nach Paket variiert die erwartete Reichweite (ohne Garantie).</p>
-      </div>
+      <div class="chart-card">
+        <div class="chart-head">
+          <div>
+            <div class="chart-kicker">Prognose</div>
+            <h2 class="chart-title">Projektierte Verkaufszahlen (12 Monate)</h2>
+            <p class="chart-sub">Beispielhafte Modellkurven – je nach Paket variiert die erwartete Reichweite (ohne Garantie).</p>
+          </div>
 
-      <div class="chart-metrics">
-        <div class="metric">
-          <div class="metric-label">Paket</div>
-          <div class="metric-value" id="chartPkg">Starter</div>
+          <div class="chart-metrics">
+            <div class="metric">
+              <div class="metric-label">Paket</div>
+              <div class="metric-value" id="chartPkg">Starter</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Prognose (12M)</div>
+              <div class="metric-value" id="chartTotal">—</div>
+            </div>
+          </div>
         </div>
-        <div class="metric">
-          <div class="metric-label">Prognose (12M)</div>
-          <div class="metric-value" id="chartTotal">—</div>
+
+        <div class="chart-frame">
+          <svg id="projChart" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Prognose Chart">
+            <g id="grid"></g>
+            <path id="area" d="" fill="rgba(37,99,235,.14)"></path>
+            <path id="line" d="" fill="none" stroke="rgba(37,99,235,.95)" stroke-width="3.5" stroke-linecap="round"></path>
+            <g id="dots"></g>
+          </svg>
+
+          <div class="chart-x">
+            <span>Monat 1</span><span>Monat 3</span><span>Monat 6</span><span>Monat 9</span><span>Monat 12</span>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="chart-frame">
-      <svg id="projChart" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Prognose Chart">
-        <!-- grid -->
-        <g id="grid"></g>
-
-        <!-- line + area -->
-        <path id="area" d="" fill="rgba(37,99,235,.14)"></path>
-        <path id="line" d="" fill="none" stroke="rgba(37,99,235,.95)" stroke-width="3.5" stroke-linecap="round"></path>
-
-        <!-- dots -->
-        <g id="dots"></g>
-      </svg>
-
-      <div class="chart-x">
-        <span>Monat 1</span><span>Monat 3</span><span>Monat 6</span><span>Monat 9</span><span>Monat 12</span>
-      </div>
-    </div>
-  </div>
-</section>
-
+    </section>
 
     <section class="layout">
-      <!-- LEFT: categories list -->
+      <!-- LEFT -->
       <aside class="left-panel">
         <div class="left-title">Kategorien</div>
         <div class="cat-list" id="catList"></div>
       </aside>
 
-      <!-- CENTER: options for active category -->
+      <!-- CENTER -->
       <section class="center-panel">
         <div class="center-head">
           <h2 id="activeCatTitle">Kategorie</h2>
@@ -995,31 +900,30 @@
         <div class="options" id="activeOptions"></div>
       </section>
 
-      <!-- MOBILE: accordion categories + options -->
-<section class="mobile-accordion" id="mobileAccordion" aria-label="Kategorien (Mobile)"></section>
+      <!-- MOBILE -->
+      <section class="mobile-accordion" id="mobileAccordion" aria-label="Kategorien (Mobile)"></section>
 
-
-
-
-      <!-- RIGHT: summary -->
+      <!-- RIGHT SUMMARY -->
       <aside class="summary">
-          <!-- ✅ PACKAGE SELECTOR (inside summary, above Package Summary) -->
-  <div class="package-switch">
-    <div class="ps-head">
-      <h3>Paket wählen</h3>
-      <button class="ps-reset" type="button" id="resetBtnTop">Reset</button>
-    </div>
+        <!-- Package Switch -->
+        <div class="package-switch">
+          <div class="ps-head">
+            <h3>Paket wählen (Schnellauswahl)</h3>
+            <button class="ps-reset" type="button" id="resetBtnTop">Reset</button>
+          </div>
 
-    <div class="ps-tabs">
-      <button class="ps-tab active" type="button" data-pkg="starter">Starter</button>
-      <button class="ps-tab" type="button" data-pkg="plus">Plus</button>
-      <button class="ps-tab" type="button" data-pkg="deluxe">Deluxe</button>
-      <button class="ps-tab" type="button" data-pkg="eutr">EU–TR</button>
-    </div>
-  </div>
+          <div class="ps-tabs">
+            <button class="ps-tab active" type="button" data-pkg="starter">Starter</button>
+            <button class="ps-tab" type="button" data-pkg="plus">Plus</button>
+            <button class="ps-tab" type="button" data-pkg="deluxe">Deluxe</button>
+            <button class="ps-tab" type="button" data-pkg="eutr">EU–TR</button>
+          </div>
+        </div>
 
- 
-        
+        <div class="sum-head">
+          <h3>Package Summary</h3>
+          <div class="sum-badge"><span style="color:var(--success)">✓</span> Auswahl gespeichert</div>
+        </div>
 
         <div class="sum-list" id="summaryList">
           <div class="empty" id="emptyState">Noch keine Auswahl – wähle links eine Kategorie.</div>
@@ -1038,7 +942,7 @@
     </section>
   </main>
 
-  <!-- MODAL: Netlify Form -->
+  <!-- MODAL -->
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-label="Termin anfragen">
       <div class="modal-head">
@@ -1046,7 +950,6 @@
         <button class="modal-close" type="button" id="closeModal">Schließen</button>
       </div>
       <div class="modal-body">
-        <!-- Netlify Forms -->
         <form name="terminanfrage" method="POST" data-netlify="true" netlify-honeypot="bot-field">
           <input type="hidden" name="form-name" value="terminanfrage" />
           <p style="display:none">
@@ -1077,7 +980,6 @@
             <textarea id="notes" name="nachricht" placeholder="Worum geht es? Genre, Umfang, Ziel, Deadline …"></textarea>
           </div>
 
-          <!-- This will include the selected configuration as JSON + text -->
           <input type="hidden" name="paket_konfiguration" id="configField" value="" />
           <input type="hidden" name="preis_schaetzung" id="priceField" value="" />
 
@@ -1094,11 +996,9 @@
     </div>
   </div>
 
-  <!-- footer.js injects footer -->
-
   <script>
     /* =========================
-       DATA (Categories + Options)
+       DATA
        ========================= */
     const CATS = [
       { key:"zielgruppe", label:"Zielgruppe" },
@@ -1116,7 +1016,6 @@
       { key:"rechte", label:"Rechte" },
     ];
 
-    // You can adjust prices/texts anytime
     const OPTIONS = {
       zielgruppe: [
         { id:"ziel_starter", tier:"starter", name:"Debütautor:innen, schneller Start (eBook)", desc:"Schnell live gehen mit schlankem Setup.", price:0 },
@@ -1259,10 +1158,12 @@
     };
 
     /* =========================
-       STATE
+       STATE + ELEMENTS
        ========================= */
     const selectedByCat = new Map();
     let activeCat = CATS[0].key;
+    let openAccCat = activeCat; // <-- merkt, was im Mobile offen ist (oder null)
+
 
     const catListEl = document.getElementById("catList");
     const activeCatTitleEl = document.getElementById("activeCatTitle");
@@ -1281,11 +1182,18 @@
       return (OPTIONS[cat] || []).find(o => o.id === id);
     }
 
-    function setActiveCat(cat){
-      activeCat = cat;
-      renderCategories();
-      renderActiveOptions();
+    function isMobileLayout(){
+      return window.matchMedia("(max-width: 1020px)").matches;
     }
+
+    function setActiveCat(cat){
+  activeCat = cat;
+  openAccCat = cat;   // <-- sorgt dafür, dass im Mobile die gleiche Kategorie offen ist
+  renderCategories();
+  renderActiveOptions();
+  renderMobileAccordion();
+}
+
 
     function selectOption(cat, optionId){
       const opt = findOption(cat, optionId);
@@ -1293,30 +1201,49 @@
       selectedByCat.set(cat, {cat, ...opt});
       renderActiveOptions();
       renderSummary();
+      renderCategories();
+      renderMobileAccordion();
     }
 
     function resetAll(){
       selectedByCat.clear();
       renderActiveOptions();
       renderSummary();
-      // also reset active tab to starter visual only
-      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-      document.querySelector('.tab[data-pkg="starter"]')?.classList.add("active");
+      renderCategories();
+      renderMobileAccordion();
+    }
+
+    function setActivePkgVisual(pkg){
+      document.querySelectorAll(".tab").forEach(t => {
+        t.classList.toggle("active", t.dataset.pkg === pkg);
+      });
+      document.querySelectorAll(".ps-tab").forEach(t => {
+        t.classList.toggle("active", t.dataset.pkg === pkg);
+      });
     }
 
     function applyPreset(key){
       selectedByCat.clear();
-      const preset = PRESETS[key];
-      Object.keys(preset).forEach(cat => selectOption(cat, preset[cat]));
+      const preset = PRESETS[key] || PRESETS.starter;
+      Object.keys(preset).forEach(cat => {
+        const optId = preset[cat];
+        const opt = findOption(cat, optId);
+        if(opt) selectedByCat.set(cat, {cat, ...opt});
+      });
+
+      setActivePkgVisual(key);
+
       renderCategories();
       renderActiveOptions();
       renderSummary();
+      renderMobileAccordion();
     }
 
     /* =========================
-       RENDER
+       RENDER (DESKTOP)
        ========================= */
     function renderCategories(){
+      if(!catListEl) return;
       catListEl.innerHTML = "";
       CATS.forEach(c => {
         const btn = document.createElement("button");
@@ -1341,8 +1268,10 @@
     }
 
     function renderActiveOptions(){
+      if(!activeOptionsEl) return;
+
       const catMeta = CATS.find(x => x.key === activeCat);
-      activeCatTitleEl.textContent = catMeta ? catMeta.label : "Kategorie";
+      if(activeCatTitleEl) activeCatTitleEl.textContent = catMeta ? catMeta.label : "Kategorie";
 
       const list = OPTIONS[activeCat] || [];
       const chosen = selectedByCat.get(activeCat)?.id;
@@ -1369,6 +1298,8 @@
     }
 
     function renderSummary(){
+      if(!summaryListEl) return;
+
       summaryListEl.innerHTML = "";
       let total = 0;
 
@@ -1410,162 +1341,14 @@
           renderCategories();
           renderActiveOptions();
           renderSummary();
+          renderMobileAccordion();
         });
       });
     }
-
-    /* =========================
-       MODAL + Netlify payload
-       ========================= */
-    function openModal(){
-      // pack selection into hidden field for Netlify email
-      const obj = {};
-      CATS.forEach(c => {
-        if(selectedByCat.has(c.key)){
-          const it = selectedByCat.get(c.key);
-          obj[c.key] = { name: it.name, tier: it.tier, price: it.price };
-        }
-      });
-
-      configField.value = JSON.stringify(obj, null, 0);
-      priceField.value = totalPriceEl.textContent;
-
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden","false");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeModal(){
-      modal.classList.remove("open");
-      modal.setAttribute("aria-hidden","true");
-      document.body.style.overflow = "";
-    }
-
-    document.getElementById("bookBtn").addEventListener("click", openModal);
-    document.getElementById("closeModal").addEventListener("click", closeModal);
-    document.getElementById("cancelBtn").addEventListener("click", closeModal);
-    modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
-
-    document.getElementById("resetBtn").addEventListener("click", () => {
-      resetAll();
-      renderCategories();
-      renderSummary();
-    });
-
-    // Tabs -> presets
-    document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-
-    const pkg = tab.dataset.pkg;
-    applyPreset(pkg);
-
-    const vals = projectionForPackage(pkg);
-    renderChart(vals, pkgLabelFromKey(pkg));
-  });
-});
-
-
-    /* =========================
-   Projection Chart (SVG)
-   ========================= */
-
-// deterministic curve generator (stable per package, no random wobble)
-function projectionForPackage(pkg){
-  // You can tune these to your taste — they are just illustrative.
-  const profiles = {
-    starter: { base: 2,  growth: 1.10, boost: 0.9 },
-    plus:    { base: 4,  growth: 1.16, boost: 1.1 },
-    deluxe:  { base: 6,  growth: 1.22, boost: 1.25 },
-    eutr:    { base: 7,  growth: 1.26, boost: 1.35 },
-  };
-  const p = profiles[pkg] || profiles.starter;
-
-  // 12 months projection - smooth exponential-ish curve with gentle ramp
-  const arr = [];
-  for(let m=1; m<=12; m++){
-    const ramp = 1 - Math.exp(-m/3.2);        // smooth ramp in first months
-    const val  = (p.base + (Math.pow(p.growth, m) * 10 * p.boost)) * ramp;
-    arr.push(Math.round(val));
-  }
-  return arr;
-}
-
-function renderChart(values, pkgLabel){
-  const svg = document.getElementById("projChart");
-  const line = document.getElementById("line");
-  const area = document.getElementById("area");
-  const dots = document.getElementById("dots");
-  const grid = document.getElementById("grid");
-
-  const W = 900, H = 220;        // matches svg viewBox height for chart
-  const padX = 28, padY = 18;
-  const innerW = W - padX*2;
-  const innerH = H - padY*2;
-
-  // clear
-  dots.innerHTML = "";
-  grid.innerHTML = "";
-
-  const maxV = Math.max(...values, 1);
-  const minV = 0;
-
-  // grid lines (stable)
-  const lines = 4;
-  for(let i=0; i<=lines; i++){
-    const y = padY + (innerH * i/lines);
-    const g = document.createElementNS("http://www.w3.org/2000/svg","line");
-    g.setAttribute("x1", padX);
-    g.setAttribute("x2", padX + innerW);
-    g.setAttribute("y1", y);
-    g.setAttribute("y2", y);
-    g.setAttribute("stroke", "rgba(15,23,42,.08)");
-    g.setAttribute("stroke-width", "1");
-    grid.appendChild(g);
-  }
-
-  // points
-  const pts = values.map((v, i) => {
-    const x = padX + (innerW * (i/(values.length-1)));
-    const y = padY + innerH - ((v - minV) / (maxV - minV || 1)) * innerH;
-    return {x,y,v};
-  });
-
-  // path
-  const d = pts.map((p, idx) => `${idx===0 ? "M" : "L"} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(" ");
-  line.setAttribute("d", d);
-
-  // area
-  const areaD = `${d} L ${padX + innerW} ${padY + innerH} L ${padX} ${padY + innerH} Z`;
-  area.setAttribute("d", areaD);
-
-  // dots (with subtle labels on last point)
-  pts.forEach((p, i) => {
-    const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
-    c.setAttribute("cx", p.x);
-    c.setAttribute("cy", p.y);
-    c.setAttribute("r", i === pts.length-1 ? "5.2" : "3.8");
-    c.setAttribute("fill", "rgba(37,99,235,.95)");
-    c.setAttribute("stroke", "white");
-    c.setAttribute("stroke-width", "2");
-    dots.appendChild(c);
-  });
-
-  // metrics text
-  document.getElementById("chartPkg").textContent = pkgLabel;
-  const total = values.reduce((a,b)=>a+b,0);
-  document.getElementById("chartTotal").textContent = `${total} Verkäufe`;
-}
-
-function pkgLabelFromKey(key){
-  if(key==="starter") return "Starter";
-  if(key==="plus") return "Plus";
-  if(key==="deluxe") return "Deluxe";
-  if(key==="eutr") return "EU–TR Dual";
-  return "Starter";
-
-  const mobileAccordionEl = document.getElementById("mobileAccordion");
+    /* ======================
+   MOBILE ACCORDION LOGIC
+   ====================== */
+const mobileAccordionEl = document.getElementById("mobileAccordion");
 
 function isMobileLayout(){
   return window.matchMedia("(max-width: 1020px)").matches;
@@ -1573,9 +1356,10 @@ function isMobileLayout(){
 
 function openOnlyAccordion(catKey){
   if(!mobileAccordionEl) return;
+
   mobileAccordionEl.querySelectorAll(".acc").forEach(el => {
     const k = el.getAttribute("data-cat");
-    if(k === catKey) el.classList.add("open");
+    if(catKey && k === catKey) el.classList.add("open");
     else el.classList.remove("open");
   });
 }
@@ -1583,7 +1367,7 @@ function openOnlyAccordion(catKey){
 function renderMobileAccordion(){
   if(!mobileAccordionEl) return;
 
-  // only render in mobile/tablet layout
+  // nur in Mobile-Layout
   if(!isMobileLayout()){
     mobileAccordionEl.innerHTML = "";
     return;
@@ -1596,11 +1380,11 @@ function renderMobileAccordion(){
     const chosenText = chosen ? chosen.name : "Noch nicht gewählt";
 
     const wrap = document.createElement("div");
-    wrap.className = "acc" + (c.key === activeCat ? " open" : "");
+    wrap.className = "acc" + (c.key === openAccCat ? " open" : "");
     wrap.setAttribute("data-cat", c.key);
 
     wrap.innerHTML = `
-      <button class="acc-btn" type="button">
+      <button class="acc-btn" type="button" aria-expanded="${c.key === openAccCat ? "true" : "false"}">
         <div class="acc-left">
           <div class="acc-title">${c.label}</div>
           <div class="acc-meta">
@@ -1610,6 +1394,7 @@ function renderMobileAccordion(){
         </div>
         <div class="acc-arrow">⌄</div>
       </button>
+
       <div class="acc-body">
         <div class="acc-inner">
           <div class="hintline">
@@ -1621,16 +1406,20 @@ function renderMobileAccordion(){
       </div>
     `;
 
-    // header click => open this, close others
+    // TOGGLE: öffnen/schließen
     wrap.querySelector(".acc-btn").addEventListener("click", () => {
-      activeCat = c.key;              // keep state in sync
-      openOnlyAccordion(c.key);
-      renderMobileAccordion();        // rerender to refresh options
+      if(openAccCat === c.key){
+        openAccCat = null;           // <-- schließen
+      } else {
+        openAccCat = c.key;          // <-- öffnen
+        activeCat = c.key;           // sync für Auswahl-Logik
+      }
+      renderMobileAccordion();
     });
 
     mobileAccordionEl.appendChild(wrap);
 
-    // render options list inside this accordion
+    // Optionen rendern
     const optHost = wrap.querySelector(`[data-acc-options="${c.key}"]`);
     const list = OPTIONS[c.key] || [];
     const chosenId = chosen?.id;
@@ -1652,21 +1441,20 @@ function renderMobileAccordion(){
       card.addEventListener("click", () => {
         selectOption(c.key, opt.id);
 
-        // OPTIONAL: after selecting, auto-advance to next category
+        // optional: nach Auswahl automatisch nächste Kategorie öffnen
         const next = CATS[idx + 1]?.key;
         if(next){
           activeCat = next;
-          // scroll to next accordion
-          requestAnimationFrame(() => {
-            renderMobileAccordion();
-            openOnlyAccordion(next);
-            mobileAccordionEl.querySelector(`.acc[data-cat="${next}"]`)?.scrollIntoView({behavior:"smooth", block:"start"});
-          });
+          openAccCat = next;
         } else {
-          // last category: close all and keep summary visible
-          openOnlyAccordion(c.key);
-          renderMobileAccordion();
+          // letzte Kategorie: offen lassen oder schließen:
+          // openAccCat = null;
         }
+
+        renderCategories();
+        renderActiveOptions();
+        renderSummary();
+        renderMobileAccordion();
       });
 
       card.addEventListener("keydown", (e) => {
@@ -1677,56 +1465,119 @@ function renderMobileAccordion(){
     });
   });
 
-  // ensure only one open
-  openOnlyAccordion(activeCat);
+  openOnlyAccordion(openAccCat);
 }
 
-}
-/* =========================
-   PACKAGE SWITCH (Summary)
-   ========================= */
-document.querySelectorAll(".ps-tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    // visual active
-    document.querySelectorAll(".ps-tab").forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
+// bei Resize sauber neu rendern
+window.addEventListener("resize", () => {
+  renderMobileAccordion();
+});
 
-    // sync top tabs too
-    document.querySelectorAll(".tab").forEach(t => {
-      t.classList.toggle("active", t.dataset.pkg === tab.dataset.pkg);
+
+
+    /* =========================
+       PACKAGE SWITCH (summary)
+       ========================= */
+    document.querySelectorAll(".ps-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        const pkg = tab.dataset.pkg;
+        applyPreset(pkg);
+        renderChart(projectionForPackage(pkg), pkgLabelFromKey(pkg));
+      });
     });
 
-    const pkg = tab.dataset.pkg;
-    applyPreset(pkg);
-    renderChart(
-      projectionForPackage(pkg),
-      pkgLabelFromKey(pkg)
-    );
-  });
-});
+    document.getElementById("resetBtnTop").addEventListener("click", () => {
+      resetAll();
+      applyPreset("starter");
+      renderChart(projectionForPackage("starter"), pkgLabelFromKey("starter"));
+    });
 
-// Reset button (top)
-document.getElementById("resetBtnTop")?.addEventListener("click", () => {
-  resetAll();
-  renderCategories();
-  renderSummary();
+    /* =========================
+       CHART
+       ========================= */
+    function projectionForPackage(pkg){
+      const profiles = {
+        starter: { base: 2,  growth: 1.10, boost: 0.9 },
+        plus:    { base: 4,  growth: 1.16, boost: 1.1 },
+        deluxe:  { base: 6,  growth: 1.22, boost: 1.25 },
+        eutr:    { base: 7,  growth: 1.26, boost: 1.35 },
+      };
+      const p = profiles[pkg] || profiles.starter;
 
-  // reset visuals (package tabs)
-  document.querySelectorAll(".ps-tab").forEach(t => t.classList.remove("active"));
-  document.querySelector('.ps-tab[data-pkg="starter"]')?.classList.add("active");
+      const arr = [];
+      for(let m=1; m<=12; m++){
+        const ramp = 1 - Math.exp(-m/3.2);
+        const val  = (p.base + (Math.pow(p.growth, m) * 10 * p.boost)) * ramp;
+        arr.push(Math.round(val));
+      }
+      return arr;
+    }
 
-  // reset top tabs
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  document.querySelector('.tab[data-pkg="starter"]')?.classList.add("active");
+    function renderChart(values, pkgLabel){
+      const line = document.getElementById("line");
+      const area = document.getElementById("area");
+      const dots = document.getElementById("dots");
+      const grid = document.getElementById("grid");
 
-  renderChart(
-    projectionForPackage("starter"),
-    pkgLabelFromKey("starter")
-  );
-});
+      const W = 900, H = 220;
+      const padX = 28, padY = 18;
+      const innerW = W - padX*2;
+      const innerH = H - padY*2;
 
+      dots.innerHTML = "";
+      grid.innerHTML = "";
 
+      const maxV = Math.max(...values, 1);
+      const minV = 0;
 
+      const lines = 4;
+      for(let i=0; i<=lines; i++){
+        const y = padY + (innerH * i/lines);
+        const g = document.createElementNS("http://www.w3.org/2000/svg","line");
+        g.setAttribute("x1", padX);
+        g.setAttribute("x2", padX + innerW);
+        g.setAttribute("y1", y);
+        g.setAttribute("y2", y);
+        g.setAttribute("stroke", "rgba(15,23,42,.08)");
+        g.setAttribute("stroke-width", "1");
+        grid.appendChild(g);
+      }
+
+      const pts = values.map((v, i) => {
+        const x = padX + (innerW * (i/(values.length-1)));
+        const y = padY + innerH - ((v - minV) / (maxV - minV || 1)) * innerH;
+        return {x,y,v};
+      });
+
+      const d = pts.map((p, idx) => `${idx===0 ? "M" : "L"} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(" ");
+      line.setAttribute("d", d);
+
+      const areaD = `${d} L ${padX + innerW} ${padY + innerH} L ${padX} ${padY + innerH} Z`;
+      area.setAttribute("d", areaD);
+
+      pts.forEach((p, i) => {
+        const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
+        c.setAttribute("cx", p.x);
+        c.setAttribute("cy", p.y);
+        c.setAttribute("r", i === pts.length-1 ? "5.2" : "3.8");
+        c.setAttribute("fill", "rgba(37,99,235,.95)");
+        c.setAttribute("stroke", "white");
+        c.setAttribute("stroke-width", "2");
+        dots.appendChild(c);
+      });
+
+      document.getElementById("chartPkg").textContent = pkgLabel;
+      const total = values.reduce((a,b)=>a+b,0);
+      document.getElementById("chartTotal").textContent = `${total} Verkäufe`;
+    }
+
+    function pkgLabelFromKey(key){
+      if(key==="starter") return "Starter";
+      if(key==="plus") return "Plus";
+      if(key==="deluxe") return "Deluxe";
+      if(key==="eutr") return "EU–TR Dual";
+      return "Starter";
+    }
 
     /* =========================
        INIT
@@ -1734,11 +1585,17 @@ document.getElementById("resetBtnTop")?.addEventListener("click", () => {
     renderCategories();
     renderActiveOptions();
     renderSummary();
-    // initial preset starter
+
     applyPreset("starter");
     renderChart(projectionForPackage("starter"), pkgLabelFromKey("starter"));
+
+    renderMobileAccordion();
+
+    window.addEventListener("resize", () => {
+      renderMobileAccordion();
+    });
   </script>
+
   <footer id="site-footer"></footer>
 </body>
-
 </html>
