@@ -15,7 +15,7 @@
   };
 
   const LOGO_SRC = "/assets/images/dva-logo.png";
-  const SEARCH_PATH = "/search/";
+  const SEARCH_PATH = "/search/"; // bleibt als Fallback-Link im Burger-Menü
 
   function getLang() {
     const m = location.pathname.match(/^\/(de|en|tr|fr)(\/|$)/);
@@ -101,7 +101,7 @@
           gap:10px;
 
           height:46px;
-          width:min(420px, 42vw);
+          width:min(440px, 44vw);
           padding:0 10px 0 16px;
 
           border-radius:999px;
@@ -140,7 +140,6 @@
           );
           transition: opacity .18s ease, transform .35s ease;
         }
-
         .site-search:hover{ transform: translateY(-1px); }
         .site-search:hover::before{ opacity:.95; transform: translateX(18px); }
 
@@ -150,7 +149,6 @@
           border:0;
           outline:0;
           background:transparent;
-
           color:#fff;
           font-size:14px;
           font-weight:650;
@@ -161,16 +159,14 @@
           font-weight:600;
         }
 
-        /* Icon inside field (no border) */
+        /* icon inside field */
         .site-search .search-icon{
           width:36px; height:36px;
           border:0; background:transparent;
           padding:0;
           cursor:pointer;
-
           display:grid;
           place-items:center;
-
           border-radius:999px;
         }
         .site-search .search-icon img{
@@ -178,19 +174,17 @@
           height:18px;
           object-fit:contain;
           opacity:.90;
-          filter:
-            drop-shadow(0 6px 14px rgba(0,0,0,.35))
-            brightness(1.05);
+          filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)) brightness(1.05);
           transition: opacity .15s ease, transform .15s ease;
         }
         .site-search .search-icon:hover img{ opacity:1; transform: scale(1.08); }
 
-        /* Dropdown */
+        /* dropdown */
         .search-dd{
           position:absolute;
           top: calc(100% + 10px);
           right:0;
-          width: min(520px, 70vw);
+          width: min(560px, 74vw);
 
           display:none;
           max-height: 380px;
@@ -224,8 +218,9 @@
           font-weight:780;
           letter-spacing:.01em;
         }
-        .search-item:hover{
-          background: rgba(255,255,255,.08);
+        .search-item:hover,
+        .search-item.is-active{
+          background: rgba(255,255,255,.10);
           color:#fff;
         }
         .search-meta{
@@ -242,7 +237,6 @@
           color:rgba(255,255,255,.92);
         }
 
-        /* Mobile: hide full search bar */
         @media (max-width: 820px){
           .site-search{ display:none; }
         }
@@ -358,11 +352,6 @@
           text-decoration:none;
           font-weight:850;
           letter-spacing:.01em;
-
-          background: transparent;
-          border: 0;
-          box-shadow: none;
-
           transition: background .20s ease, transform .20s ease, color .20s ease;
         }
         .drawer nav a:hover{
@@ -389,11 +378,11 @@
           </a>
 
           <div class="right">
-            <form class="site-search" action="${SEARCH_PATH}" method="GET" role="search" autocomplete="off">
+            <!-- IMPORTANT: no redirect. this form is handled in JS -->
+            <form class="site-search" id="site-search-form" role="search" autocomplete="off">
               <input
                 id="site-search-input"
                 type="search"
-                name="q"
                 placeholder="Suchbegriff eingeben"
                 aria-label="${LABELS[lang].search}"
               />
@@ -453,14 +442,14 @@
     const burger = mount.querySelector(".burger");
     const closeBtn = mount.querySelector("[data-close]");
 
-    const open = () => {
+    const openMenu = () => {
       burger.setAttribute("aria-expanded", "true");
       overlay.classList.add("is-open");
       drawer.classList.add("is-open");
       document.documentElement.style.overflow = "hidden";
       hdr.classList.remove("is-hidden");
     };
-    const close = () => {
+    const closeMenu = () => {
       burger.setAttribute("aria-expanded", "false");
       overlay.classList.remove("is-open");
       drawer.classList.remove("is-open");
@@ -469,15 +458,15 @@
 
     burger.addEventListener("click", () => {
       const isOpen = burger.getAttribute("aria-expanded") === "true";
-      isOpen ? close() : open();
+      isOpen ? closeMenu() : openMenu();
     });
-    overlay.addEventListener("click", close);
-    closeBtn.addEventListener("click", close);
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+    overlay.addEventListener("click", closeMenu);
+    closeBtn.addEventListener("click", closeMenu);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
 
     // Close drawer when clicking any nav link
     mount.querySelectorAll("aside.drawer a").forEach(a => {
-      a.addEventListener("click", () => close());
+      a.addEventListener("click", () => closeMenu());
     });
 
     // Active nav highlight
@@ -497,22 +486,38 @@
     });
 
     /* ==========================
-       HEADER SEARCH DROPDOWN (PAGEFIND CORE)
+       SEARCH DROPDOWN (NO REDIRECT)
        ========================== */
+    const form = mount.querySelector("#site-search-form");
     const input = mount.querySelector("#site-search-input");
     const dd = mount.querySelector("#site-search-dd");
 
     let pagefindReady = false;
     let debounceT = null;
     let busy = false;
-
-    function openDD(){ dd.classList.add("is-open"); }
-    function closeDD(){ dd.classList.remove("is-open"); dd.innerHTML = ""; }
+    let activeIndex = -1;
 
     function escHtml(str){
       return String(str).replace(/[&<>"']/g, m => ({
         "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
       }[m]));
+    }
+
+    function openDD(){ dd.classList.add("is-open"); }
+    function closeDD(){ dd.classList.remove("is-open"); dd.innerHTML = ""; activeIndex = -1; }
+    function getItems(){ return Array.from(dd.querySelectorAll(".search-item")); }
+
+    function setActive(i){
+      const items = getItems();
+      items.forEach(x => x.classList.remove("is-active"));
+      if (i >= 0 && i < items.length){
+        items[i].classList.add("is-active");
+        activeIndex = i;
+        // ensure visible
+        items[i].scrollIntoView({ block:"nearest" });
+      } else {
+        activeIndex = -1;
+      }
     }
 
     async function ensurePagefind(){
@@ -542,9 +547,10 @@
 
         const res = await window.pagefind.search(q, { limit: 6 });
 
-        if (!res || !res.results || res.results.length === 0){
+        if (!res?.results?.length){
           dd.innerHTML = `<div class="search-empty">Keine Ergebnisse für „${escHtml(q)}“</div>`;
           openDD();
+          setActive(-1);
           return;
         }
 
@@ -556,21 +562,37 @@
           return `
             <a class="search-item" href="${url}">
               ${escHtml(title)}
-              ${excerpt ? `<span class="search-meta">${escHtml(excerpt.slice(0, 110))}${excerpt.length>110?"…":""}</span>` : ""}
+              ${excerpt ? `<span class="search-meta">${escHtml(excerpt.slice(0, 120))}${excerpt.length>120?"…":""}</span>` : ""}
             </a>
           `;
         }).join("");
 
         openDD();
+        setActive(-1);
       }catch(e){
         dd.innerHTML = `<div class="search-empty">Suche konnte nicht geladen werden.</div>`;
         openDD();
+        setActive(-1);
       }finally{
         busy = false;
       }
     }
 
-    if (input && dd){
+    if (form && input && dd){
+      // STOP redirect
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        // If user presses enter (submit), open first result if exists
+        const items = getItems();
+        if (items.length > 0) {
+          const pick = items[activeIndex >= 0 ? activeIndex : 0];
+          if (pick && pick.href) location.href = pick.href;
+        } else {
+          // If no results, just keep dropdown/close
+          // closeDD();
+        }
+      });
+
       input.addEventListener("input", () => {
         const q = input.value.trim();
         clearTimeout(debounceT);
@@ -582,21 +604,37 @@
         if (q.length >= 2) runSearch(q);
       });
 
-      // close when clicking outside
+      // Keyboard navigation
+      input.addEventListener("keydown", (e) => {
+        const items = getItems();
+        if (!dd.classList.contains("is-open") || items.length === 0) return;
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          const next = Math.min(items.length - 1, (activeIndex < 0 ? 0 : activeIndex + 1));
+          setActive(next);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          const prev = Math.max(0, (activeIndex <= 0 ? 0 : activeIndex - 1));
+          setActive(prev);
+        } else if (e.key === "Escape") {
+          closeDD();
+        }
+      });
+
+      // Close when clicking outside
       document.addEventListener("click", (e) => {
         const t = e.target;
         if (!t) return;
-        // keep open when interacting with input or dropdown
-        if (mount.contains(t) && (t === input || dd.contains(t))) return;
+        if (form.contains(t) || dd.contains(t)) return;
         closeDD();
       });
 
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeDD();
+      // Click in dropdown -> close after navigation starts
+      dd.addEventListener("click", (e) => {
+        const a = e.target.closest("a.search-item");
+        if (a) closeDD();
       });
-
-      // When submitting, ensure it goes to /search/?q=...
-      // (default HTML submit is fine)
     }
 
     /* ==========================
@@ -613,15 +651,9 @@
     function onScroll() {
       const y = window.scrollY || 0;
       const menuOpen = burger.getAttribute("aria-expanded") === "true";
-
       hdr.classList.toggle("is-scrolled", y > SCROLL_ON_AT);
 
-      // keep visible while menu open
-      if (menuOpen) {
-        lastY = y;
-        return;
-      }
-
+      if (menuOpen) { lastY = y; return; }
       const diff = y - lastY;
       if (Math.abs(diff) < DELTA) return;
 
