@@ -5,6 +5,6 @@
     "pagefind": "^1.0.0"
   },
   "scripts": {
-    "build": "npx -y pagefind --site ."
+    "build": "npx pagefind --site ."
   }
 }
