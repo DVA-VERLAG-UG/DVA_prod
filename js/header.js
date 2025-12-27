@@ -41,13 +41,28 @@
           z-index:100;
           background:transparent;
           pointer-events:none;
+
+          /* NEW: smooth show/hide */
+          transform: translateY(0);
+          transition:
+            transform .28s cubic-bezier(.2,.9,.2,1),
+            background .18s ease,
+            backdrop-filter .18s ease,
+            -webkit-backdrop-filter .18s ease;
+          will-change: transform;
         }
-          /* Scroll state: still minimal, but adds premium legibility */
-.hdr.is-scrolled{
-  background: rgba(0,0,0,.10);
-  backdrop-filter: blur(10px) saturate(1.2);
-  -webkit-backdrop-filter: blur(10px) saturate(1.2);
-}
+
+        /* NEW: hide when scrolling down */
+        .hdr.is-hidden{
+          transform: translateY(calc(-1 * var(--hdr-h)));
+        }
+
+        /* Scroll state: still minimal, but adds premium legibility */
+        .hdr.is-scrolled{
+          background: rgba(0,0,0,.10);
+          backdrop-filter: blur(10px) saturate(1.2);
+          -webkit-backdrop-filter: blur(10px) saturate(1.2);
+        }
 
         .hdr-inner{
           pointer-events:auto;
@@ -110,19 +125,14 @@
           background:rgba(255,255,255,.95);
         }
 
-        /* ==========================
-           EXTRA TRANSPARENT GLASS + SLOWER ANIM
-           ========================== */
-
         .overlay{
           position:fixed; inset:0;
-          /* much lighter overlay so you see the background */
           background:
             radial-gradient(900px 700px at 80% 15%, rgba(255,255,255,.08), rgba(0,0,0,.02)),
             rgba(0,0,0,.02);
           opacity:0;
           pointer-events:none;
-          transition: opacity .10s ease; /* slower */
+          transition: opacity .10s ease;
           z-index:200;
         }
         .overlay.is-open{ opacity:1; pointer-events:auto; }
@@ -134,7 +144,6 @@
           padding:18px 18px 22px;
           z-index:201;
 
-          /* even more transparent glass */
           background:
             linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
             radial-gradient(900px 650px at 30% 10%, rgba(255,255,255,.008), rgba(255,255,255,0)),
@@ -149,7 +158,6 @@
           -webkit-backdrop-filter: blur(26px) saturate(1.55);
 
           transform: translateX(112%);
-          /* slower + premium easing */
           transition: transform .55s cubic-bezier(.16, 1, .12, 1);
         }
         .drawer.is-open{ transform: translateX(0); }
@@ -159,7 +167,7 @@
           position:absolute;
           inset:0;
           pointer-events:none;
-          opacity:.08; /* even subtler grain */
+          opacity:.08;
           mix-blend-mode: overlay;
           background-image:
             url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.70' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
@@ -213,7 +221,6 @@
           padding-top:6px;
         }
 
-        /* menu items: no borders, very minimal */
         .drawer nav a{
           padding:14px 10px;
           border-radius:14px;
@@ -294,6 +301,7 @@
     const lang = getLang();
     mount.innerHTML = headerHTML(lang);
 
+    const hdr = mount.querySelector(".hdr");          // NEW
     const overlay = mount.querySelector("[data-overlay]");
     const drawer = mount.querySelector("[data-drawer]");
     const burger = mount.querySelector(".burger");
@@ -304,6 +312,7 @@
       overlay.classList.add("is-open");
       drawer.classList.add("is-open");
       document.documentElement.style.overflow = "hidden";
+      hdr.classList.remove("is-hidden"); // NEW: keep header visible while menu is open
     };
     const close = () => {
       burger.setAttribute("aria-expanded", "false");
@@ -335,6 +344,58 @@
       a.href = (ROUTES[targetLang] && ROUTES[targetLang][pageKey]) || ROUTES[targetLang].home;
       a.classList.toggle("is-active", targetLang === lang);
     });
+
+    /* ==========================
+       NEW: COLLAPSE ON SCROLL DOWN,
+       SHOW ON SCROLL UP
+       ========================== */
+
+    let lastY = window.scrollY || 0;
+    let ticking = false;
+
+    const SCROLL_ON_AT = 8;        // ab wann "is-scrolled" aktiv wird
+    const HIDE_AFTER = 120;        // erst nach etwas Scroll "weg"
+    const DELTA = 6;               // kleine Zitterbewegungen ignorieren
+
+    function onScroll() {
+      const y = window.scrollY || 0;
+      const menuOpen = burger.getAttribute("aria-expanded") === "true";
+
+      // scrolled style
+      hdr.classList.toggle("is-scrolled", y > SCROLL_ON_AT);
+
+      // wenn Menü offen: Header nicht verstecken
+      if (menuOpen) {
+        lastY = y;
+        return;
+      }
+
+      const diff = y - lastY;
+      if (Math.abs(diff) < DELTA) return;
+
+      if (diff > 0 && y > HIDE_AFTER) {
+        // runter scrollen -> verstecken
+        hdr.classList.add("is-hidden");
+      } else {
+        // hoch scrollen -> zeigen
+        hdr.classList.remove("is-hidden");
+      }
+
+      lastY = y;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          onScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // initial state
+    onScroll();
   }
 
   document.addEventListener("DOMContentLoaded", init);
