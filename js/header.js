@@ -17,9 +17,22 @@
   const LOGO_SRC = "/assets/images/dva-logo.png";
   const PAGEFIND_MODULE_PATH = "/_pagefind/pagefind.js";
 
-  const THEME_KEY = "dvayd_theme";           // localStorage key
-  const DIM_VALUE = "dim";                  // stored value
-  const THEME_ATTR = "data-theme";          // html attribute
+  // ✅ NEW: make sure header.css is actually loaded (since header.js doesn't "reference" CSS)
+  const HEADER_CSS_HREF = "/assets/css/header.css";
+  function ensureHeaderCSS() {
+    const existing = document.querySelector(`link[rel="stylesheet"][href="${HEADER_CSS_HREF}"]`);
+    if (existing) return;
+
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = HEADER_CSS_HREF;
+    link.media = "all";
+    document.head.appendChild(link);
+  }
+
+  const THEME_KEY  = "dvayd_theme";
+  const DIM_VALUE  = "dim";
+  const THEME_ATTR = "data-theme"; // <html data-theme="dim">
 
   function getLang() {
     const m = location.pathname.match(/^\/(de|en|tr|fr)(\/|$)/);
@@ -52,287 +65,6 @@
 
   function headerHTML(lang) {
     return `
-      <style>
-        :root{ --hdr-h:72px; --max:1180px; }
-
-        .hdr{
-          position:fixed;
-          inset:0 0 auto 0;
-          height:var(--hdr-h);
-          z-index:100;
-          background:transparent;
-          pointer-events:none;
-          transform: translateY(0);
-          transition: transform .28s cubic-bezier(.2,.9,.2,1), background .18s ease, backdrop-filter .18s ease;
-          will-change: transform;
-        }
-        .hdr.is-hidden{ transform: translateY(calc(-1 * var(--hdr-h))); }
-        .hdr.is-scrolled{
-          background: rgba(0,0,0,.10);
-          backdrop-filter: blur(10px) saturate(1.2);
-          -webkit-backdrop-filter: blur(10px) saturate(1.2);
-        }
-
-        .hdr-inner{
-          pointer-events:auto;
-          height:100%;
-          width:min(var(--max), calc(100% - 40px));
-          margin:0 auto;
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:16px;
-        }
-
-        .brand{
-          display:flex; align-items:center; gap:12px;
-          color:#fff; text-decoration:none;
-          font-weight:700; letter-spacing:.2px;
-          min-width:200px;
-        }
-        .brand img{
-          width:36px; height:36px;
-          object-fit:contain;
-          display:block;
-          filter: drop-shadow(0 10px 26px rgba(0,0,0,.55));
-        }
-        .brand span{
-          font-size:14px;
-          opacity:.95;
-          text-shadow: 0 10px 26px rgba(0,0,0,.55);
-        }
-
-        .right{ display:flex; align-items:center; gap:12px; }
-
-        /* ===== SEARCH (Dropdown) ===== */
-        .site-search{
-          position:relative;
-          display:flex;
-          align-items:center;
-          gap:10px;
-
-          height:46px;
-          width: min(420px, 42vw);
-          padding:0 10px 0 16px;
-
-          border-radius:18px;
-          background: rgba(255,255,255,.08);
-          border: 1px solid rgba(255,255,255,.14);
-
-          backdrop-filter: blur(14px) saturate(1.4);
-          -webkit-backdrop-filter: blur(14px) saturate(1.4);
-
-          box-shadow: 0 14px 40px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.18);
-          transition: background .2s ease, box-shadow .2s ease;
-
-          z-index: 9999;
-        }
-        .site-search:hover{ background: rgba(255,255,255,.12); }
-
-        .site-search input{
-          flex:1;
-          height:100%;
-          border:0;
-          outline:0;
-          background:transparent;
-          color:#fff;
-          font-size:14px;
-          font-weight:650;
-          letter-spacing:.01em;
-        }
-        .site-search input::placeholder{
-          color: rgba(255,255,255,.75);
-          font-weight:500;
-        }
-
-        .site-search .search-icon{
-          width:36px;
-          height:36px;
-          border:0;
-          background:transparent;
-          padding:0;
-          cursor:pointer;
-          display:grid;
-          place-items:center;
-        }
-        .site-search .search-icon img{
-          width:18px;
-          height:18px;
-          object-fit:contain;
-          opacity:.9;
-          filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)) brightness(1.05);
-          transition: opacity .15s ease, transform .15s ease;
-        }
-        .site-search .search-icon:hover img{ opacity:1; transform: scale(1.08); }
-
-        .search-dd{
-          position:absolute;
-          top: calc(100% + 10px);
-          right:0;
-          width: 100%;
-          max-height: 52vh;
-          overflow:auto;
-
-          border-radius:18px;
-          background: rgba(0,0,0,.55);
-          border: 1px solid rgba(255,255,255,.12);
-
-          backdrop-filter: blur(18px) saturate(1.35);
-          -webkit-backdrop-filter: blur(18px) saturate(1.35);
-
-          box-shadow: 0 30px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.10);
-
-          padding: 10px;
-          display:none;
-        }
-        .search-dd.is-open{ display:block; }
-
-        .dd-row{
-          display:block;
-          padding: 12px 12px;
-          border-radius: 14px;
-          text-decoration:none;
-          color: rgba(255,255,255,.92);
-          transition: background .15s ease, transform .15s ease;
-        }
-        .dd-row:hover{ background: rgba(255,255,255,.07); transform: translateY(-1px); color:#fff; }
-        .dd-row.is-active{
-          background: rgba(255,255,255,.18);
-          box-shadow: 0 12px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25);
-        }
-        .dd-title{ font-weight:850; letter-spacing:.01em; margin-bottom: 4px; line-height:1.2; }
-        .dd-meta{ font-size:12px; opacity:.75; line-height:1.35; }
-        .dd-empty, .dd-loading{ padding: 10px 12px; color: rgba(255,255,255,.80); font-weight:700; }
-
-        /* mark styling (Pagefind excerpt highlights) */
-        .search-dd mark{
-          background: rgba(255,255,255,.12);
-          color:#fff;
-          border-radius:6px;
-          padding:0 4px;
-        }
-
-        @media (max-width: 820px){
-          .site-search{ display:none; }
-        }
-
-        /* ===== THEME TOGGLE BUTTON ===== */
-        .theme-btn{
-          width:42px; height:42px;
-          display:grid; place-items:center;
-          border-radius:14px;
-          background: rgba(255,255,255,.06);
-          border: 1px solid rgba(255,255,255,.10);
-          color:#fff;
-          cursor:pointer;
-          box-shadow: 0 12px 30px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.12);
-          filter: drop-shadow(0 10px 26px rgba(0,0,0,.25));
-          transition: transform .15s ease, filter .15s ease, background .15s ease;
-        }
-        .theme-btn:hover{ filter: brightness(1.08) drop-shadow(0 10px 26px rgba(0,0,0,.25)); transform: translateY(-1px); }
-        .theme-btn .sun{ display:none; }
-        .theme-btn.is-dim .moon{ display:none; }
-        .theme-btn.is-dim .sun{ display:block; }
-        .theme-btn:not(.is-dim) .moon{ display:block; }
-
-        .langs{
-          display:flex; align-items:center; gap:8px;
-          color:#fff; font-weight:800; font-size:12px;
-          letter-spacing:.08em; text-transform:uppercase;
-          text-shadow: 0 10px 26px rgba(0,0,0,.55);
-          user-select:none;
-        }
-        .langs a{ color:#fff; opacity:.70; text-decoration:none; }
-        .langs a.is-active{ opacity:1; }
-        .langs .sep{ opacity:.35; font-weight:700; }
-
-        .burger{
-          width:42px; height:42px;
-          display:grid; place-items:center;
-          border:0; background:transparent;
-          cursor:pointer; padding:0;
-        }
-        .burger .icon{
-          width:22px; height:14px;
-          display:flex; flex-direction:column;
-          justify-content:space-between;
-          filter: drop-shadow(0 10px 26px rgba(0,0,0,.55));
-        }
-        .burger .icon i{
-          display:block; height:2px;
-          border-radius:999px;
-          background:rgba(255,255,255,.95);
-        }
-
-        .overlay{
-          position:fixed; inset:0;
-          background: radial-gradient(900px 700px at 80% 15%, rgba(255,255,255,.08), rgba(0,0,0,.02)), rgba(0,0,0,.02);
-          opacity:0;
-          pointer-events:none;
-          transition: opacity .10s ease;
-          z-index:200;
-        }
-        .overlay.is-open{ opacity:1; pointer-events:auto; }
-
-        .drawer{
-          position:fixed; top:0; right:0;
-          height:100%;
-          width:min(380px, 90vw);
-          padding:18px 18px 22px;
-          z-index:201;
-
-          background:
-            linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
-            radial-gradient(900px 650px at 30% 10%, rgba(255,255,255,.008), rgba(255,255,255,0)),
-            radial-gradient(900px 700px at 80% 80%, rgba(120,190,255,.04), rgba(0,0,0,0));
-          border-left: 1px solid rgba(255,255,255,.10);
-
-          box-shadow: -16px 0 60px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.14);
-
-          backdrop-filter: blur(26px) saturate(1.55);
-          -webkit-backdrop-filter: blur(26px) saturate(1.55);
-
-          transform: translateX(112%);
-          transition: transform .55s cubic-bezier(.16, 1, .12, 1);
-        }
-        .drawer.is-open{ transform: translateX(0); }
-
-        .drawer-top{
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:12px;
-          margin-bottom:12px;
-          color:#fff;
-        }
-        .drawer-top .title{ font-weight:900; letter-spacing:.02em; }
-
-        .close{
-          width:42px; height:42px;
-          border-radius:14px;
-          border:0;
-          background: rgba(255,255,255,.05);
-          color:#fff;
-          cursor:pointer;
-          box-shadow: 0 12px 30px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.14);
-        }
-
-        .drawer nav{ display:flex; flex-direction:column; gap:6px; padding-top:6px; }
-        .drawer nav a{
-          padding:14px 10px;
-          border-radius:14px;
-          color:rgba(255,255,255,.92);
-          text-decoration:none;
-          font-weight:850;
-        }
-        .drawer nav a:hover{ background: rgba(255,255,255,.07); }
-
-        @media (max-width: 520px){
-          .brand span{ display:none; }
-          .langs{ display:none; }
-        }
-      </style>
-
       <div class="hdr">
         <div class="hdr-inner">
           <a class="brand" href="${ROUTES[lang].home}" aria-label="Homepage">
@@ -354,7 +86,6 @@
               <div class="search-dd" id="site-search-dd"></div>
             </form>
 
-            <!-- DIM SWITCH -->
             <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle dim mode" title="${LABELS[lang].theme}">
               <span class="moon" aria-hidden="true">🌙</span>
               <span class="sun" aria-hidden="true">☀️</span>
@@ -402,6 +133,9 @@
   }
 
   function init() {
+    // ✅ ensure header.css is loaded (works even if you forget to add <link> in some pages)
+    ensureHeaderCSS();
+
     const mount = document.getElementById("site-header");
     if (!mount) return;
 
@@ -442,7 +176,7 @@
       overlay.classList.add("is-open");
       drawer.classList.add("is-open");
       document.documentElement.style.overflow = "hidden";
-      hdr.classList.remove("is-hidden");
+      hdr?.classList.remove("is-hidden");
     };
     const closeMenu = () => {
       burger.setAttribute("aria-expanded", "false");
@@ -451,12 +185,12 @@
       document.documentElement.style.overflow = "";
     };
 
-    burger.addEventListener("click", () => {
+    burger?.addEventListener("click", () => {
       const isOpen = burger.getAttribute("aria-expanded") === "true";
       isOpen ? closeMenu() : openMenu();
     });
-    overlay.addEventListener("click", closeMenu);
-    closeBtn.addEventListener("click", closeMenu);
+    overlay?.addEventListener("click", closeMenu);
+    closeBtn?.addEventListener("click", closeMenu);
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
 
     // ===== Active language link =====
@@ -475,13 +209,13 @@
 
     function onScroll() {
       const y = window.scrollY || 0;
-      const menuOpen = burger.getAttribute("aria-expanded") === "true";
-      hdr.classList.toggle("is-scrolled", y > SCROLL_ON_AT);
+      const menuOpen = burger?.getAttribute("aria-expanded") === "true";
+      hdr?.classList.toggle("is-scrolled", y > SCROLL_ON_AT);
       if (menuOpen) { lastY = y; return; }
       const diff = y - lastY;
       if (Math.abs(diff) < DELTA) return;
-      if (diff > 0 && y > HIDE_AFTER) hdr.classList.add("is-hidden");
-      else hdr.classList.remove("is-hidden");
+      if (diff > 0 && y > HIDE_AFTER) hdr?.classList.add("is-hidden");
+      else hdr?.classList.remove("is-hidden");
       lastY = y;
     }
 
@@ -577,7 +311,6 @@
           `;
         }).join("");
 
-        // active click highlight
         dd.querySelectorAll(".dd-row").forEach(a => {
           a.addEventListener("click", () => setActive(a));
         });

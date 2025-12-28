@@ -95,7 +95,17 @@ html[data-theme="dim"]{
         linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
         url("/assets/images/library.jpg") center top / cover no-repeat;
     }
+    /* ======================
+   HERO – DIM MODE OVERLAY
+   ====================== */
+html[data-theme="dim"] .hero::before{
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+    url("/assets/images/library.jpg") center top / cover no-repeat;
+}
+
     .hero::after{ content:none; }
+    
 
     .hero-content{
       position:relative;
@@ -1239,4 +1249,106 @@ html[data-theme="dim"]{
 }
 .seo-section .btn.ghost{
   background: rgba(255,255,255,.10) !important;
+}
+
+/* ==========================
+   GLOBAL DIM MODE (WHOLE SITE)
+   toggled via: <html class="is-dim">
+   ========================== */
+
+html.is-dim {
+  /* Optional: Browser UI */
+  color-scheme: dark;
+}
+
+
+
+/* 2) Optional: Bilder minimal abdunkeln + weniger knallig
+      (wenn du willst, kommentier es aus, falls es dir zu stark ist) */
+html.is-dim img,
+html.is-dim video{
+  filter: brightness(.86) saturate(.92);
+}
+
+/* 3) Text global etwas heller, damit er überall besser lesbar bleibt */
+html.is-dim body{
+  color: rgba(255,255,255,.92);
+}
+
+/* 4) Falls du irgendwo harte dunkle Textfarben hast, die im Dim Mode stören:
+      (das hilft oft direkt, ohne alles umzubauen) */
+html.is-dim .process-glass,
+html.is-dim .logo-section,
+html.is-dim .seo-section{
+  color: rgba(255,255,255,.92);
+}
+
+/* =========================
+   DIM MODE: overlay only on background
+   ========================= */
+
+/* Wichtig: body background transparent lassen, damit dein --surface etc. wirken kann */
+body{
+  position: relative;
+  min-height: 100%;
+}
+
+/* Overlay-Layer (sitzt UNTER deinem Content) */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  /* default: aus */
+  opacity: 0;
+  transition: opacity .18s ease;
+
+  /* leichtes "Dim"-Gradient, wirkt hochwertig */
+  background:
+    radial-gradient(900px 520px at 15% 20%, rgba(0,0,0,.18), transparent 60%),
+    radial-gradient(700px 420px at 85% 40%, rgba(0,0,0,.14), transparent 62%),
+    rgba(0,0,0,.38);
+}
+
+/* ==========================
+   GLOBAL DIM MODE (SAFE)
+   Selector: html[data-theme="dim"]
+   ========================== */
+
+html[data-theme="dim"]{
+  color-scheme: dark;
+}
+
+/* Dim nur auf den "Body-Hintergrund" (nicht auf Header/Drawer/UI-Layer) */
+html[data-theme="dim"] body{
+  background-color: #070A14; /* fallback */
+}
+
+/* Dimmt nur die SEITENINHALTE unter dem Header */
+html[data-theme="dim"] main{
+  position: relative;
+}
+
+/* Overlay liegt innerhalb von main -> Header bleibt unberührt */
+html[data-theme="dim"] main::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events:none;
+  z-index: 1;
+  opacity: 1;
+  transition: opacity .18s ease;
+
+  background:
+    radial-gradient(900px 520px at 15% 20%, rgba(0,0,0,.18), transparent 60%),
+    radial-gradient(700px 420px at 85% 40%, rgba(0,0,0,.14), transparent 62%),
+    rgba(0,0,0,.28);
+}
+
+/* Alles im main über dem Overlay */
+html[data-theme="dim"] main > *{
+  position: relative;
+  z-index: 2;
 }
