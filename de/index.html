@@ -17,6 +17,49 @@
 
 
   <style>
+    /* =========================
+   THEME (Default + Dim)
+   ========================= */
+:root{
+  /* Default (dein jetziger Look) */
+  --ink:#ffffff;
+  --muted:rgba(255,255,255,.99);
+
+  --glass-a: rgba(255,255,255,.22);
+  --glass-b: rgba(255,255,255,.08);
+  --glass-border: rgba(255,255,255,.28);
+
+  --hover-violet: rgba(139,92,246,.28);
+  --hover-violet-border: rgba(139,92,246,.40);
+
+  --ghost: rgba(255,255,255,.14);
+
+  --surface:
+    radial-gradient(900px 520px at 15% 20%, rgba(139,92,246,.10), transparent 60%),
+    radial-gradient(700px 420px at 85% 40%, rgba(99,102,241,.08), transparent 62%),
+    #f6f7fb;
+}
+
+/* Dim Mode */
+html[data-theme="dim"]{
+  --ink: rgba(255,255,255,.96);
+  --muted: rgba(255,255,255,.82);
+
+  --glass-a: rgba(255,255,255,.18);
+  --glass-b: rgba(255,255,255,.09);
+  --glass-border: rgba(255,255,255,.18);
+
+  --hover-violet: rgba(139,92,246,.26);
+  --hover-violet-border: rgba(139,92,246,.34);
+
+  --ghost: rgba(255,255,255,.10);
+
+  --surface:
+    radial-gradient(900px 520px at 15% 20%, rgba(139,92,246,.28), transparent 60%),
+    radial-gradient(700px 420px at 85% 40%, rgba(99,102,241,.22), transparent 62%),
+    #0B1020;
+}
+
     :root{
       --hdr-h:72px;
       --max:1180px;
@@ -1071,6 +1114,151 @@
   margin: 0 0 18px;         /* nicht zentrieren */
   text-align: left;
 }
+/* =========================
+   DIM MODE: SECTIONS 4–6 DARK
+   Paste at END of <style>
+   ========================= */
+
+/* gemeinsame dunkle Fläche */
+:root{
+--dim-bg:
+  radial-gradient(900px 520px at 15% 20%, rgba(139,92,246,.28), transparent 60%),
+  radial-gradient(700px 420px at 85% 40%, rgba(99,102,241,.22), transparent 62%),
+  #0B1020;
+
+--dim-ink: rgba(255,255,255,.96);
+--dim-muted: rgba(255,255,255,.82);
+
+--dim-glass-a: rgba(255,255,255,.18);
+--dim-glass-b: rgba(255,255,255,.09);
+
+  --dim-glass-border: rgba(255,255,255,.16);
+
+  --dim-stroke: rgba(255,255,255,.10);
+}
+
+/* ===== SECTION 4 ===== */
+.process-glass{
+  background: var(--dim-bg) !important;
+  color: var(--dim-ink) !important;
+}
+
+/* Headline / Text */
+.process-glass .pg-kicker{ color: rgba(255,255,255,.65) !important; }
+.process-glass .pg-title{ color: var(--dim-ink) !important; text-shadow: 0 18px 44px rgba(0,0,0,.45) !important; }
+.process-glass .pg-sub{ color: var(--dim-muted) !important; }
+
+/* Glas-Container dunkler */
+.process-glass .pg-shell{
+  background: linear-gradient(135deg, var(--dim-glass-a), var(--dim-glass-b)) !important;
+  border: 1px solid var(--dim-glass-border) !important;
+  box-shadow: 0 26px 70px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+
+
+/* Timeline line/nodes */
+.process-glass .pg-line{
+  background: linear-gradient(90deg, rgba(255,255,255,.08), rgba(139,92,246,.35), rgba(255,255,255,.08)) !important;
+  box-shadow: 0 0 16px rgba(139,92,246,.25) !important;
+}
+.process-glass .pg-node{
+  background: rgba(255,255,255,.85) !important;
+  border-color: rgba(255,255,255,.20) !important;
+}
+
+/* Steps */
+.process-glass .pg-step:hover{
+  background: rgba(255,255,255,.06) !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+.process-glass .pg-text strong{ color: var(--dim-ink) !important; }
+.process-glass .pg-text span{ color: var(--dim-muted) !important; }
+
+/* Icons weniger grau im dunklen */
+.process-glass .pg-dot{
+  background: linear-gradient(135deg, rgba(99,102,241,.22), rgba(139,92,246,.16)) !important;
+  border-color: rgba(255,255,255,.12) !important;
+}
+.process-glass .pg-dot img{
+  filter: none !important; /* vorher grayscale */
+  opacity: .95 !important;
+}
+
+/* Buttons in Sektion 4 */
+.process-glass .btn{
+  color: #fff !important;
+  border-color: rgba(255,255,255,.16) !important;
+}
+.process-glass .btn.primary{
+  background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.08)) !important;
+}
+.process-glass .btn.ghost{
+  background: rgba(255,255,255,.10) !important;
+}
+.process-glass .btn.primary:hover,
+.process-glass .btn.ghost:hover{
+  background: rgba(139,92,246,.22) !important;
+  border-color: rgba(139,92,246,.40) !important;
+}
+
+/* ===== SECTION 5 (LOGOS) ===== */
+.logo-section{
+  background: var(--dim-bg) !important;
+}
+
+/* Logos auf dunkel: optional etwas heller */
+.logo-item img{
+  opacity: .92 !important;
+  filter: none !important;
+}
+
+/* ===== SECTION 6 ===== */
+.seo-section{
+  background: var(--dim-bg) !important;
+  color: var(--dim-ink) !important;
+}
+
+.seo-section .seo-kicker{ color: rgba(255,255,255,.65) !important; }
+.seo-section .seo-title{ color: var(--dim-ink) !important; text-shadow: 0 18px 44px rgba(0,0,0,.45) !important; }
+.seo-section .seo-sub{ color: var(--dim-muted) !important; }
+
+/* SEO Cards dunkler */
+.seo-card{
+  background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.06)) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  box-shadow: 0 26px 70px rgba(0,0,0,.45) !important;
+}
+.seo-body h3{ color: var(--dim-ink) !important; }
+.seo-body p{ color: var(--dim-muted) !important; }
+
+.seo-badge{
+  background: rgba(255,255,255,.90) !important;
+  color: rgba(17,24,39,.85) !important;
+}
+
+/* Pfeile */
+.seo-nav{
+  background: rgba(255,255,255,.10) !important;
+  border-color: rgba(255,255,255,.14) !important;
+  color: rgba(255,255,255,.88) !important;
+  box-shadow: 0 14px 34px rgba(0,0,0,.35) !important;
+}
+
+/* CTA Reihe unten */
+.seo-actions{
+  border-top: 1px solid rgba(255,255,255,.10) !important;
+}
+.seo-section .btn{
+  color:#fff !important;
+  border-color: rgba(255,255,255,.16) !important;
+}
+.seo-section .btn.primary{
+  background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.08)) !important;
+}
+.seo-section .btn.ghost{
+  background: rgba(255,255,255,.10) !important;
+}
+
 
     
   </style>
