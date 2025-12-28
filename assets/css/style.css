@@ -1755,3 +1755,45 @@ html[data-theme="dim"] .seo-section::before{
   height: 100%;
   flex: 0 0 100vw;
 }
+
+/* =========================
+   DIM OVERLAY (SAFE)
+   Only per-section, not global
+   ========================= */
+
+.placeholder-section,
+.process-glass,
+.logo-section,
+.seo-section{
+  position: relative;
+  isolation: isolate;
+}
+
+.placeholder-section > *,
+.process-glass > *,
+.logo-section > *,
+.seo-section > *{
+  position: relative;
+  z-index: 1;
+}
+
+.placeholder-section::before,
+.process-glass::before,
+.logo-section::before,
+.seo-section::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity .22s ease;
+  background: rgba(0,0,0,.22);
+}
+
+html[data-theme="dim"] .placeholder-section::before,
+html[data-theme="dim"] .process-glass::before,
+html[data-theme="dim"] .logo-section::before,
+html[data-theme="dim"] .seo-section::before{
+  opacity: 1;
+}
