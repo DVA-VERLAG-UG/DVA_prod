@@ -555,8 +555,13 @@
           // excerpt may contain <mark> from pagefind – we keep it and style it
           const excerpt = (d.excerpt || "").trim();
 
+          const hl = encodeURIComponent(query);
+const sep = url.includes("?") ? "&" : "?";
+const jumpUrl = `${url}${sep}hl=${hl}`;
+
+
           return `
-            <a class="dd-row" href="${url}">
+            <a class="dd-row" href="${jumpUrl}">
               <div class="dd-title">${title}</div>
               <div class="dd-meta">${excerpt ? excerpt : escapeHTML(url)}</div>
             </a>
