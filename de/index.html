@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <link rel="stylesheet" href="/assets/css/style.css">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -12,19 +11,23 @@
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
+  <!-- Global styles -->
   <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Header styles (wichtig, weil header.js keinen <style> Block mehr hat) -->
+  <link rel="stylesheet" href="/assets/css/header.css">
+
   <script src="/js/header.js" defer></script>
   <script src="/js/footer.js" defer></script>
 
-
   <script src="/_pagefind/pagefind.js" defer></script>
-
 </head>
 
 <body>
 
-  <div id="search"></div>
+  <!-- ✅ GLOBAL DIM/SHADOW OVERLAY (betrifft alle Seiten, ohne Content "zu killen") -->
 
+  <div id="search"></div>
 
   <header id="site-header"></header>
 
@@ -201,36 +204,28 @@
     </section>
 
     <section class="logo-section" id="logos">
-  <div class="logo-inner">
+      <div class="logo-inner">
+        <div class="logo-marquee" aria-label="Endloses Logo Karussell">
+          <div class="logo-track">
 
-    <div class="logo-marquee" aria-label="Endloses Logo Karussell">
-      <div class="logo-track">
+            <!-- ===== SET 1 ===== -->
+            <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
+            <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
+            <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
+            <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
+            <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
 
-        <!-- ===== SET 1 ===== -->
-        <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
-        <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
-        <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
-        <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
-        <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
+            <!-- ===== SET 2 (1:1 DUPLIKAT) ===== -->
+            <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
+            <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
+            <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
+            <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
+            <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
 
-        <!-- ===== SET 2 (1:1 DUPLIKAT) ===== -->
-        <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
-        <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
-        <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
-        <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
-        <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
-
-
-
+          </div>
+        </div>
       </div>
-    </div>
-
-  </div>
-</section>
-
-
-
-
+    </section>
 
     <section class="seo-section" id="wissen">
       <div class="seo-inner">
@@ -243,117 +238,117 @@
         </div>
 
         <div class="seo-shell" aria-label="Wissenswertes Karussell">
-  <button class="seo-nav prev" type="button" aria-label="Zurück">‹</button>
+          <button class="seo-nav prev" type="button" aria-label="Zurück">‹</button>
 
-  <div class="seo-viewport" tabindex="0">
-    <div class="seo-track">
+          <div class="seo-viewport" tabindex="0">
+            <div class="seo-track">
 
-      <a class="seo-card" href="/de/blog/isbn-fuer-amazon/">
-        <div class="seo-media" style="background:url('/assets/blog/isbn.jpg') center/cover no-repeat;">
-          <div class="seo-badge">ISBN & Amazon</div>
-        </div>
-        <div class="seo-body">
-          <h3>Brauche ich eine ISBN für Amazon?</h3>
-          <p>
-            Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf.
-            Wir erklären, wann du eine ISBN brauchst, wann nicht – und welche Entscheidung langfristig
-            sinnvoll ist, wenn du professionell veröffentlichen willst.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
+              <a class="seo-card" href="/de/blog/isbn-fuer-amazon/">
+                <div class="seo-media" style="background:url('/assets/blog/isbn.jpg') center/cover no-repeat;">
+                  <div class="seo-badge">ISBN & Amazon</div>
+                </div>
+                <div class="seo-body">
+                  <h3>Brauche ich eine ISBN für Amazon?</h3>
+                  <p>
+                    Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf.
+                    Wir erklären, wann du eine ISBN brauchst, wann nicht – und welche Entscheidung langfristig
+                    sinnvoll ist, wenn du professionell veröffentlichen willst.
+                  </p>
+                  <span class="seo-link">Mehr lesen →</span>
+                </div>
+              </a>
 
-      <a class="seo-card" href="/de/blog/buchvertrieb-tuerkei/">
-        <div class="seo-media" style="background:url('/assets/blog/tuerkei-vertrieb.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Vertrieb TR</div>
-        </div>
-        <div class="seo-body">
-          <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
-          <p>
-            Buchhandel, Online-Plattformen, kulturelle Unterschiede:
-            Der türkische Markt folgt eigenen Regeln.
-            Wir zeigen dir, wie Vertrieb wirklich funktioniert – und warum lokale Expertise
-            entscheidend für Reichweite und Verkäufe ist.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
+              <a class="seo-card" href="/de/blog/buchvertrieb-tuerkei/">
+                <div class="seo-media" style="background:url('/assets/blog/tuerkei-vertrieb.jpg') center/cover no-repeat;">
+                  <div class="seo-badge">Vertrieb TR</div>
+                </div>
+                <div class="seo-body">
+                  <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
+                  <p>
+                    Buchhandel, Online-Plattformen, kulturelle Unterschiede:
+                    Der türkische Markt folgt eigenen Regeln.
+                    Wir zeigen dir, wie Vertrieb wirklich funktioniert – und warum lokale Expertise
+                    entscheidend für Reichweite und Verkäufe ist.
+                  </p>
+                  <span class="seo-link">Mehr lesen →</span>
+                </div>
+              </a>
 
-      <a class="seo-card" href="/de/blog/self-publishing-vs-verlag/">
-        <div class="seo-media" style="background:url('/assets/blog/selfpublishing-verlag.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Vergleich</div>
-        </div>
-        <div class="seo-body">
-          <h3>Self-Publishing oder klassischer Verlag?</h3>
-          <p>
-            Freiheit vs. Struktur, Kontrolle vs. Unterstützung:
-            Beide Wege haben klare Vor- und Nachteile.
-            Wir vergleichen transparent Kosten, Rechte und Erfolgschancen –
-            damit du den Weg wählst, der zu deinem Buch passt.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
+              <a class="seo-card" href="/de/blog/self-publishing-vs-verlag/">
+                <div class="seo-media" style="background:url('/assets/blog/selfpublishing-verlag.jpg') center/cover no-repeat;">
+                  <div class="seo-badge">Vergleich</div>
+                </div>
+                <div class="seo-body">
+                  <h3>Self-Publishing oder klassischer Verlag?</h3>
+                  <p>
+                    Freiheit vs. Struktur, Kontrolle vs. Unterstützung:
+                    Beide Wege haben klare Vor- und Nachteile.
+                    Wir vergleichen transparent Kosten, Rechte und Erfolgschancen –
+                    damit du den Weg wählst, der zu deinem Buch passt.
+                  </p>
+                  <span class="seo-link">Mehr lesen →</span>
+                </div>
+              </a>
 
-      <a class="seo-card" href="/de/blog/lektorat-oder-korrektorat/">
-        <div class="seo-media" style="background:url('/assets/blog/lektorat.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Qualität</div>
-        </div>
-        <div class="seo-body">
-          <h3>Lektorat oder Korrektorat – was brauchst du wirklich?</h3>
-          <p>
-            Rechtschreibung allein macht noch kein gutes Buch.
-            Wir erklären den Unterschied zwischen Lektorat und Korrektorat,
-            wann welche Leistung sinnvoll ist – und warum Qualität
-            über den Erfolg deines Buches entscheidet.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
+              <a class="seo-card" href="/de/blog/lektorat-oder-korrektorat/">
+                <div class="seo-media" style="background:url('/assets/blog/lektorat.jpg') center/cover no-repeat;">
+                  <div class="seo-badge">Qualität</div>
+                </div>
+                <div class="seo-body">
+                  <h3>Lektorat oder Korrektorat – was brauchst du wirklich?</h3>
+                  <p>
+                    Rechtschreibung allein macht noch kein gutes Buch.
+                    Wir erklären den Unterschied zwischen Lektorat und Korrektorat,
+                    wann welche Leistung sinnvoll ist – und warum Qualität
+                    über den Erfolg deines Buches entscheidet.
+                  </p>
+                  <span class="seo-link">Mehr lesen →</span>
+                </div>
+              </a>
 
-      <a class="seo-card" href="/de/blog/cover-design-worauf-achten/">
-        <div class="seo-media" style="background:url('/assets/blog/cover-design.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Design</div>
+              <a class="seo-card" href="/de/blog/cover-design-worauf-achten/">
+                <div class="seo-media" style="background:url('/assets/blog/cover-design.jpg') center/cover no-repeat;">
+                  <div class="seo-badge">Design</div>
+                </div>
+                <div class="seo-body">
+                  <h3>Was macht ein Cover wirklich verkaufsstark?</h3>
+                  <p>
+                    Leser entscheiden in Sekunden.
+                    Farben, Typografie und Genre-Signale müssen sofort wirken.
+                    Wir zeigen, welche Design-Fehler Autoren häufig machen –
+                    und wie ein Cover Vertrauen und Neugier erzeugt.
+                  </p>
+                  <span class="seo-link">Mehr lesen →</span>
+                </div>
+              </a>
+
+              <a class="seo-card" href="/de/blog/buch-marketing-start/">
+                <div class="seo-media" style="background:url('/assets/blog/buch-marketing.jpg') center/cover no-repeat;">
+                  <div class="seo-badge">Marketing</div>
+                </div>
+                <div class="seo-body">
+                  <h3>Buch-Marketing starten – auch ohne großes Budget</h3>
+                  <p>
+                    Sichtbarkeit entsteht nicht zufällig.
+                    Wir zeigen dir einfache, realistische Schritte für den Buch-Launch:
+                    von Positionierung über Social Proof bis zu Reichweite –
+                    ohne teure Werbung oder leere Versprechen.
+                  </p>
+                  <span class="seo-link">Mehr lesen →</span>
+                </div>
+              </a>
+
+            </div>
+          </div>
+
+          <button class="seo-nav next" type="button" aria-label="Weiter">›</button>
+
+          <div class="seo-actions">
+            <a class="btn primary" href="/de/blog/">Alle Artikel ansehen</a>
+            <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
+          </div>
+
         </div>
-        <div class="seo-body">
-          <h3>Was macht ein Cover wirklich verkaufsstark?</h3>
-          <p>
-            Leser entscheiden in Sekunden.
-            Farben, Typografie und Genre-Signale müssen sofort wirken.
-            Wir zeigen, welche Design-Fehler Autoren häufig machen –
-            und wie ein Cover Vertrauen und Neugier erzeugt.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
-
-      <a class="seo-card" href="/de/blog/buch-marketing-start/">
-        <div class="seo-media" style="background:url('/assets/blog/buch-marketing.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Marketing</div>
-        </div>
-        <div class="seo-body">
-          <h3>Buch-Marketing starten – auch ohne großes Budget</h3>
-          <p>
-            Sichtbarkeit entsteht nicht zufällig.
-            Wir zeigen dir einfache, realistische Schritte für den Buch-Launch:
-            von Positionierung über Social Proof bis zu Reichweite –
-            ohne teure Werbung oder leere Versprechen.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
-
-    </div>
-  </div>
-
-  <button class="seo-nav next" type="button" aria-label="Weiter">›</button>
-
-  <!-- ✅ CTA's jetzt IM GLAS-CONTAINER -->
-  <div class="seo-actions">
-    <a class="btn primary" href="/de/blog/">Alle Artikel ansehen</a>
-    <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
-  </div>
-
       </div>
     </section>
   </main>
@@ -550,7 +545,7 @@
 })();
   </script>
 
-  <!-- ✅ NEW: SEO Carousel Script (NACH deinem Script) -->
+  <!-- ✅ SEO Carousel Script -->
   <script>
 (() => {
   const shell = document.querySelector(".seo-shell");
@@ -576,7 +571,6 @@
     track.scrollBy({ left:  cardStep() * 1.1, behavior: "smooth" });
   });
 
-  // optional: keyboard support on viewport
   const viewport = shell.querySelector(".seo-viewport");
   if (viewport){
     viewport.addEventListener("keydown", (e) => {
@@ -586,20 +580,21 @@
   }
 })();
   </script>
-<footer id="site-footer"></footer>
 
-<script>
-  window.addEventListener("DOMContentLoaded", () => {
-    new PagefindUI({ element: "#search", showSubResults: true });
-  });
-</script>
-<script>
+  <footer id="site-footer"></footer>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      new PagefindUI({ element: "#search", showSubResults: true });
+    });
+  </script>
+
+  <script>
 (function(){
   const params = new URLSearchParams(location.search);
   const term = (params.get("hl") || "").trim();
   if (!term) return;
 
-  // CSS für gelbes Highlight
   const style = document.createElement("style");
   style.textContent = `
     .hl-hit{
@@ -618,7 +613,6 @@
   const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const re = new RegExp(esc, "gi");
 
-  // markiere Text in normalen Content-Bereichen (vermeidet Header/Nav)
   const root = document.querySelector("main") || document.body;
 
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
@@ -659,13 +653,12 @@
     node.parentNode.replaceChild(frag, node);
   });
 
-  // zum ersten Treffer scrollen + optisch hervorheben
   if (hits.length){
     hits[0].classList.add("is-main");
     hits[0].scrollIntoView({ behavior:"smooth", block:"center" });
   }
 })();
-</script>
+  </script>
 
 </body>
 </html>

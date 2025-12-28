@@ -1352,3 +1352,230 @@ html[data-theme="dim"] main > *{
   position: relative;
   z-index: 2;
 }
+/* =========================
+   DIM OVERLAY: NUR HINTERGRUND
+   ========================= */
+
+/* Content muss über dem Overlay liegen */
+body{
+  position: relative;
+}
+
+/* Alles in der Seite (dein Content) über Overlay setzen */
+body > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* Header / Drawer sicher ganz oben */
+#site-header{
+  position: sticky; /* oder fixed, je nachdem wie du's gebaut hast */
+  top: 0;
+  z-index: 1000;
+}
+
+/* Overlay selbst: liegt UNTER Content */
+#dimOverlay{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  /* WICHTIG: unter content */
+  z-index: 0;
+
+  opacity: 0;
+  transition: opacity .22s ease;
+
+  /* nur dunkler Hintergrund (keine blend-mode Spielereien) */
+  background:
+    radial-gradient(900px 520px at 15% 20%, rgba(0,0,0,.18), transparent 60%),
+    radial-gradient(700px 420px at 85% 40%, rgba(0,0,0,.12), transparent 62%),
+    rgba(0,0,0,.30);
+}
+
+/* an, wenn Theme aktiv */
+html[data-theme="dim"] #dimOverlay{
+  opacity: 1;
+}
+
+/* =========================
+   DIM LAYER PRO SECTION
+   (dimmt Background, NICHT Text)
+   ========================= */
+
+/* Welche Bereiche sollen im Dim Mode abgedunkelt werden? */
+.placeholder-section,
+.process-glass,
+.logo-section,
+.seo-section{
+  position: relative;
+  isolation: isolate; /* wichtig: eigener Stacking Context */
+}
+
+/* Content über den Layer */
+.placeholder-section > *,
+.process-glass > *,
+.logo-section > *,
+.seo-section > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* Dim-Layer (sitzt ÜBER Background, UNTER Content) */
+.placeholder-section::before,
+.process-glass::before,
+.logo-section::before,
+.seo-section::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index: 0;
+
+  opacity: 0;
+  transition: opacity .22s ease;
+
+  /* Stärke kannst du hier einstellen */
+  background: rgba(0,0,0,.22);
+}
+
+/* Aktiv, wenn Dim Mode an ist */
+html[data-theme="dim"] .placeholder-section::before,
+html[data-theme="dim"] .process-glass::before,
+html[data-theme="dim"] .logo-section::before,
+html[data-theme="dim"] .seo-section::before{
+  opacity: 1;
+}
+
+
+/* =========================
+   DIM MODE: nur BACKGROUNDS abdunkeln (ganze Seite)
+   Nutzt html[data-theme="dim"] weil header.js das setzt
+   ========================= */
+
+/* 1) HERO: dein Background-Layer ist .hero::before */
+html[data-theme="dim"] .hero::before{
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+    url("/assets/images/library.jpg") center top / cover no-repeat;
+}
+
+/* 2) SLIDER (Sektion 3):
+   Die Bilder sind auf .placeholder-slide::after (z-index:1)
+   Darüber liegt schon ein Overlay .placeholder-slide::before (z-index:2)
+   -> Perfekt: Wir verstärken NUR dieses Overlay im Dim Mode.
+*/
+html[data-theme="dim"] .placeholder-slide::before{
+  background: linear-gradient(rgba(0,0,0,.42), rgba(0,0,0,.42)) !important;
+}
+
+/* optional: falls du es noch stärker willst */
+html[data-theme="dim"] .placeholder-slide::before{
+  /* von .42 auf .50/.55 erhöhen wenn nötig */
+  /* background: linear-gradient(rgba(0,0,0,.50), rgba(0,0,0,.50)) !important; */
+}
+
+/* 3) Sections mit "hellen" Backgrounds:
+   Hier legen wir ein Section-Overlay ÜBER den Section-Background,
+   aber UNTER den Content. (Text bleibt unverändert.)
+*/
+.process-glass,
+.logo-section,
+.seo-section{
+  position: relative;
+  isolation: isolate;
+}
+
+.process-glass::before,
+.logo-section::before,
+.seo-section::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:0;
+  transition: opacity .2s ease;
+  background: rgba(0,0,0,.20);
+}
+
+/* Content über dem Overlay */
+.process-glass > *,
+.logo-section > *,
+.seo-section > *{
+  position: relative;
+  z-index: 1;
+}
+
+html[data-theme="dim"] .process-glass::before,
+html[data-theme="dim"] .logo-section::before,
+html[data-theme="dim"] .seo-section::before{
+  opacity: 1;
+}
+
+
+/* =========================================
+   DIM MODE (global): nur BACKGROUNDS, nie Text
+   Trigger: html[data-theme="dim"]
+   ========================================= */
+
+/* 0) Sicherheitsnetz: Header bleibt über allem */
+.hdr{ z-index: 100; }       /* ist bei dir schon so */
+.overlay{ z-index: 200; }   /* ist bei dir schon so */
+.drawer{ z-index: 201; }    /* ist bei dir schon so */
+
+/* 1) HERO: dimmt nur das Background-Layer */
+html[data-theme="dim"] .hero::before{
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+    url("/assets/images/library.jpg") center top / cover no-repeat;
+}
+
+/* 2) SLIDER (Sektion 3):
+   Deine Bilder sind .placeholder-slide::after
+   Dein Overlay darüber ist .placeholder-slide::before
+   => Wir verstärken NUR dieses Overlay (Text bleibt gleich)
+*/
+html[data-theme="dim"] .placeholder-slide::before{
+  background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)) !important;
+}
+
+/* 3) Sections 4–6:
+   Wir legen ein Overlay ÜBER den Section-Background,
+   aber UNTER den Content.
+*/
+.process-glass,
+.logo-section,
+.seo-section{
+  position: relative;
+  isolation: isolate; /* wichtig: z-index stacking sauber */
+}
+
+/* Overlay Layer */
+.process-glass::before,
+.logo-section::before,
+.seo-section::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:0;
+  transition: opacity .2s ease;
+  background: rgba(0,0,0,.20); /* Stärke: 0.15–0.30 */
+}
+
+/* Content über Overlay */
+.process-glass > *,
+.logo-section > *,
+.seo-section > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* Dim aktiv */
+html[data-theme="dim"] .process-glass::before,
+html[data-theme="dim"] .logo-section::before,
+html[data-theme="dim"] .seo-section::before{
+  opacity: 1;
+}
