@@ -25,8 +25,6 @@
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
-  <!-- Global Styles -->
-  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- Header / Footer Injection -->
   <script src="/js/header.js" defer></script>
@@ -114,11 +112,15 @@
       <!-- RIGHT SUMMARY -->
       <aside class="summary">
         <!-- Package Switch -->
-        <div class="package-switch">
-          <div class="ps-head">
-            <h3>Paket wählen (Schnellauswahl)</h3>
-            <button class="ps-reset" type="button" id="resetBtnTop">Reset</button>
-          </div>
+       <div class="ps-head">
+  <h3>Paket wählen (Schnellauswahl)</h3>
+
+  <div class="ps-actions">
+    <button class="ps-reset" type="button" id="resetBtnTop">Reset</button>
+    <button class="ps-reset danger" type="button" id="clearAllBtnTop">Alles löschen</button>
+  </div>
+</div>
+
 
           <div class="ps-tabs">
             <button class="ps-tab active" type="button" data-pkg="starter">Starter</button>
@@ -694,11 +696,29 @@ window.addEventListener("resize", () => {
       });
     });
 
+    /* =========================
+   PACKAGE SWITCH (top tabs)
+   ========================= */
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    const pkg = tab.dataset.pkg;
+    applyPreset(pkg);
+    renderChart(projectionForPackage(pkg), pkgLabelFromKey(pkg));
+  });
+});
+
+
     document.getElementById("resetBtnTop").addEventListener("click", () => {
       resetAll();
       applyPreset("starter");
       renderChart(projectionForPackage("starter"), pkgLabelFromKey("starter"));
     });
+    document.getElementById("clearAllBtnTop").addEventListener("click", () => {
+  resetAll(); // löscht wirklich alle Auswahl
+  // optional: Chart auf neutral setzen (oder lassen)
+  document.getElementById("chartTotal").textContent = "—";
+});
+
 
     /* =========================
        CHART

@@ -793,3 +793,21 @@
       .chart-head{ flex-direction:column; }
       .chart-metrics{ justify-content:flex-start; }
     }
+
+    .ps-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.ps-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:nowrap;      /* <-- verhindert untereinander */
+}
+
+.ps-reset{
+  white-space:nowrap;    /* <-- “Alles löschen” bleibt 1 Zeile */
+}
