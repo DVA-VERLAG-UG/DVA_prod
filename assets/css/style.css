@@ -1743,3 +1743,35 @@ html[data-theme="dim"] .seo-section::before{
 }
 
 
+/* ===== Sektion 3 Slider FIX ===== */
+
+/* WICHTIG: Section muss lang genug sein */
+.placeholder-section{
+  position: relative;
+  min-height: 320vh;     /* <- ohne das gibt’s keinen Scroll-Weg */
+  overflow: visible;     /* <- NICHT hidden/auto, sonst sticky kaputt */
+}
+
+/* Sticky darf keinen transform/filter Parent haben */
+.placeholder-sticky{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;      /* <- nur hier ok, damit Track sauber clipped */
+}
+
+/* Track muss “breit” sein und horizontal laufen */
+.placeholder-track{
+  height: 100%;
+  display: flex;
+  width: 300vw;          /* 3 Slides = 300vw */
+  will-change: transform;
+  transform: translate3d(0,0,0);
+}
+
+/* Jede Slide viewport-breit */
+.placeholder-slide{
+  width: 100vw;
+  height: 100%;
+  flex: 0 0 100vw;
+}
