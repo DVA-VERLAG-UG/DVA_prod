@@ -69,6 +69,99 @@
       </div>
     </section>
 
+    <!-- ✅ SEKTION 2: Manuskript Upload (Netlify Forms) -->
+<section class="upload-section" id="upload">
+  <div class="upload-inner">
+    <div class="upload-card">
+      <div class="upload-head">
+  <div class="upload-kicker">Sektion 2 • Manuskript-Check</div>
+  <h2 class="upload-title">Kostenloser Manuskript-Check</h2>
+  <p class="upload-sub">
+    Lade dein Manuskript (oder mehrere Dateien) hoch. Du bekommst eine Bestätigung – wir melden uns mit den nächsten Schritten.
+  </p>
+
+  <div class="upload-chips" aria-label="Vorteile">
+    <span class="chip">Sicher & vertraulich</span>
+    <span class="chip">Kostenloser Erst-Check</span>
+    <span class="chip">Antwort innerhalb 24–48h</span>
+  </div>
+</div>
+
+
+      <form class="upload-form"
+            name="manuskript-upload"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            enctype="multipart/form-data"
+            action="/de/danke-upload/">
+
+        <input type="hidden" name="form-name" value="manuskript-upload" />
+        <p class="hidden">
+          <label>Don’t fill this out: <input name="bot-field" /></label>
+        </p>
+
+        <div class="upload-grid">
+          <div class="field">
+            <label for="u_name">Name</label>
+            <input id="u_name" name="name" required placeholder="Vor- und Nachname">
+          </div>
+
+          <div class="field">
+            <label for="u_email">E-Mail</label>
+            <input id="u_email" name="email" type="email" required placeholder="name@mail.com">
+          </div>
+
+          <div class="field full">
+            <label for="u_files">Dateien (PDF, DOCX, EPUB, TXT…)</label>
+
+            <div class="dropzone" id="dropzone">
+              <input id="u_files"
+                     name="dateien"
+                     type="file"
+                     multiple
+                     required
+                     accept=".pdf,.doc,.docx,.epub,.txt,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
+              <div class="dz-ui">
+                <div class="dz-title">Drag & Drop oder klicken zum Auswählen</div>
+                <div class="dz-meta">Max. Größe abhängig von Netlify-Settings • Mehrere Dateien möglich</div>
+              </div>
+            </div>
+
+            <div class="file-list" id="fileList" aria-live="polite"></div>
+          </div>
+
+          <div class="field full">
+            <label for="u_notes">Kurzbeschreibung (optional)</label>
+            <textarea id="u_notes" name="nachricht" placeholder="Genre, Umfang, Zielgruppe, Deadline …"></textarea>
+          </div>
+        </div>
+
+        <div class="upload-actions">
+          <button class="btn ghost" type="reset" id="u_reset">Zurücksetzen</button>
+          <button class="btn primary" type="submit" id="u_submit">Dateien senden</button>
+        </div>
+
+        <div class="upload-note">
+          Hinweis: Deine Dateien werden über Netlify Forms übertragen und im Netlify-Dashboard gespeichert. Du erhältst/erhältst eine Bestätigung per E-Mail.
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="upload-loading" id="uploadLoading" aria-hidden="true">
+    <div class="loading-card" role="status" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <div class="loading-title">Upload läuft…</div>
+      <div class="loading-sub">Wir prüfen deine Dateien und erstellen gerade eine Vorschau.</div>
+      <div class="loading-bar"><span></span></div>
+    </div>
+  </div>
+</section>
+
+
     <section class="placeholder-section" id="placeholder">
       <div class="placeholder-sticky">
         <div class="slider-head">
@@ -659,6 +752,47 @@
   }
 })();
   </script>
+
+  <script>
+(() => {
+  const form = document.querySelector('form[name="manuskript-upload"]');
+  if (!form) return;
+
+  const fileInput = form.querySelector('#u_files');
+  const fileList  = document.getElementById('fileList');
+  const loading   = document.getElementById('uploadLoading');
+
+  function renderFiles(){
+    if (!fileList) return;
+    fileList.innerHTML = "";
+    const files = Array.from(fileInput.files || []);
+    files.forEach(f => {
+      const pill = document.createElement('div');
+      pill.className = 'file-pill';
+      pill.textContent = `${f.name}`;
+      fileList.appendChild(pill);
+    });
+  }
+
+  fileInput?.addEventListener('change', renderFiles);
+  form.addEventListener('reset', () => setTimeout(renderFiles, 0));
+
+  // Loading overlay before actual submit
+  form.addEventListener('submit', (e) => {
+    // show loader
+    if (loading) loading.classList.add('is-on');
+
+    // keep Netlify normal submission (so file upload works reliably)
+    // but delay a tiny bit so the user sees the animation
+    e.preventDefault();
+
+    setTimeout(() => {
+      form.submit(); // continue normal POST to Netlify (action="/de/danke-upload/")
+    }, 900);
+  });
+})();
+</script>
+
 
 </body>
 </html>
