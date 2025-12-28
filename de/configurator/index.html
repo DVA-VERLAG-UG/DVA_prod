@@ -1597,5 +1597,79 @@ window.addEventListener("resize", () => {
   </script>
 
   <footer id="site-footer"></footer>
+  <script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  const term = (params.get("hl") || "").trim();
+  if (!term) return;
+
+  // CSS für gelbes Highlight
+  const style = document.createElement("style");
+  style.textContent = `
+    .hl-hit{
+      background: #ffe600;
+      color: #111;
+      padding: 0 .12em;
+      border-radius: .2em;
+      box-shadow: 0 0 0 2px rgba(0,0,0,.08);
+    }
+    .hl-hit.is-main{
+      outline: 2px solid rgba(255,230,0,.55);
+    }
+  `;
+  document.head.appendChild(style);
+
+  const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(esc, "gi");
+
+  // markiere Text in normalen Content-Bereichen (vermeidet Header/Nav)
+  const root = document.querySelector("main") || document.body;
+
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node){
+      const p = node.parentElement;
+      if (!p) return NodeFilter.FILTER_REJECT;
+      if (p.closest("script, style, noscript, header, nav, footer, form, input, textarea")) return NodeFilter.FILTER_REJECT;
+      if (!node.nodeValue || !re.test(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+      re.lastIndex = 0;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+
+  const hits = [];
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+  textNodes.forEach(node => {
+    const text = node.nodeValue;
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    re.lastIndex = 0;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      const start = m.index;
+      const end = start + m[0].length;
+      if (start > last) frag.appendChild(document.createTextNode(text.slice(last, start)));
+
+      const span = document.createElement("mark");
+      span.className = "hl-hit";
+      span.textContent = text.slice(start, end);
+      frag.appendChild(span);
+      hits.push(span);
+
+      last = end;
+    }
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  });
+
+  // zum ersten Treffer scrollen + optisch hervorheben
+  if (hits.length){
+    hits[0].classList.add("is-main");
+    hits[0].scrollIntoView({ behavior:"smooth", block:"center" });
+  }
+})();
+</script>
+
 </body>
 </html>
