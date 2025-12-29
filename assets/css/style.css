@@ -1841,3 +1841,40 @@ html[data-theme="dim"] main > *{
   background: rgba(0,0,0,.30);
   border: 1px solid rgba(255,255,255,.18);
 }
+
+/* =========================
+   MOBILE FIX: Header-Overlap + safer hero height
+   ========================= */
+@media (max-width: 720px){
+
+  /* Falls dein Header auf Mobile durch Umbruch höher wird:
+     -> leicht erhöhen (optional, aber oft nötig) */
+  :root{
+    --hdr-h: 88px; /* war 72px */
+  }
+
+  /* Main bekommt oben Platz für fixed Header */
+  main{
+    padding-top: calc(var(--hdr-h) + env(safe-area-inset-top, 0px));
+  }
+
+  /* Hero nicht mehr als "harte" 100vh Box erzwingen */
+  .hero{
+    height: auto;
+    min-height: calc(100svh - var(--hdr-h));
+    align-items: flex-start;
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  }
+
+  /* Hero-Inhalt kompakter + nicht zu weit oben */
+  .hero-content{
+    width: calc(100% - 24px);
+    padding: 28px 0 22px;
+  }
+
+  /* Upload-Box eng anpassen */
+  .hero-upload-box{
+    width: calc(100% - 12px);
+    margin-top: 16px;
+  }
+}
