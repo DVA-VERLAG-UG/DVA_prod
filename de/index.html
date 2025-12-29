@@ -658,6 +658,19 @@
   });
 })();
   </script>
+<script>
+(() => {
+  const footer = document.querySelector(".dv-footer");
+  if (!footer) return;
+
+  let next = footer.nextElementSibling;
+  while (next) {
+    const toRemove = next;
+    next = next.nextElementSibling;
+    toRemove.remove();
+  }
+})();
+</script>
 
 </body>
 </html>
