@@ -403,8 +403,42 @@
   const section = document.getElementById("placeholder");
   const track = document.querySelector(".placeholder-track");
 
-  if (!circle || !textEl) return;
-  if (window.matchMedia("(hover: none)").matches) return;
+const isTouch = window.matchMedia("(hover: none)").matches;
+
+/* Cursor nur auf Desktop aktivieren */
+if (!circle || !textEl || isTouch) {
+  // Cursor-Teil überspringen, aber NICHT return;
+} else {
+  document.documentElement.classList.add("has-custom-cursor");
+
+  let x = window.innerWidth / 2, y = window.innerHeight / 2;
+  let tx = x, ty = y;
+
+  function render(){
+    circle.style.left = x + "px";
+    circle.style.top  = y + "px";
+    textEl.style.left = x + "px";
+    textEl.style.top  = y + "px";
+  }
+  render();
+
+  (function loop(){
+    x += (tx - x) * 0.18;
+    y += (ty - y) * 0.18;
+    render();
+    requestAnimationFrame(loop);
+  })();
+
+  window.addEventListener("mousemove", (e) => {
+    tx = e.clientX;
+    ty = e.clientY;
+  }, { passive:true });
+
+  // ... (Cursor Hover / typeWord etc. bleibt in diesem else-Block)
+}
+
+/* WICHTIG: ab hier läuft Slider immer weiter – auch auf Mobile */
+
 
   document.documentElement.classList.add("has-custom-cursor");
 
