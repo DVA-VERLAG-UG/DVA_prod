@@ -2040,3 +2040,257 @@ main{
   .seo-nav.prev{ left: 4px; }
   .seo-nav.next{ right: 4px; }
 }
+
+/* =========================
+   SEKTION 6 (SEO/News Cards) – Mobile: breiter + kürzer
+   ========================= */
+@media (max-width: 700px){
+
+  /* Karten breiter machen (mehr Viewport-Breite nutzen) */
+  .seo-track{
+    gap: 12px;
+  }
+
+  .seo-card{
+    flex: 0 0 86vw;          /* vorher war’s quasi ~100% oder zu schmal */
+    max-width: 420px;        /* optional: cap für große Phones */
+    border-radius: 22px;
+  }
+
+  /* weniger Höhe / weniger “leerer” Bereich */
+  .seo-media{
+    height: 170px;           /* Bildbereich kleiner */
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+  }
+
+  .seo-body{
+    padding: 14px 14px 12px;
+  }
+
+  .seo-body h3{
+    font-size: 18px;
+    line-height: 1.15;
+    margin: 0 0 8px;
+  }
+
+  /* Text kürzer, damit die Karte nicht ewig lang wird */
+  .seo-body p{
+    font-size: 13px;
+    line-height: 1.35;
+    margin: 0 0 10px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;   /* max 3 Zeilen */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .seo-link{
+    font-size: 13px;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 420px){
+  .seo-card{ flex-basis: 90vw; }
+  .seo-media{ height: 155px; }
+}
+
+/* =========================
+   SEKTION 6 (SEO) – MOBILE FIX: nicht mehr länglich + kein abgeschnittener Text
+   ========================= */
+@media (max-width: 700px){
+
+  /* Track/Viewport: sauber horizontal scrollen */
+  .seo-viewport{
+    overflow: hidden;                 /* ok */
+  }
+  .seo-track{
+    display: flex;                    /* falls bei dir anders */
+    gap: 12px;
+    align-items: stretch;
+    padding: 0 14px;                  /* etwas Rand links/rechts */
+  }
+
+  /* CARD: breiter + KEINE feste Höhe */
+  .seo-card{
+    flex: 0 0 88vw;                   /* breiter */
+    max-width: 460px;
+    height: auto !important;          /* WICHTIG: feste Höhe killen */
+    min-height: 0 !important;
+    overflow: visible !important;     /* nichts abschneiden */
+
+    display: flex;                    /* Body kann „unten“ bleiben */
+    flex-direction: column;
+  }
+
+  /* Bildbereich: kompakter */
+  .seo-media{
+    height: 170px !important;         /* kompakt */
+    flex: 0 0 auto;
+  }
+
+  /* Body: darf wachsen, nix abschneiden */
+  .seo-body{
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 14px 16px;
+  }
+
+  .seo-body h3{
+    font-size: 18px;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  /* Text: nicht abgeschnitten (aber nicht ewig lang) */
+  .seo-body p{
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.35;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;            /* 4 Zeilen – weniger „länglich“, kein Cut mitten drin */
+    overflow: hidden;
+  }
+
+  /* „Mehr lesen“ immer unten */
+  .seo-link{
+    margin-top: auto;
+    padding-top: 6px;
+  }
+}
+
+/* Extra kleine Phones */
+@media (max-width: 420px){
+  .seo-card{ flex-basis: 94vw; }
+  .seo-media{ height: 155px !important; }
+}
+
+/* =========================
+   SECTION 6 – MOBILE: kompletter Block breiter
+   ========================= */
+@media (max-width: 700px){
+
+  /* 1) Äußerer Container darf volle Breite nutzen */
+  .seo-section{
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* 2) Inner darf NICHT mehr zentrieren oder begrenzen */
+  .seo-inner{
+    max-width: none !important;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* 3) Shell auf volle Breite */
+  .seo-shell{
+    width: 100%;
+    max-width: none !important;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    position: relative;
+  }
+
+  /* 4) Viewport wirklich Full-Width */
+  .seo-viewport{
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 56px;   /* Platz für Pfeile links/rechts */
+    box-sizing: border-box;
+  }
+
+  /* 5) Track darf breit sein */
+  .seo-track{
+    padding: 0;
+    margin: 0;
+    gap: 14px;
+  }
+
+  /* 6) Karten: jetzt wirken sie breit, nicht länglich */
+  .seo-card{
+    flex: 0 0 92vw;        /* fast Bildschirmbreite */
+    max-width: none;
+  }
+}
+
+/* Extra kleine Phones */
+@media (max-width: 420px){
+  .seo-viewport{
+    padding: 0 48px;
+  }
+
+  .seo-card{
+    flex-basis: 94vw;
+  }
+}
+
+/* =========================
+   SECTION 6 – MOBILE POLISH
+   Head wieder mit Padding + Card Text schöner
+   ========================= */
+@media (max-width: 700px){
+
+  /* 1) Überschrift/Intro NICHT an die Kante */
+  .seo-head{
+    padding: 0 18px;           /* gleiche Luft wie andere Sektionen */
+    box-sizing: border-box;
+  }
+
+  /* optional: Head nicht zu breit auf sehr großen Phones */
+  .seo-head{
+    max-width: 680px;
+    margin: 0 auto 14px;
+  }
+
+  /* 2) Cards innen mehr Luft (Text wirkt edler) */
+  .seo-body{
+    padding: 14px 16px 16px;
+  }
+
+  /* 3) Titel sauber umbrechen, nicht abgeschnitten */
+  .seo-body h3{
+    margin: 0 0 8px;
+    line-height: 1.15;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  /* 4) Beschreibung: nicht endlos lang -> clamp (sieht viel besser aus) */
+  .seo-body p{
+    margin: 0 0 10px;
+    line-height: 1.35;
+    opacity: .88;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;     /* 3 Zeilen, danach ... */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* 5) Medienbereich etwas niedriger (Card wird "kürzer", weniger länglich) */
+  .seo-media{
+    aspect-ratio: 16 / 9;      /* statt zu hoch */
+    min-height: 140px;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+  }
+}
+
+/* Extra kleine Phones */
+@media (max-width: 420px){
+  .seo-head{ padding: 0 14px; }
+  .seo-body p{ -webkit-line-clamp: 2; }  /* noch kompakter */
+}
