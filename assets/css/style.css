@@ -1915,3 +1915,128 @@ main{
     padding-bottom: 22px;
   }
 }
+/* =========================
+   SECTION 6 (SEO) – Mobile: kleiner + mehr nebeneinander
+   ========================= */
+
+@media (max-width: 700px){
+
+  /* etwas weniger Außenabstand */
+  .seo-section{ padding-left: 14px; padding-right: 14px; }
+  .seo-inner{ width: 100%; }
+
+  /* Viewport nicht zu schmal wirken lassen */
+  .seo-viewport{
+    overflow: hidden; /* bleibt clean */
+  }
+
+  /* Track: horizontal scroll, mit Snap (nice auf Handy) */
+  .seo-track{
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 6px 4px 14px;
+    scrollbar-width: none;
+  }
+  .seo-track::-webkit-scrollbar{ display:none; }
+
+  /* Karte: kleiner -> mehr passt rein */
+  .seo-card{
+    flex: 0 0 auto;
+    width: clamp(200px, 68vw, 260px); /* <-- hier passiert “mehr nebeneinander” */
+    border-radius: 22px;
+    scroll-snap-align: start;
+  }
+
+  /* Bildbereich kompakter */
+  .seo-media{
+    height: 150px;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+  }
+
+  /* Textbereich kompakter */
+  .seo-body{
+    padding: 14px 14px 16px;
+  }
+  .seo-body h3{
+    font-size: 16px;
+    line-height: 1.15;
+    margin: 8px 0 6px;
+  }
+  .seo-body p{
+    font-size: 13px;
+    line-height: 1.35;
+    opacity: .88;
+  }
+  .seo-link{
+    font-size: 13px;
+  }
+
+  /* Pfeile: kleiner + weiter nach unten, damit sie nicht über dem Content schweben */
+  .seo-nav{
+    width: 42px;
+    height: 42px;
+    bottom: 18px;
+    top: auto;
+    transform: none;
+    opacity: .95;
+  }
+
+  /* Buttons unter dem Slider: sauber umbrechen */
+  .seo-actions{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+}
+
+/* extra small phones: noch mehr “nebeneinander” */
+@media (max-width: 420px){
+  .seo-card{
+    width: clamp(180px, 62vw, 240px);
+  }
+  .seo-media{ height: 140px; }
+}
+/* =========================
+   SECTION 6 – Pfeile korrekt positionieren
+   ========================= */
+
+/* 1) Anker setzen: Pfeile sollen relativ zur SEO-Shell sitzen */
+.seo-shell{
+  position: relative;
+}
+
+/* 2) Viewport als “Bereich” definieren, an dem sich Pfeile orientieren */
+.seo-viewport{
+  position: relative;
+}
+
+/* 3) Mobile: Pfeile mittig neben dem Slider (nicht unten im Nirvana) */
+@media (max-width: 700px){
+  .seo-nav{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    bottom: auto;            /* überschreibt dein bottom */
+    z-index: 5;
+  }
+
+  .seo-nav.prev{ left: 6px; }
+  .seo-nav.next{ right: 6px; }
+
+  /* damit Pfeile nicht über Text kleben: etwas Innenabstand im Viewport */
+  .seo-viewport{
+    padding: 0 54px;         /* Platz für Pfeile links/rechts */
+  }
+}
+
+/* 4) Extra small phones */
+@media (max-width: 420px){
+  .seo-viewport{ padding: 0 48px; }
+  .seo-nav.prev{ left: 4px; }
+  .seo-nav.next{ right: 4px; }
+}
