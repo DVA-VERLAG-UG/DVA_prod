@@ -14,7 +14,7 @@
   <!-- Global styles -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- Header styles (wichtig, weil header.js keinen <style> Block mehr hat) -->
+  <!-- Header styles -->
   <link rel="stylesheet" href="/assets/css/header.css">
 
   <script src="/js/header.js" defer></script>
@@ -24,144 +24,123 @@
 </head>
 
 <body>
-
-  <!-- ✅ GLOBAL DIM/SHADOW OVERLAY (betrifft alle Seiten, ohne Content "zu killen") -->
-
   <div id="search"></div>
-
   <header id="site-header"></header>
 
   <main>
-    <section class="hero">
-      <div class="hero-content">
-        <div class="kicker anim d1">DVAYD Publishing</div>
-        <h1 class="anim d2">Dein Buch, deine Geschichte – Weltweit veröffentlicht mit DVAYD.</h1>
 
-        <p class="sub anim d3">
-          Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
-        </p>
+  <section class="hero" id="top">
+  <div class="hero-content">
 
-        <div class="actions anim d4">
-          <a href="/de/kontakt/" class="btn primary">Jetzt veröffentlichen</a>
-          <a href="/de/projekte/" class="btn ghost">Pakete entdecken</a>
-        </div>
+    <!-- ✅ Hero Copy (schmal) -->
+    <div class="hero-copy">
+      <div class="kicker anim d1">DVAYD Publishing</div>
+      <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
 
-        <div class="trustbar anim d4">
-          <div class="trustbar-items">
-            <div class="trust-item">
-              <div class="trust-icon"><img src="/assets/icons/schutz.png" alt="Autorenrechte"></div>
-              <div class="trust-text">100 % Autorenrechte</div>
-            </div>
-            <div class="trust-item">
-              <div class="trust-icon"><img src="/assets/icons/internet.png" alt="Internationaler Verlag"></div>
-              <div class="trust-text">DE &amp; TR Vertrieb</div>
-            </div>
-            <div class="trust-item">
-              <div class="trust-icon"><img src="/assets/icons/beratung.png" alt="Persönliche Beratung"></div>
-              <div class="trust-text">Persönliche Betreuung</div>
-            </div>
-            <div class="trust-item">
-              <div class="trust-icon"><img src="/assets/icons/preis.png" alt="Transparente Preise"></div>
-              <div class="trust-text">Transparente Fixpreise</div>
-            </div>
-          </div>
-        </div>
+      <p class="sub anim d3">
+        Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
+      </p>
+
+      <div class="actions anim d4">
+        <a href="/de/kontakt/" class="btn primary">Jetzt starten</a>
+        <a href="/de/configurator/" class="btn ghost">Pakete entdecken</a>
       </div>
-    </section>
+    </div>
 
-    <!-- ✅ SEKTION 2: Manuskript Upload (Netlify Forms) -->
-<section class="upload-section" id="upload">
-  <div class="upload-inner">
-    <div class="upload-card">
-      <div class="upload-head">
-  <div class="upload-kicker">Sektion 2 • Manuskript-Check</div>
+    <!-- ✅ BOX um Sektion 2 herum -->
+    <div class="hero-upload-box anim d4" id="upload">
+      <div class="hero-upload-box-head">
+  <div class="upload-kicker">MANUSKRIPT-CHECK</div>
   <h2 class="upload-title">Kostenloser Manuskript-Check</h2>
-  <p class="upload-sub">
-    Lade dein Manuskript (oder mehrere Dateien) hoch. Du bekommst eine Bestätigung – wir melden uns mit den nächsten Schritten.
-  </p>
+  <p class="upload-sub">Lade dein Manuskript hoch — wir melden uns in 24–48h mit den nächsten Schritten.</p>
 
   <div class="upload-chips" aria-label="Vorteile">
-    <span class="chip">Sicher & vertraulich</span>
-    <span class="chip">Kostenloser Erst-Check</span>
-    <span class="chip">Antwort innerhalb 24–48h</span>
+    <span class="chip">Vertraulich</span>
+    <span class="chip">Kostenlos</span>
+    <span class="chip">24–48h Antwort</span>
   </div>
 </div>
 
 
-      <form class="upload-form"
-            name="manuskript-upload"
-            method="POST"
-            data-netlify="true"
-            netlify-honeypot="bot-field"
-            enctype="multipart/form-data"
-            action="/de/danke-upload/">
+      <!-- ✅ Sektion 2 Form -->
+      <section class="upload-section upload-in-hero" aria-label="Manuskript Upload">
+        <div class="upload-inner">
+          <div class="upload-card">
 
-        <input type="hidden" name="form-name" value="manuskript-upload" />
-        <p class="hidden">
-          <label>Don’t fill this out: <input name="bot-field" /></label>
-        </p>
+            <form class="upload-form"
+                  name="manuskript-upload"
+                  method="POST"
+                  data-netlify="true"
+                  netlify-honeypot="bot-field"
+                  enctype="multipart/form-data"
+                  action="/de/danke-upload/">
 
-        <div class="upload-grid">
-          <div class="field">
-            <label for="u_name">Name</label>
-            <input id="u_name" name="name" required placeholder="Vor- und Nachname">
-          </div>
+              <input type="hidden" name="form-name" value="manuskript-upload" />
+              <p class="hidden">
+                <label>Don’t fill this out: <input name="bot-field" /></label>
+              </p>
 
-          <div class="field">
-            <label for="u_email">E-Mail</label>
-            <input id="u_email" name="email" type="email" required placeholder="name@mail.com">
-          </div>
+              <div class="upload-grid">
+                <div class="field">
+                  <label for="u_name">Name</label>
+                  <input id="u_name" name="name" required placeholder="Name">
+                </div>
 
-          <div class="field full">
-            <label for="u_files">Dateien (PDF, DOCX, EPUB, TXT…)</label>
+                <div class="field">
+                  <label for="u_email">E-Mail</label>
+                  <input id="u_email" name="email" type="email" required placeholder="name@mail.com">
+                </div>
 
-            <div class="dropzone" id="dropzone">
-              <input id="u_files"
-                     name="dateien"
-                     type="file"
-                     multiple
-                     required
-                     accept=".pdf,.doc,.docx,.epub,.txt,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                <div class="field full">
+                  <label for="u_files">Dateien</label>
 
-              <div class="dz-ui">
-                <div class="dz-title">Drag & Drop oder klicken zum Auswählen</div>
-                <div class="dz-meta">Max. Größe abhängig von Netlify-Settings • Mehrere Dateien möglich</div>
+                  <div class="dropzone" id="dropzone">
+                    <input id="u_files"
+                           name="dateien"
+                           type="file"
+                           multiple
+                           required
+                           accept=".pdf,.doc,.docx,.epub,.txt,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
+                    <div class="dz-ui">
+                      <div class="dz-title">Drag &amp; Drop oder klicken</div>
+                      <div class="dz-meta">Mehrere Dateien möglich</div>
+                    </div>
+                  </div>
+
+                  <div class="file-list" id="fileList" aria-live="polite"></div>
+                </div>
               </div>
-            </div>
 
-            <div class="file-list" id="fileList" aria-live="polite"></div>
+              <div class="upload-actions">
+                <button class="btn ghost" type="reset" id="u_reset">Reset</button>
+                <button class="btn primary" type="submit" id="u_submit">Senden</button>
+              </div>
+
+              <div class="upload-note">
+  Hinweis: Deine Dateien werden sicher über Netlify Forms übertragen.
+</div>
+
+            </form>
           </div>
+        </div>
 
-          <div class="field full">
-            <label for="u_notes">Kurzbeschreibung (optional)</label>
-            <textarea id="u_notes" name="nachricht" placeholder="Genre, Umfang, Zielgruppe, Deadline …"></textarea>
+        <!-- Loading Overlay -->
+        <div class="upload-loading" id="uploadLoading" aria-hidden="true">
+          <div class="loading-card" role="status" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <div class="loading-title">Upload läuft…</div>
+            <div class="loading-bar"><span></span></div>
           </div>
         </div>
-
-        <div class="upload-actions">
-          <button class="btn ghost" type="reset" id="u_reset">Zurücksetzen</button>
-          <button class="btn primary" type="submit" id="u_submit">Dateien senden</button>
-        </div>
-
-        <div class="upload-note">
-          Hinweis: Deine Dateien werden über Netlify Forms übertragen und im Netlify-Dashboard gespeichert. Du erhältst/erhältst eine Bestätigung per E-Mail.
-        </div>
-      </form>
+      </section>
     </div>
-  </div>
 
-  <!-- Loading Overlay -->
-  <div class="upload-loading" id="uploadLoading" aria-hidden="true">
-    <div class="loading-card" role="status" aria-live="polite">
-      <div class="spinner" aria-hidden="true"></div>
-      <div class="loading-title">Upload läuft…</div>
-      <div class="loading-sub">Wir prüfen deine Dateien und erstellen gerade eine Vorschau.</div>
-      <div class="loading-bar"><span></span></div>
-    </div>
   </div>
 </section>
 
 
+    <!-- ✅ Sektion 3 -->
     <section class="placeholder-section" id="placeholder">
       <div class="placeholder-sticky">
         <div class="slider-head">
@@ -187,7 +166,7 @@
             <div class="slide-overlay">
               <div class="slide-card">
                 <div class="slide-chip">Brücke DE ↔ TR</div>
-                <h3>Deutschland & Türkei – ein Plan.</h3>
+                <h3>Deutschland &amp; Türkei – ein Plan.</h3>
                 <p>
                   Exklusiv bei uns: Veröffentliche dein Werk simultan in Europa und der Türkei.
                   Wir kennen beide Märkte und öffnen dir die Tür zum internationalen Erfolg.
@@ -199,10 +178,10 @@
           <div class="placeholder-slide slide-c">
             <div class="slide-overlay">
               <div class="slide-card">
-                <div class="slide-chip">Reichweite & Handel</div>
+                <div class="slide-chip">Reichweite &amp; Handel</div>
                 <h3>Vom Manuskript in den Handel.</h3>
                 <p>
-                  Lektorat, Design, ISBN, Listing (Amazon & Buchhandel) und optional Marketing:
+                  Lektorat, Design, ISBN, Listing (Amazon &amp; Buchhandel) und optional Marketing:
                   Dein Buch wird professionell veröffentlicht – weltweit bestellbar.
                 </p>
 
@@ -219,6 +198,7 @@
       </div>
     </section>
 
+    <!-- ✅ Rest unverändert -->
     <section class="process-glass" id="prozess">
       <div class="process-glass-inner">
         <header class="pg-head">
@@ -239,7 +219,7 @@
           <ol class="pg-steps">
             <li class="pg-step">
               <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/schreiben.png" alt="">
+                <img src="/assets/icons/timeline/weiss/schreiben.png" alt="">
               </div>
               <div class="pg-text">
                 <strong>Manuskript-Check</strong>
@@ -249,7 +229,7 @@
 
             <li class="pg-step">
               <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/lupe.png" alt="">
+                <img src="/assets/icons/timeline/weiss/lupe.png" alt="">
               </div>
               <div class="pg-text">
                 <strong>Feinschliff</strong>
@@ -259,7 +239,7 @@
 
             <li class="pg-step">
               <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/design.png" alt="">
+                <img src="/assets/icons/timeline/weiss/design.png" alt="">
               </div>
               <div class="pg-text">
                 <strong>Design</strong>
@@ -269,7 +249,7 @@
 
             <li class="pg-step">
               <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/buch.png" alt="">
+                <img src="/assets/icons/timeline/weiss/buch.png" alt="">
               </div>
               <div class="pg-text">
                 <strong>Produktion</strong>
@@ -279,7 +259,7 @@
 
             <li class="pg-step">
               <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/erfolg.png" alt="">
+                <img src="/assets/icons/timeline/weiss/erfolg.png" alt="">
               </div>
               <div class="pg-text">
                 <strong>Marketing &amp; Erfolg</strong>
@@ -300,21 +280,17 @@
       <div class="logo-inner">
         <div class="logo-marquee" aria-label="Endloses Logo Karussell">
           <div class="logo-track">
-
-            <!-- ===== SET 1 ===== -->
             <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
             <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
             <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
             <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
             <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
 
-            <!-- ===== SET 2 (1:1 DUPLIKAT) ===== -->
             <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
             <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
             <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
             <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
             <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
-
           </div>
         </div>
       </div>
@@ -335,18 +311,13 @@
 
           <div class="seo-viewport" tabindex="0">
             <div class="seo-track">
-
               <a class="seo-card" href="/de/blog/isbn-fuer-amazon/">
                 <div class="seo-media" style="background:url('/assets/blog/isbn.jpg') center/cover no-repeat;">
                   <div class="seo-badge">ISBN & Amazon</div>
                 </div>
                 <div class="seo-body">
                   <h3>Brauche ich eine ISBN für Amazon?</h3>
-                  <p>
-                    Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf.
-                    Wir erklären, wann du eine ISBN brauchst, wann nicht – und welche Entscheidung langfristig
-                    sinnvoll ist, wenn du professionell veröffentlichen willst.
-                  </p>
+                  <p>Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf…</p>
                   <span class="seo-link">Mehr lesen →</span>
                 </div>
               </a>
@@ -357,12 +328,7 @@
                 </div>
                 <div class="seo-body">
                   <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
-                  <p>
-                    Buchhandel, Online-Plattformen, kulturelle Unterschiede:
-                    Der türkische Markt folgt eigenen Regeln.
-                    Wir zeigen dir, wie Vertrieb wirklich funktioniert – und warum lokale Expertise
-                    entscheidend für Reichweite und Verkäufe ist.
-                  </p>
+                  <p>Buchhandel, Online-Plattformen, kulturelle Unterschiede…</p>
                   <span class="seo-link">Mehr lesen →</span>
                 </div>
               </a>
@@ -373,12 +339,7 @@
                 </div>
                 <div class="seo-body">
                   <h3>Self-Publishing oder klassischer Verlag?</h3>
-                  <p>
-                    Freiheit vs. Struktur, Kontrolle vs. Unterstützung:
-                    Beide Wege haben klare Vor- und Nachteile.
-                    Wir vergleichen transparent Kosten, Rechte und Erfolgschancen –
-                    damit du den Weg wählst, der zu deinem Buch passt.
-                  </p>
+                  <p>Freiheit vs. Struktur, Kontrolle vs. Unterstützung…</p>
                   <span class="seo-link">Mehr lesen →</span>
                 </div>
               </a>
@@ -389,12 +350,7 @@
                 </div>
                 <div class="seo-body">
                   <h3>Lektorat oder Korrektorat – was brauchst du wirklich?</h3>
-                  <p>
-                    Rechtschreibung allein macht noch kein gutes Buch.
-                    Wir erklären den Unterschied zwischen Lektorat und Korrektorat,
-                    wann welche Leistung sinnvoll ist – und warum Qualität
-                    über den Erfolg deines Buches entscheidet.
-                  </p>
+                  <p>Rechtschreibung allein macht noch kein gutes Buch…</p>
                   <span class="seo-link">Mehr lesen →</span>
                 </div>
               </a>
@@ -405,12 +361,7 @@
                 </div>
                 <div class="seo-body">
                   <h3>Was macht ein Cover wirklich verkaufsstark?</h3>
-                  <p>
-                    Leser entscheiden in Sekunden.
-                    Farben, Typografie und Genre-Signale müssen sofort wirken.
-                    Wir zeigen, welche Design-Fehler Autoren häufig machen –
-                    und wie ein Cover Vertrauen und Neugier erzeugt.
-                  </p>
+                  <p>Leser entscheiden in Sekunden…</p>
                   <span class="seo-link">Mehr lesen →</span>
                 </div>
               </a>
@@ -421,16 +372,10 @@
                 </div>
                 <div class="seo-body">
                   <h3>Buch-Marketing starten – auch ohne großes Budget</h3>
-                  <p>
-                    Sichtbarkeit entsteht nicht zufällig.
-                    Wir zeigen dir einfache, realistische Schritte für den Buch-Launch:
-                    von Positionierung über Social Proof bis zu Reichweite –
-                    ohne teure Werbung oder leere Versprechen.
-                  </p>
+                  <p>Sichtbarkeit entsteht nicht zufällig…</p>
                   <span class="seo-link">Mehr lesen →</span>
                 </div>
               </a>
-
             </div>
           </div>
 
@@ -440,17 +385,17 @@
             <a class="btn primary" href="/de/blog/">Alle Artikel ansehen</a>
             <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
           </div>
-
         </div>
       </div>
     </section>
+
   </main>
 
   <!-- cursor elements -->
   <div class="cursor-invert" id="cursorInvert" aria-hidden="true"></div>
   <div class="cursor-text" id="cursorText" aria-hidden="true"></div>
 
-  <!-- ✅ Dein bestehendes Script -->
+  <!-- ✅ Dein bestehendes Script (unverändert) -->
   <script>
 (function(){
   const circle = document.getElementById("cursorInvert");
@@ -683,77 +628,6 @@
   </script>
 
   <script>
-(function(){
-  const params = new URLSearchParams(location.search);
-  const term = (params.get("hl") || "").trim();
-  if (!term) return;
-
-  const style = document.createElement("style");
-  style.textContent = `
-    .hl-hit{
-      background: #ffe600;
-      color: #111;
-      padding: 0 .12em;
-      border-radius: .2em;
-      box-shadow: 0 0 0 2px rgba(0,0,0,.08);
-    }
-    .hl-hit.is-main{
-      outline: 2px solid rgba(255,230,0,.55);
-    }
-  `;
-  document.head.appendChild(style);
-
-  const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const re = new RegExp(esc, "gi");
-
-  const root = document.querySelector("main") || document.body;
-
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-    acceptNode(node){
-      const p = node.parentElement;
-      if (!p) return NodeFilter.FILTER_REJECT;
-      if (p.closest("script, style, noscript, header, nav, footer, form, input, textarea")) return NodeFilter.FILTER_REJECT;
-      if (!node.nodeValue || !re.test(node.nodeValue)) return NodeFilter.FILTER_REJECT;
-      re.lastIndex = 0;
-      return NodeFilter.FILTER_ACCEPT;
-    }
-  });
-
-  const hits = [];
-  const textNodes = [];
-  while (walker.nextNode()) textNodes.push(walker.currentNode);
-
-  textNodes.forEach(node => {
-    const text = node.nodeValue;
-    const frag = document.createDocumentFragment();
-    let last = 0;
-    re.lastIndex = 0;
-    let m;
-    while ((m = re.exec(text)) !== null) {
-      const start = m.index;
-      const end = start + m[0].length;
-      if (start > last) frag.appendChild(document.createTextNode(text.slice(last, start)));
-
-      const span = document.createElement("mark");
-      span.className = "hl-hit";
-      span.textContent = text.slice(start, end);
-      frag.appendChild(span);
-      hits.push(span);
-
-      last = end;
-    }
-    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
-    node.parentNode.replaceChild(frag, node);
-  });
-
-  if (hits.length){
-    hits[0].classList.add("is-main");
-    hits[0].scrollIntoView({ behavior:"smooth", block:"center" });
-  }
-})();
-  </script>
-
-  <script>
 (() => {
   const form = document.querySelector('form[name="manuskript-upload"]');
   if (!form) return;
@@ -777,22 +651,13 @@
   fileInput?.addEventListener('change', renderFiles);
   form.addEventListener('reset', () => setTimeout(renderFiles, 0));
 
-  // Loading overlay before actual submit
   form.addEventListener('submit', (e) => {
-    // show loader
     if (loading) loading.classList.add('is-on');
-
-    // keep Netlify normal submission (so file upload works reliably)
-    // but delay a tiny bit so the user sees the animation
     e.preventDefault();
-
-    setTimeout(() => {
-      form.submit(); // continue normal POST to Netlify (action="/de/danke-upload/")
-    }, 900);
+    setTimeout(() => { form.submit(); }, 900);
   });
 })();
-</script>
-
+  </script>
 
 </body>
 </html>

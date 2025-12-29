@@ -1352,3 +1352,366 @@ html[data-theme="dim"] main > *{
   position: relative;
   z-index: 2;
 }
+
+/* =========================
+   HERO: allow wide upload card under narrow copy
+   ========================= */
+.hero-content{
+  max-width: 1060px;                 /* vorher 780 -> jetzt Platz für Card */
+  text-align: center;
+}
+
+.hero-copy{
+  max-width: 780px;                  /* Copy bleibt wie vorher */
+  margin: 0 auto;
+}
+
+/* Upload im Hero: kein extra "Section Padding", sondern Card sitzt im Hero */
+.upload-in-hero{
+  padding: 26px 0 0;
+  margin-top: 22px;
+  overflow: visible;
+}
+
+/* Die blurred top/bottom edges brauchst du im Hero nicht – deaktivieren */
+.upload-in-hero::before,
+.upload-in-hero::after{
+  display:none;
+}
+
+/* Upload Card leicht “floating” im Hero */
+.upload-in-hero .upload-card{
+  margin: 0 auto;
+  width: min(980px, 100%);
+}
+
+/* Auf kleinen Geräten: Card etwas enger + weniger Abstand */
+@media (max-width: 720px){
+  .upload-in-hero{ padding-top: 18px; }
+  .hero-content{ max-width: calc(100% - 40px); }
+}
+
+/* =========================
+   HERO: Layout (Copy schmal + Upload Box darunter)
+   ========================= */
+.hero-content{
+  max-width: 1100px;
+}
+
+.hero-copy{
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+/* =========================
+   BOX um Sektion 2
+   ========================= */
+.hero-upload-box{
+  width: min(980px, calc(100% - 40px));
+  margin: 22px auto 0;
+  padding: 18px;
+  border-radius: 22px;
+
+  /* outer glass box */
+  background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+
+  box-shadow:
+    0 26px 70px rgba(0,0,0,.40),
+    inset 0 1px 0 rgba(255,255,255,.18);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle glow */
+.hero-upload-box::before{
+  content:"";
+  position:absolute;
+  inset:-40px;
+  background:
+    radial-gradient(520px 220px at 10% 0%, rgba(139,92,246,.22), transparent 60%),
+    radial-gradient(520px 240px at 90% 110%, rgba(99,102,241,.18), transparent 65%);
+  filter: blur(18px);
+  opacity: .75;
+  pointer-events:none;
+}
+
+/* head inside box */
+.hero-upload-box-head{
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  padding: 8px 8px 14px;
+}
+
+.hero-upload-box .upload-kicker{
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .8;
+  margin-bottom: 6px;
+}
+
+.hero-upload-box .upload-title{
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+
+.hero-upload-box .upload-sub{
+  margin: 0;
+  color: rgba(255,255,255,.80);
+  font-size: 14px;
+}
+
+/* =========================
+   Upload im Hero: keine section edges + kompakter
+   ========================= */
+.upload-in-hero{
+  padding: 0;
+  margin: 0;
+}
+.upload-in-hero::before,
+.upload-in-hero::after{
+  display:none;
+}
+
+.hero-upload-box .upload-inner{
+  width: 100%;
+  margin: 0;
+}
+
+.hero-upload-box .upload-card{
+  position: relative;
+  z-index: 1;
+  padding: 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(0,0,0,.22), rgba(0,0,0,.10));
+  border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+/* weniger vertikale Höhe */
+.hero-upload-box .upload-form{ margin-top: 0; }
+.hero-upload-box .upload-grid{ gap: 14px 12px; }
+
+.hero-upload-box .dropzone{
+  padding: 18px;
+}
+
+/* Actions kompakter */
+.hero-upload-box .upload-actions{
+  margin-top: 14px;
+}
+
+/* Loader dunkler passend */
+.hero-upload-box .upload-loading{
+  background: rgba(0,0,0,.55);
+}
+
+/* Mobile */
+@media (max-width: 720px){
+  .hero-upload-box{
+    padding: 14px;
+    width: calc(100% - 24px);
+  }
+  .hero-upload-box-head{
+    padding: 6px 6px 10px;
+  }
+}
+
+/* =========================
+   Upload Form: Premium UI + Honeypot hide
+   ========================= */
+
+/* Honeypot wirklich verstecken */
+.hidden{
+  position:absolute !important;
+  left:-9999px !important;
+  width:1px !important;
+  height:1px !important;
+  overflow:hidden !important;
+}
+
+/* Head spacing */
+.hero-upload-box .upload-chips{
+  margin-top: 10px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.hero-upload-box .chip{
+  display:inline-flex;
+  align-items:center;
+  padding: 8px 10px;
+  border-radius:999px;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .02em;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+/* Form grid */
+.hero-upload-box .upload-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 12px;
+}
+.hero-upload-box .field.full{ grid-column: 1 / -1; }
+
+@media (max-width: 780px){
+  .hero-upload-box .upload-grid{ grid-template-columns: 1fr; }
+}
+
+/* Labels */
+.hero-upload-box .field label{
+  display:block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.70);
+  margin: 0 0 8px;
+}
+
+/* Inputs */
+.hero-upload-box input,
+.hero-upload-box textarea{
+  width:100%;
+  color: rgba(255,255,255,.92);
+  background: rgba(0,0,0,.28);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  padding: 12px 12px;
+  outline: none;
+  font-size: 14px;
+  line-height: 1.2;
+  backdrop-filter: blur(10px) saturate(1.15);
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  transition: border-color .18s ease, background .18s ease, transform .18s ease;
+}
+
+.hero-upload-box textarea{
+  min-height: 110px;
+  resize: vertical;
+}
+
+.hero-upload-box input::placeholder,
+.hero-upload-box textarea::placeholder{
+  color: rgba(255,255,255,.45);
+}
+
+.hero-upload-box input:focus,
+.hero-upload-box textarea:focus{
+  border-color: rgba(139,92,246,.45);
+  background: rgba(0,0,0,.34);
+  transform: translateY(-1px);
+}
+
+/* Dropzone */
+.hero-upload-box .dropzone{
+  position: relative;
+  border-radius: 16px;
+  padding: 18px;
+  background: rgba(0,0,0,.18);
+  border: 1px dashed rgba(255,255,255,.22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+  transition: border-color .18s ease, background .18s ease;
+}
+
+.hero-upload-box .dropzone:hover{
+  border-color: rgba(139,92,246,.45);
+  background: rgba(0,0,0,.22);
+}
+
+/* File input overlay (click anywhere) */
+.hero-upload-box .dropzone input[type="file"]{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+
+.hero-upload-box .dz-ui{
+  pointer-events:none;
+  text-align:left;
+}
+
+.hero-upload-box .dz-title{
+  font-weight: 900;
+  font-size: 14px;
+  color: rgba(255,255,255,.92);
+  margin-bottom: 4px;
+}
+.hero-upload-box .dz-meta{
+  font-size: 12.5px;
+  color: rgba(255,255,255,.62);
+}
+
+/* File list pills */
+.hero-upload-box .file-list{
+  margin-top: 10px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.hero-upload-box .file-pill{
+  font-size: 12px;
+  font-weight: 800;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.14);
+}
+
+/* Actions row */
+.hero-upload-box .upload-actions{
+  margin-top: 14px;
+  display:flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 520px){
+  .hero-upload-box .upload-actions .btn{ width:100%; }
+}
+
+/* Note */
+.hero-upload-box .upload-note{
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,.62);
+}
+
+/* Loading card tighter */
+.hero-upload-box .loading-card{
+  border-radius: 18px;
+}
+
+/* Upload Loader: standardmäßig verstecken */
+#uploadLoading{
+  display: none !important;
+}
+
+/* Nur zeigen, wenn JS die Klasse setzt */
+#uploadLoading.is-on{
+  display: grid !important;
+}
+
+#uploadLoading .loading-title,
+#uploadLoading .loading-sub{
+  display:none !important;
+}
+
