@@ -152,6 +152,26 @@
     const burger = mount.querySelector(".burger");
     const closeBtn = mount.querySelector("[data-close]");
 
+        // ===== Sync CSS var --hdr-h to real header height =====
+    function syncHeaderHeight(){
+      if (!hdr) return;
+      const h = Math.round(hdr.getBoundingClientRect().height);
+      document.documentElement.style.setProperty("--hdr-h", `${h}px`);
+    }
+
+    syncHeaderHeight();
+
+    // Recalc on resize + when header layout changes (search wraps, etc.)
+    window.addEventListener("resize", syncHeaderHeight);
+
+    if ("ResizeObserver" in window) {
+      const ro = new ResizeObserver(() => syncHeaderHeight());
+      ro.observe(hdr);
+    }
+
+
+    
+
     // ===== THEME TOGGLE wiring =====
     const themeBtn = mount.querySelector("#themeToggle");
     const syncThemeBtn = () => {

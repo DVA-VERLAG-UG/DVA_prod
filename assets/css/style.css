@@ -1868,3 +1868,50 @@ html[data-theme="dim"] main > *{
     padding: 28px 0 22px;
   }
 }
+
+/* =========================
+   HERO: Content darf auf kleinen Screens nicht "rausfliegen"
+   ========================= */
+@media (max-width: 720px){
+
+  /* Hero nicht zentrieren -> oben starten */
+  .hero{
+    align-items: flex-start;
+  }
+
+  /* Content bekommt eine echte obere Sicherheitszone */
+  .hero-content{
+    padding-top: calc(var(--hdr-h) + 18px);
+    padding-bottom: 22px;
+  }
+}
+
+
+/* =========================
+   HERO vs FIXED HEADER: kein schwarzer Streifen + kein Abrutschen
+   ========================= */
+
+/* Global: Content startet unter Header */
+main{
+  padding-top: var(--hdr-h);
+}
+
+/* ABER: die Hero-Section soll visuell bis ganz oben laufen */
+.hero#top{
+  margin-top: calc(-1 * var(--hdr-h));     /* zieht Hero über das main-padding */
+  padding-top: var(--hdr-h);              /* Inhalt bleibt trotzdem unter Header */
+}
+
+/* Mobile/Tablet: Hero nicht in 100vh quetschen */
+@media (max-width: 1100px){
+  .hero{
+    height: auto;
+    min-height: 100svh;
+    align-items: flex-start;
+  }
+
+  .hero-content{
+    padding-top: 18px;  /* NICHT mehr hdr-h draufpacken (kommt durch hero padding-top) */
+    padding-bottom: 22px;
+  }
+}
