@@ -672,5 +672,56 @@
 })();
 </script>
 
+<!-- Floating Social Bar (links, unabhängig vom Footer) -->
+<div class="dv-float-social" id="dvFloatSocial" aria-label="Social Bar">
+  <button
+    type="button"
+    class="dv-float-toggle"
+    id="dvFloatToggle"
+    aria-label="Social Bar umschalten"
+    aria-expanded="true">
+    ‹
+  </button>
+
+  <a href="https://x.com/" target="_blank" rel="noopener" aria-label="X">
+    <img src="/assets/icons/x.png" alt="X">
+  </a>
+  <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+    <img src="/assets/icons/instagram.png" alt="Instagram">
+  </a>
+  <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
+    <img src="/assets/icons/youtube.png" alt="YouTube">
+  </a>
+  <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
+    <img src="/assets/icons/linkedin.png" alt="LinkedIn">
+  </a>
+</div>
+
+<script>
+(() => {
+  const bar = document.getElementById("dvFloatSocial");
+  const btn = document.getElementById("dvFloatToggle");
+  if (!bar || !btn) return;
+
+  const KEY = "dvFloatSocialCollapsed";
+
+  function setState(collapsed){
+    bar.classList.toggle("is-collapsed", collapsed);
+    btn.textContent = collapsed ? "›" : "‹";
+    btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    localStorage.setItem(KEY, collapsed ? "1" : "0");
+  }
+
+  setState(localStorage.getItem(KEY) === "1");
+
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setState(!bar.classList.contains("is-collapsed"));
+  });
+})();
+</script>
+
+
 </body>
 </html>
