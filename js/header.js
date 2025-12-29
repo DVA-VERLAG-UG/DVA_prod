@@ -8,21 +8,20 @@
   };
 
   const LABELS = {
-    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"Konfigurator", process:"Prozess", blog:"Blog", search:"Suche", theme:"Dim" },
-    en: { about:"About", contact:"Contact", projects:"Projects", services:"Configurator", process:"Process", blog:"Blog", search:"Search", theme:"Dim" },
-    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"Configurator", process:"Süreç", blog:"Blog", search:"Ara", theme:"Dim" },
-    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"Configurator", process:"Processus", blog:"Blog", search:"Recherche", theme:"Dim" },
+    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"Konfigurator", process:"Prozess", blog:"Blog", search:"Suche", theme:"Dim", search_ph:"Suchbegriff eingeben" },
+    en: { about:"About", contact:"Contact", projects:"Projects", services:"Configurator", process:"Process", blog:"Blog", search:"Search", theme:"Dim", search_ph:"Search…" },
+    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"Configurator", process:"Süreç", blog:"Blog", search:"Ara", theme:"Dim", search_ph:"Ara…" },
+    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"Configurator", process:"Processus", blog:"Blog", search:"Recherche", theme:"Dim", search_ph:"Rechercher…" },
   };
 
   const LOGO_SRC = "/assets/images/dva-logo.png";
   const PAGEFIND_MODULE_PATH = "/_pagefind/pagefind.js";
 
-  // ✅ NEW: make sure header.css is actually loaded (since header.js doesn't "reference" CSS)
+  // Ensure header.css is loaded
   const HEADER_CSS_HREF = "/assets/css/header.css";
   function ensureHeaderCSS() {
     const existing = document.querySelector(`link[rel="stylesheet"][href="${HEADER_CSS_HREF}"]`);
     if (existing) return;
-
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = HEADER_CSS_HREF;
@@ -47,7 +46,7 @@
     return "home";
   }
 
-  // ===== THEME HELPERS =====
+  // Theme helpers
   function getStoredTheme(){
     try { return localStorage.getItem(THEME_KEY) || ""; } catch { return ""; }
   }
@@ -64,6 +63,8 @@
   }
 
   function headerHTML(lang) {
+    const L = LABELS[lang] || LABELS.de;
+
     return `
       <div class="hdr">
         <div class="hdr-inner">
@@ -73,20 +74,24 @@
           </a>
 
           <div class="right">
-            <form class="site-search" role="search" autocomplete="off">
-              <input
-                id="site-search-input"
-                type="search"
-                placeholder="Suchbegriff eingeben"
-                aria-label="${LABELS[lang].search}"
-              />
-              <button type="submit" class="search-icon" aria-label="${LABELS[lang].search}">
-                <img src="/assets/icons/lupe.png" alt="" />
-              </button>
-              <div class="search-dd" id="site-search-dd"></div>
-            </form>
 
-            <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle dim mode" title="${LABELS[lang].theme}">
+            <!-- ✅ WRAPPER: lets us keep search visible on mobile -->
+            <div class="hdr-search">
+              <form class="site-search" role="search" autocomplete="off">
+                <input
+                  id="site-search-input"
+                  type="search"
+                  placeholder="${L.search_ph}"
+                  aria-label="${L.search}"
+                />
+                <button type="submit" class="search-icon" aria-label="${L.search}">
+                  <img src="/assets/icons/lupe.png" alt="" />
+                </button>
+                <div class="search-dd" id="site-search-dd"></div>
+              </form>
+            </div>
+
+            <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle dim mode" title="${L.theme}">
               <span class="moon" aria-hidden="true">🌙</span>
               <span class="sun" aria-hidden="true">☀️</span>
             </button>
@@ -113,12 +118,12 @@
           <button class="close" type="button" data-close aria-label="Close">✕</button>
         </div>
         <nav>
-          <a href="${ROUTES[lang].about}">${LABELS[lang].about}</a>
-          <a href="${ROUTES[lang].projects}">${LABELS[lang].projects}</a>
-          <a href="${ROUTES[lang].services}">${LABELS[lang].services}</a>
-          <a href="${ROUTES[lang].process}">${LABELS[lang].process}</a>
-          <a href="${ROUTES[lang].blog}">${LABELS[lang].blog}</a>
-          <a href="${ROUTES[lang].contact}">${LABELS[lang].contact}</a>
+          <a href="${ROUTES[lang].about}">${L.about}</a>
+          <a href="${ROUTES[lang].projects}">${L.projects}</a>
+          <a href="${ROUTES[lang].services}">${L.services}</a>
+          <a href="${ROUTES[lang].process}">${L.process}</a>
+          <a href="${ROUTES[lang].blog}">${L.blog}</a>
+          <a href="${ROUTES[lang].contact}">${L.contact}</a>
         </nav>
       </aside>
     `;
@@ -133,7 +138,6 @@
   }
 
   function init() {
-    // ✅ ensure header.css is loaded (works even if you forget to add <link> in some pages)
     ensureHeaderCSS();
 
     const mount = document.getElementById("site-header");
@@ -152,27 +156,20 @@
     const burger = mount.querySelector(".burger");
     const closeBtn = mount.querySelector("[data-close]");
 
-        // ===== Sync CSS var --hdr-h to real header height =====
+    // ===== Sync CSS var --hdr-h to real header height =====
     function syncHeaderHeight(){
       if (!hdr) return;
       const h = Math.round(hdr.getBoundingClientRect().height);
       document.documentElement.style.setProperty("--hdr-h", `${h}px`);
     }
-
     syncHeaderHeight();
-
-    // Recalc on resize + when header layout changes (search wraps, etc.)
     window.addEventListener("resize", syncHeaderHeight);
-
     if ("ResizeObserver" in window) {
       const ro = new ResizeObserver(() => syncHeaderHeight());
       ro.observe(hdr);
     }
 
-
-    
-
-    // ===== THEME TOGGLE wiring =====
+    // ===== Theme toggle =====
     const themeBtn = mount.querySelector("#themeToggle");
     const syncThemeBtn = () => {
       if (!themeBtn) return;
@@ -278,11 +275,6 @@
     function openDD(){ dd.classList.add("is-open"); }
     function closeDD(){ dd.classList.remove("is-open"); dd.innerHTML = ""; }
 
-    function setActive(el){
-      dd.querySelectorAll(".dd-row.is-active").forEach(x => x.classList.remove("is-active"));
-      if (el) el.classList.add("is-active");
-    }
-
     function escapeHTML(s) {
       return String(s || "")
         .replaceAll("&","&amp;")
@@ -330,10 +322,6 @@
             </a>
           `;
         }).join("");
-
-        dd.querySelectorAll(".dd-row").forEach(a => {
-          a.addEventListener("click", () => setActive(a));
-        });
 
       } catch (e) {
         console.error("Pagefind search error:", e);
