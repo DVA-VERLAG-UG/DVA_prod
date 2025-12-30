@@ -21,6 +21,43 @@
   <script src="/js/footer.js" defer></script>
 
   <script src="/_pagefind/pagefind.js" defer></script>
+
+  <!-- ✅ NEW: Make quote + SEO share the same background container + tweak avatar crop -->
+  <style>
+    /* One shared background container for Quote + SEO carousel */
+    .seo-wrap{
+      /* Use your existing “SEO section” background feel (adjust if you want darker/lighter) */
+      background:
+        radial-gradient(900px 520px at 15% 20%, rgba(139,92,246,.18), transparent 60%),
+        radial-gradient(700px 420px at 85% 40%, rgba(99,102,241,.16), transparent 62%),
+        linear-gradient(180deg, rgba(10,12,20,.85), rgba(10,12,20,.92));
+      padding: 70px 0 70px;
+    }
+
+    /* Keep inner widths consistent with your site */
+    .seo-wrap-inner{
+      width:min(1180px, calc(100% - 40px));
+      margin:0 auto;
+    }
+
+    /* Remove “double” background/padding if your seo-section already has its own background */
+    .seo-wrap .seo-section{
+      background: transparent !important;
+      padding-top: 28px; /* spacing between quote card and SEO head */
+    }
+
+    /* Quote section spacing inside shared container */
+    .seo-wrap .quote-section{
+      padding: 0 0 10px; /* not huge, because container already has padding */
+    }
+
+    /* Avatar: move image DOWN a bit to show face better */
+    .quote-avatar img{
+      object-fit: cover;
+      object-position: center top;
+      transform: translateY(6px);
+    }
+  </style>
 </head>
 
 <body>
@@ -30,114 +67,113 @@
   <main>
 
   <section class="hero" id="top">
-  <div class="hero-content">
+    <div class="hero-content">
 
-    <!-- ✅ Hero Copy (schmal) -->
-    <div class="hero-copy">
-      <div class="kicker anim d1">DVAYD Publishing</div>
-      <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
+      <!-- ✅ Hero Copy (schmal) -->
+      <div class="hero-copy">
+        <div class="kicker anim d1">DVAYD Publishing</div>
+        <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
 
-      <p class="sub anim d3">
-        Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
-      </p>
+        <p class="sub anim d3">
+          Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
+        </p>
 
-      <div class="actions anim d4">
-        <a href="/de/kontakt/" class="btn primary">Jetzt starten</a>
-        <a href="/de/configurator/" class="btn ghost">Pakete entdecken</a>
+        <div class="actions anim d4">
+          <a href="/de/kontakt/" class="btn primary">Jetzt starten</a>
+          <a href="/de/configurator/" class="btn ghost">Pakete entdecken</a>
+        </div>
       </div>
-    </div>
 
-    <!-- ✅ BOX um Sektion 2 herum -->
-    <div class="hero-upload-box anim d4" id="upload">
-      <div class="hero-upload-box-head">
-  <div class="upload-kicker">MANUSKRIPT-CHECK</div>
-  <h2 class="upload-title">Kostenloser Manuskript-Check</h2>
-  <p class="upload-sub">Lade dein Manuskript hoch — wir melden uns in 24–48h mit den nächsten Schritten.</p>
+      <!-- ✅ BOX um Sektion 2 herum -->
+      <div class="hero-upload-box anim d4" id="upload">
+        <div class="hero-upload-box-head">
+          <div class="upload-kicker">MANUSKRIPT-CHECK</div>
+          <h2 class="upload-title">Kostenloser Manuskript-Check</h2>
+          <p class="upload-sub">Lade dein Manuskript hoch — wir melden uns in 24–48h mit den nächsten Schritten.</p>
 
-  <div class="upload-chips" aria-label="Vorteile">
-    <span class="chip">Vertraulich</span>
-    <span class="chip">Kostenlos</span>
-    <span class="chip">24–48h Antwort</span>
-  </div>
-</div>
+          <div class="upload-chips" aria-label="Vorteile">
+            <span class="chip">Vertraulich</span>
+            <span class="chip">Kostenlos</span>
+            <span class="chip">24–48h Antwort</span>
+          </div>
+        </div>
 
+        <!-- ✅ Sektion 2 Form -->
+        <section class="upload-section upload-in-hero" aria-label="Manuskript Upload">
+          <div class="upload-inner">
+            <div class="upload-card">
 
-      <!-- ✅ Sektion 2 Form -->
-      <section class="upload-section upload-in-hero" aria-label="Manuskript Upload">
-        <div class="upload-inner">
-          <div class="upload-card">
+              <form class="upload-form"
+                    name="manuskript-upload"
+                    method="POST"
+                    data-netlify="true"
+                    netlify-honeypot="bot-field"
+                    enctype="multipart/form-data"
+                    action="/de/danke-upload/">
 
-            <form class="upload-form"
-                  name="manuskript-upload"
-                  method="POST"
-                  data-netlify="true"
-                  netlify-honeypot="bot-field"
-                  enctype="multipart/form-data"
-                  action="/de/danke-upload/">
+                <input type="hidden" name="form-name" value="manuskript-upload" />
+                <p class="hidden">
+                  <label>Don’t fill this out: <input name="bot-field" /></label>
+                </p>
 
-              <input type="hidden" name="form-name" value="manuskript-upload" />
-              <p class="hidden">
-                <label>Don’t fill this out: <input name="bot-field" /></label>
-              </p>
-
-              <div class="upload-grid">
-                <div class="field">
-                  <label for="u_name">Name</label>
-                  <input id="u_name" name="name" required placeholder="Name">
-                </div>
-
-                <div class="field">
-                  <label for="u_email">E-Mail</label>
-                  <input id="u_email" name="email" type="email" required placeholder="name@mail.com">
-                </div>
-
-                <div class="field full">
-                  <label for="u_files">Dateien</label>
-
-                  <div class="dropzone" id="dropzone">
-                    <input id="u_files"
-                           name="dateien"
-                           type="file"
-                           multiple
-                           required
-                           accept=".pdf,.doc,.docx,.epub,.txt,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-
-                    <div class="dz-ui">
-                      <div class="dz-title">Drag &amp; Drop oder klicken</div>
-                      <div class="dz-meta">Mehrere Dateien möglich</div>
-                    </div>
+                <div class="upload-grid">
+                  <div class="field">
+                    <label for="u_name">Name</label>
+                    <input id="u_name" name="name" required placeholder="Name">
                   </div>
 
-                  <div class="file-list" id="fileList" aria-live="polite"></div>
+                  <div class="field">
+                    <label for="u_email">E-Mail</label>
+                    <input id="u_email" name="email" type="email" required placeholder="name@mail.com">
+                  </div>
+
+                  <div class="field full">
+                    <label for="u_files">Dateien</label>
+
+                    <div class="dropzone" id="dropzone">
+                      <input id="u_files"
+                             name="dateien"
+                             type="file"
+                             multiple
+                             required
+                             accept=".pdf,.doc,.docx,.epub,.txt,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
+                      <div class="dz-ui">
+                        <div class="dz-title">Drag &amp; Drop oder klicken</div>
+                        <div class="dz-meta">Mehrere Dateien möglich</div>
+                      </div>
+                    </div>
+
+                    <div class="file-list" id="fileList" aria-live="polite"></div>
+                  </div>
                 </div>
-              </div>
 
-              <div class="upload-actions">
-                <button class="btn ghost" type="reset" id="u_reset">Reset</button>
-                <button class="btn primary" type="submit" id="u_submit">Senden</button>
-              </div>
+                <div class="upload-actions">
+                  <button class="btn ghost" type="reset" id="u_reset">Reset</button>
+                  <button class="btn primary" type="submit" id="u_submit">Senden</button>
+                </div>
 
-              <div class="upload-note">
-  Hinweis: Deine Dateien werden sicher über Netlify Forms übertragen.
-</div>
+                <div class="upload-note">
+                  Hinweis: Deine Dateien werden sicher über Netlify Forms übertragen.
+                </div>
 
-            </form>
+              </form>
+            </div>
           </div>
-        </div>
 
-        <!-- Loading Overlay -->
-        <div class="upload-loading" id="uploadLoading" aria-hidden="true">
-          <div class="loading-card" role="status" aria-live="polite">
-            <div class="spinner" aria-hidden="true"></div>
-            <div class="loading-title">Upload läuft…</div>
-            <div class="loading-bar"><span></span></div>
+          <!-- Loading Overlay -->
+          <div class="upload-loading" id="uploadLoading" aria-hidden="true">
+            <div class="loading-card" role="status" aria-live="polite">
+              <div class="spinner" aria-hidden="true"></div>
+              <div class="loading-title">Upload läuft…</div>
+              <div class="loading-bar"><span></span></div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+
     </div>
-
-  </div>
-</section>
+  </section>
 
 
     <!-- ✅ Sektion 3 -->
@@ -291,101 +327,155 @@
             <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
             <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
             <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
+                        <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
+            <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
+            <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
+            <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
+            <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
+                        <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
+            <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
+            <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
+            <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
+            <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="seo-section" id="wissen">
-      <div class="seo-inner">
-        <div class="seo-head">
-          <div class="seo-kicker">Sektion 6 • SEO-Content</div>
-          <h2 class="seo-title">Wissenswertes für Autoren.</h2>
-          <p class="seo-sub">
-            Kurze Antworten auf häufige Fragen – damit du schneller vorankommst und wir Kompetenz zeigen.
-          </p>
-        </div>
+    <!-- ✅ UPDATED: Quote + SEO carousel in ONE shared background container -->
+    <section class="seo-wrap" id="wissen-block">
+      <div class="seo-wrap-inner">
 
-        <div class="seo-shell" aria-label="Wissenswertes Karussell">
-          <button class="seo-nav prev" type="button" aria-label="Zurück">‹</button>
+        <!-- ✅ Sektion 5.5 • Testimonial / Statement (now inside shared container) -->
+        <section class="quote-section" id="statement">
+          <div class="quote-inner">
 
-          <div class="seo-viewport" tabindex="0">
-            <div class="seo-track">
-              <a class="seo-card" href="/de/blog/isbn-fuer-amazon/">
-                <div class="seo-media" style="background:url('/assets/blog/isbn.jpg') center/cover no-repeat;">
-                  <div class="seo-badge">ISBN & Amazon</div>
+            <div class="quote-card" role="group" aria-label="Statement">
+              <div class="quote-person">
+                <div class="quote-avatar">
+                  <img src="/assets/images/team/mark-mils.jpg" alt="Mark Mils" loading="lazy">
                 </div>
-                <div class="seo-body">
-                  <h3>Brauche ich eine ISBN für Amazon?</h3>
-                  <p>Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen auf…</p>
-                  <span class="seo-link">Mehr lesen →</span>
+                <div class="quote-meta">
+                  <div class="quote-name">Mark Mils</div>
+                  <div class="quote-role">Founder &amp; CEO</div>
                 </div>
-              </a>
+              </div>
 
-              <a class="seo-card" href="/de/blog/buchvertrieb-tuerkei/">
-                <div class="seo-media" style="background:url('/assets/blog/tuerkei-vertrieb.jpg') center/cover no-repeat;">
-                  <div class="seo-badge">Vertrieb TR</div>
-                </div>
-                <div class="seo-body">
-                  <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
-                  <p>Buchhandel, Online-Plattformen, kulturelle Unterschiede…</p>
-                  <span class="seo-link">Mehr lesen →</span>
-                </div>
-              </a>
+              <div class="quote-content">
+               <p class="quote-text">
+  <span class="quote-mark">“</span>
+  Wir glauben an Bücher mit Seele: Klarer Prozess, ehrliche Beratung und ein Ergebnis,
+  das sich im Handel behauptet — ohne dass du deine Rechte abgibst.   Wir glauben an Bücher mit Seele: Klarer Prozess, ehrliche Beratung und ein Ergebnis,
+  das sich im Handel behauptet — ohne dass du deine Rechte abgibst.  Wir glauben an Bücher mit Seele: Klarer Prozess, ehrliche Beratung und ein Ergebnis,
+  das sich im Handel behauptet — ohne dass du deine Rechte abgibst.
+  <span class="quote-mark">”</span>
+</p>
+<div class="quote-cta">
+  <a class="btn ghost" href="#upload">Manuskript kostenlos prüfen</a>
+  <a class="btn primary" href="/de/kontakt/">Kostenloses Gespräch</a>
+</div>
 
-              <a class="seo-card" href="/de/blog/self-publishing-vs-verlag/">
-                <div class="seo-media" style="background:url('/assets/blog/selfpublishing-verlag.jpg') center/cover no-repeat;">
-                  <div class="seo-badge">Vergleich</div>
-                </div>
-                <div class="seo-body">
-                  <h3>Self-Publishing oder klassischer Verlag?</h3>
-                  <p>Freiheit vs. Struktur, Kontrolle vs. Unterstützung…</p>
-                  <span class="seo-link">Mehr lesen →</span>
-                </div>
-              </a>
 
-              <a class="seo-card" href="/de/blog/lektorat-oder-korrektorat/">
-                <div class="seo-media" style="background:url('/assets/blog/lektorat.jpg') center/cover no-repeat;">
-                  <div class="seo-badge">Qualität</div>
-                </div>
-                <div class="seo-body">
-                  <h3>Lektorat oder Korrektorat – was brauchst du wirklich?</h3>
-                  <p>Rechtschreibung allein macht noch kein gutes Buch…</p>
-                  <span class="seo-link">Mehr lesen →</span>
-                </div>
-              </a>
+              </div>
+            </div>
 
-              <a class="seo-card" href="/de/blog/cover-design-worauf-achten/">
-                <div class="seo-media" style="background:url('/assets/blog/cover-design.jpg') center/cover no-repeat;">
-                  <div class="seo-badge">Design</div>
-                </div>
-                <div class="seo-body">
-                  <h3>Was macht ein Cover wirklich verkaufsstark?</h3>
-                  <p>Leser entscheiden in Sekunden…</p>
-                  <span class="seo-link">Mehr lesen →</span>
-                </div>
-              </a>
+          </div>
+        </section>
 
-              <a class="seo-card" href="/de/blog/buch-marketing-start/">
-                <div class="seo-media" style="background:url('/assets/blog/buch-marketing.jpg') center/cover no-repeat;">
-                  <div class="seo-badge">Marketing</div>
+        <!-- ✅ Sektion 6 (unchanged markup, but background now comes from .seo-wrap) -->
+        <section class="seo-section" id="wissen">
+          <div class="seo-inner">
+            <div class="seo-head">
+              <div class="seo-kicker">Sektion 6 • SEO-Content</div>
+              <h2 class="seo-title">Wissenswertes für Autoren.</h2>
+              <p class="seo-sub">
+                Kurze Antworten auf häufige Fragen – damit du schneller vorankommst und wir Kompetenz zeigen.
+              </p>
+            </div>
+
+            <div class="seo-shell" aria-label="Wissenswertes Karussell">
+              <button class="seo-nav prev" type="button" aria-label="Zurück">‹</button>
+
+              <div class="seo-viewport" tabindex="0">
+                <div class="seo-track">
+                  <a class="seo-card" href="/de/blog/isbn-fuer-amazon/">
+                    <div class="seo-media" style="background:url('/assets/blog/isbn.jpg') center/cover no-repeat;">
+                      <div class="seo-badge">ISBN & Amazon</div>
+                    </div>
+                    <div class="seo-body">
+                      <h3>Brauche ich eine ISBN für Amazon?</h3>
+                      <p>Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen auf…</p>
+                      <span class="seo-link">Mehr lesen →</span>
+                    </div>
+                  </a>
+
+                  <a class="seo-card" href="/de/blog/buchvertrieb-tuerkei/">
+                    <div class="seo-media" style="background:url('/assets/blog/tuerkei-vertrieb.jpg') center/cover no-repeat;">
+                      <div class="seo-badge">Vertrieb TR</div>
+                    </div>
+                    <div class="seo-body">
+                      <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
+                      <p>Buchhandel, Online-Plattformen, kulturelle Unterschiede…</p>
+                      <span class="seo-link">Mehr lesen →</span>
+                    </div>
+                  </a>
+
+                  <a class="seo-card" href="/de/blog/self-publishing-vs-verlag/">
+                    <div class="seo-media" style="background:url('/assets/blog/selfpublishing-verlag.jpg') center/cover no-repeat;">
+                      <div class="seo-badge">Vergleich</div>
+                    </div>
+                    <div class="seo-body">
+                      <h3>Self-Publishing oder klassischer Verlag?</h3>
+                      <p>Freiheit vs. Struktur, Kontrolle vs. Unterstützung…</p>
+                      <span class="seo-link">Mehr lesen →</span>
+                    </div>
+                  </a>
+
+                  <a class="seo-card" href="/de/blog/lektorat-oder-korrektorat/">
+                    <div class="seo-media" style="background:url('/assets/blog/lektorat.jpg') center/cover no-repeat;">
+                      <div class="seo-badge">Qualität</div>
+                    </div>
+                    <div class="seo-body">
+                      <h3>Lektorat oder Korrektorat – was brauchst du wirklich?</h3>
+                      <p>Rechtschreibung allein macht noch kein gutes Buch…</p>
+                      <span class="seo-link">Mehr lesen →</span>
+                    </div>
+                  </a>
+
+                  <a class="seo-card" href="/de/blog/cover-design-worauf-achten/">
+                    <div class="seo-media" style="background:url('/assets/blog/cover-design.jpg') center/cover no-repeat;">
+                      <div class="seo-badge">Design</div>
+                    </div>
+                    <div class="seo-body">
+                      <h3>Was macht ein Cover wirklich verkaufsstark?</h3>
+                      <p>Leser entscheiden in Sekunden…</p>
+                      <span class="seo-link">Mehr lesen →</span>
+                    </div>
+                  </a>
+
+                  <a class="seo-card" href="/de/blog/buch-marketing-start/">
+                    <div class="seo-media" style="background:url('/assets/blog/buch-marketing.jpg') center/cover no-repeat;">
+                      <div class="seo-badge">Marketing</div>
+                    </div>
+                    <div class="seo-body">
+                      <h3>Buch-Marketing starten – auch ohne großes Budget</h3>
+                      <p>Sichtbarkeit entsteht nicht zufällig…</p>
+                      <span class="seo-link">Mehr lesen →</span>
+                    </div>
+                  </a>
                 </div>
-                <div class="seo-body">
-                  <h3>Buch-Marketing starten – auch ohne großes Budget</h3>
-                  <p>Sichtbarkeit entsteht nicht zufällig…</p>
-                  <span class="seo-link">Mehr lesen →</span>
-                </div>
-              </a>
+              </div>
+
+              <button class="seo-nav next" type="button" aria-label="Weiter">›</button>
+
+              <div class="seo-actions">
+                <a class="btn primary" href="/de/blog/">Alle Artikel ansehen</a>
+                <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
+              </div>
             </div>
           </div>
+        </section>
 
-          <button class="seo-nav next" type="button" aria-label="Weiter">›</button>
-
-          <div class="seo-actions">
-            <a class="btn primary" href="/de/blog/">Alle Artikel ansehen</a>
-            <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -403,42 +493,41 @@
   const section = document.getElementById("placeholder");
   const track = document.querySelector(".placeholder-track");
 
-const isTouch = window.matchMedia("(hover: none)").matches;
+  const isTouch = window.matchMedia("(hover: none)").matches;
 
-/* Cursor nur auf Desktop aktivieren */
-if (!circle || !textEl || isTouch) {
-  // Cursor-Teil überspringen, aber NICHT return;
-} else {
-  document.documentElement.classList.add("has-custom-cursor");
+  /* Cursor nur auf Desktop aktivieren */
+  if (!circle || !textEl || isTouch) {
+    // Cursor-Teil überspringen, aber NICHT return;
+  } else {
+    document.documentElement.classList.add("has-custom-cursor");
 
-  let x = window.innerWidth / 2, y = window.innerHeight / 2;
-  let tx = x, ty = y;
+    let x = window.innerWidth / 2, y = window.innerHeight / 2;
+    let tx = x, ty = y;
 
-  function render(){
-    circle.style.left = x + "px";
-    circle.style.top  = y + "px";
-    textEl.style.left = x + "px";
-    textEl.style.top  = y + "px";
-  }
-  render();
-
-  (function loop(){
-    x += (tx - x) * 0.18;
-    y += (ty - y) * 0.18;
+    function render(){
+      circle.style.left = x + "px";
+      circle.style.top  = y + "px";
+      textEl.style.left = x + "px";
+      textEl.style.top  = y + "px";
+    }
     render();
-    requestAnimationFrame(loop);
-  })();
 
-  window.addEventListener("mousemove", (e) => {
-    tx = e.clientX;
-    ty = e.clientY;
-  }, { passive:true });
+    (function loop(){
+      x += (tx - x) * 0.18;
+      y += (ty - y) * 0.18;
+      render();
+      requestAnimationFrame(loop);
+    })();
 
-  // ... (Cursor Hover / typeWord etc. bleibt in diesem else-Block)
-}
+    window.addEventListener("mousemove", (e) => {
+      tx = e.clientX;
+      ty = e.clientY;
+    }, { passive:true });
 
-/* WICHTIG: ab hier läuft Slider immer weiter – auch auf Mobile */
+    // ... (Cursor Hover / typeWord etc. bleibt in diesem else-Block)
+  }
 
+  /* WICHTIG: ab hier läuft Slider immer weiter – auch auf Mobile */
 
   document.documentElement.classList.add("has-custom-cursor");
 
@@ -692,7 +781,8 @@ if (!circle || !textEl || isTouch) {
   });
 })();
   </script>
-<script>
+
+  <script>
 (() => {
   const footer = document.querySelector(".dv-footer");
   if (!footer) return;
@@ -704,34 +794,34 @@ if (!circle || !textEl || isTouch) {
     toRemove.remove();
   }
 })();
-</script>
+  </script>
 
-<!-- Floating Social Bar (links, unabhängig vom Footer) -->
-<div class="dv-float-social" id="dvFloatSocial" aria-label="Social Bar">
-  <button
-    type="button"
-    class="dv-float-toggle"
-    id="dvFloatToggle"
-    aria-label="Social Bar umschalten"
-    aria-expanded="true">
-    ‹
-  </button>
+  <!-- Floating Social Bar (links, unabhängig vom Footer) -->
+  <div class="dv-float-social" id="dvFloatSocial" aria-label="Social Bar">
+    <button
+      type="button"
+      class="dv-float-toggle"
+      id="dvFloatToggle"
+      aria-label="Social Bar umschalten"
+      aria-expanded="true">
+      ‹
+    </button>
 
-  <a href="https://x.com/" target="_blank" rel="noopener" aria-label="X">
-    <img src="/assets/icons/x.png" alt="X">
-  </a>
-  <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
-    <img src="/assets/icons/instagram.png" alt="Instagram">
-  </a>
-  <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
-    <img src="/assets/icons/youtube.png" alt="YouTube">
-  </a>
-  <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
-    <img src="/assets/icons/linkedin.png" alt="LinkedIn">
-  </a>
-</div>
+    <a href="https://x.com/" target="_blank" rel="noopener" aria-label="X">
+      <img src="/assets/icons/x.png" alt="X">
+    </a>
+    <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+      <img src="/assets/icons/instagram.png" alt="Instagram">
+    </a>
+    <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
+      <img src="/assets/icons/youtube.png" alt="YouTube">
+    </a>
+    <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <img src="/assets/icons/linkedin.png" alt="LinkedIn">
+    </a>
+  </div>
 
-<script>
+  <script>
 (() => {
   const bar = document.getElementById("dvFloatSocial");
   const btn = document.getElementById("dvFloatToggle");
@@ -754,9 +844,7 @@ if (!circle || !textEl || isTouch) {
     setState(!bar.classList.contains("is-collapsed"));
   });
 })();
-</script>
-
+  </script>
 
 </body>
 </html>
-
