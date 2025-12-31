@@ -471,7 +471,7 @@
         <div class="upload-chips" aria-label="Vorteile">
           <span class="chip">Vertraulich</span>
           <span class="chip">Kostenlos</span>
-          <span class="chip">24–48h Antwort</span>
+          <span class="chip">Binnen 48h Antwort</span>
         </div>
       </div>
 
