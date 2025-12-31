@@ -26,7 +26,6 @@
   <style>
     /* One shared background container for Quote + SEO carousel */
     .seo-wrap{
-      /* Use your existing “SEO section” background feel (adjust if you want darker/lighter) */
       background:
         radial-gradient(900px 520px at 15% 20%, rgba(139,92,246,.18), transparent 60%),
         radial-gradient(700px 420px at 85% 40%, rgba(99,102,241,.16), transparent 62%),
@@ -34,28 +33,96 @@
       padding: 70px 0 70px;
     }
 
-    /* Keep inner widths consistent with your site */
     .seo-wrap-inner{
       width:min(1180px, calc(100% - 40px));
       margin:0 auto;
     }
 
-    /* Remove “double” background/padding if your seo-section already has its own background */
     .seo-wrap .seo-section{
       background: transparent !important;
-      padding-top: 28px; /* spacing between quote card and SEO head */
+      padding-top: 28px;
     }
 
-    /* Quote section spacing inside shared container */
     .seo-wrap .quote-section{
-      padding: 0 0 10px; /* not huge, because container already has padding */
+      padding: 0 0 10px;
     }
 
-    /* Avatar: move image DOWN a bit to show face better */
     .quote-avatar img{
       object-fit: cover;
       object-position: center top;
       transform: translateY(6px);
+    }
+
+    /* =========================================================
+       ✅ Social Bar: force visible on mobile + hide on scroll-stop
+       (Index-only override, wins over style.css)
+       ========================================================= */
+
+    /* smooth hide/show */
+    #dvFloatSocial.dv-float-social{
+      transition: transform .22s ease, opacity .22s ease;
+      will-change: transform, opacity;
+    }
+    #dvFloatSocial.dv-float-social.is-scroll-hidden{
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(10px) !important;
+    }
+
+    /* Force it to show on touch devices / small screens (even if CSS hides it elsewhere) */
+    @media (max-width: 768px), (hover: none) {
+      #dvFloatSocial.dv-float-social{
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+
+        /* Mobile: bottom pill */
+        position: fixed !important;
+        left: 50% !important;
+        bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+        top: auto !important;
+        transform: translateX(-50%) !important;
+
+        flex-direction: row !important;
+        gap: 10px !important;
+
+        padding: 10px 14px !important;
+        border-radius: 999px !important;
+
+        background: rgba(10,12,20,.72) !important;
+        border: 1px solid rgba(255,255,255,.16) !important;
+        box-shadow: 0 12px 30px rgba(0,0,0,.40) !important;
+
+        backdrop-filter: blur(12px) saturate(1.2) !important;
+        -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+
+        z-index: 999999 !important;
+      }
+
+      /* If you collapse it on desktop, keep mobile centered */
+      #dvFloatSocial.dv-float-social.is-collapsed{
+        transform: translateX(-50%) !important;
+      }
+
+      /* toggle button is not useful on mobile bottom bar */
+      #dvFloatToggle{ display:none !important; }
+
+      #dvFloatSocial.dv-float-social a{
+        width: 38px !important;
+        height: 38px !important;
+        display: grid !important;
+        place-items: center !important;
+      }
+      #dvFloatSocial.dv-float-social img{
+        width: 18px !important;
+        height: 18px !important;
+      }
+
+      /* hide animation should move DOWN, while keeping centered */
+      #dvFloatSocial.dv-float-social.is-scroll-hidden{
+        transform: translateX(-50%) translateY(14px) !important;
+      }
     }
   </style>
 </head>
@@ -83,37 +150,23 @@
           <a href="/de/configurator/" class="btn ghost">Pakete entdecken</a>
         </div>
       </div>
+
       <!-- ✅ Kontakt-CTA (moved from Footer) -->
-<div class="hero-contact-box anim d5">
-  <div class="hero-contact-head">
-    <strong>Unverbindlich anfragen</strong>
-    <span>Wir melden uns kurzfristig zurück.</span>
-  </div>
+      <div class="hero-contact-box anim d5">
+        <div class="hero-contact-head">
+          <strong>Unverbindlich anfragen</strong>
+          <span>Wir melden uns kurzfristig zurück.</span>
+        </div>
 
-  <form class="hero-contact-form" action="/de/kontakt/">
-    <input type="text" name="name" placeholder="Name" required>
-    <input type="email" name="email" placeholder="E-Mail" required>
-    <button type="submit" class="btn primary">Kontakt aufnehmen</button>
-  </form>
-</div>
-
-
-      
-
-          <!-- Loading Overlay -->
-          <div class="upload-loading" id="uploadLoading" aria-hidden="true">
-            <div class="loading-card" role="status" aria-live="polite">
-              <div class="spinner" aria-hidden="true"></div>
-              <div class="loading-title">Upload läuft…</div>
-              <div class="loading-bar"><span></span></div>
-            </div>
-          </div>
-        </section>
+        <form class="hero-contact-form" action="/de/kontakt/">
+          <input type="text" name="name" placeholder="Name" required>
+          <input type="email" name="email" placeholder="E-Mail" required>
+          <button type="submit" class="btn primary">Kontakt aufnehmen</button>
+        </form>
       </div>
 
     </div>
   </section>
-
 
     <!-- ✅ Sektion 3 -->
     <section class="placeholder-section" id="placeholder">
@@ -266,12 +319,14 @@
             <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
             <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
             <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
-                        <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
+
+            <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
             <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
             <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
             <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
             <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
-                        <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
+
+            <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
             <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
             <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
             <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
@@ -285,7 +340,7 @@
     <section class="seo-wrap" id="wissen-block">
       <div class="seo-wrap-inner">
 
-        <!-- ✅ Sektion 5.5 • Testimonial / Statement (now inside shared container) -->
+        <!-- ✅ Sektion 5.5 • Testimonial / Statement -->
         <section class="quote-section" id="statement">
           <div class="quote-inner">
 
@@ -301,27 +356,23 @@
               </div>
 
               <div class="quote-content">
-               <p class="quote-text">
-  <span class="quote-mark">“</span>
-  Wir glauben an Bücher mit Seele: Klarer Prozess, ehrliche Beratung und ein Ergebnis,
-  das sich im Handel behauptet — ohne dass du deine Rechte abgibst.   Wir glauben an Bücher mit Seele: Klarer Prozess, ehrliche Beratung und ein Ergebnis,
-  das sich im Handel behauptet — ohne dass du deine Rechte abgibst.  Wir glauben an Bücher mit Seele: Klarer Prozess, ehrliche Beratung und ein Ergebnis,
-  das sich im Handel behauptet — ohne dass du deine Rechte abgibst.
-  <span class="quote-mark">”</span>
-</p>
-<div class="quote-cta">
-  <a class="btn ghost" href="#upload">Manuskript kostenlos prüfen</a>
-  <a class="btn primary" href="/de/kontakt/">Kostenloses Gespräch</a>
-</div>
-
-
+                <p class="quote-text">
+                  <span class="quote-mark">“</span>
+                  Wir glauben an Bücher mit Seele: Klarer Prozess, ehrliche Beratung und ein Ergebnis,
+                  das sich im Handel behauptet — ohne dass du deine Rechte abgibst.
+                  <span class="quote-mark">”</span>
+                </p>
+                <div class="quote-cta">
+                  <a class="btn ghost" href="#upload">Manuskript kostenlos prüfen</a>
+                  <a class="btn primary" href="/de/kontakt/">Kostenloses Gespräch</a>
+                </div>
               </div>
             </div>
 
           </div>
         </section>
 
-        <!-- ✅ Sektion 6 (unchanged markup, but background now comes from .seo-wrap) -->
+        <!-- ✅ Sektion 6 -->
         <section class="seo-section" id="wissen">
           <div class="seo-inner">
             <div class="seo-head">
@@ -343,7 +394,7 @@
                     </div>
                     <div class="seo-body">
                       <h3>Brauche ich eine ISBN für Amazon?</h3>
-                      <p>Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen aufdoch ISBN, Imprint und Rechte werfen schnell Fragen auf…</p>
+                      <p>Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf…</p>
                       <span class="seo-link">Mehr lesen →</span>
                     </div>
                   </a>
@@ -355,50 +406,6 @@
                     <div class="seo-body">
                       <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
                       <p>Buchhandel, Online-Plattformen, kulturelle Unterschiede…</p>
-                      <span class="seo-link">Mehr lesen →</span>
-                    </div>
-                  </a>
-
-                  <a class="seo-card" href="/de/blog/self-publishing-vs-verlag/">
-                    <div class="seo-media" style="background:url('/assets/blog/selfpublishing-verlag.jpg') center/cover no-repeat;">
-                      <div class="seo-badge">Vergleich</div>
-                    </div>
-                    <div class="seo-body">
-                      <h3>Self-Publishing oder klassischer Verlag?</h3>
-                      <p>Freiheit vs. Struktur, Kontrolle vs. Unterstützung…</p>
-                      <span class="seo-link">Mehr lesen →</span>
-                    </div>
-                  </a>
-
-                  <a class="seo-card" href="/de/blog/lektorat-oder-korrektorat/">
-                    <div class="seo-media" style="background:url('/assets/blog/lektorat.jpg') center/cover no-repeat;">
-                      <div class="seo-badge">Qualität</div>
-                    </div>
-                    <div class="seo-body">
-                      <h3>Lektorat oder Korrektorat – was brauchst du wirklich?</h3>
-                      <p>Rechtschreibung allein macht noch kein gutes Buch…</p>
-                      <span class="seo-link">Mehr lesen →</span>
-                    </div>
-                  </a>
-
-                  <a class="seo-card" href="/de/blog/cover-design-worauf-achten/">
-                    <div class="seo-media" style="background:url('/assets/blog/cover-design.jpg') center/cover no-repeat;">
-                      <div class="seo-badge">Design</div>
-                    </div>
-                    <div class="seo-body">
-                      <h3>Was macht ein Cover wirklich verkaufsstark?</h3>
-                      <p>Leser entscheiden in Sekunden…</p>
-                      <span class="seo-link">Mehr lesen →</span>
-                    </div>
-                  </a>
-
-                  <a class="seo-card" href="/de/blog/buch-marketing-start/">
-                    <div class="seo-media" style="background:url('/assets/blog/buch-marketing.jpg') center/cover no-repeat;">
-                      <div class="seo-badge">Marketing</div>
-                    </div>
-                    <div class="seo-body">
-                      <h3>Buch-Marketing starten – auch ohne großes Budget</h3>
-                      <p>Sichtbarkeit entsteht nicht zufällig…</p>
                       <span class="seo-link">Mehr lesen →</span>
                     </div>
                   </a>
@@ -434,9 +441,8 @@
 
   const isTouch = window.matchMedia("(hover: none)").matches;
 
-  /* Cursor nur auf Desktop aktivieren */
   if (!circle || !textEl || isTouch) {
-    // Cursor-Teil überspringen, aber NICHT return;
+    // skip cursor on touch
   } else {
     document.documentElement.classList.add("has-custom-cursor");
 
@@ -462,84 +468,9 @@
       tx = e.clientX;
       ty = e.clientY;
     }, { passive:true });
-
-    // ... (Cursor Hover / typeWord etc. bleibt in diesem else-Block)
   }
-
-  /* WICHTIG: ab hier läuft Slider immer weiter – auch auf Mobile */
 
   document.documentElement.classList.add("has-custom-cursor");
-
-  let x = window.innerWidth / 2, y = window.innerHeight / 2;
-  let tx = x, ty = y;
-
-  function render(){
-    circle.style.left = x + "px";
-    circle.style.top  = y + "px";
-    textEl.style.left = x + "px";
-    textEl.style.top  = y + "px";
-  }
-  render();
-
-  (function loop(){
-    x += (tx - x) * 0.18;
-    y += (ty - y) * 0.18;
-    render();
-    requestAnimationFrame(loop);
-  })();
-
-  window.addEventListener("mousemove", (e) => {
-    tx = e.clientX;
-    ty = e.clientY;
-  }, { passive:true });
-
-  let typeTimer = null;
-  let currentWord = "";
-  function typeWord(word){
-    if (!word || word === currentWord) return;
-    currentWord = word;
-    clearInterval(typeTimer);
-    textEl.textContent = "";
-    let i = 0;
-    typeTimer = setInterval(() => {
-      textEl.textContent += (word[i] ?? "");
-      i++;
-      if (i >= word.length) clearInterval(typeTimer);
-    }, 55);
-  }
-
-  let inPlaceholderHover = false;
-
-  function setCursorVisible(){
-    if (inPlaceholderHover) {
-      textEl.style.opacity = "1";
-      circle.style.opacity = "0";
-    } else {
-      circle.style.opacity = "1";
-      textEl.style.opacity = "0";
-    }
-  }
-  setCursorVisible();
-
-  document.addEventListener("mouseover", (e) => {
-    if (!inPlaceholderHover && e.target.closest(".btn, a, .trust-item")) {
-      circle.classList.add("is-big");
-    }
-  });
-  document.addEventListener("mouseout", (e) => {
-    if (!inPlaceholderHover && e.target.closest(".btn, a, .trust-item")) {
-      circle.classList.remove("is-big");
-    }
-  });
-
-  window.addEventListener("mouseleave", () => {
-    circle.style.opacity = "0";
-    textEl.style.opacity = "0";
-  });
-  window.addEventListener("mouseenter", () => {
-    setCursorVisible();
-  });
-
   if (!section || !track) return;
 
   const slides = Array.from(track.querySelectorAll(".placeholder-slide"));
@@ -558,90 +489,28 @@
     slides.forEach((s,i) => s.classList.toggle("is-active", i === idx));
   }
 
-  function showText(word){
-    inPlaceholderHover = true;
-    setCursorVisible();
-    typeWord(word);
-  }
-
-  function showCircle(){
-    inPlaceholderHover = false;
-    setCursorVisible();
-    currentWord = "";
-    clearInterval(typeTimer);
-    resetAllSlides();
-  }
-
-  section.addEventListener("mouseenter", () => showText("Familie"));
-  section.addEventListener("mouseleave", () => showCircle());
-
-  function clamp01(v){ return Math.max(0, Math.min(1, v)); }
   let lastP = 0;
+  function clamp01(v){ return Math.max(0, Math.min(1, v)); }
 
   function updateSlider(){
     const rect = section.getBoundingClientRect();
     const vh = window.innerHeight;
-
     const end = section.offsetHeight - vh;
     const scrolled = -rect.top;
     const p = clamp01(end > 0 ? (scrolled / end) : 0);
     lastP = p;
 
     track.style.transform = `translateX(${-p * 2 * window.innerWidth}px)`;
-
     const idx = Math.max(0, Math.min(2, Math.round(p * 2)));
     setActiveSlide(idx);
 
-    applyHoverEffectsFromMouse();
-
     const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
-    if (!stickyVisible || !inPlaceholderHover) resetAllSlides();
+    if (!stickyVisible) resetAllSlides();
   }
 
   window.addEventListener("scroll", updateSlider, { passive:true });
   window.addEventListener("resize", updateSlider);
   updateSlider();
-
-  function wordForIndex(i){
-    return i === 0 ? "Familie" : (i === 1 ? "DE↔TR" : "Erfolg");
-  }
-
-  function applyHoverEffectsFromMouse(){
-    if (!inPlaceholderHover) return;
-
-    const rect = section.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
-    if (!stickyVisible) { resetAllSlides(); return; }
-
-    const slideW = window.innerWidth;
-    const offsetX = lastP * 2 * slideW;
-    const relativeX = tx + offsetX;
-    const slideIndex = Math.max(0, Math.min(2, Math.floor(relativeX / slideW)));
-
-    typeWord(wordForIndex(slideIndex));
-
-    const slideLeftInViewport = (slideIndex * slideW) - offsetX;
-    const localX = tx - slideLeftInViewport;
-    const localY = ty;
-
-    const nx = (localX - slideW / 2) / (slideW / 2);
-    const ny = (localY - vh / 2) / (vh / 2);
-
-    slides.forEach((s, i) => {
-      if (i !== slideIndex) {
-        s.style.setProperty("--px", "0px");
-        s.style.setProperty("--py", "0px");
-        s.style.setProperty("--scale", "1");
-        return;
-      }
-      s.style.setProperty("--scale", String(HOVER_SCALE));
-      s.style.setProperty("--px", (-nx * MAX_MOVE).toFixed(2) + "px");
-      s.style.setProperty("--py", (-ny * MAX_MOVE * 0.75).toFixed(2) + "px");
-    });
-  }
-
-  window.addEventListener("mousemove", applyHoverEffectsFromMouse, { passive:true });
 })();
   </script>
 
@@ -691,38 +560,6 @@
 
   <script>
 (() => {
-  const form = document.querySelector('form[name="manuskript-upload"]');
-  if (!form) return;
-
-  const fileInput = form.querySelector('#u_files');
-  const fileList  = document.getElementById('fileList');
-  const loading   = document.getElementById('uploadLoading');
-
-  function renderFiles(){
-    if (!fileList) return;
-    fileList.innerHTML = "";
-    const files = Array.from(fileInput.files || []);
-    files.forEach(f => {
-      const pill = document.createElement('div');
-      pill.className = 'file-pill';
-      pill.textContent = `${f.name}`;
-      fileList.appendChild(pill);
-    });
-  }
-
-  fileInput?.addEventListener('change', renderFiles);
-  form.addEventListener('reset', () => setTimeout(renderFiles, 0));
-
-  form.addEventListener('submit', (e) => {
-    if (loading) loading.classList.add('is-on');
-    e.preventDefault();
-    setTimeout(() => { form.submit(); }, 900);
-  });
-})();
-  </script>
-
-  <script>
-(() => {
   const footer = document.querySelector(".dv-footer");
   if (!footer) return;
 
@@ -764,26 +601,69 @@
 (() => {
   const bar = document.getElementById("dvFloatSocial");
   const btn = document.getElementById("dvFloatToggle");
-  if (!bar || !btn) return;
+  if (!bar) return;
 
   const KEY = "dvFloatSocialCollapsed";
 
+  /* ---------- collapse toggle ---------- */
   function setState(collapsed){
     bar.classList.toggle("is-collapsed", collapsed);
-    btn.textContent = collapsed ? "›" : "‹";
-    btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    if (btn){
+      btn.textContent = collapsed ? "›" : "‹";
+      btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    }
     localStorage.setItem(KEY, collapsed ? "1" : "0");
   }
 
   setState(localStorage.getItem(KEY) === "1");
 
-  btn.addEventListener("click", (e) => {
+  btn?.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
     setState(!bar.classList.contains("is-collapsed"));
   });
+
+  /* ---------- show/hide based on scroll direction ---------- */
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  function hideBar(){
+    bar.classList.add("is-scroll-hidden");
+  }
+  function showBar(){
+    bar.classList.remove("is-scroll-hidden");
+  }
+
+  function onScroll(){
+    const y = window.scrollY;
+    const delta = y - lastY; // + = down, - = up
+    lastY = y;
+
+    // ignore tiny jitter
+    if (Math.abs(delta) < 3) return;
+
+    if (delta > 0) {
+      // scrolling DOWN
+      hideBar();
+    } else {
+      // scrolling UP
+      showBar();
+    }
+  }
+
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      onScroll();
+      ticking = false;
+    });
+  }, { passive:true });
+
+  // initial: visible
+  showBar();
 })();
-  </script>
+</script>
 
 </body>
 </html>

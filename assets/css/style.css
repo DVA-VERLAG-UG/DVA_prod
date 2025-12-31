@@ -2547,3 +2547,78 @@ main{
   }
 }
 
+/* =========================
+   FORCE MOBILE SOCIAL BAR (override any hide rules)
+   ========================= */
+@media (max-width: 768px), (hover: none) {
+
+  /* Force it visible no matter what */
+  #dvFloatSocial.dv-float-social{
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+
+    position: fixed !important;
+    left: 50% !important;
+    bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+    transform: translateX(-50%) !important;
+
+    flex-direction: row !important;
+    gap: 10px !important;
+
+    padding: 10px 14px !important;
+    border-radius: 999px !important;
+
+    background: rgba(10,12,20,.72) !important;
+    border: 1px solid rgba(255,255,255,.16) !important;
+    box-shadow: 0 12px 30px rgba(0,0,0,.40) !important;
+
+    backdrop-filter: blur(12px) saturate(1.2) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+
+    z-index: 999999 !important;
+  }
+
+  /* If collapsed state hides width/contents */
+  #dvFloatSocial.dv-float-social.is-collapsed{
+    transform: translateX(-50%) !important;
+  }
+
+  /* Optional: hide the collapse toggle on mobile */
+  #dvFloatToggle{
+    display: none !important;
+  }
+
+  /* Make icons touch friendly */
+  #dvFloatSocial.dv-float-social a{
+    width: 38px !important;
+    height: 38px !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  #dvFloatSocial.dv-float-social img{
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+/* Social Bar: hide on scroll */
+.dv-float-social{
+  transition: transform .25s ease, opacity .25s ease;
+  will-change: transform, opacity;
+}
+
+.dv-float-social.is-scroll-hidden{
+  opacity: 0;
+  transform: translateX(-12px);
+  pointer-events: none;
+}
+
+/* Mobile Bottom-Bar Variante (falls du sie unten nutzt): dann nach unten weg */
+@media (max-width: 768px), (hover: none){
+  .dv-float-social.is-scroll-hidden{
+    transform: translateX(-50%) translateY(14px);
+  }
+}
