@@ -2633,3 +2633,31 @@ main{
     display: none !important;
   }
 }
+
+/* =========================================
+   iPhone: schwarzen Streifen oben entfernen
+   (Hero-Hintergrund zieht nach oben hinter Header)
+   ========================================= */
+
+/* Falls irgendwo top-space entsteht */
+html, body{
+  margin: 0;
+  padding: 0;
+  background: #05060f; /* fallback */
+}
+
+/* Mobile: Hero startet optisch ganz oben */
+@media (max-width: 768px){
+
+  /* 1) Hero-Hintergrund nach oben ziehen */
+  .hero{
+    margin-top: calc(-1 * (var(--hdr-h, 72px) + env(safe-area-inset-top)));
+    /* 2) Content trotzdem unter Header halten */
+    padding-top: calc(var(--hdr-h, 72px) + env(safe-area-inset-top));
+  }
+
+  /* WICHTIG: falls du irgendwo main padding-top gesetzt hast -> aus */
+  main{
+    padding-top: 0 !important;
+  }
+}
