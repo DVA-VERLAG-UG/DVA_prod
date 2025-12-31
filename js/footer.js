@@ -30,63 +30,6 @@
 }
 
 /* ======================
-   TOP CONTACT FORM
-   ====================== */
-.dv-footer-form-top{
-  margin-bottom: 44px;
-  padding: 18px 22px;
-  border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(139,92,246,.22),
-    rgba(99,102,241,.16)
-  );
-  border: 1px solid rgba(139,92,246,.35);
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 18px;
-  align-items: center;
-}
-
-.dv-footer-form-head strong{
-  display:block;
-  font-size:18px;
-  font-weight:900;
-  color:#fff;
-}
-.dv-footer-form-head span{
-  font-size:13px;
-  opacity:.85;
-}
-
-.dv-footer-form{
-  display:grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap:10px;
-}
-
-.dv-footer-form input{
-  padding:11px 14px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.25);
-  background: rgba(0,0,0,.25);
-  color:#fff;
-  font-size:13px;
-  outline:none;
-}
-
-.dv-footer-form button{
-  padding:11px 18px;
-  border-radius:999px;
-  border:none;
-  background: linear-gradient(135deg,#8b5cf6,#6366f1);
-  color:#fff;
-  font-weight:900;
-  cursor:pointer;
-  white-space:nowrap;
-}
-
-/* ======================
    FOOTER GRID
    ====================== */
 .dv-footer-grid{
@@ -192,15 +135,309 @@
 }
 
 /* ======================
-   RESPONSIVE
+   FOOTER MANUSKRIPT UPLOAD (FULL STYLING)
+   ====================== */
+.dv-footer-upload{
+  margin-bottom: 44px;
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.10);
+  background:
+    radial-gradient(900px 520px at 15% 0%, rgba(139,92,246,.20), transparent 60%),
+    radial-gradient(700px 420px at 85% 40%, rgba(99,102,241,.14), transparent 62%),
+    rgba(255,255,255,.04);
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+
+  display:grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 22px;
+  align-items:start;
+}
+
+/* Head */
+.dv-footer-upload-head .upload-kicker{
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .85;
+  margin-bottom: 10px;
+}
+
+.dv-footer-upload-head .upload-title{
+  margin: 0 0 8px;
+  font-size: 26px;
+  line-height: 1.15;
+  font-weight: 900;
+  color: #fff;
+}
+
+.dv-footer-upload-head .upload-sub{
+  margin: 0 0 14px;
+  color: rgba(255,255,255,.78);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Chips */
+.dv-footer-upload .upload-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+}
+.dv-footer-upload .chip{
+  display:inline-flex;
+  align-items:center;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: rgba(255,255,255,.86);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+}
+
+/* Section reset */
+.dv-footer-upload .upload-section{
+  padding: 0;
+  margin: 0;
+}
+.dv-footer-upload .upload-inner{
+  width: 100%;
+  margin: 0;
+}
+
+/* Card */
+.dv-footer-upload .upload-card{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  padding: 16px;
+}
+
+/* Grid */
+.dv-footer-upload .upload-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.dv-footer-upload .field.full{
+  grid-column: 1 / -1;
+}
+
+/* Labels */
+.dv-footer-upload .field label{
+  display:block;
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.72);
+  margin-bottom: 6px;
+}
+
+/* ======================
+   INPUTS – PREMIUM LOOK (Name + Email)
+   ====================== */
+.dv-footer-upload input[type="text"],
+.dv-footer-upload input[type="email"]{
+  width:100%;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,.06),
+    rgba(0,0,0,.32)
+  );
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 500;
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 6px 18px rgba(0,0,0,.25);
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease,
+    transform .12s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.dv-footer-upload input::placeholder{
+  color: rgba(255,255,255,.55);
+}
+
+/* Focus */
+.dv-footer-upload input:focus{
+  border-color: rgba(139,92,246,.65);
+  background: rgba(0,0,0,.38);
+  box-shadow:
+    0 0 0 4px rgba(139,92,246,.22),
+    inset 0 1px 0 rgba(255,255,255,.14);
+}
+
+/* Fix: iOS Safari tends to make some inputs white (especially text inputs) */
+.dv-footer-upload input[type="text"]{
+  background-color: transparent;
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+}
+
+/* ======================
+   Dropzone
+   ====================== */
+.dv-footer-upload .dropzone{
+  position: relative;
+  border-radius: 14px;
+  border: 1px dashed rgba(255,255,255,.22);
+  background: rgba(255,255,255,.04);
+  padding: 14px;
+}
+.dv-footer-upload .dropzone input[type="file"]{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+.dv-footer-upload .dz-ui{
+  pointer-events:none;
+}
+.dv-footer-upload .dz-title{
+  font-weight: 900;
+  color:#fff;
+}
+.dv-footer-upload .dz-meta{
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,.72);
+}
+
+/* File pills */
+.dv-footer-upload .file-list{
+  margin-top: 10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+}
+.dv-footer-upload .file-pill{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: rgba(139,92,246,.16);
+  border: 1px solid rgba(139,92,246,.26);
+  color: rgba(255,255,255,.9);
+}
+
+/* Actions */
+.dv-footer-upload .upload-actions{
+  margin-top: 12px;
+  display:flex;
+  gap: 10px;
+  justify-content:flex-end;
+}
+
+/* Buttons fallback (falls .btn global anders ist) */
+.dv-footer-upload .upload-actions .btn{
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+  color:#fff;
+  font-weight: 900;
+  cursor:pointer;
+}
+.dv-footer-upload .upload-actions .btn.primary{
+  border: none;
+  background: linear-gradient(135deg,#8b5cf6,#6366f1);
+}
+
+/* Note */
+.dv-footer-upload .upload-note{
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,.70);
+}
+
+/* Loading overlay */
+.dv-footer-upload .upload-loading{
+  position: fixed;
+  inset: 0;
+  display:none;
+  place-items:center;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+}
+.dv-footer-upload .upload-loading.is-on{ display:grid; }
+
+.dv-footer-upload .loading-card{
+  width: min(420px, calc(100% - 40px));
+  padding: 18px 18px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(10,12,20,.75);
+  color:#fff;
+}
+.dv-footer-upload .spinner{
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,.28);
+  border-top-color: rgba(255,255,255,.9);
+  animation: dvSpin .7s linear infinite;
+  margin-bottom: 10px;
+}
+@keyframes dvSpin{ to { transform: rotate(360deg); } }
+
+.dv-footer-upload .loading-title{
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+.dv-footer-upload .loading-bar{
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  overflow:hidden;
+}
+.dv-footer-upload .loading-bar span{
+  display:block;
+  height:100%;
+  width: 45%;
+  border-radius:999px;
+  background: linear-gradient(135deg,#8b5cf6,#6366f1);
+  animation: dvBar 1.1s ease-in-out infinite;
+}
+@keyframes dvBar{
+  0%{ transform: translateX(-120%); }
+  100%{ transform: translateX(260%); }
+}
+
+/* ======================
+   MOBILE (Layout + iOS input polish)
+   ====================== */
+@media(max-width: 900px){
+  .dv-footer-upload{
+    grid-template-columns: 1fr;
+  }
+  .dv-footer-upload .upload-grid{
+    grid-template-columns: 1fr;
+  }
+  .dv-footer-upload .upload-actions{
+    justify-content: stretch;
+  }
+  .dv-footer-upload .upload-actions .btn{
+    width: 100%;
+  }
+}
+
+/* ======================
+   FOOTER RESPONSIVE
    ====================== */
 @media(max-width:900px){
-  .dv-footer-form-top{
-    grid-template-columns:1fr;
-  }
-  .dv-footer-form{
-    grid-template-columns:1fr;
-  }
   .dv-footer-grid{
     grid-template-columns:1fr 1fr;
   }
@@ -224,19 +461,90 @@
 <footer class="dv-footer">
   <div class="dv-footer-inner">
 
-    <!-- TOP FORM -->
-    <div class="dv-footer-form-top">
-      <div class="dv-footer-form-head">
-        <strong>Bereit für dein eigenes Buch?</strong>
-        <span>Unverbindlich & persönlich</span>
+    <!-- MANUSKRIPT-CHECK (moved from Hero) -->
+    <div class="dv-footer-upload" id="upload">
+      <div class="dv-footer-upload-head">
+        <div class="upload-kicker">MANUSKRIPT-CHECK</div>
+        <h2 class="upload-title">Kostenloser Manuskript-Check</h2>
+        <p class="upload-sub">Lade dein Manuskript hoch — wir melden uns in 24–48h mit den nächsten Schritten.</p>
+
+        <div class="upload-chips" aria-label="Vorteile">
+          <span class="chip">Vertraulich</span>
+          <span class="chip">Kostenlos</span>
+          <span class="chip">24–48h Antwort</span>
+        </div>
       </div>
 
-      <form class="dv-footer-form">
-        <input type="text" placeholder="Name" required>
-        <input type="email" placeholder="E-Mail" required>
-        <input type="text" placeholder="Genre (optional)">
-        <button type="submit">Kontakt aufnehmen</button>
-      </form>
+      <section class="upload-section" aria-label="Manuskript Upload">
+        <div class="upload-inner">
+          <div class="upload-card">
+            <form class="upload-form"
+                  name="manuskript-upload"
+                  method="POST"
+                  data-netlify="true"
+                  netlify-honeypot="bot-field"
+                  enctype="multipart/form-data"
+                  action="/de/danke-upload/">
+
+              <input type="hidden" name="form-name" value="manuskript-upload" />
+              <p class="hidden">
+                <label>Don’t fill this out: <input name="bot-field" /></label>
+              </p>
+
+              <div class="upload-grid">
+                <div class="field">
+                  <label for="u_name">Name</label>
+                  <input id="u_name" name="name" type="text" required placeholder="Name">
+                </div>
+
+                <div class="field">
+                  <label for="u_email">E-Mail</label>
+                  <input id="u_email" name="email" type="email" required placeholder="name@mail.com">
+                </div>
+
+                <div class="field full">
+                  <label for="u_files">Dateien</label>
+
+                  <div class="dropzone" id="dropzone">
+                    <input id="u_files"
+                           name="dateien"
+                           type="file"
+                           multiple
+                           required
+                           accept=".pdf,.doc,.docx,.epub,.txt,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
+                    <div class="dz-ui">
+                      <div class="dz-title">Drag &amp; Drop oder klicken</div>
+                      <div class="dz-meta">Mehrere Dateien möglich</div>
+                    </div>
+                  </div>
+
+                  <div class="file-list" id="fileList" aria-live="polite"></div>
+                </div>
+              </div>
+
+              <div class="upload-actions">
+                <button class="btn ghost" type="reset" id="u_reset">Reset</button>
+                <button class="btn primary" type="submit" id="u_submit">Senden</button>
+              </div>
+
+              <div class="upload-note">
+                Hinweis: Deine Dateien werden sicher über Netlify Forms übertragen.
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="upload-loading" id="uploadLoading" aria-hidden="true">
+          <div class="loading-card" role="status" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <div class="loading-title">Upload läuft…</div>
+            <div class="loading-bar"><span></span></div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <!-- GRID -->

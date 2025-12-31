@@ -2456,3 +2456,94 @@ main{
 .seo-wrap .quote-section{
   margin-bottom: 80px;
 }
+
+.hero-contact-box{
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+}
+
+.hero-contact-head strong{
+  display:block;
+  font-weight:900;
+  color:#fff;
+}
+
+.hero-contact-head span{
+  display:block;
+  font-size:13px;
+  opacity:.85;
+  margin-top:2px;
+}
+
+.hero-contact-form{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap:10px;
+}
+
+.hero-contact-form input{
+  padding:11px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.25);
+  background: rgba(0,0,0,.25);
+  color:#fff;
+  font-size:13px;
+  outline:none;
+}
+
+@media(max-width:720px){
+  .hero-contact-form{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   HERO – Kontaktbalken kompakter (Desktop)
+   ========================= */
+.hero-contact-box{
+  width: min(760px, 100%);   /* <- macht den Balken schmaler */
+  margin: 16px auto 0;       /* <- zentriert */
+  padding: 14px 16px;
+}
+
+/* Form kompakter + max Breite */
+.hero-contact-form{
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+}
+
+/* Inputs/Buttons nicht zu riesig */
+.hero-contact-form input{
+  height: 44px;
+  padding: 0 16px;
+}
+
+/* Button etwas kompakter */
+.hero-contact-form .btn,
+.hero-contact-form button{
+  height: 44px;
+  padding: 0 18px;
+  white-space: nowrap;
+}
+
+/* Mobile: wieder full width + stacked */
+@media (max-width: 720px){
+  .hero-contact-box{
+    width: 100%;
+    margin: 12px 0 0;
+  }
+  .hero-contact-form{
+    grid-template-columns: 1fr;
+  }
+  .hero-contact-form .btn,
+  .hero-contact-form button{
+    width: 100%;
+  }
+}
+

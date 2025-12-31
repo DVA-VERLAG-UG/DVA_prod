@@ -83,83 +83,22 @@
           <a href="/de/configurator/" class="btn ghost">Pakete entdecken</a>
         </div>
       </div>
+      <!-- ✅ Kontakt-CTA (moved from Footer) -->
+<div class="hero-contact-box anim d5">
+  <div class="hero-contact-head">
+    <strong>Unverbindlich anfragen</strong>
+    <span>Wir melden uns kurzfristig zurück.</span>
+  </div>
 
-      <!-- ✅ BOX um Sektion 2 herum -->
-      <div class="hero-upload-box anim d4" id="upload">
-        <div class="hero-upload-box-head">
-          <div class="upload-kicker">MANUSKRIPT-CHECK</div>
-          <h2 class="upload-title">Kostenloser Manuskript-Check</h2>
-          <p class="upload-sub">Lade dein Manuskript hoch — wir melden uns in 24–48h mit den nächsten Schritten.</p>
+  <form class="hero-contact-form" action="/de/kontakt/">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="email" name="email" placeholder="E-Mail" required>
+    <button type="submit" class="btn primary">Kontakt aufnehmen</button>
+  </form>
+</div>
 
-          <div class="upload-chips" aria-label="Vorteile">
-            <span class="chip">Vertraulich</span>
-            <span class="chip">Kostenlos</span>
-            <span class="chip">24–48h Antwort</span>
-          </div>
-        </div>
 
-        <!-- ✅ Sektion 2 Form -->
-        <section class="upload-section upload-in-hero" aria-label="Manuskript Upload">
-          <div class="upload-inner">
-            <div class="upload-card">
-
-              <form class="upload-form"
-                    name="manuskript-upload"
-                    method="POST"
-                    data-netlify="true"
-                    netlify-honeypot="bot-field"
-                    enctype="multipart/form-data"
-                    action="/de/danke-upload/">
-
-                <input type="hidden" name="form-name" value="manuskript-upload" />
-                <p class="hidden">
-                  <label>Don’t fill this out: <input name="bot-field" /></label>
-                </p>
-
-                <div class="upload-grid">
-                  <div class="field">
-                    <label for="u_name">Name</label>
-                    <input id="u_name" name="name" required placeholder="Name">
-                  </div>
-
-                  <div class="field">
-                    <label for="u_email">E-Mail</label>
-                    <input id="u_email" name="email" type="email" required placeholder="name@mail.com">
-                  </div>
-
-                  <div class="field full">
-                    <label for="u_files">Dateien</label>
-
-                    <div class="dropzone" id="dropzone">
-                      <input id="u_files"
-                             name="dateien"
-                             type="file"
-                             multiple
-                             required
-                             accept=".pdf,.doc,.docx,.epub,.txt,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-
-                      <div class="dz-ui">
-                        <div class="dz-title">Drag &amp; Drop oder klicken</div>
-                        <div class="dz-meta">Mehrere Dateien möglich</div>
-                      </div>
-                    </div>
-
-                    <div class="file-list" id="fileList" aria-live="polite"></div>
-                  </div>
-                </div>
-
-                <div class="upload-actions">
-                  <button class="btn ghost" type="reset" id="u_reset">Reset</button>
-                  <button class="btn primary" type="submit" id="u_submit">Senden</button>
-                </div>
-
-                <div class="upload-note">
-                  Hinweis: Deine Dateien werden sicher über Netlify Forms übertragen.
-                </div>
-
-              </form>
-            </div>
-          </div>
+      
 
           <!-- Loading Overlay -->
           <div class="upload-loading" id="uploadLoading" aria-hidden="true">
