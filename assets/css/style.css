@@ -2661,3 +2661,30 @@ html, body{
     padding-top: 0 !important;
   }
 }
+
+/* =========================
+   Hero-Text Positionierung
+   Desktop: höher
+   Mobile: tiefer
+   ========================= */
+
+/* Desktop & große Screens */
+@media (min-width: 769px){
+  .hero-copy{
+    margin-top: -400px;   /* höher setzen */
+  }
+}
+
+/* Tablets & Mobile */
+@media (max-width: 768px){
+  .hero-copy{
+    margin-top: 74px;   /* tiefer setzen */
+  }
+}
+
+/* Sehr kleine Handys */
+@media (max-width: 380px){
+  .hero-copy{
+    margin-top: 56px;   /* noch etwas tiefer */
+  }
+}
