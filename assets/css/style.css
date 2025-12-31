@@ -2668,26 +2668,36 @@ html, body{
    Mobile: tiefer
    ========================= */
 
-/* Desktop & große Screens */
-@media (min-width: 769px){
-  .hero-copy{
-    margin-top: -200px;   /* höher setzen */
-  }
+/* =========================
+   HERO-TEXT OFFSET: Desktop höher, Mid tiefer, Mobile am tiefsten
+   ========================= */
+.hero-copy{
+  margin-top: var(--hero-copy-offset);
 }
 
-/* Tablets & Mobile */
+/* Default (falls nix greift) */
+:root{ --hero-copy-offset: 0px; }
+
+/* Desktop (1100px+): so wie es bei dir “gut” aussieht */
+@media (min-width: 1100px){
+  :root{ --hero-copy-offset: -200px; }  /* <- dein aktueller Desktop-Wert */
+}
+
+/* ✅ MID RANGE (769–1099px): hier war der Bug -> etwas NACH UNTEN */
+@media (min-width: 769px) and (max-width: 1099.98px){
+  :root{ --hero-copy-offset: 0px; }   /* <- anpassen: -120/-70 je nach Geschmack */
+}
+
+/* Mobile: tiefer */
 @media (max-width: 768px){
-  .hero-copy{
-    margin-top: 74px;   /* tiefer setzen */
-  }
+  :root{ --hero-copy-offset: 74px; }
 }
 
-/* Sehr kleine Handys */
+/* Sehr kleine Phones */
 @media (max-width: 380px){
-  .hero-copy{
-    margin-top: 56px;   /* noch etwas tiefer */
-  }
+  :root{ --hero-copy-offset: 56px; }
 }
+
 :root{
   /* ✅ HIER DEINE 2 BILD-URLS EINTRAGEN */
   --blend-hero-img: url("/assets/images/DEIN-HERO-BILD.jpg");
