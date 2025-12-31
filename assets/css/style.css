@@ -2671,7 +2671,7 @@ html, body{
 /* Desktop & große Screens */
 @media (min-width: 769px){
   .hero-copy{
-    margin-top: -400px;   /* höher setzen */
+    margin-top: -200px;   /* höher setzen */
   }
 }
 
@@ -2686,5 +2686,65 @@ html, body{
 @media (max-width: 380px){
   .hero-copy{
     margin-top: 56px;   /* noch etwas tiefer */
+  }
+}
+:root{
+  /* ✅ HIER DEINE 2 BILD-URLS EINTRAGEN */
+  --blend-hero-img: url("/assets/images/DEIN-HERO-BILD.jpg");
+  --blend-next-img: url("/assets/images/DEIN-SEKTION3-BILD.jpg");
+}
+/* =========================================
+   REAL BLEND: überlappt Hero + Sektion 3
+   mischt BEIDE Bilder via backdrop-filter
+   ========================================= */
+.hero-blend{
+  height: 56px;              /* ~50px */
+  position: relative;
+  z-index: 5;
+
+  /* WICHTIG: Element muss ÜBER beide Bereiche liegen */
+  margin-top: -28px;         /* halb in Hero rein */
+  margin-bottom: -28px;      /* halb in Sektion 3 rein */
+
+  /* Glas-Schicht (muss transparent sein, sonst kein backdrop-filter) */
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,.06) 0%,
+    rgba(10,12,20,.10) 35%,
+    rgba(10,12,20,.18) 100%
+  );
+
+  /* Blur mischt den Hintergrund dahinter (Hero+Sektion3) */
+  backdrop-filter: blur(18px) saturate(1.15) contrast(1.05);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15) contrast(1.05);
+
+  /* Premium edge */
+  border-top: 1px solid rgba(255,255,255,.10);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow:
+    0 10px 26px rgba(0,0,0,.22),
+    0 -10px 26px rgba(0,0,0,.10);
+}
+
+/* Optional: leichte “Welle/Glow” */
+.hero-blend::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(700px 60px at 15% 0%, rgba(139,92,246,.22), transparent 60%),
+    radial-gradient(700px 60px at 85% 100%, rgba(99,102,241,.18), transparent 62%);
+  opacity:.9;
+}
+
+/* Mobile etwas höher, weil Übergänge dort stärker auffallen */
+@media (max-width: 768px){
+  .hero-blend{
+    height: 64px;
+    margin-top: -32px;
+    margin-bottom: -32px;
+    backdrop-filter: blur(16px) saturate(1.12);
+    -webkit-backdrop-filter: blur(16px) saturate(1.12);
   }
 }
