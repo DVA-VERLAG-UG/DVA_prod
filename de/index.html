@@ -126,6 +126,63 @@
       }
     }
   </style>
+  <style>
+  /* =========================
+     INDEX ONLY: Pagefind Search – Mobile no-overlap with Logo/Header
+     ========================= */
+
+  /* Standard: nichts kaputt machen */
+  #search { pointer-events: none; }
+  #search * { pointer-events: auto; }
+
+  @media (max-width: 720px){
+    :root{
+      /* Reserven links/rechts für Logo + Burger/Language */
+      --pf-left: 64px;   /* Logo + Luft */
+      --pf-right: 74px;  /* Burger/Language + Luft */
+      --pf-top: 10px;    /* Abstand nach oben */
+    }
+
+    /* Search-Bar als “Header-Element” positionieren */
+    #search{
+      position: fixed;
+      top: calc(env(safe-area-inset-top, 0px) + var(--pf-top));
+      left: var(--pf-left);
+      right: var(--pf-right);
+      z-index: 1000; /* über Hero, unter Menüs falls nötig */
+      pointer-events: auto;
+    }
+
+    /* Pagefind UI: volle Breite, kein extra Margin */
+    #search .pagefind-ui{
+      width: 100%;
+      margin: 0 !important;
+    }
+
+    /* Input sauber, nicht zu hoch */
+    #search .pagefind-ui__form{
+      margin: 0 !important;
+    }
+
+    #search .pagefind-ui__search-input{
+      width: 100% !important;
+      height: 44px;
+      border-radius: 999px;
+    }
+
+    /* Optional: wenn du einen schwarzen Streifen oben siehst (iOS) */
+    html, body { background: #05060f; }
+  }
+
+  /* Sehr kleine Phones: etwas mehr Luft */
+  @media (max-width: 380px){
+    :root{
+      --pf-left: 58px;
+      --pf-right: 68px;
+    }
+  }
+</style>
+
 </head>
 
 <body>
