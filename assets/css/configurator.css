@@ -34,11 +34,23 @@
       color: var(--ink);
     }
 
-    .wrap{
-      width: min(var(--max), calc(100% - 40px));
-      margin: 0 auto;
-      padding: 110px 0 90px;
-    }
+  .wrap{
+  width: min(var(--max), calc(100% - 40px));
+  margin: 0 auto;
+
+  /* Default (Desktop) – bleibt wie vorher */
+  padding: 110px 0 90px;
+}
+
+/* Mobile: Titel deutlich weiter runter (gegen fixed header) */
+@media (max-width: 640px){
+  .wrap{
+    padding-top: 80px !important;  /* <- das ist der “runterpush” */
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 
     .page-head{
       display:flex;
@@ -811,3 +823,4 @@
 .ps-reset{
   white-space:nowrap;    /* <-- “Alles löschen” bleibt 1 Zeile */
 }
+
