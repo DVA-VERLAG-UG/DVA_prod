@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-
   <title>DVAYD Publishing – Dein Buch, deine Geschichte</title>
   <meta name="description" content="Dein Buch, deine Geschichte – weltweit veröffentlicht mit DVAYD. Publishing, Design und Marketing aus einer Hand." />
 
@@ -15,17 +14,18 @@
   <!-- Global styles -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- Header styles -->
-  <link rel="stylesheet" href="/assets/css/header.css">
-
+  <!-- ✅ Header generates its own CSS + Social Bar -->
   <script src="/js/header.js" defer></script>
+
+  <!-- Footer -->
   <script src="/js/footer.js" defer></script>
 
+  <!-- Pagefind (needed for header search import + optional UI below) -->
   <script src="/_pagefind/pagefind.js" defer></script>
 
-  <!-- ✅ NEW: Make quote + SEO share the same background container + tweak avatar crop -->
+  <!-- ✅ Keep: Quote + SEO share the same background container + tweak avatar crop
+       (NOT header styling, not social bar styling) -->
   <style>
-    /* One shared background container for Quote + SEO carousel */
     .seo-wrap{
       background:
         radial-gradient(900px 520px at 15% 20%, rgba(139,92,246,.18), transparent 60%),
@@ -33,200 +33,67 @@
         linear-gradient(180deg, rgba(10,12,20,.85), rgba(10,12,20,.92));
       padding: 70px 0 70px;
     }
-
     .seo-wrap-inner{
       width:min(1180px, calc(100% - 40px));
       margin:0 auto;
     }
-
     .seo-wrap .seo-section{
       background: transparent !important;
       padding-top: 28px;
     }
-
     .seo-wrap .quote-section{
       padding: 0 0 10px;
     }
-
     .quote-avatar img{
       object-fit: cover;
       object-position: center top;
       transform: translateY(6px);
     }
-
-    /* =========================================================
-       ✅ Social Bar: force visible on mobile + hide on scroll-stop
-       (Index-only override, wins over style.css)
-       ========================================================= */
-
-    /* smooth hide/show */
-    #dvFloatSocial.dv-float-social{
-      transition: transform .22s ease, opacity .22s ease;
-      will-change: transform, opacity;
-    }
-    #dvFloatSocial.dv-float-social.is-scroll-hidden{
-      opacity: 0 !important;
-      pointer-events: none !important;
-      transform: translateY(10px) !important;
-    }
-
-    /* Force it to show on touch devices / small screens (even if CSS hides it elsewhere) */
-    @media (max-width: 768px), (hover: none) {
-      #dvFloatSocial.dv-float-social{
-        display: flex !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-
-        /* Mobile: bottom pill */
-        position: fixed !important;
-        left: 50% !important;
-        bottom: calc(14px + env(safe-area-inset-bottom)) !important;
-        top: auto !important;
-        transform: translateX(-50%) !important;
-
-        flex-direction: row !important;
-        gap: 10px !important;
-
-        padding: 10px 14px !important;
-        border-radius: 999px !important;
-
-        background: rgba(10,12,20,.72) !important;
-        border: 1px solid rgba(255,255,255,.16) !important;
-        box-shadow: 0 12px 30px rgba(0,0,0,.40) !important;
-
-        backdrop-filter: blur(12px) saturate(1.2) !important;
-        -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
-
-        z-index: 999999 !important;
-      }
-
-      /* If you collapse it on desktop, keep mobile centered */
-      #dvFloatSocial.dv-float-social.is-collapsed{
-        transform: translateX(-50%) !important;
-      }
-
-      /* toggle button is not useful on mobile bottom bar */
-      #dvFloatToggle{ display:none !important; }
-
-      #dvFloatSocial.dv-float-social a{
-        width: 38px !important;
-        height: 38px !important;
-        display: grid !important;
-        place-items: center !important;
-      }
-      #dvFloatSocial.dv-float-social img{
-        width: 18px !important;
-        height: 18px !important;
-      }
-
-      /* hide animation should move DOWN, while keeping centered */
-      #dvFloatSocial.dv-float-social.is-scroll-hidden{
-        transform: translateX(-50%) translateY(14px) !important;
-      }
-    }
   </style>
-  <style>
-  /* =========================
-     INDEX ONLY: Pagefind Search – Mobile no-overlap with Logo/Header
-     ========================= */
-
-  /* Standard: nichts kaputt machen */
-  #search { pointer-events: none; }
-  #search * { pointer-events: auto; }
-
-  @media (max-width: 720px){
-    :root{
-      /* Reserven links/rechts für Logo + Burger/Language */
-      --pf-left: 64px;   /* Logo + Luft */
-      --pf-right: 74px;  /* Burger/Language + Luft */
-      --pf-top: 10px;    /* Abstand nach oben */
-    }
-
-    /* Search-Bar als “Header-Element” positionieren */
-    #search{
-      position: fixed;
-      top: calc(env(safe-area-inset-top, 0px) + var(--pf-top));
-      left: var(--pf-left);
-      right: var(--pf-right);
-      z-index: 1000; /* über Hero, unter Menüs falls nötig */
-      pointer-events: auto;
-    }
-
-    /* Pagefind UI: volle Breite, kein extra Margin */
-    #search .pagefind-ui{
-      width: 100%;
-      margin: 0 !important;
-    }
-
-    /* Input sauber, nicht zu hoch */
-    #search .pagefind-ui__form{
-      margin: 0 !important;
-    }
-
-    #search .pagefind-ui__search-input{
-      width: 100% !important;
-      height: 44px;
-      border-radius: 999px;
-    }
-
-    /* Optional: wenn du einen schwarzen Streifen oben siehst (iOS) */
-    html, body { background: #05060f; }
-  }
-
-  /* Sehr kleine Phones: etwas mehr Luft */
-  @media (max-width: 380px){
-    :root{
-      --pf-left: 58px;
-      --pf-right: 68px;
-    }
-  }
-</style>
-
 </head>
 
 <body>
+  <!-- (Optional) If you still want PagefindUI on this page, keep this mount.
+       If you DON’T need it anymore, you can remove this div + the init script below. -->
   <div id="search"></div>
+
   <header id="site-header"></header>
 
   <main>
 
-  <section class="hero" id="top">
-    <div class="hero-content">
+    <section class="hero" id="top">
+      <div class="hero-content">
 
-      <!-- ✅ Hero Copy (schmal) -->
-      <div class="hero-copy">
-        <div class="kicker anim d1">DVAYD Publishing</div>
-        <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
+        <div class="hero-copy">
+          <div class="kicker anim d1">DVAYD Publishing</div>
+          <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
 
-        <p class="sub anim d3">
-          Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
-        </p>
+          <p class="sub anim d3">
+            Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
+          </p>
 
-        <div class="actions anim d4">
-          <a href="/de/kontakt/" class="btn primary">Jetzt starten</a>
-          <a href="/de/configurator/" class="btn ghost">Pakete entdecken</a>
-        </div>
-      </div>
-
-      <!-- ✅ Kontakt-CTA (moved from Footer) -->
-      <div class="hero-contact-box anim d5">
-        <div class="hero-contact-head">
-          <strong>Unverbindlich anfragen</strong>
-          <span>Wir melden uns kurzfristig zurück.</span>
+          <div class="actions anim d4">
+            <a href="/de/kontakt/" class="btn primary">Jetzt starten</a>
+            <a href="/de/configurator/" class="btn ghost">Pakete entdecken</a>
+          </div>
         </div>
 
-        <form class="hero-contact-form" action="/de/kontakt/">
-          <input type="text" name="name" placeholder="Name" required>
-          <input type="email" name="email" placeholder="E-Mail" required>
-          <button type="submit" class="btn primary">Kontakt aufnehmen</button>
-        </form>
+        <div class="hero-contact-box anim d5">
+          <div class="hero-contact-head">
+            <strong>Unverbindlich anfragen</strong>
+            <span>Wir melden uns kurzfristig zurück.</span>
+          </div>
+
+          <form class="hero-contact-form" action="/de/kontakt/">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="E-Mail" required>
+            <button type="submit" class="btn primary">Kontakt aufnehmen</button>
+          </form>
+        </div>
+
       </div>
+    </section>
 
-    </div>
-  </section>
-
-    <!-- ✅ Sektion 3 -->
     <section class="placeholder-section" id="placeholder">
       <div class="placeholder-sticky">
         <div class="slider-head">
@@ -284,7 +151,6 @@
       </div>
     </section>
 
-    <!-- ✅ Rest unverändert -->
     <section class="process-glass" id="prozess">
       <div class="process-glass-inner">
         <header class="pg-head">
@@ -394,14 +260,11 @@
       </div>
     </section>
 
-    <!-- ✅ UPDATED: Quote + SEO carousel in ONE shared background container -->
     <section class="seo-wrap" id="wissen-block">
       <div class="seo-wrap-inner">
 
-        <!-- ✅ Sektion 5.5 • Testimonial / Statement -->
         <section class="quote-section" id="statement">
           <div class="quote-inner">
-
             <div class="quote-card" role="group" aria-label="Statement">
               <div class="quote-person">
                 <div class="quote-avatar">
@@ -426,11 +289,9 @@
                 </div>
               </div>
             </div>
-
           </div>
         </section>
 
-        <!-- ✅ Sektion 6 -->
         <section class="seo-section" id="wissen">
           <div class="seo-inner">
             <div class="seo-head">
@@ -489,7 +350,7 @@
   <div class="cursor-invert" id="cursorInvert" aria-hidden="true"></div>
   <div class="cursor-text" id="cursorText" aria-hidden="true"></div>
 
-  <!-- ✅ Dein bestehendes Script (unverändert) -->
+  <!-- Cursor + slider script (unchanged) -->
   <script>
 (function(){
   const circle = document.getElementById("cursorInvert");
@@ -532,8 +393,6 @@
   if (!section || !track) return;
 
   const slides = Array.from(track.querySelectorAll(".placeholder-slide"));
-  const MAX_MOVE = 14;
-  const HOVER_SCALE = 1.06;
 
   function resetAllSlides(){
     slides.forEach(s => {
@@ -547,7 +406,6 @@
     slides.forEach((s,i) => s.classList.toggle("is-active", i === idx));
   }
 
-  let lastP = 0;
   function clamp01(v){ return Math.max(0, Math.min(1, v)); }
 
   function updateSlider(){
@@ -556,7 +414,6 @@
     const end = section.offsetHeight - vh;
     const scrolled = -rect.top;
     const p = clamp01(end > 0 ? (scrolled / end) : 0);
-    lastP = p;
 
     track.style.transform = `translateX(${-p * 2 * window.innerWidth}px)`;
     const idx = Math.max(0, Math.min(2, Math.round(p * 2)));
@@ -572,7 +429,7 @@
 })();
   </script>
 
-  <!-- ✅ SEO Carousel Script -->
+  <!-- SEO Carousel Script -->
   <script>
 (() => {
   const shell = document.querySelector(".seo-shell");
@@ -610,12 +467,17 @@
 
   <footer id="site-footer"></footer>
 
+  <!-- ✅ Optional: Only keep this if you still want PagefindUI on index.
+       Header search does NOT need this. -->
   <script>
     window.addEventListener("DOMContentLoaded", () => {
-      new PagefindUI({ element: "#search", showSubResults: true });
+      if (window.PagefindUI) {
+        new PagefindUI({ element: "#search", showSubResults: true });
+      }
     });
   </script>
 
+  <!-- Cleanup script (unchanged) -->
   <script>
 (() => {
   const footer = document.querySelector(".dv-footer");
@@ -629,99 +491,6 @@
   }
 })();
   </script>
-
-  <!-- Floating Social Bar (links, unabhängig vom Footer) -->
-  <div class="dv-float-social" id="dvFloatSocial" aria-label="Social Bar">
-    <button
-      type="button"
-      class="dv-float-toggle"
-      id="dvFloatToggle"
-      aria-label="Social Bar umschalten"
-      aria-expanded="true">
-      ‹
-    </button>
-
-    <a href="https://x.com/" target="_blank" rel="noopener" aria-label="X">
-      <img src="/assets/icons/x.png" alt="X">
-    </a>
-    <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
-      <img src="/assets/icons/instagram.png" alt="Instagram">
-    </a>
-    <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
-      <img src="/assets/icons/youtube.png" alt="YouTube">
-    </a>
-    <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
-      <img src="/assets/icons/linkedin.png" alt="LinkedIn">
-    </a>
-  </div>
-
-  <script>
-(() => {
-  const bar = document.getElementById("dvFloatSocial");
-  const btn = document.getElementById("dvFloatToggle");
-  if (!bar) return;
-
-  const KEY = "dvFloatSocialCollapsed";
-
-  /* ---------- collapse toggle ---------- */
-  function setState(collapsed){
-    bar.classList.toggle("is-collapsed", collapsed);
-    if (btn){
-      btn.textContent = collapsed ? "›" : "‹";
-      btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    }
-    localStorage.setItem(KEY, collapsed ? "1" : "0");
-  }
-
-  setState(localStorage.getItem(KEY) === "1");
-
-  btn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setState(!bar.classList.contains("is-collapsed"));
-  });
-
-  /* ---------- show/hide based on scroll direction ---------- */
-  let lastY = window.scrollY;
-  let ticking = false;
-
-  function hideBar(){
-    bar.classList.add("is-scroll-hidden");
-  }
-  function showBar(){
-    bar.classList.remove("is-scroll-hidden");
-  }
-
-  function onScroll(){
-    const y = window.scrollY;
-    const delta = y - lastY; // + = down, - = up
-    lastY = y;
-
-    // ignore tiny jitter
-    if (Math.abs(delta) < 3) return;
-
-    if (delta > 0) {
-      // scrolling DOWN
-      hideBar();
-    } else {
-      // scrolling UP
-      showBar();
-    }
-  }
-
-  window.addEventListener("scroll", () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      onScroll();
-      ticking = false;
-    });
-  }, { passive:true });
-
-  // initial: visible
-  showBar();
-})();
-</script>
 
 </body>
 </html>
