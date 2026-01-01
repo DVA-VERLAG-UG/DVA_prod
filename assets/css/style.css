@@ -68,7 +68,7 @@ html[data-theme="dim"]{
       margin:0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--ink);
-      background:#000;
+      background:#05060f;
     }
     a{ color:inherit; text-decoration:none; }
 
