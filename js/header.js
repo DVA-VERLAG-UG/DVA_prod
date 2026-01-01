@@ -17,17 +17,398 @@
   const LOGO_SRC = "/assets/images/dva-logo.png";
   const PAGEFIND_MODULE_PATH = "/_pagefind/pagefind.js";
 
-  // Ensure header.css is loaded
-  const HEADER_CSS_HREF = "/assets/css/header.css";
-  function ensureHeaderCSS() {
-    const existing = document.querySelector(`link[rel="stylesheet"][href="${HEADER_CSS_HREF}"]`);
-    if (existing) return;
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = HEADER_CSS_HREF;
-    link.media = "all";
-    document.head.appendChild(link);
+// Inject header.css directly from JS (so we can delete /assets/css/header.css)
+function injectHeaderCSS() {
+  if (document.getElementById("dvayd-header-css")) return;
+
+  const style = document.createElement("style");
+  style.id = "dvayd-header-css";
+
+  // ✅ PASTE your entire header.css content INSIDE the template string below
+  style.textContent = `
+/* /assets/css/header.css */
+
+/* Root vars (global ok) */
+:root{ --hdr-h:72px; --max:1180px; }
+
+/* =========================================================
+   SCOPE: Alles nur im Header-Mount, damit style.css nicht funkt
+   ========================================================= */
+#site-header .hdr{
+  position:fixed;
+  inset:0 0 auto 0;
+  height:var(--hdr-h);
+  z-index:100;
+  background:transparent;
+  pointer-events:none;
+  transform: translateY(0);
+  transition: transform .28s cubic-bezier(.2,.9,.2,1), background .18s ease, backdrop-filter .18s ease;
+  will-change: transform;
+}
+#site-header .hdr.is-hidden{ transform: translateY(calc(-1 * var(--hdr-h))); }
+#site-header .hdr.is-scrolled{
+  background: rgba(0,0,0,.10);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+}
+
+#site-header .hdr-inner{
+  pointer-events:auto;
+  height:100%;
+  width:min(var(--max), calc(100% - 40px));
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+
+  /* wichtig gegen Overflows */
+  min-width:0;
+}
+
+/* =========================
+   BRAND
+   ========================= */
+#site-header .brand{
+  display:flex; align-items:center; gap:12px;
+  color:#fff; text-decoration:none;
+  font-weight:700; letter-spacing:.2px;
+  min-width:200px;
+  flex: 0 0 auto;
+}
+#site-header .brand img{
+  width:36px; height:36px;
+  object-fit:contain;
+  display:block;
+  filter: drop-shadow(0 10px 26px rgba(0,0,0,.55));
+}
+#site-header .brand span{
+  font-size:14px;
+  opacity:.95;
+  text-shadow: 0 10px 26px rgba(0,0,0,.55);
+}
+
+/* =========================
+   RIGHT AREA
+   ========================= */
+#site-header .right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex: 1 1 auto;
+  justify-content:flex-end;
+
+  /* wichtig: verhindert, dass children das Logo überdecken */
+  min-width:0;
+}
+
+/* =========================
+   SEARCH (Dropdown)
+   ========================= */
+#site-header .site-search{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  height:46px;
+  width: min(420px, 42vw);
+  padding:0 10px 0 16px;
+
+  border-radius:18px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+
+  box-shadow: 0 14px 40px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.18);
+  transition: background .2s ease, box-shadow .2s ease;
+
+  z-index: 9999;
+
+  /* wichtig in Flex-Kontext */
+  min-width:0;
+}
+#site-header .site-search:hover{ background: rgba(255,255,255,.12); }
+
+#site-header .site-search input{
+  flex:1;
+  min-width:0; /* verhindert rausdrücken */
+  height:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  font-size:14px;
+  font-weight:650;
+  letter-spacing:.01em;
+}
+#site-header .site-search input::placeholder{
+  color: rgba(255,255,255,.75);
+  font-weight:500;
+}
+
+#site-header .site-search .search-icon{
+  width:36px;
+  height:36px;
+  border:0;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  flex: 0 0 auto;
+}
+#site-header .site-search .search-icon img{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  opacity:.9;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)) brightness(1.05);
+  transition: opacity .15s ease, transform .15s ease;
+}
+#site-header .site-search .search-icon:hover img{ opacity:1; transform: scale(1.08); }
+
+#site-header .search-dd{
+  position:absolute;
+  top: calc(100% + 10px);
+  right:0;
+  width: 100%;
+  max-height: 52vh;
+  overflow:auto;
+
+  border-radius:18px;
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.12);
+
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+
+  box-shadow: 0 30px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.10);
+
+  padding: 10px;
+  display:none;
+}
+#site-header .search-dd.is-open{ display:block; }
+
+#site-header .dd-row{
+  display:block;
+  padding: 12px 12px;
+  border-radius: 14px;
+  text-decoration:none;
+  color: rgba(255,255,255,.92);
+  transition: background .15s ease, transform .15s ease;
+}
+#site-header .dd-row:hover{ background: rgba(255,255,255,.07); transform: translateY(-1px); color:#fff; }
+#site-header .dd-row.is-active{
+  background: rgba(255,255,255,.18);
+  box-shadow: 0 12px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25);
+}
+#site-header .dd-title{ font-weight:850; letter-spacing:.01em; margin-bottom: 4px; line-height:1.2; }
+#site-header .dd-meta{ font-size:12px; opacity:.75; line-height:1.35; }
+#site-header .dd-empty,
+#site-header .dd-loading{ padding: 10px 12px; color: rgba(255,255,255,.80); font-weight:700; }
+
+#site-header .search-dd mark{
+  background: rgba(255,255,255,.12);
+  color:#fff;
+  border-radius:6px;
+  padding:0 4px;
+}
+
+/* =========================
+   THEME TOGGLE
+   ========================= */
+#site-header .theme-btn{
+  width:42px; height:42px;
+  display:grid; place-items:center;
+  border-radius:14px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  color:#fff;
+  cursor:pointer;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.12);
+  filter: drop-shadow(0 10px 26px rgba(0,0,0,.25));
+  transition: transform .15s ease, filter .15s ease, background .15s ease;
+  flex: 0 0 auto;
+}
+#site-header .theme-btn:hover{
+  filter: brightness(1.08) drop-shadow(0 10px 26px rgba(0,0,0,.25));
+  transform: translateY(-1px);
+}
+#site-header .theme-btn .sun{ display:none; }
+#site-header .theme-btn.is-dim .moon{ display:none; }
+#site-header .theme-btn.is-dim .sun{ display:block; }
+#site-header .theme-btn:not(.is-dim) .moon{ display:block; }
+
+/* =========================
+   LANGS + BURGER
+   ========================= */
+#site-header .langs{
+  display:flex; align-items:center; gap:8px;
+  color:#fff; font-weight:800; font-size:12px;
+  letter-spacing:.08em; text-transform:uppercase;
+  text-shadow: 0 10px 26px rgba(0,0,0,.55);
+  user-select:none;
+  flex: 0 0 auto;
+}
+#site-header .langs a{ color:#fff; opacity:.70; text-decoration:none; }
+#site-header .langs a.is-active{ opacity:1; }
+#site-header .langs .sep{ opacity:.35; font-weight:700; }
+
+#site-header .burger{
+  width:42px; height:42px;
+  display:grid; place-items:center;
+  border:0; background:transparent;
+  cursor:pointer; padding:0;
+  flex: 0 0 auto;
+}
+#site-header .burger .icon{
+  width:22px; height:14px;
+  display:flex; flex-direction:column;
+  justify-content:space-between;
+  filter: drop-shadow(0 10px 26px rgba(0,0,0,.55));
+}
+#site-header .burger .icon i{
+  display:block; height:2px;
+  border-radius:999px;
+  background:rgba(255,255,255,.95);
+}
+
+/* =========================
+   OVERLAY + DRAWER
+   ========================= */
+#site-header .overlay{
+  position:fixed; inset:0;
+  background: radial-gradient(900px 700px at 80% 15%, rgba(255,255,255,.08), rgba(0,0,0,.02)), rgba(0,0,0,.02);
+  opacity:0;
+  pointer-events:none;
+  transition: opacity .10s ease;
+  z-index:200;
+}
+#site-header .overlay.is-open{ opacity:1; pointer-events:auto; }
+
+#site-header .drawer{
+  position:fixed; top:0; right:0;
+  height:100%;
+  width:min(380px, 90vw);
+  padding:18px 18px 22px;
+  z-index:201;
+
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+    radial-gradient(900px 650px at 30% 10%, rgba(255,255,255,.008), rgba(255,255,255,0)),
+    radial-gradient(900px 700px at 80% 80%, rgba(120,190,255,.04), rgba(0,0,0,0));
+  border-left: 1px solid rgba(255,255,255,.10);
+
+  box-shadow: -16px 0 60px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.14);
+
+  backdrop-filter: blur(26px) saturate(1.55);
+  -webkit-backdrop-filter: blur(26px) saturate(1.55);
+
+  transform: translateX(112%);
+  transition: transform .55s cubic-bezier(.16, 1, .12, 1);
+}
+#site-header .drawer.is-open{ transform: translateX(0); }
+
+#site-header .drawer-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+  color:#fff;
+}
+#site-header .drawer-top .title{ font-weight:900; letter-spacing:.02em; }
+
+#site-header .close{
+  width:42px; height:42px;
+  border-radius:14px;
+  border:0;
+  background: rgba(255,255,255,.05);
+  color:#fff;
+  cursor:pointer;
+  box-shadow: 0 12px 30px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.14);
+}
+
+#site-header .drawer nav{ display:flex; flex-direction:column; gap:6px; padding-top:6px; }
+#site-header .drawer nav a{
+  padding:14px 10px;
+  border-radius:14px;
+  color:rgba(255,255,255,.92);
+  text-decoration:none;
+  font-weight:850;
+}
+#site-header .drawer nav a:hover{ background: rgba(255,255,255,.07); }
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+/* Tablet: Suche bleibt sichtbar, aber kleiner */
+@media (max-width: 980px){
+  #site-header .site-search{
+    width: min(320px, 36vw);
+    height: 44px;
   }
+}
+
+/* <= 820px: NICHT verstecken, nur kompakter */
+@media (max-width: 820px){
+  #site-header .site-search{ display:flex; }
+  #site-header .brand{ min-width: 0; }
+}
+
+/* <= 520px: EINE ZEILE: Logo | Suche | Mond | Burger */
+@media (max-width: 520px){
+  #site-header .hdr{ height:auto; }
+  #site-header .hdr-inner{
+    height:auto;
+    width: calc(100% - 24px);
+    flex-wrap: nowrap;
+    gap:10px;
+    padding: 10px 0;
+  }
+
+  #site-header .brand{ min-width:0; }
+  #site-header .brand span{ display:none; }
+  #site-header .langs{ display:none; }
+
+  /* Suche füllt die Mitte sauber */
+  #site-header .site-search{
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    height: 38px;
+    border-radius: 999px;
+    padding: 0 10px 0 12px;
+  }
+  #site-header .site-search input{
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #site-header .theme-btn{ width:40px; height:40px; }
+  #site-header .burger{ width:40px; height:40px; }
+
+  #site-header .search-dd{ left:0; right:0; width:100%; }
+}
+
+/* super kleine Geräte */
+@media (max-width: 360px){
+  #site-header .site-search{ height: 36px; }
+  #site-header .site-search .search-icon{ width:32px; height:32px; }
+}
+
+
+  `;
+
+  document.head.appendChild(style);
+}
+
 
   const THEME_KEY  = "dvayd_theme";
   const DIM_VALUE  = "dim";
@@ -138,7 +519,7 @@
   }
 
   function init() {
-    ensureHeaderCSS();
+    injectHeaderCSS();
 
     const mount = document.getElementById("site-header");
     if (!mount) return;
