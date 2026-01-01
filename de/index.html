@@ -94,6 +94,128 @@
       </div>
     </section>
 
+    <!-- =========================
+      CTA SECTION: Konfigurator Teaser
+      Insert AFTER hero
+      ========================= -->
+    <section class="cfg-teaser" aria-labelledby="cfg-teaser-title">
+      <div class="cfg-wrap">
+        <div class="cfg-card">
+          <div class="cfg-copy">
+            <p class="cfg-kicker">Neu</p>
+            <h2 id="cfg-teaser-title" class="cfg-title">Verlags-Konfigurator</h2>
+            <p class="cfg-sub">
+              Stelle dein Publishing-Paket in wenigen Minuten zusammen: pro Kategorie eine Option auswählen,
+              Prognose sehen, und danach direkt eine unverbindliche Terminanfrage senden.
+            </p>
+
+            <ul class="cfg-bullets">
+              <li>✅ Klarer Paket-Überblick (Starter / Plus / Deluxe / EU-TR)</li>
+              <li>📈 Verkaufs-Prognose &amp; transparente Auswahl je Kategorie</li>
+              <li>🧾 Am Ende: Anfrage per Netlify Forms (ohne Verpflichtung)</li>
+            </ul>
+
+            <div class="cfg-actions">
+              <a class="cfg-btn primary" href="/de/konfigurator/">
+                Konfigurator starten
+                <span aria-hidden="true">→</span>
+              </a>
+              <a class="cfg-btn ghost" href="/de/kontakt/">
+                Erst kurz beraten lassen
+              </a>
+            </div>
+
+            <p class="cfg-note">
+              Dauer: ca. 2–4 Minuten · Keine Registrierung · Unverbindlich
+            </p>
+          </div>
+
+          <!-- NOTE: aria-hidden removed so it remains accessible -->
+          <div class="cfg-preview">
+            <div class="cfg-preview-top">
+              <button type="button" class="cfg-pill is-active"
+                data-plan="Starter"
+                data-forecast="197 Verkäufe"
+                data-points="20,170 90,150 150,135 220,125 290,112 360,98 430,82 500,62 580,40">
+                Basic Package
+              </button>
+
+              <button type="button" class="cfg-pill"
+                data-plan="Plus"
+                data-forecast="284 Verkäufe"
+                data-points="20,175 90,155 150,145 220,132 290,120 360,103 430,90 500,74 580,55">
+                Print &amp; eBook
+              </button>
+
+              <button type="button" class="cfg-pill"
+                data-plan="Premium"
+                data-forecast="412 Verkäufe"
+                data-points="20,180 90,155 150,132 220,116 290,98 360,80 430,63 500,48 580,32">
+                Premium
+              </button>
+
+              <button type="button" class="cfg-pill"
+                data-plan="EU-TR"
+                data-forecast="338 Verkäufe"
+                data-points="20,176 90,158 150,142 220,128 290,112 360,94 430,78 500,60 580,44">
+                EU-TR Dual
+              </button>
+            </div>
+
+            <div class="cfg-preview-chart">
+              <div class="cfg-mini-head">
+                <div>
+                  <div class="cfg-mini-kicker">PROGNOSE</div>
+                  <div class="cfg-mini-title">Projektierte Verkäufe (12 Monate)</div>
+                </div>
+                <div class="cfg-mini-metrics">
+                  <div class="cfg-mini-metric">
+                    <div class="cfg-mini-label">Paket</div>
+                    <div class="cfg-mini-value" id="cfgMetricPlan">Starter</div>
+                  </div>
+                  <div class="cfg-mini-metric">
+                    <div class="cfg-mini-label">Prognose</div>
+                    <div class="cfg-mini-value" id="cfgMetricForecast">197 Verkäufe</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- simple svg preview -->
+              <svg viewBox="0 0 600 220" class="cfg-spark" role="img" aria-label="Prognose Verlauf">
+                <polyline id="cfgLine"
+                  points="20,170 90,150 150,135 220,125 290,112 360,98 430,82 500,62 580,40"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+                <circle cx="20" cy="170" r="4" fill="currentColor"/>
+                <circle cx="90" cy="150" r="4" fill="currentColor"/>
+                <circle cx="150" cy="135" r="4" fill="currentColor"/>
+                <circle cx="220" cy="125" r="4" fill="currentColor"/>
+                <circle cx="290" cy="112" r="4" fill="currentColor"/>
+                <circle cx="360" cy="98" r="4" fill="currentColor"/>
+                <circle cx="430" cy="82" r="4" fill="currentColor"/>
+                <circle cx="500" cy="62" r="4" fill="currentColor"/>
+                <circle cx="580" cy="40" r="4" fill="currentColor"/>
+              </svg>
+
+              <div class="cfg-x">
+                <span>Monat 1</span><span>Monat 3</span><span>Monat 6</span><span>Monat 9</span><span>Monat 12</span>
+              </div>
+            </div>
+
+            <div class="cfg-preview-bottom">
+              <div class="cfg-chip">Zielgruppe</div>
+              <div class="cfg-chip">Korrektur / Lektorat</div>
+              <div class="cfg-chip">Cover Design</div>
+              <div class="cfg-chip">Satz (Layout)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="placeholder-section" id="placeholder">
       <div class="placeholder-sticky">
         <div class="slider-head">
@@ -490,6 +612,41 @@
     toRemove.remove();
   }
 })();
+  </script>
+
+  <!-- ✅ Configurator preview interactivity (ACTIVE + METRICS + CHART) -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const line = document.getElementById("cfgLine");
+    const metricPlan = document.getElementById("cfgMetricPlan");
+    const metricForecast = document.getElementById("cfgMetricForecast");
+
+    document.querySelectorAll(".cfg-preview-top").forEach((group) => {
+      group.addEventListener("click", (e) => {
+        const btn = e.target.closest(".cfg-pill");
+        if (!btn) return;
+
+        // active state
+        group.querySelectorAll(".cfg-pill").forEach(b => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+
+        // metrics
+        if (metricPlan && btn.dataset.plan) metricPlan.textContent = btn.dataset.plan;
+        if (metricForecast && btn.dataset.forecast) metricForecast.textContent = btn.dataset.forecast;
+
+        // chart
+        if (line && btn.dataset.points) {
+          const svg = line.closest(".cfg-spark");
+          if (svg) svg.classList.add("is-switching");
+
+          setTimeout(() => {
+            line.setAttribute("points", btn.dataset.points);
+            if (svg) svg.classList.remove("is-switching");
+          }, 120);
+        }
+      });
+    });
+  });
   </script>
 
 </body>
