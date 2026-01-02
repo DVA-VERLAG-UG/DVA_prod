@@ -23,8 +23,7 @@
   <!-- Pagefind (needed for header search import + optional UI below) -->
   <script src="/_pagefind/pagefind.js" defer></script>
 
-  <!-- ✅ Keep: Quote + SEO share the same background container + tweak avatar crop
-       (NOT header styling, not social bar styling) -->
+  <!-- ✅ Keep: Quote + SEO share the same background container + tweak avatar crop -->
   <style>
     .seo-wrap{
       background:
@@ -53,8 +52,6 @@
 </head>
 
 <body>
-  <!-- (Optional) If you still want PagefindUI on this page, keep this mount.
-       If you DON’T need it anymore, you can remove this div + the init script below. -->
   <div id="search"></div>
 
   <header id="site-header"></header>
@@ -96,7 +93,6 @@
 
     <!-- =========================
       CTA SECTION: Konfigurator Teaser
-      Insert AFTER hero
       ========================= -->
     <section class="cfg-teaser" aria-labelledby="cfg-teaser-title">
       <div class="cfg-wrap">
@@ -130,34 +126,37 @@
             </p>
           </div>
 
-          <!-- NOTE: aria-hidden removed so it remains accessible -->
           <div class="cfg-preview">
             <div class="cfg-preview-top">
+              <!-- LOWEST curve -->
               <button type="button" class="cfg-pill is-active"
                 data-plan="Starter"
                 data-forecast="197 Verkäufe"
-                data-points="20,170 90,150 150,135 220,125 290,112 360,98 430,82 500,62 580,40">
+                data-points="20,190 90,180 150,170 220,160 290,150 360,140 430,132 500,125 580,118">
                 Basic Package
               </button>
 
+              <!-- higher than Basic -->
               <button type="button" class="cfg-pill"
                 data-plan="Plus"
                 data-forecast="284 Verkäufe"
-                data-points="20,175 90,155 150,145 220,132 290,120 360,103 430,90 500,74 580,55">
+                data-points="20,178 90,165 150,152 220,138 290,125 360,112 430,98 500,84 580,70">
                 Print &amp; eBook
               </button>
 
+              <!-- higher than Plus -->
               <button type="button" class="cfg-pill"
                 data-plan="Premium"
                 data-forecast="412 Verkäufe"
-                data-points="20,180 90,155 150,132 220,116 290,98 360,80 430,63 500,48 580,32">
+                data-points="20,160 90,142 150,125 220,108 290,92 360,76 430,60 500,45 580,32">
                 Premium
               </button>
 
+              <!-- HIGHEST curve -->
               <button type="button" class="cfg-pill"
                 data-plan="EU-TR"
-                data-forecast="338 Verkäufe"
-                data-points="20,176 90,158 150,142 220,128 290,112 360,94 430,78 500,60 580,44">
+                data-forecast="528 Verkäufe"
+                data-points="20,148 90,128 150,110 220,92 290,74 360,58 430,44 500,32 580,22">
                 EU-TR Dual
               </button>
             </div>
@@ -180,24 +179,17 @@
                 </div>
               </div>
 
-              <!-- simple svg preview -->
+              <!-- svg preview -->
               <svg viewBox="0 0 600 220" class="cfg-spark" role="img" aria-label="Prognose Verlauf">
                 <polyline id="cfgLine"
-                  points="20,170 90,150 150,135 220,125 290,112 360,98 430,82 500,62 580,40"
+                  points="20,190 90,180 150,170 220,160 290,150 360,140 430,132 500,125 580,118"
                   fill="none"
                   stroke="currentColor"
                   stroke-width="4"
                   stroke-linecap="round"
                   stroke-linejoin="round"/>
-                <circle cx="20" cy="170" r="4" fill="currentColor"/>
-                <circle cx="90" cy="150" r="4" fill="currentColor"/>
-                <circle cx="150" cy="135" r="4" fill="currentColor"/>
-                <circle cx="220" cy="125" r="4" fill="currentColor"/>
-                <circle cx="290" cy="112" r="4" fill="currentColor"/>
-                <circle cx="360" cy="98" r="4" fill="currentColor"/>
-                <circle cx="430" cy="82" r="4" fill="currentColor"/>
-                <circle cx="500" cy="62" r="4" fill="currentColor"/>
-                <circle cx="580" cy="40" r="4" fill="currentColor"/>
+                <!-- dots are generated dynamically so they always match the line -->
+                <g id="cfgDots" fill="currentColor" aria-hidden="true"></g>
               </svg>
 
               <div class="cfg-x">
@@ -589,8 +581,7 @@
 
   <footer id="site-footer"></footer>
 
-  <!-- ✅ Optional: Only keep this if you still want PagefindUI on index.
-       Header search does NOT need this. -->
+  <!-- ✅ Optional: Only keep this if you still want PagefindUI on index. -->
   <script>
     window.addEventListener("DOMContentLoaded", () => {
       if (window.PagefindUI) {
@@ -614,12 +605,45 @@
 })();
   </script>
 
-  <!-- ✅ Configurator preview interactivity (ACTIVE + METRICS + CHART) -->
+  <!-- ✅ Configurator preview interactivity (ACTIVE + METRICS + CHART + DOTS) -->
   <script>
   document.addEventListener("DOMContentLoaded", () => {
     const line = document.getElementById("cfgLine");
+    const dots = document.getElementById("cfgDots");
     const metricPlan = document.getElementById("cfgMetricPlan");
     const metricForecast = document.getElementById("cfgMetricForecast");
+
+    function parsePoints(str){
+      // "x,y x,y ..." -> [{x,y}, ...]
+      return (str || "")
+        .trim()
+        .split(/\s+/)
+        .map(pair => {
+          const [x,y] = pair.split(",").map(Number);
+          return { x, y };
+        })
+        .filter(p => Number.isFinite(p.x) && Number.isFinite(p.y));
+    }
+
+    function renderDots(pointsStr){
+      if (!dots) return;
+      const pts = parsePoints(pointsStr);
+
+      // clear
+      while (dots.firstChild) dots.removeChild(dots.firstChild);
+
+      // draw
+      pts.forEach(p => {
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("cx", String(p.x));
+        c.setAttribute("cy", String(p.y));
+        c.setAttribute("r", "4");
+        dots.appendChild(c);
+      });
+    }
+
+    // init dots to current line points
+    if (line) renderDots(line.getAttribute("points"));
 
     document.querySelectorAll(".cfg-preview-top").forEach((group) => {
       group.addEventListener("click", (e) => {
@@ -634,14 +658,20 @@
         if (metricPlan && btn.dataset.plan) metricPlan.textContent = btn.dataset.plan;
         if (metricForecast && btn.dataset.forecast) metricForecast.textContent = btn.dataset.forecast;
 
-        // chart
+        // chart + dots
         if (line && btn.dataset.points) {
           const svg = line.closest(".cfg-spark");
           if (svg) svg.classList.add("is-switching");
 
+          // fade dots a bit during switch (optional)
+          if (dots) dots.style.opacity = "0.25";
+
           setTimeout(() => {
             line.setAttribute("points", btn.dataset.points);
+            renderDots(btn.dataset.points);
+
             if (svg) svg.classList.remove("is-switching");
+            if (dots) dots.style.opacity = "1";
           }, 120);
         }
       });

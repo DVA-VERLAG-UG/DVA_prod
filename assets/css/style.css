@@ -2759,53 +2759,159 @@ html, body{
   }
 }
 
+
+
+
+
+
 /* =========================
-   Konfigurator Teaser (FULL BLOCK)
+   Konfigurator Teaser (FULL BLOCK) — Seamless Hero Blend v1
+   (low-contrast, continues hero mood instead of switching to bright blobs)
    ========================= */
 
 .cfg-teaser{
   position: relative;
-  padding: clamp(52px, 7vw, 92px) 0;
+  padding: clamp(56px, 7vw, 100px) 0;
+  isolation: isolate;
+  overflow: hidden;
+
+  /* TUNE */
+  --hero-img: url("/assets/images/library.jpg");
+  --bleed-opacity: .22;     /* how much of the hero image is visible */
+  --bleed-blur: 26px;       /* blur level */
+  --tint: rgba(8, 14, 28, .38);  /* dark tint to match a hero overlay */
+  --fade-strength: .92;     /* how strongly we fade into page background */
 }
 
+/* 1) Extend hero image downward (very subtle, blurred, low contrast) */
+.cfg-teaser::before{
+  content:"";
+  position:absolute;
+  inset: -160px -140px -220px -140px;
+  z-index: 0;
+  pointer-events:none;
+
+  background-image: var(--hero-img);
+  background-size: cover;
+  background-position: 50% 92%;   /* bottom portion */
+  background-repeat: no-repeat;
+
+  opacity: var(--bleed-opacity);
+  filter: blur(var(--bleed-blur)) saturate(1.05) contrast(.98) brightness(.92);
+  transform: translate3d(0,0,0) scale(1.10);
+
+  /* fade from top (near hero) to bottom */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,.85) 18%,
+    rgba(0,0,0,1) 55%,
+    rgba(0,0,0,0) 100%
+  );
+          mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,.85) 18%,
+    rgba(0,0,0,1) 55%,
+    rgba(0,0,0,0) 100%
+  );
+}
+
+/* 2) Hero-like tint + soft fade into your normal background */
+.cfg-teaser::after{
+  content:"";
+  position:absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events:none;
+
+  /* The trick: keep it “hero-toned” at the top, then gently become neutral */
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.22) 0%,
+      rgba(0,0,0,.12) 28%,
+      rgba(0,0,0,0) 60%
+    ),
+    /* colored tint (very subtle) */
+    radial-gradient(900px 420px at 50% 0%,
+      rgba(37,99,235,.10),
+      rgba(37,99,235,0) 62%
+    ),
+    /* overall tint */
+    linear-gradient(180deg,
+      var(--tint) 0%,
+      rgba(255,255,255,0) 55%
+    ),
+    /* final fade into page background */
+    linear-gradient(180deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255, calc(var(--fade-strength) * .20)) 52%,
+      rgba(255,255,255, calc(var(--fade-strength) * .45)) 100%
+    );
+
+  filter: saturate(1.05);
+}
+
+/* Layout wrapper */
 .cfg-wrap{
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
+/* Card: slightly less “white”, more “hero glass” */
 .cfg-card{
   display:grid;
   grid-template-columns: 1.05fr .95fr;
   gap: 18px;
-  padding: clamp(18px, 2.8vw, 28px);
-  border-radius: 22px;
+  padding: clamp(18px, 2.8vw, 30px);
+  border-radius: 26px;
 
-  background: rgba(255,255,255,.42);
-  border: 1px solid rgba(255,255,255,.55);
+  background: linear-gradient(180deg,
+    rgba(255,255,255,.46),
+    rgba(255,255,255,.26)
+  );
+  border: 1px solid rgba(255,255,255,.40);
+
   box-shadow:
-    0 28px 80px rgba(0,0,0,.22),
-    0 10px 30px rgba(2,16,41,.12);
+    0 34px 96px rgba(0,0,0,.20),
+    0 14px 44px rgba(2,16,41,.12),
+    inset 0 1px 0 rgba(255,255,255,.48);
 
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
 
   position: relative;
   overflow: hidden;
+  transform: translateZ(0);
 }
 
 .cfg-card::before{
   content:"";
   position:absolute;
   inset:-2px;
-  background:
-    radial-gradient(520px 260px at 18% 18%, rgba(255,255,255,.35), transparent 65%),
-    radial-gradient(520px 260px at 85% 55%, rgba(37,99,235,.18), transparent 68%);
   pointer-events:none;
-  opacity:.75;
+  opacity:.55;
+
+  /* very restrained highlights -> less contrast jump */
+  background:
+    radial-gradient(520px 260px at 18% 16%,
+      rgba(255,255,255,.34),
+      transparent 65%
+    ),
+    radial-gradient(520px 260px at 86% 55%,
+      rgba(37,99,235,.14),
+      transparent 70%
+    );
+
+  filter: blur(12px);
 }
 
 .cfg-copy, .cfg-preview{ position: relative; z-index: 1; }
 
+/* Typography (same as your old block) */
 .cfg-kicker{
   display:inline-flex;
   align-items:center;
@@ -2820,7 +2926,7 @@ html, body{
 
 .cfg-title{
   margin: 0;
-  font-size: clamp(26px, 3.2vw, 40px);
+  font-size: clamp(26px, 3.2vw, 42px);
   font-weight: 950;
   letter-spacing: -.02em;
   line-height: 1.08;
@@ -2830,11 +2936,12 @@ html, body{
 .cfg-sub{
   margin: 12px 0 0;
   max-width: 70ch;
-  font-size: 15.5px;
+  font-size: 15.7px;
   line-height: 1.65;
   color: rgba(15,23,42,.68);
 }
 
+/* Bullets */
 .cfg-bullets{
   list-style:none;
   padding: 0;
@@ -2848,7 +2955,7 @@ html, body{
   gap:10px;
   align-items:flex-start;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 900;
   color: rgba(15,23,42,.78);
 }
 
@@ -2856,7 +2963,7 @@ html, body{
   display:inline-flex;
   width: 22px;
   height: 22px;
-  border-radius: 7px;
+  border-radius: 8px;
   align-items:center;
   justify-content:center;
   background: rgba(34,197,94,.14);
@@ -2865,6 +2972,7 @@ html, body{
   margin-top: 1px;
 }
 
+/* Buttons */
 .cfg-actions{
   display:flex;
   gap: 12px;
@@ -2894,17 +3002,17 @@ html, body{
   background: rgba(37,99,235,.92);
   color: #fff;
   border-color: rgba(37,99,235,.25);
-  box-shadow: 0 16px 32px rgba(37,99,235,.22);
+  box-shadow: 0 16px 32px rgba(37,99,235,.18);
 }
 
 .cfg-btn.primary:hover{
-  box-shadow: 0 20px 46px rgba(37,99,235,.28);
+  box-shadow: 0 20px 46px rgba(37,99,235,.22);
 }
 
 .cfg-btn.ghost{
-  background: rgba(255,255,255,.60);
+  background: rgba(255,255,255,.52);
   color: rgba(15,23,42,.88);
-  border-color: rgba(255,255,255,.70);
+  border-color: rgba(255,255,255,.62);
 }
 
 .cfg-note{
@@ -2917,17 +3025,16 @@ html, body{
 /* Right preview */
 .cfg-preview{
   border-radius: 18px;
-  background: rgba(255,255,255,.55);
-  border: 1px solid rgba(255,255,255,.72);
+  background: rgba(255,255,255,.44);
+  border: 1px solid rgba(255,255,255,.58);
   box-shadow:
-    0 20px 50px rgba(0,0,0,.18),
-    inset 0 1px 0 rgba(255,255,255,.55);
+    0 20px 50px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.44);
   padding: 14px;
   overflow:hidden;
   position: relative;
 }
 
-/* Pills row */
 .cfg-preview-top{
   display:flex;
   gap:8px;
@@ -2936,51 +3043,40 @@ html, body{
   margin-bottom: 10px;
 }
 
-/* Interactive Pills (buttons) */
 .cfg-pill{
   appearance:none;
   -webkit-appearance:none;
   border:none;
   outline:none;
-
   padding: 8px 10px;
   border-radius: 999px;
-
-  font-weight: 900;
+  font-weight: 950;
   font-size: 12px;
-
-  background: rgba(255,255,255,.72);
+  background: rgba(255,255,255,.60);
   border: 1px solid rgba(15,23,42,.10);
   color: rgba(15,23,42,.78);
-
   cursor: pointer;
   user-select: none;
-
   transition: transform .12s ease, filter .12s ease, box-shadow .12s ease,
               background .12s ease, border-color .12s ease, color .12s ease;
 }
 
 .cfg-pill:hover{
   transform: translateY(-1px);
-  filter: brightness(1.03);
-  box-shadow: 0 10px 22px rgba(2,16,41,.12);
-  border-color: rgba(37,99,235,.22);
-}
-
-.cfg-pill:active{
-  transform: translateY(0) scale(.98);
+  filter: brightness(1.02);
+  box-shadow: 0 10px 22px rgba(2,16,41,.10);
+  border-color: rgba(37,99,235,.18);
 }
 
 .cfg-pill.is-active{
-  background: #ffffff;
-  border-color: rgba(37,99,235,.28);
+  background: rgba(255,255,255,.82);
+  border-color: rgba(37,99,235,.22);
   color: rgba(15,23,42,.92);
-  box-shadow: 0 14px 30px rgba(37,99,235,.18);
+  box-shadow: 0 14px 30px rgba(37,99,235,.14);
 }
 
-/* Chart card */
 .cfg-preview-chart{
-  background: rgba(255,255,255,.78);
+  background: rgba(255,255,255,.68);
   border: 1px solid rgba(15,23,42,.10);
   border-radius: 14px;
   padding: 12px;
@@ -3018,7 +3114,7 @@ html, body{
 
 .cfg-mini-metric{
   min-width: 120px;
-  background:#fff;
+  background: rgba(255,255,255,.80);
   border: 1px solid rgba(15,23,42,.10);
   border-radius: 12px;
   padding: 8px 10px;
@@ -3039,20 +3135,14 @@ html, body{
   color: rgba(15,23,42,.90);
 }
 
-/* Chart SVG */
 .cfg-spark{
   width:100%;
   height: 160px;
   color: rgba(37,99,235,.92);
 }
 
-/* Smooth switching animation */
-.cfg-spark polyline{
-  transition: opacity .18s ease;
-}
-.cfg-spark.is-switching polyline{
-  opacity: .25;
-}
+.cfg-spark polyline{ transition: opacity .18s ease; }
+.cfg-spark.is-switching polyline{ opacity: .25; }
 
 .cfg-x{
   display:flex;
@@ -3075,7 +3165,7 @@ html, body{
 .cfg-chip{
   padding: 7px 10px;
   border-radius: 999px;
-  font-weight: 900;
+  font-weight: 950;
   font-size: 11px;
   background: rgba(37,99,235,.10);
   border: 1px solid rgba(37,99,235,.15);
@@ -3092,4 +3182,11 @@ html, body{
   .cfg-wrap{ width: calc(100% - 24px); }
   .cfg-actions{ flex-direction: column; }
   .cfg-btn{ width: 100%; }
+
+  /* mobile: slightly stronger hero continuity */
+  .cfg-teaser{
+    --bleed-opacity: .26;
+    --bleed-blur: 28px;
+    --tint: rgba(8, 14, 28, .42);
+  }
 }
