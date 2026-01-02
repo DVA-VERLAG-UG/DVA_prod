@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <title>Kontakt | DVAYD Publishing</title>
+  <meta name="description" content="Kontakt zu DVAYD Publishing – unverbindlich anfragen, Beratung erhalten oder ein Angebot anfordern." />
+  <link rel="canonical" href="https://www.dvayd.com/de/kontakt/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/favicon.png">
+
+  <!-- Global styles -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Header + Footer (generated) -->
+  <script src="/js/header.js" defer></script>
+  <script src="/js/footer.js" defer></script>
+
+  <!-- Pagefind (header search) -->
+  <script src="/_pagefind/pagefind.js" defer></script>
+</head>
+
+<body>
+  <header id="site-header"></header>
+
+  <main>
+
+    <section class="ct-wrap" id="top">
+
+      <!-- ✅ Animated Globe background (SVG) -->
+      <div class="bg-globe" aria-hidden="true">
+        <svg viewBox="0 0 520 520" class="globe" role="presentation" focusable="false">
+          <defs>
+            <radialGradient id="gGlow" cx="35%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="rgba(139,92,246,.70)"/>
+              <stop offset="55%" stop-color="rgba(99,102,241,.26)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+            </radialGradient>
+
+            <radialGradient id="gSphere" cx="35%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="rgba(255,255,255,.22)"/>
+              <stop offset="55%" stop-color="rgba(255,255,255,.08)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+            </radialGradient>
+
+            <clipPath id="gClip">
+              <circle cx="260" cy="260" r="200" />
+            </clipPath>
+
+            <pattern id="gStripes" width="120" height="520" patternUnits="userSpaceOnUse">
+              <path d="M60 0 L60 520" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
+              <path d="M20 0 L20 520" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <path d="M100 0 L100 520" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+            </pattern>
+          </defs>
+
+          <!-- outer glow -->
+          <g class="globe-glow">
+            <circle cx="260" cy="260" r="230" fill="url(#gGlow)"/>
+          </g>
+
+          <!-- globe body -->
+          <g class="globe-rot" clip-path="url(#gClip)">
+            <rect x="0" y="0" width="520" height="520" fill="rgba(255,255,255,.02)"/>
+
+            <!-- latitude lines -->
+            <g opacity=".95">
+              <path d="M60 260 C140 180, 380 180, 460 260 C380 340, 140 340, 60 260Z"
+                    fill="none" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
+              <path d="M85 210 C160 155, 360 155, 435 210"
+                    fill="none" stroke="rgba(255,255,255,.12)" stroke-width="2"/>
+              <path d="M85 310 C160 365, 360 365, 435 310"
+                    fill="none" stroke="rgba(255,255,255,.12)" stroke-width="2"/>
+              <path d="M120 175 C185 135, 335 135, 400 175"
+                    fill="none" stroke="rgba(255,255,255,.10)" stroke-width="2"/>
+              <path d="M120 345 C185 385, 335 385, 400 345"
+                    fill="none" stroke="rgba(255,255,255,.10)" stroke-width="2"/>
+            </g>
+
+            <!-- moving stripes layer -->
+            <g class="globe-scan" opacity=".90">
+              <rect x="-520" y="0" width="1560" height="520" fill="url(#gStripes)"/>
+            </g>
+
+            <!-- highlight -->
+            <circle cx="260" cy="260" r="200" fill="url(#gSphere)"/>
+          </g>
+
+          <!-- outline -->
+          <circle cx="260" cy="260" r="200" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="ct-inner">
+
+        <!-- LEFT: Headline + Form -->
+        <div class="ct-main">
+          <h1 class="ct-title">Let’s do this.</h1>
+          <p class="ct-sub">
+            Unser Team meldet sich in der Regel innerhalb von 24–48 Stunden.
+            Erzähl uns kurz von deinem Buchprojekt und deinen Zielen (DE, TR oder international).
+          </p>
+
+          <form
+            class="ct-form"
+            name="kontakt"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            action="/de/danke-kontakt/"
+          >
+            <input type="hidden" name="form-name" value="kontakt" />
+            <p class="hidden">
+              <label>Don’t fill this out: <input name="bot-field" /></label>
+            </p>
+
+            <div class="ct-field">
+              <label for="k_name">Dein Name <span class="ct-req">*</span></label>
+              <input id="k_name" name="name" type="text" required placeholder="Vor- und Nachname" />
+            </div>
+
+            <div class="ct-field">
+              <label for="k_email">E-Mail Adresse <span class="ct-req">*</span></label>
+              <input id="k_email" name="email" type="email" required placeholder="name@mail.com" />
+            </div>
+
+            <div class="ct-field">
+              <label for="k_project">Projekt / Buch-Titel <span class="ct-req">*</span></label>
+              <input id="k_project" name="projekt" type="text" required placeholder="z.B. Roman, Biografie, Sachbuch…" />
+            </div>
+
+            <div class="ct-field">
+              <label for="k_msg">Worum geht’s? <span class="ct-req">*</span></label>
+              <textarea id="k_msg" name="nachricht" required placeholder="Status (Idee/Manuskript/fertig), Genre, Zielmarkt (DE/TR), Zeitraum, Fragen…"></textarea>
+            </div>
+
+            <div class="ct-actions">
+              <button type="submit" class="btn primary ct-submit">SUBMIT</button>
+              <span class="ct-note">Für kostenlosen Manuskript-Upload nutze bitte den Bereich unten im Footer.</span>
+            </div>
+          </form>
+        </div>
+
+        <!-- RIGHT: Info -->
+        <aside class="ct-side" aria-label="Kontakt Infos">
+          <div class="ct-side-kicker">GLOBAL HEADQUARTERS</div>
+          <h2 class="ct-side-city">Bremen, DE</h2>
+
+          <div class="ct-side-lines">
+            <div>DVAYD Publishing</div>
+            <div>Bremen · Deutschland</div>
+            <div><a href="tel:+4940000000">+49 40 0000000</a></div>
+            <div><a href="mailto:info@dva-yd.com">info@dva-yd.com</a></div>
+          </div>
+
+          <div class="ct-social" aria-label="Social Links">
+            <a href="https://x.com/" target="_blank" rel="noopener" aria-label="X">
+              <img src="/assets/icons/x.png" alt="X">
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+              <img src="/assets/icons/instagram.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
+              <img src="/assets/icons/youtube.png" alt="YouTube">
+            </a>
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <img src="/assets/icons/linkedin.png" alt="LinkedIn">
+            </a>
+          </div>
+
+          <hr class="ct-hr" />
+
+          <div class="ct-side-small">
+            Du willst direkt ein Paket zusammenstellen?
+            <a href="/de/konfigurator/">Konfigurator starten →</a>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- Locations -->
+    <section class="ct-locations" aria-label="Our Locations">
+      <div class="ct-locations-inner">
+        <div class="ct-loc-head">
+          <div>
+            <h3 class="ct-loc-title">Our Locations</h3>
+            <p class="ct-loc-sub">Standorte & Betreuung – Bremen ↔ Istanbul</p>
+          </div>
+        </div>
+
+        <div class="ct-loc-grid">
+          <div class="ct-loc-card">
+            <div class="ct-loc-country">Germany</div>
+            <h4 class="ct-loc-city">Bremen</h4>
+            <div class="ct-loc-lines">
+              <div>Beratung · Publishing · Vertrieb</div>
+              <div><a href="tel:+4940000000" style="color:inherit; text-decoration:none;">+49 40 0000000</a></div>
+            </div>
+          </div>
+
+          <div class="ct-loc-card">
+            <div class="ct-loc-country">Turkey</div>
+            <h4 class="ct-loc-city">Istanbul</h4>
+            <div class="ct-loc-lines">
+              <div>TR-Markt · Distribution · Partnernetzwerk</div>
+              <div><a href="mailto:info@dva-yd.com" style="color:inherit; text-decoration:none;">info@dva-yd.com</a></div>
+            </div>
+          </div>
+
+          <div class="ct-loc-card">
+            <div class="ct-loc-country">Online</div>
+            <h4 class="ct-loc-city">Remote</h4>
+            <div class="ct-loc-lines">
+              <div>Zoom/Telefon · 24–48h Antwort</div>
+              <div><a href="/de/konfigurator/" style="color:inherit; text-decoration:none;">Konfigurator →</a></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="site-footer"></footer>
+</body>
+</html>
