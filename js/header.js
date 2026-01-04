@@ -8,10 +8,10 @@
   };
 
   const LABELS = {
-    de: { about:"Über uns", contact:"Kontakt", projects:"Projekte", services:"Konfigurator", process:"Prozess", blog:"Blog", search:"Suche", theme:"Dim", search_ph:"Suchbegriff eingeben", menu:"Menü" },
-    en: { about:"About", contact:"Contact", projects:"Projects", services:"Configurator", process:"Process", blog:"Blog", search:"Search", theme:"Dim", search_ph:"Search…", menu:"Menu" },
-    tr: { about:"Hakkımızda", contact:"İletişim", projects:"Projeler", services:"Configurator", process:"Süreç", blog:"Blog", search:"Ara", theme:"Dim", search_ph:"Ara…", menu:"Menü" },
-    fr: { about:"À propos", contact:"Contact", projects:"Projets", services:"Configurator", process:"Processus", blog:"Blog", search:"Recherche", theme:"Dim", search_ph:"Rechercher…", menu:"Menu" },
+    de: { about:"Über uns (coming soon)", contact:"Kontakt", projects:"Projekte(coming soon)", services:"Konfigurator", process:"Prozess(coming soon)", blog:"Blog(coming soon)", search:"Suche", theme:"Dim", search_ph:"Suchbegriff eingeben", menu:"Menü" },
+    en: { about:"About (coming soon)", contact:"Contact", projects:"Projects(coming soon)", services:"Configurator", process:"Process(coming soon)", blog:"Blog(coming soon)", search:"Search", theme:"Dim", search_ph:"Search…", menu:"Menu" },
+    tr: { about:"Hakkımızda (coming soon)", contact:"İletişim", projects:"Projeler(coming soon)", services:"Configurator", process:"Süreç(coming soon)", blog:"Blog(coming soon)", search:"Ara", theme:"Dim", search_ph:"Ara…", menu:"Menü" },
+    fr: { about:"À propos (coming soon)", contact:"Contact", projects:"Projets(coming soon)", services:"Configurator", process:"Processus(coming soon)", blog:"Blog(coming soon)", search:"Recherche", theme:"Dim", search_ph:"Rechercher…", menu:"Menu" },
   };
 
   const LOGO_SRC = "/assets/images/dva-logo.png";
