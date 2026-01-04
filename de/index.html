@@ -58,38 +58,119 @@
 
   <main>
 
-    <section class="hero" id="top">
-      <div class="hero-content">
+<section class="hero" id="top">
+  <div class="hero-content">
 
-        <div class="hero-copy">
-          <div class="kicker anim d1">DVAYD Publishing</div>
-          <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
+    <div class="hero-copy">
+      <div class="kicker anim d1">DVAYD Publishing</div>
+      <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
 
-          <p class="sub anim d3">
-            Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
-          </p>
+      <p class="sub anim d3">
+        Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
+      </p>
 
-          <div class="actions anim d4">
-            <a href="/de/kontakt/" class="btn primary">Jetzt starten</a>
-            <a href="/de/configurator/" class="btn ghost">Pakete entdecken</a>
-          </div>
-        </div>
-
-        <div class="hero-contact-box anim d5">
-          <div class="hero-contact-head">
-            <strong>Unverbindlich anfragen</strong>
-            <span>Wir melden uns kurzfristig zurück.</span>
-          </div>
-
-          <form class="hero-contact-form" action="/de/kontakt/">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="email" name="email" placeholder="E-Mail" required>
-            <button type="submit" class="btn primary">Kontakt aufnehmen</button>
-          </form>
-        </div>
-
+      <div class="actions anim d4">
+        <!-- optional: wenn "Jetzt starten" NICHT mehr zur Kontaktseite soll, ändere den Link -->
+        <a href="/de/configurator/" class="btn primary">Jetzt starten</a>
+        <a href="/de/configurator/" class="btn ghost">Pakete entdecken</a>
       </div>
-    </section>
+    </div>
+
+    <div class="hero-contact-box anim d5">
+      <div class="hero-contact-head">
+        <strong>Unverbindlich anfragen</strong>
+        <span>Wir melden uns kurzfristig zurück.</span>
+      </div>
+
+      <!-- ✅ SUCCESS MESSAGE (initial hidden) -->
+      <div class="hero-contact-success" id="heroSuccess" style="display:none; margin-top:12px;">
+        <div style="padding:12px 14px; border-radius:14px; background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.25);">
+          <strong>Ihre Nachricht wurde gesendet.</strong>
+          <div style="opacity:.9; margin-top:4px;">Vielen Dank! Wir melden uns zeitnah zurück.</div>
+        </div>
+      </div>
+
+      <!-- ✅ Netlify Form: stays on page, no redirect -->
+      <form
+        class="hero-contact-form"
+        id="heroContactForm"
+        name="hero-kontakt"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <!-- required for Netlify -->
+        <input type="hidden" name="form-name" value="hero-kontakt" />
+        <p style="display:none">
+          <label>Don’t fill this out: <input name="bot-field" /></label>
+        </p>
+
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="E-Mail" required>
+
+        <button type="submit" class="btn primary">Kontakt aufnehmen</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    // Intercept submit -> send to Netlify without navigating
+    (function () {
+      const form = document.getElementById("heroContactForm");
+      const success = document.getElementById("heroSuccess");
+      if (!form) return;
+
+      function encode(data) {
+        return new URLSearchParams(data).toString();
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const btn = form.querySelector('button[type="submit"]');
+        const origText = btn ? btn.textContent : "";
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = "Senden…";
+        }
+
+        try {
+          const formData = new FormData(form);
+          const payload = {};
+          formData.forEach((v, k) => payload[k] = v);
+
+          const res = await fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: encode(payload)
+          });
+
+          if (!res.ok) throw new Error("Netlify submit failed");
+
+          // show message, reset form, no redirect
+          form.reset();
+          if (success) success.style.display = "block";
+
+          // optional: hide after a few seconds
+          setTimeout(() => {
+            if (success) success.style.display = "none";
+          }, 6000);
+
+        } catch (err) {
+          alert("Senden fehlgeschlagen. Bitte versuche es erneut.");
+          console.error(err);
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = origText;
+          }
+        }
+      });
+    })();
+  </script>
+</section>
+
 
     <!-- =========================
       CTA SECTION: Konfigurator Teaser
