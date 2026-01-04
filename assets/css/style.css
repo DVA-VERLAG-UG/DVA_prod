@@ -3612,3 +3612,78 @@ html[data-theme="dim"] .bg-globe{
   }
   html[data-theme="dim"] .bg-globe{ opacity: .68; }
 }
+
+/* =========================================================
+   CONTACT SOCIAL ICONS — always visible (light + dim)
+   Works with PNG icons via CSS filter + background chip
+   ========================================================= */
+
+.ct-social{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+/* Icon button chip (fixes visibility on bright backgrounds) */
+.ct-social a{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+
+  /* translucent chip behind icons */
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(15,23,42,.12);
+
+  box-shadow:
+    0 10px 24px rgba(2,16,41,.12),
+    inset 0 1px 0 rgba(255,255,255,.55);
+
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+
+  transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
+}
+
+.ct-social a:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.72);
+  box-shadow:
+    0 14px 30px rgba(2,16,41,.16),
+    inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+/* Icon image */
+.ct-social img{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  opacity:.92;
+  transition: filter .2s ease, opacity .2s ease, transform .2s ease;
+}
+
+/* ✅ DAY MODE: make white icons become dark */
+html:not([data-theme="dim"]) .ct-social img{
+  /* makes white PNGs appear dark on light UI */
+  filter: brightness(0) saturate(100%) contrast(1.2);
+}
+
+/* ✅ DIM MODE: keep icons bright */
+html[data-theme="dim"] .ct-social a{
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.16);
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+html[data-theme="dim"] .ct-social img{
+  filter: brightness(1.15) contrast(1.05);
+  opacity:.92;
+}
+
+/* optional: a little nicer hover glow in dim */
+html[data-theme="dim"] .ct-social a:hover{
+  background: rgba(139,92,246,.22);
+}
