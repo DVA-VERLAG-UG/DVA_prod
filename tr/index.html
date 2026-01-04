@@ -1,595 +1,380 @@
 <!doctype html>
-<html lang="de">
+<html lang="tr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-  <title>DVAYD Publishing – Dein Buch, deine Geschichte</title>
-  <meta name="description" content="Dein Buch, deine Geschichte – weltweit veröffentlicht mit DVAYD. Publishing, Design und Marketing aus einer Hand." />
+  <title>DVA-YD.com – Yapım Aşamasında</title>
+  <meta name="description" content="DVA Publishing – Web sitesi yapım aşamasında. Bizimle iletişime geçin ve haberdar olun." />
+  <meta name="robots" content="noindex, nofollow" />
 
-  <!-- Favicon (nur EINMAL) -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
+  <!-- Global styles (incl. global cursor) -->
   <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Header + Footer (injected) -->
   <script src="/js/header.js" defer></script>
   <script src="/js/footer.js" defer></script>
 
+  <!-- Pagefind (Header Search) -->
+  <script src="/_pagefind/pagefind.js" defer></script>
 
+  <style>
+    :root{
+      --fg:#ffffff;
+      --muted:rgba(255,255,255,.7);
+      --blur:14px;
+      --glass: rgba(0,0,0,.45);
+      --line: rgba(255,255,255,.15);
+      --ok:#00ff99;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+
+    html, body{
+      height:100%;
+      background:#000;
+      color:var(--fg);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      cursor:auto; /* global cursor */
+    }
+
+    /* Layout: footer always below content */
+    body{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    #site-header{ position:relative; z-index:5; }
+
+    main{
+      flex:1 0 auto;
+      padding-top: var(--hdr-h, 72px); /* sabit header için boşluk */
+      position:relative;
+      z-index:2;
+    }
+
+    #site-footer{
+      flex:0 0 auto;
+      position:relative;
+      z-index:2;
+    }
+
+    /* ---------- Video Background ---------- */
+    .video-bg{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+    }
+    .video-bg video{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      z-index:1;
+      background:rgba(0,0,0,.55);
+      pointer-events:none;
+    }
+
+    /* ---------- Under Construction Section ---------- */
+    .uc-wrap{
+      min-height: calc(100vh - var(--hdr-h, 72px));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: clamp(18px, 4vw, 44px);
+      text-align:center;
+    }
+
+    .card{
+      max-width:760px;
+      width:100%;
+      padding: clamp(28px, 4vw, 56px) clamp(20px, 4vw, 48px);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      background: var(--glass);
+      border-radius:22px;
+      border:1px solid var(--line);
+      box-shadow:0 40px 120px rgba(0,0,0,.6);
+      animation: fadeUp 1.2s ease forwards;
+    }
+
+    .logo{
+      width:180px;
+      max-height:70px;
+      object-fit:contain;
+      display:block;
+      margin:0 auto 1.5rem;
+      padding:14px 18px;
+      border-radius:14px;
+      transition: transform .25s ease;
+    }
+    .logo:hover{ transform: scale(1.05); }
+
+    h1{
+      font-size: clamp(2rem, 5vw, 3.1rem);
+      font-weight:900;
+      margin-bottom:.45rem;
+    }
+
+    h2{
+      font-size:1.08rem;
+      font-weight:500;
+      color:var(--muted);
+      margin-bottom:1.6rem;
+    }
+
+    .divider{
+      width:80px;
+      height:2px;
+      background:#fff;
+      margin:0 auto 1.6rem;
+      opacity:.7;
+    }
+
+    p{
+      font-size:1.02rem;
+      line-height:1.6;
+      color:var(--muted);
+      margin-bottom:1.35rem;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-size:.82rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      opacity:.9;
+      margin-bottom:1.4rem;
+    }
+    .dot{
+      width:10px;
+      height:10px;
+      background:var(--ok);
+      border-radius:50%;
+      animation:pulse 1.8s infinite;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      padding:12px 16px;
+      border-radius:14px;
+      font-weight:850;
+      cursor:pointer;
+      text-decoration:none;
+      transition:transform .15s ease, background .2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .btn:hover{ transform:translateY(-1px); background:rgba(255,255,255,.1); }
+    .btn.primary{
+      background:rgba(0,255,153,.12);
+      border-color:rgba(0,255,153,.4);
+    }
+
+    /* ---------- Contact Panel ---------- */
+    .panel{
+      margin-top:16px;
+      text-align:left;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.35);
+      overflow:hidden;
+      max-height:0;
+      opacity:0;
+      transform:translateY(8px);
+      transition:max-height .45s ease, opacity .25s ease, transform .25s ease;
+    }
+    .panel.is-open{
+      max-height:560px;
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .panel-inner{
+      padding:16px;
+      display:grid;
+      gap:10px;
+    }
+
+    .field{ display:grid; gap:6px; }
+    label{ font-size:.82rem; font-weight:700; }
+    input, textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      padding:12px;
+      font:inherit;
+    }
+    textarea{ min-height:110px; resize:vertical; }
+
+    .panel-actions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+
+    .toast{
+      display:none;
+      margin-top:10px;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(0,255,153,.1);
+      border:1px solid rgba(0,255,153,.35);
+      color:#fff;
+      font-weight:700;
+    }
+    .toast.ok{ display:block; }
+
+    @keyframes pulse{
+      0%{ transform:scale(1); opacity:1; }
+      50%{ transform:scale(1.4); opacity:.4; }
+      100%{ transform:scale(1); opacity:1; }
+    }
+    @keyframes fadeUp{
+      from{ opacity:0; transform:translateY(20px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+  </style>
 </head>
 
 <body>
 
-  <div id="search"></div>
-
-
+  <!-- Injected Header -->
   <header id="site-header"></header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-content">
-        <div class="kicker anim d1">DVAYD Publishing</div>
-        <h1 class="anim d2">Dein Buch, deine Geschichte – Weltweit veröffentlicht mit DVAYD.</h1>
+  <!-- Video Background -->
+  <div class="video-bg" aria-hidden="true">
+    <video id="bgvid" autoplay muted loop playsinline preload="auto">
+      <source src="/assets/images/under_construction.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay" aria-hidden="true"></div>
 
-        <p class="sub anim d3">
-          Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
+  <main>
+    <section class="uc-wrap">
+      <div class="card">
+
+        <img src="/assets/images/dva-logo.png" alt="DVA Publishing Logosu" class="logo">
+
+        <h1>DVA-YD.com</h1>
+        <h2>DVA Publishing – Yapım Aşamasında</h2>
+
+        <div class="divider"></div>
+
+        <p>
+          Şu anda yeni bir dijital deneyim üzerinde çalışıyoruz.<br>
+          Çok yakında hizmetinizde olacağız.
         </p>
 
-        <div class="actions anim d4">
-          <a href="/de/kontakt/" class="btn primary">Jetzt veröffentlichen</a>
-          <a href="/de/projekte/" class="btn ghost">Pakete entdecken</a>
+        <div class="status">
+          <span class="dot"></span>
+          <span>Web sitesi geliştiriliyor</span>
         </div>
 
-        <div class="trustbar anim d4">
-          <div class="trustbar-items">
-            <div class="trust-item">
-              <div class="trust-icon"><img src="/assets/icons/schutz.png" alt="Autorenrechte"></div>
-              <div class="trust-text">100 % Autorenrechte</div>
-            </div>
-            <div class="trust-item">
-              <div class="trust-icon"><img src="/assets/icons/internet.png" alt="Internationaler Verlag"></div>
-              <div class="trust-text">DE &amp; TR Vertrieb</div>
-            </div>
-            <div class="trust-item">
-              <div class="trust-icon"><img src="/assets/icons/beratung.png" alt="Persönliche Beratung"></div>
-              <div class="trust-text">Persönliche Betreuung</div>
-            </div>
-            <div class="trust-item">
-              <div class="trust-icon"><img src="/assets/icons/preis.png" alt="Transparente Preise"></div>
-              <div class="trust-text">Transparente Fixpreise</div>
-            </div>
+        <div class="cta-row">
+          <button class="btn primary" id="openContact" type="button">İletişime geç</button>
+          <a class="btn" href="/tr/">Ana sayfaya git</a>
+        </div>
+
+        <div class="panel" id="contactPanel" aria-hidden="true">
+          <div class="panel-inner">
+            <form id="contactForm" name="contact-uc" method="POST" data-netlify="true">
+              <input type="hidden" name="form-name" value="contact-uc">
+
+              <div class="field">
+                <label for="uc_name">İsim</label>
+                <input id="uc_name" name="name" required>
+              </div>
+
+              <div class="field">
+                <label for="uc_email">E-posta</label>
+                <input id="uc_email" type="email" name="email" required>
+              </div>
+
+              <div class="field">
+                <label for="uc_msg">Mesaj</label>
+                <textarea id="uc_msg" name="message" required></textarea>
+              </div>
+
+              <div class="panel-actions">
+                <button class="btn" type="button" id="closeContact">Kapat</button>
+                <button class="btn primary" type="submit">Gönder</button>
+              </div>
+
+              <div class="toast" id="toast">Teşekkürler! Mesajınız gönderildi.</div>
+            </form>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="placeholder-section" id="placeholder">
-      <div class="placeholder-sticky">
-        <div class="slider-head">
-          <div class="slider-kicker">Sektion 3 • Verkaufsargumentation</div>
-          <h2 class="slider-title">Warum Autoren auf DVAYD vertrauen</h2>
-        </div>
-
-        <div class="placeholder-track" aria-label="Slider DVAYD">
-          <div class="placeholder-slide slide-a">
-            <div class="slide-overlay">
-              <div class="slide-card">
-                <div class="slide-chip">Familienverlag</div>
-                <h3>Persönlich statt anonym.</h3>
-                <p>
-                  Wir sind kein anonymer Großverlag. Bei uns bist du Teil der Familie.
-                  Wir begleiten dich mit Herzblut durch den gesamten Prozess – von der ersten Zeile bis zur Veröffentlichung.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="placeholder-slide slide-b">
-            <div class="slide-overlay">
-              <div class="slide-card">
-                <div class="slide-chip">Brücke DE ↔ TR</div>
-                <h3>Deutschland & Türkei – ein Plan.</h3>
-                <p>
-                  Exklusiv bei uns: Veröffentliche dein Werk simultan in Europa und der Türkei.
-                  Wir kennen beide Märkte und öffnen dir die Tür zum internationalen Erfolg.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="placeholder-slide slide-c">
-            <div class="slide-overlay">
-              <div class="slide-card">
-                <div class="slide-chip">Reichweite & Handel</div>
-                <h3>Vom Manuskript in den Handel.</h3>
-                <p>
-                  Lektorat, Design, ISBN, Listing (Amazon & Buchhandel) und optional Marketing:
-                  Dein Buch wird professionell veröffentlicht – weltweit bestellbar.
-                </p>
-
-                <div class="seo-row" aria-label="SEO Keywords">
-                  <span class="seo-tag">Self-Publishing Türkei</span>
-                  <span class="seo-tag">Buchverlag Deutschland Türkei</span>
-                  <span class="seo-tag">Buch international verkaufen</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="process-glass" id="prozess">
-      <div class="process-glass-inner">
-        <header class="pg-head">
-          <div class="pg-kicker">Sektion 4 • Der Prozess</div>
-          <h2 class="pg-title">In 5 Schritten zum Buch</h2>
-          <p class="pg-sub">Klar strukturiert. Hochwertig umgesetzt. Weltweit bestellbar.</p>
-        </header>
-
-        <div class="pg-shell" aria-label="In 5 Schritten zum Buch">
-          <div class="pg-line" aria-hidden="true">
-            <span class="pg-node n1"></span>
-            <span class="pg-node n2"></span>
-            <span class="pg-node n3"></span>
-            <span class="pg-node n4"></span>
-            <span class="pg-node n5"></span>
-          </div>
-
-          <ol class="pg-steps">
-            <li class="pg-step">
-              <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/schreiben.png" alt="">
-              </div>
-              <div class="pg-text">
-                <strong>Manuskript-Check</strong>
-                <span>Wir sichten dein Werk kostenlos und geben dir klare nächste Schritte.</span>
-              </div>
-            </li>
-
-            <li class="pg-step">
-              <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/lupe.png" alt="">
-              </div>
-              <div class="pg-text">
-                <strong>Feinschliff</strong>
-                <span>Professionelles Lektorat &amp; Korrektorat – sauber, stilsicher, konsistent.</span>
-              </div>
-            </li>
-
-            <li class="pg-step">
-              <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/design.png" alt="">
-              </div>
-              <div class="pg-text">
-                <strong>Design</strong>
-                <span>Cover &amp; Layout, die Vertrauen schaffen und sich hochwertig anfühlen.</span>
-              </div>
-            </li>
-
-            <li class="pg-step">
-              <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/buch.png" alt="">
-              </div>
-              <div class="pg-text">
-                <strong>Produktion</strong>
-                <span>ISBN + Listing (Amazon &amp; Buchhandel) – professionell umgesetzt.</span>
-              </div>
-            </li>
-
-            <li class="pg-step">
-              <div class="pg-dot" aria-hidden="true">
-                <img src="/assets/icons/timeline/erfolg.png" alt="">
-              </div>
-              <div class="pg-text">
-                <strong>Marketing &amp; Erfolg</strong>
-                <span>Dein Buch ist weltweit bestellbar – optional mit gezieltem Marketing.</span>
-              </div>
-            </li>
-          </ol>
-
-          <div class="pg-actions">
-            <a href="/de/kontakt/" class="btn primary">Kostenloses Gespräch</a>
-            <a href="/de/projekte/" class="btn ghost">Pakete entdecken</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="logo-section" id="logos">
-  <div class="logo-inner">
-
-    <div class="logo-marquee" aria-label="Endloses Logo Karussell">
-      <div class="logo-track">
-
-        <!-- ===== SET 1 ===== -->
-        <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
-        <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
-        <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
-        <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
-        <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
-
-        <!-- ===== SET 2 (1:1 DUPLIKAT) ===== -->
-        <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
-        <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
-        <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
-        <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
-        <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
-
-
-
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-
-
-
-    <section class="seo-section" id="wissen">
-      <div class="seo-inner">
-        <div class="seo-head">
-          <div class="seo-kicker">Sektion 6 • SEO-Content</div>
-          <h2 class="seo-title">Wissenswertes für Autoren.</h2>
-          <p class="seo-sub">
-            Kurze Antworten auf häufige Fragen – damit du schneller vorankommst und wir Kompetenz zeigen.
-          </p>
-        </div>
-
-        <div class="seo-shell" aria-label="Wissenswertes Karussell">
-  <button class="seo-nav prev" type="button" aria-label="Zurück">‹</button>
-
-  <div class="seo-viewport" tabindex="0">
-    <div class="seo-track">
-
-      <a class="seo-card" href="/de/blog/isbn-fuer-amazon/">
-        <div class="seo-media" style="background:url('/assets/blog/isbn.jpg') center/cover no-repeat;">
-          <div class="seo-badge">ISBN & Amazon</div>
-        </div>
-        <div class="seo-body">
-          <h3>Brauche ich eine ISBN für Amazon?</h3>
-          <p>
-            Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf.
-            Wir erklären, wann du eine ISBN brauchst, wann nicht – und welche Entscheidung langfristig
-            sinnvoll ist, wenn du professionell veröffentlichen willst.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
-
-      <a class="seo-card" href="/de/blog/buchvertrieb-tuerkei/">
-        <div class="seo-media" style="background:url('/assets/blog/tuerkei-vertrieb.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Vertrieb TR</div>
-        </div>
-        <div class="seo-body">
-          <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
-          <p>
-            Buchhandel, Online-Plattformen, kulturelle Unterschiede:
-            Der türkische Markt folgt eigenen Regeln.
-            Wir zeigen dir, wie Vertrieb wirklich funktioniert – und warum lokale Expertise
-            entscheidend für Reichweite und Verkäufe ist.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
-
-      <a class="seo-card" href="/de/blog/self-publishing-vs-verlag/">
-        <div class="seo-media" style="background:url('/assets/blog/selfpublishing-verlag.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Vergleich</div>
-        </div>
-        <div class="seo-body">
-          <h3>Self-Publishing oder klassischer Verlag?</h3>
-          <p>
-            Freiheit vs. Struktur, Kontrolle vs. Unterstützung:
-            Beide Wege haben klare Vor- und Nachteile.
-            Wir vergleichen transparent Kosten, Rechte und Erfolgschancen –
-            damit du den Weg wählst, der zu deinem Buch passt.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
-
-      <a class="seo-card" href="/de/blog/lektorat-oder-korrektorat/">
-        <div class="seo-media" style="background:url('/assets/blog/lektorat.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Qualität</div>
-        </div>
-        <div class="seo-body">
-          <h3>Lektorat oder Korrektorat – was brauchst du wirklich?</h3>
-          <p>
-            Rechtschreibung allein macht noch kein gutes Buch.
-            Wir erklären den Unterschied zwischen Lektorat und Korrektorat,
-            wann welche Leistung sinnvoll ist – und warum Qualität
-            über den Erfolg deines Buches entscheidet.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
-
-      <a class="seo-card" href="/de/blog/cover-design-worauf-achten/">
-        <div class="seo-media" style="background:url('/assets/blog/cover-design.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Design</div>
-        </div>
-        <div class="seo-body">
-          <h3>Was macht ein Cover wirklich verkaufsstark?</h3>
-          <p>
-            Leser entscheiden in Sekunden.
-            Farben, Typografie und Genre-Signale müssen sofort wirken.
-            Wir zeigen, welche Design-Fehler Autoren häufig machen –
-            und wie ein Cover Vertrauen und Neugier erzeugt.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
-
-      <a class="seo-card" href="/de/blog/buch-marketing-start/">
-        <div class="seo-media" style="background:url('/assets/blog/buch-marketing.jpg') center/cover no-repeat;">
-          <div class="seo-badge">Marketing</div>
-        </div>
-        <div class="seo-body">
-          <h3>Buch-Marketing starten – auch ohne großes Budget</h3>
-          <p>
-            Sichtbarkeit entsteht nicht zufällig.
-            Wir zeigen dir einfache, realistische Schritte für den Buch-Launch:
-            von Positionierung über Social Proof bis zu Reichweite –
-            ohne teure Werbung oder leere Versprechen.
-          </p>
-          <span class="seo-link">Mehr lesen →</span>
-        </div>
-      </a>
-
-    </div>
-  </div>
-
-  <button class="seo-nav next" type="button" aria-label="Weiter">›</button>
-
-  <!-- ✅ CTA's jetzt IM GLAS-CONTAINER -->
-  <div class="seo-actions">
-    <a class="btn primary" href="/de/blog/">Alle Artikel ansehen</a>
-    <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
-  </div>
 
       </div>
     </section>
   </main>
 
-  <!-- cursor elements -->
-  <div class="cursor-invert" id="cursorInvert" aria-hidden="true"></div>
-  <div class="cursor-text" id="cursorText" aria-hidden="true"></div>
+  <!-- Injected Footer -->
+  <footer id="site-footer"></footer>
 
-  <!-- ✅ Dein bestehendes Script -->
   <script>
-(function(){
-  const circle = document.getElementById("cursorInvert");
-  const textEl = document.getElementById("cursorText");
-  const section = document.getElementById("placeholder");
-  const track = document.querySelector(".placeholder-track");
+    /* video playback */
+    const video = document.getElementById("bgvid");
+    video?.play().catch(()=>{});
 
-  if (!circle || !textEl) return;
-  if (window.matchMedia("(hover: none)").matches) return;
+    /* contact panel toggle */
+    const openBtn = document.getElementById("openContact");
+    const closeBtn = document.getElementById("closeContact");
+    const panel = document.getElementById("contactPanel");
 
-  document.documentElement.classList.add("has-custom-cursor");
-
-  let x = window.innerWidth / 2, y = window.innerHeight / 2;
-  let tx = x, ty = y;
-
-  function render(){
-    circle.style.left = x + "px";
-    circle.style.top  = y + "px";
-    textEl.style.left = x + "px";
-    textEl.style.top  = y + "px";
-  }
-  render();
-
-  (function loop(){
-    x += (tx - x) * 0.18;
-    y += (ty - y) * 0.18;
-    render();
-    requestAnimationFrame(loop);
-  })();
-
-  window.addEventListener("mousemove", (e) => {
-    tx = e.clientX;
-    ty = e.clientY;
-  }, { passive:true });
-
-  let typeTimer = null;
-  let currentWord = "";
-  function typeWord(word){
-    if (!word || word === currentWord) return;
-    currentWord = word;
-    clearInterval(typeTimer);
-    textEl.textContent = "";
-    let i = 0;
-    typeTimer = setInterval(() => {
-      textEl.textContent += (word[i] ?? "");
-      i++;
-      if (i >= word.length) clearInterval(typeTimer);
-    }, 55);
-  }
-
-  let inPlaceholderHover = false;
-
-  function setCursorVisible(){
-    if (inPlaceholderHover) {
-      textEl.style.opacity = "1";
-      circle.style.opacity = "0";
-    } else {
-      circle.style.opacity = "1";
-      textEl.style.opacity = "0";
-    }
-  }
-  setCursorVisible();
-
-  document.addEventListener("mouseover", (e) => {
-    if (!inPlaceholderHover && e.target.closest(".btn, a, .trust-item")) {
-      circle.classList.add("is-big");
-    }
-  });
-  document.addEventListener("mouseout", (e) => {
-    if (!inPlaceholderHover && e.target.closest(".btn, a, .trust-item")) {
-      circle.classList.remove("is-big");
-    }
-  });
-
-  window.addEventListener("mouseleave", () => {
-    circle.style.opacity = "0";
-    textEl.style.opacity = "0";
-  });
-  window.addEventListener("mouseenter", () => {
-    setCursorVisible();
-  });
-
-  if (!section || !track) return;
-
-  const slides = Array.from(track.querySelectorAll(".placeholder-slide"));
-  const MAX_MOVE = 14;
-  const HOVER_SCALE = 1.06;
-
-  function resetAllSlides(){
-    slides.forEach(s => {
-      s.style.setProperty("--px", "0px");
-      s.style.setProperty("--py", "0px");
-      s.style.setProperty("--scale", "1");
+    openBtn?.addEventListener("click", () => {
+      panel.classList.add("is-open");
+      panel.setAttribute("aria-hidden","false");
+      setTimeout(() => document.getElementById("uc_name")?.focus(), 120);
     });
-  }
 
-  function setActiveSlide(idx){
-    slides.forEach((s,i) => s.classList.toggle("is-active", i === idx));
-  }
+    closeBtn?.addEventListener("click", () => {
+      panel.classList.remove("is-open");
+      panel.setAttribute("aria-hidden","true");
+    });
 
-  function showText(word){
-    inPlaceholderHover = true;
-    setCursorVisible();
-    typeWord(word);
-  }
-
-  function showCircle(){
-    inPlaceholderHover = false;
-    setCursorVisible();
-    currentWord = "";
-    clearInterval(typeTimer);
-    resetAllSlides();
-  }
-
-  section.addEventListener("mouseenter", () => showText("Familie"));
-  section.addEventListener("mouseleave", () => showCircle());
-
-  function clamp01(v){ return Math.max(0, Math.min(1, v)); }
-  let lastP = 0;
-
-  function updateSlider(){
-    const rect = section.getBoundingClientRect();
-    const vh = window.innerHeight;
-
-    const end = section.offsetHeight - vh;
-    const scrolled = -rect.top;
-    const p = clamp01(end > 0 ? (scrolled / end) : 0);
-    lastP = p;
-
-    track.style.transform = `translateX(${-p * 2 * window.innerWidth}px)`;
-
-    const idx = Math.max(0, Math.min(2, Math.round(p * 2)));
-    setActiveSlide(idx);
-
-    applyHoverEffectsFromMouse();
-
-    const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
-    if (!stickyVisible || !inPlaceholderHover) resetAllSlides();
-  }
-
-  window.addEventListener("scroll", updateSlider, { passive:true });
-  window.addEventListener("resize", updateSlider);
-  updateSlider();
-
-  function wordForIndex(i){
-    return i === 0 ? "Familie" : (i === 1 ? "DE↔TR" : "Erfolg");
-  }
-
-  function applyHoverEffectsFromMouse(){
-    if (!inPlaceholderHover) return;
-
-    const rect = section.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
-    if (!stickyVisible) { resetAllSlides(); return; }
-
-    const slideW = window.innerWidth;
-    const offsetX = lastP * 2 * slideW;
-    const relativeX = tx + offsetX;
-    const slideIndex = Math.max(0, Math.min(2, Math.floor(relativeX / slideW)));
-
-    typeWord(wordForIndex(slideIndex));
-
-    const slideLeftInViewport = (slideIndex * slideW) - offsetX;
-    const localX = tx - slideLeftInViewport;
-    const localY = ty;
-
-    const nx = (localX - slideW / 2) / (slideW / 2);
-    const ny = (localY - vh / 2) / (vh / 2);
-
-    slides.forEach((s, i) => {
-      if (i !== slideIndex) {
-        s.style.setProperty("--px", "0px");
-        s.style.setProperty("--py", "0px");
-        s.style.setProperty("--scale", "1");
-        return;
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        panel.classList.remove("is-open");
+        panel.setAttribute("aria-hidden","true");
       }
-      s.style.setProperty("--scale", String(HOVER_SCALE));
-      s.style.setProperty("--px", (-nx * MAX_MOVE).toFixed(2) + "px");
-      s.style.setProperty("--py", (-ny * MAX_MOVE * 0.75).toFixed(2) + "px");
     });
-  }
 
-  window.addEventListener("mousemove", applyHoverEffectsFromMouse, { passive:true });
-})();
-  </script>
-
-  <!-- ✅ NEW: SEO Carousel Script (NACH deinem Script) -->
-  <script>
-(() => {
-  const shell = document.querySelector(".seo-shell");
-  if (!shell) return;
-
-  const track = shell.querySelector(".seo-track");
-  const prev = shell.querySelector(".seo-nav.prev");
-  const next = shell.querySelector(".seo-nav.next");
-  if (!track || !prev || !next) return;
-
-  function cardStep(){
-    const card = track.querySelector(".seo-card");
-    if (!card) return 320;
-    const gap = 14;
-    return card.getBoundingClientRect().width + gap;
-  }
-
-  prev.addEventListener("click", () => {
-    track.scrollBy({ left: -cardStep() * 1.1, behavior: "smooth" });
-  });
-
-  next.addEventListener("click", () => {
-    track.scrollBy({ left:  cardStep() * 1.1, behavior: "smooth" });
-  });
-
-  // optional: keyboard support on viewport
-  const viewport = shell.querySelector(".seo-viewport");
-  if (viewport){
-    viewport.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") prev.click();
-      if (e.key === "ArrowRight") next.click();
+    /* optional toast on submit (Netlify still handles submission) */
+    const form = document.getElementById("contactForm");
+    const toast = document.getElementById("toast");
+    form?.addEventListener("submit", () => {
+      toast.classList.add("ok");
+      toast.style.display = "block";
     });
-  }
-})();
   </script>
-<footer id="site-footer"></footer>
-
-<script>
-  window.addEventListener("DOMContentLoaded", () => {
-    new PagefindUI({ element: "#search", showSubResults: true });
-  });
-</script>
 
 </body>
 </html>
