@@ -30,6 +30,7 @@
       --glass: rgba(0,0,0,.45);
       --line: rgba(255,255,255,.15);
       --ok:#00ff99;
+      --err:#ff5b5b;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -188,7 +189,7 @@
       font-weight:850;
       cursor:pointer;
       text-decoration:none;
-      transition:transform .15s ease, background .2s ease;
+      transition:transform .15s ease, background .2s ease, opacity .2s ease;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -198,6 +199,7 @@
       background:rgba(0,255,153,.12);
       border-color:rgba(0,255,153,.4);
     }
+    .btn[disabled]{ opacity:.55; cursor:not-allowed; transform:none; }
 
     /* ---------- Contact Panel ---------- */
     .panel{
@@ -242,19 +244,30 @@
       gap:10px;
       justify-content:flex-end;
       flex-wrap:wrap;
+      align-items:center;
     }
 
+    /* ✅ Toast: shown after AJAX submit (no redirect) */
     .toast{
       display:none;
       margin-top:10px;
       padding:12px;
       border-radius:14px;
-      background:rgba(0,255,153,.1);
+      font-weight:800;
+      line-height:1.35;
+    }
+    .toast.ok{
+      display:block;
+      background:rgba(0,255,153,.10);
       border:1px solid rgba(0,255,153,.35);
       color:#fff;
-      font-weight:700;
     }
-    .toast.ok{ display:block; }
+    .toast.err{
+      display:block;
+      background:rgba(255,91,91,.10);
+      border:1px solid rgba(255,91,91,.35);
+      color:#fff;
+    }
 
     @keyframes pulse{
       0%{ transform:scale(1); opacity:1; }
@@ -307,8 +320,20 @@
 
         <div class="panel" id="contactPanel" aria-hidden="true">
           <div class="panel-inner">
-            <form id="contactForm" name="kontakt-uc" method="POST" data-netlify="true">
+
+            <!-- ✅ Netlify Form (no redirect; handled via fetch in JS) -->
+            <form id="contactForm"
+                  name="kontakt-uc"
+                  method="POST"
+                  data-netlify="true"
+                  netlify-honeypot="bot-field"
+                  autocomplete="on">
               <input type="hidden" name="form-name" value="kontakt-uc">
+
+              <!-- honeypot -->
+              <p style="display:none">
+                <label>Don’t fill this out: <input name="bot-field" /></label>
+              </p>
 
               <div class="field">
                 <label for="uc_name">Name</label>
@@ -327,11 +352,13 @@
 
               <div class="panel-actions">
                 <button class="btn" type="button" id="closeContact">Schließen</button>
-                <button class="btn primary" type="submit">Senden</button>
+                <button class="btn primary" id="submitBtn" type="submit">Senden</button>
               </div>
 
-              <div class="toast" id="toast">Danke! Nachricht gesendet.</div>
+              <!-- ✅ will show after submit -->
+              <div class="toast" id="toast" role="status" aria-live="polite"></div>
             </form>
+
           </div>
         </div>
 
@@ -370,12 +397,57 @@
       }
     });
 
-    /* (optional) show a simple toast on submit (Netlify will still handle submission) */
+    /* ✅ Netlify submit via AJAX (no redirect) + "message sent" toast */
     const form = document.getElementById("contactForm");
     const toast = document.getElementById("toast");
-    form?.addEventListener("submit", () => {
-      toast.classList.add("ok");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function showToast(type, msg){
+      toast.className = "toast " + type;
+      toast.textContent = msg;
       toast.style.display = "block";
+    }
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault(); // ✅ stop redirect
+
+      // clear previous
+      toast.className = "toast";
+      toast.textContent = "";
+      toast.style.display = "none";
+
+      // disable button
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sende...";
+
+      try {
+        const data = new FormData(form);
+
+        // Netlify expects "application/x-www-form-urlencoded"
+        const body = new URLSearchParams();
+        for (const [k, v] of data.entries()) body.append(k, v);
+
+        const res = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: body.toString()
+        });
+
+        if (!res.ok) throw new Error("Bad response");
+
+        // ✅ success UI (no redirect)
+        showToast("ok", "Danke! Ihre Nachricht wurde gesendet.");
+        form.reset();
+
+        // optional: close after a moment
+        // setTimeout(() => { panel.classList.remove("is-open"); panel.setAttribute("aria-hidden","true"); }, 1400);
+
+      } catch (err) {
+        showToast("err", "Ups – das hat leider nicht geklappt. Bitte versuchen Sie es erneut.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Senden";
+      }
     });
   </script>
 
