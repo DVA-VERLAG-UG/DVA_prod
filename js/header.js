@@ -8,10 +8,10 @@
   };
 
   const LABELS = {
-    de: { about:"Über uns (coming soon)", contact:"Kontakt", projects:"Projekte(coming soon)", services:"Konfigurator", process:"Prozess(coming soon)", blog:"Blog(coming soon)", search:"Suche", theme:"Dim", search_ph:"Suchbegriff eingeben", menu:"Menü" },
-    en: { about:"About (coming soon)", contact:"Contact", projects:"Projects(coming soon)", services:"Configurator", process:"Process(coming soon)", blog:"Blog(coming soon)", search:"Search", theme:"Dim", search_ph:"Search…", menu:"Menu" },
-    tr: { about:"Hakkımızda (coming soon)", contact:"İletişim", projects:"Projeler(coming soon)", services:"Configurator", process:"Süreç(coming soon)", blog:"Blog(coming soon)", search:"Ara", theme:"Dim", search_ph:"Ara…", menu:"Menü" },
-    fr: { about:"À propos (coming soon)", contact:"Contact", projects:"Projets(coming soon)", services:"Configurator", process:"Processus(coming soon)", blog:"Blog(coming soon)", search:"Recherche", theme:"Dim", search_ph:"Rechercher…", menu:"Menu" },
+    de: { home:"Startseite", about:"Über uns (coming soon)", contact:"Kontakt", projects:"Projekte(coming soon)", services:"Konfigurator", process:"Prozess(coming soon)", blog:"Blog(coming soon)", search:"Suche", theme:"Dim", search_ph:"Suchbegriff eingeben", menu:"Menü" },
+    en: { home:"Home",      about:"About (coming soon)",     contact:"Contact", projects:"Projects(coming soon)", services:"Configurator", process:"Process(coming soon)", blog:"Blog(coming soon)", search:"Search", theme:"Dim", search_ph:"Search…", menu:"Menu" },
+    tr: { home:"Ana Sayfa", about:"Hakkımızda (coming soon)", contact:"İletişim", projects:"Projeler(coming soon)", services:"Configurator", process:"Süreç(coming soon)", blog:"Blog(coming soon)", search:"Ara", theme:"Dim", search_ph:"Ara…", menu:"Menü" },
+    fr: { home:"Accueil",   about:"À propos (coming soon)",   contact:"Contact", projects:"Projets(coming soon)", services:"Configurator", process:"Processus(coming soon)", blog:"Blog(coming soon)", search:"Recherche", theme:"Dim", search_ph:"Rechercher…", menu:"Menu" },
   };
 
   const LOGO_SRC = "/assets/images/dva-logo.png";
@@ -727,9 +727,9 @@
 
         <!-- ✅ MOBILE LANG SWITCH (same container, right side) -->
         <div class="dv-lang" id="dvFloatLang" aria-label="Language switch (mobile)">
-                 <button class="dv-lang-btn" id="dvLangBtn" type="button" aria-label="Sprache wählen" aria-expanded="false">
-          <img src="/assets/icons/language.png";" alt="Language" class="dv-lang-ico">
-        </button>
+          <button class="dv-lang-btn" id="dvLangBtn" type="button" aria-label="Sprache wählen" aria-expanded="false">
+            <img src="/assets/icons/language.png";" alt="Language" class="dv-lang-ico">
+          </button>
           <div class="dv-lang-panel" id="dvLangPanel" role="menu" aria-label="Sprachen">
             <a data-lang-float="de" role="menuitem">DE</a>
             <a data-lang-float="en" role="menuitem">EN</a>
@@ -795,6 +795,9 @@
           <button class="close" type="button" data-close aria-label="Close">✕</button>
         </div>
         <nav>
+          <!-- ✅ NEW: Startseite/Home link -->
+          <a href="${ROUTES[lang].home}">${L.home}</a>
+
           <a href="${ROUTES[lang].about}">${L.about}</a>
           <a href="${ROUTES[lang].projects}">${L.projects}</a>
           <a href="${ROUTES[lang].services}">${L.services}</a>
