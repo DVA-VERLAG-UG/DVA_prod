@@ -466,7 +466,7 @@
       <div class="dv-footer-upload-head">
         <div class="upload-kicker">MANUSKRIPT-CHECK</div>
         <h2 class="upload-title">Kostenloser Manuskript-Check</h2>
-        <p class="upload-sub">Lade dein Manuskript hoch — wir melden uns in 24–48h mit den nächsten Schritten.</p>
+        <p class="upload-sub">Lade dein Manuskript hoch — wir melden uns binnen 48h mit den nächsten Schritten.</p>
 
         <div class="upload-chips" aria-label="Vorteile">
           <span class="chip">Vertraulich</span>
