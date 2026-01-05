@@ -1,3 +1,4 @@
+
 // js/header.js
 (() => {
   const ROUTES = {
@@ -109,6 +110,12 @@
   flex: 1 1 auto;
   justify-content:flex-end;
   min-width:0;
+}
+
+/* ✅ FIX: allow the search container to shrink properly inside flex on mobile/short widths */
+#site-header .hdr-search{
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 /* =========================
@@ -367,13 +374,32 @@
     padding: 10px 0;
   }
 
-  #site-header .brand{ min-width:0; }
+  /* ✅ FIX: make brand strictly non-overlapping and a bit smaller */
+  #site-header .brand{
+    min-width:0;
+    flex: 0 0 auto;
+  }
+  #site-header .brand img{
+    width:32px;
+    height:32px;
+  }
   #site-header .brand span{ display:none; }
   #site-header .langs{ display:none; }
 
+  /* ✅ FIX: ensure right side can shrink and never overflow into brand */
+  #site-header .right{
+    flex: 1 1 0;
+    min-width: 0;
+    gap: 10px;
+  }
+  #site-header .hdr-search{
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
   #site-header .site-search{
-    flex: 1 1 auto;
-    width: auto;
+    flex: 1 1 0;
+    width: 100%;
     min-width: 0;
     height: 38px;
     border-radius: 999px;
@@ -1162,3 +1188,4 @@
 
   document.addEventListener("DOMContentLoaded", init);
 })();
+
