@@ -1,0 +1,1317 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <title>Konfigurator – DVAYD Publishing</title>
+  <meta name="description" content="Stelle dein Publishing-Paket zusammen und sende eine unverbindliche Anfrage an DVAYD Publishing." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/favicon.png">
+
+  <!-- Global styles -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Header + Footer (injected) -->
+  <script src="/js/header.js" defer></script>
+  <script src="/js/footer.js" defer></script>
+
+  <style>
+    :root{
+      --hdr-h:72px;
+      --max:1180px;
+
+      /* Light (matches your screenshot look) */
+      --bg: #eef2f8;
+      --panel: rgba(255,255,255,.72);
+      --panel-strong: rgba(255,255,255,.88);
+      --stroke: rgba(15,23,42,.10);
+      --stroke-2: rgba(15,23,42,.08);
+      --ink: #0f172a;
+      --muted: rgba(15,23,42,.62);
+
+      --accent: #7c3aed;
+      --accent2: #6366f1;
+      --ok: #16a34a;
+
+      --shadow:
+        0 22px 60px rgba(2, 16, 41, .12),
+        0 10px 26px rgba(2, 16, 41, .08);
+
+      --radius: 22px;
+      --radius2: 16px;
+
+      --chip: rgba(15,23,42,.06);
+      --chip-stroke: rgba(15,23,42,.10);
+
+      --card-hover: rgba(124,58,237,.08);
+      --card-hover-stroke: rgba(124,58,237,.22);
+
+      --focus: rgba(124,58,237,.30);
+    }
+
+    /* Dim mode */
+    html[data-theme="dim"]{
+      --bg: #0b1020;
+      --panel: rgba(255,255,255,.08);
+      --panel-strong: rgba(255,255,255,.10);
+      --stroke: rgba(255,255,255,.14);
+      --stroke-2: rgba(255,255,255,.10);
+      --ink: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+
+      --shadow:
+        0 26px 80px rgba(0,0,0,.45),
+        0 10px 30px rgba(0,0,0,.30);
+
+      --chip: rgba(255,255,255,.08);
+      --chip-stroke: rgba(255,255,255,.14);
+
+      --card-hover: rgba(124,58,237,.14);
+      --card-hover-stroke: rgba(124,58,237,.28);
+
+      --focus: rgba(124,58,237,.45);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    main{
+      padding-top: var(--hdr-h);
+      min-height: 100vh;
+    }
+
+    .wrap{
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* Top section matches your "Pakete vergleichen" header spacing */
+    .page{
+      padding: 26px 0 70px;
+    }
+
+    .title{
+      margin: 0;
+      font-size: clamp(30px, 4vw, 44px);
+      letter-spacing: -.03em;
+      line-height: 1.08;
+      font-weight: 950;
+    }
+    .lead{
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14.5px;
+      max-width: 86ch;
+    }
+
+    /* Cards row (like your packages cards) */
+    .cards{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .card{
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px) saturate(1.15);
+      -webkit-backdrop-filter: blur(14px) saturate(1.15);
+      overflow: hidden;
+      position: relative;
+    }
+    .card-inner{ padding: 16px; }
+
+    .card-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .card-top .k{
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 950;
+      color: rgba(124,58,237,.85);
+    }
+    html[data-theme="dim"] .card-top .k{ color: rgba(167,139,250,.92); }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid var(--chip-stroke);
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(15,23,42,.70);
+      white-space: nowrap;
+    }
+    html[data-theme="dim"] .pill{ color: rgba(255,255,255,.82); }
+
+    .card h2{
+      margin: 0 0 6px;
+      font-size: 16px;
+      font-weight: 950;
+      letter-spacing: -.01em;
+    }
+    .card p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .cta{
+      margin-top: 12px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content: flex-end;
+    }
+
+    .btn{
+      appearance:none;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      user-select:none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 950;
+      font-size: 13px;
+      letter-spacing: .01em;
+      border: 1px solid var(--stroke);
+      background: var(--panel-strong);
+      color: var(--ink);
+      transition: transform .14s ease, background .14s ease, border-color .14s ease, filter .14s ease;
+      text-decoration: none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: var(--card-hover);
+      border-color: var(--card-hover-stroke);
+      filter: brightness(1.02);
+    }
+    .btn.primary{
+      border-color: rgba(124,58,237,.28);
+      background: rgba(124,58,237,.10);
+    }
+
+    /* Config builder area */
+    .builder{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 14px;
+      align-items:start;
+    }
+
+    .panel{
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px) saturate(1.15);
+      -webkit-backdrop-filter: blur(14px) saturate(1.15);
+      overflow: hidden;
+    }
+
+    .panel-head{
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--stroke-2);
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .panel-head strong{
+      font-weight: 950;
+      letter-spacing: -.01em;
+      font-size: 14px;
+    }
+    .panel-head span{
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .cats{
+      padding: 12px;
+      display:grid;
+      gap: 10px;
+    }
+
+    .cat{
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,.40);
+      border: 1px solid var(--stroke-2);
+      overflow: hidden;
+    }
+    html[data-theme="dim"] .cat{
+      background: rgba(0,0,0,.14);
+    }
+
+    .cat-top{
+      padding: 12px 12px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .cat-title strong{
+      display:block;
+      font-weight: 950;
+      font-size: 13px;
+      letter-spacing: -.01em;
+    }
+    .cat-title span{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .choice{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid var(--chip-stroke);
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(15,23,42,.72);
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    html[data-theme="dim"] .choice{ color: rgba(255,255,255,.82); }
+
+    .options{
+      padding: 0 12px 12px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .opt{
+      position: relative;
+      border-radius: 16px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid var(--stroke);
+      padding: 12px;
+      transition: transform .14s ease, border-color .14s ease, background .14s ease, filter .14s ease;
+      user-select:none;
+      display:block;
+    }
+    html[data-theme="dim"] .opt{
+      background: rgba(255,255,255,.06);
+    }
+
+    .opt:hover{
+      transform: translateY(-1px);
+      border-color: var(--card-hover-stroke);
+      background: var(--card-hover);
+      filter: brightness(1.02);
+    }
+
+    .opt input{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      cursor:pointer;
+    }
+
+    .opt-name{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .opt-name strong{
+      font-weight: 950;
+      font-size: 13px;
+      letter-spacing: -.01em;
+    }
+    .tag{
+      padding: 6px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      background: var(--chip);
+      border: 1px solid var(--chip-stroke);
+      white-space: nowrap;
+      color: rgba(15,23,42,.68);
+    }
+    html[data-theme="dim"] .tag{ color: rgba(255,255,255,.78); }
+
+    .opt-desc{
+      margin:0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .opt.is-active{
+      background: rgba(22,163,74,.10);
+      border-color: rgba(22,163,74,.25);
+    }
+    html[data-theme="dim"] .opt.is-active{
+      background: rgba(22,163,74,.12);
+      border-color: rgba(22,163,74,.35);
+    }
+
+    /* Right column summary */
+    .summary{
+      position: sticky;
+      top: calc(var(--hdr-h) + 14px);
+      padding: 14px 16px 16px;
+    }
+    .sum-title{
+      margin:0;
+      font-size: 14px;
+      font-weight: 950;
+      letter-spacing: -.01em;
+    }
+    .sum-sub{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12.8px;
+      line-height: 1.45;
+    }
+    .sum-list{
+      margin-top: 12px;
+      display:grid;
+      gap: 8px;
+    }
+    .sum-item{
+      border-radius: 14px;
+      border: 1px solid var(--stroke-2);
+      background: rgba(255,255,255,.45);
+      padding: 10px;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+    }
+    html[data-theme="dim"] .sum-item{
+      background: rgba(0,0,0,.14);
+    }
+    .sum-dot{
+      width:10px; height:10px; border-radius:999px;
+      margin-top: 6px;
+      background: rgba(15,23,42,.18);
+    }
+    html[data-theme="dim"] .sum-dot{ background: rgba(255,255,255,.22); }
+    .sum-dot.on{
+      background: rgba(22,163,74,.95);
+      box-shadow: 0 0 0 4px rgba(22,163,74,.18);
+    }
+    .sum-item strong{
+      display:block;
+      font-weight: 950;
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+    .sum-item span{
+      display:block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .btnrow{
+      margin-top: 12px;
+      display:grid;
+      gap: 10px;
+    }
+
+    /* Table area like your "Leistungen im Überblick" */
+    .table-wrap{
+      margin-top: 14px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px) saturate(1.15);
+      -webkit-backdrop-filter: blur(14px) saturate(1.15);
+      overflow: hidden;
+    }
+    .table-head{
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--stroke-2);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .table-head strong{
+      font-weight: 950;
+      letter-spacing: -.01em;
+      font-size: 14px;
+    }
+    .table-head span{
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .table-scroll{ overflow:auto; }
+    table{
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 920px; /* keeps 4 cols readable */
+    }
+    th, td{
+      text-align:left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--stroke-2);
+      vertical-align: top;
+      font-size: 13px;
+      color: var(--ink);
+    }
+    th{
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 950;
+      color: rgba(15,23,42,.62);
+      background: rgba(15,23,42,.03);
+    }
+    html[data-theme="dim"] th{
+      color: rgba(255,255,255,.70);
+      background: rgba(255,255,255,.06);
+    }
+    td .main{
+      font-weight: 950;
+      margin: 0 0 4px;
+      display:block;
+      color: var(--ink);
+    }
+    td .sub{
+      display:block;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 12.6px;
+    }
+
+    .cfg-badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(124,58,237,.10);
+      border: 1px solid rgba(124,58,237,.22);
+      color: rgba(124,58,237,.95);
+      font-weight: 950;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    html[data-theme="dim"] .cfg-badge{
+      color: rgba(167,139,250,.95);
+      background: rgba(124,58,237,.16);
+      border-color: rgba(124,58,237,.30);
+    }
+
+    /* Netlify form */
+    .req{
+      margin-top: 14px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px) saturate(1.15);
+      -webkit-backdrop-filter: blur(14px) saturate(1.15);
+      overflow: hidden;
+    }
+    .req-inner{ padding: 14px 16px 16px; }
+    .req-kicker{
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 950;
+      color: rgba(124,58,237,.85);
+      margin-bottom: 8px;
+    }
+    html[data-theme="dim"] .req-kicker{ color: rgba(167,139,250,.92); }
+    .req-title{
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 950;
+      letter-spacing: -.01em;
+    }
+    .req-sub{
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.55;
+      max-width: 86ch;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .field.full{ grid-column: 1 / -1; }
+
+    label{
+      display:block;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 950;
+      color: rgba(15,23,42,.62);
+      margin: 0 0 8px;
+    }
+    html[data-theme="dim"] label{ color: rgba(255,255,255,.70); }
+
+    input, textarea{
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.70);
+      padding: 12px;
+      font-size: 14px;
+      outline: none;
+      color: var(--ink);
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    html[data-theme="dim"] input,
+    html[data-theme="dim"] textarea{
+      background: rgba(0,0,0,.18);
+      color: var(--ink);
+    }
+    input:focus, textarea:focus{
+      border-color: rgba(124,58,237,.40);
+      box-shadow: 0 0 0 3px var(--focus);
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+
+    .hidden{
+      position:absolute !important;
+      left:-9999px !important;
+      width:1px !important;
+      height:1px !important;
+      overflow:hidden !important;
+    }
+
+    .req-actions{
+      margin-top: 12px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items:center;
+    }
+
+    .note{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 999999;
+      padding: 12px 14px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.88);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.92);
+      box-shadow: 0 16px 46px rgba(0,0,0,.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-weight: 900;
+    }
+    html[data-theme="dim"] .toast{
+      background: rgba(0,0,0,.72);
+      border-color: rgba(255,255,255,.14);
+    }
+    .toast.is-on{
+      opacity: 1;
+      transform: translateX(-50%) translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 1040px){
+      .builder{ grid-template-columns: 1fr; }
+      .summary{ position: relative; top: 0; }
+    }
+    @media (max-width: 860px){
+      .cards{ grid-template-columns: 1fr; }
+      .options{ grid-template-columns: 1fr; }
+      .form-grid{ grid-template-columns: 1fr; }
+      main{ padding-top: 0; }
+      .page{ padding-top: calc(var(--hdr-h) + env(safe-area-inset-top) + 14px); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header mount (injected by /js/header.js) -->
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page">
+      <div class="wrap">
+        <h1 class="title">Pakete vergleichen</h1>
+        <p class="lead">
+          Wähle pro Kategorie eine Option. Unten bleibt der Vergleich sichtbar (Starter + Self-Publishing Plus)
+          und der Konfigurator zeigt deine tatsächliche Auswahl.
+        </p>
+
+        <div class="cards" aria-label="Pakete">
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-top">
+                <div class="k">Buch veröffentlichen Starter</div>
+                <span class="pill">Starter</span>
+              </div>
+              <h2>Der schnelle Einstieg</h2>
+              <p>Schneller Launch mit klaren Basics. Ideal für den ersten Release.</p>
+              <div class="cta">
+                <button class="btn" type="button" id="jumpTableStarter">In Tabelle ansehen</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-top">
+                <div class="k">Self-Publishing Plus</div>
+                <span class="pill">Popular</span>
+              </div>
+              <h2>Print & eBook, professioneller</h2>
+              <p>Mehr Qualität im Text + Layout. Breitere Distribution möglich.</p>
+              <div class="cta">
+                <button class="btn" type="button" id="jumpTablePlus">In Tabelle ansehen</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-top">
+                <div class="k">Konfigurator</div>
+                <span class="pill">Custom</span>
+              </div>
+              <h2>Individuell zusammenstellen</h2>
+              <p>Du wählst Leistungen frei. Unten siehst du Starter + Plus weiterhin zum Vergleich.</p>
+              <div class="cta">
+                <a class="btn primary" href="#builder">Jetzt konfigurieren</a>
+                <a class="btn" href="#anfrage">Anfrage senden</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="builder" id="builder" style="margin-top: 16px;">
+          <!-- LEFT -->
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <strong>Konfiguration</strong><br>
+                <span>Single Select pro Kategorie · alle Optionen sichtbar</span>
+              </div>
+              <div class="choice" id="progressPill">0/13 gewählt</div>
+            </div>
+
+            <div class="cats" id="cats"></div>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="panel summary">
+            <div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                <div>
+                  <h3 class="sum-title">Deine Auswahl</h3>
+                  <p class="sum-sub">Diese Auswahl wird unten in der Tabelle (Konfigurator-Spalte) angezeigt und mitgesendet.</p>
+                </div>
+                <span class="cfg-badge" id="cfgBadge">Konfigurator · Custom</span>
+              </div>
+
+              <div class="sum-list" id="sumList"></div>
+
+              <div class="btnrow">
+                <button class="btn" type="button" id="resetBtn">Auswahl zurücksetzen</button>
+                <a class="btn primary" href="#anfrage">Zur Anfrage</a>
+              </div>
+
+              <p class="note" id="hintNote" style="margin-top: 10px;">
+                Hinweis: Für die beste Bearbeitung bitte alle Kategorien auswählen. Du kannst aber auch schon vorher senden.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLE (Starter + Plus + Config) -->
+        <div class="table-wrap" id="vergleich">
+          <div class="table-head">
+            <div>
+              <strong>Leistungen im Überblick</strong><br>
+              <span>Vergleich bleibt sichtbar: Starter + Plus · Konfigurator zeigt deine Auswahl</span>
+            </div>
+            <span class="pill" id="tableMode">klar · kompakt</span>
+          </div>
+
+          <div class="table-scroll">
+            <table aria-label="Leistungen vergleichen">
+              <thead>
+                <tr>
+                  <th style="min-width:220px;">Feature / Leistung</th>
+                  <th style="min-width:220px;">Buch veröffentlichen Starter</th>
+                  <th style="min-width:220px;">Self-Publishing Plus</th>
+                  <th style="min-width:240px;">Konfigurator</th>
+                </tr>
+              </thead>
+              <tbody id="overviewTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- REQUEST (NETLIFY FORM) -->
+        <div class="req" id="anfrage">
+          <div class="req-inner">
+            <div class="req-kicker">Unverbindliche Anfrage</div>
+            <h3 class="req-title">Konfiguration senden</h3>
+            <p class="req-sub">
+              Die Anfrage wird über Netlify Forms übermittelt. In Netlify kannst du dann die E-Mail-Benachrichtigung
+              für neue Form-Submissions aktivieren.
+            </p>
+
+            <form name="konfig-anfrage" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="netlifyForm">
+              <input type="hidden" name="form-name" value="konfig-anfrage" />
+              <p class="hidden">
+                <label>Don’t fill this out: <input name="bot-field" /></label>
+              </p>
+
+              <!-- payload -->
+              <input type="hidden" name="konfiguration_json" id="cfgJson" value="" />
+              <textarea class="hidden" name="konfiguration_text" id="cfgText"></textarea>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="name">Name *</label>
+                  <input id="name" name="name" type="text" placeholder="Vor- und Nachname" required />
+                </div>
+                <div class="field">
+                  <label for="email">E-Mail *</label>
+                  <input id="email" name="email" type="email" placeholder="name@domain.de" required />
+                </div>
+                <div class="field full">
+                  <label for="nachricht">Nachricht (optional)</label>
+                  <textarea id="nachricht" name="nachricht" placeholder="Genre, Umfang, Ziel, Deadline, etc."></textarea>
+                </div>
+              </div>
+
+              <div class="req-actions">
+                <button class="btn" type="button" id="copyBtn">Konfiguration kopieren</button>
+                <button class="btn primary" type="submit" id="submitBtn">Anfrage senden</button>
+              </div>
+
+              <div class="note">
+                Tipp: Wenn du im Konfigurator bei einzelnen Kategorien „Starter/Plus/Deluxe/Europa-Türkei“ auswählst,
+                wird das genau so im Vergleich (Konfigurator-Spalte) dargestellt.
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer mount (injected by /js/footer.js) -->
+  <div id="site-footer"></div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">✅ Nachricht gesendet</div>
+
+  <script>
+    // =========================
+    // Pakete
+    // =========================
+    const PACKS = [
+      { id: "starter", label: "Starter" },
+      { id: "plus", label: "Self-Publishing Plus" },
+      { id: "deluxe", label: "Deluxe" },
+      { id: "eu_tr", label: "Europa-Türkei" },
+    ];
+
+    // Helper: short headline keyword (matches your “fett + kurz” table style)
+    const KW = {
+      starter: {
+        zielgruppe: "Schneller Start",
+        korrektur: "Optional",
+        cover: "Template-Cover",
+        satz: "eBook Standard",
+        epub: "Inklusive",
+        print: "Add-on",
+        isbn: "Flexibel",
+        distribution: "KDP Fokus",
+        klappentext: "Optional",
+        marketing: "Zubuchbar",
+        social: "Basis-Post",
+        support: "Schlank",
+        rechte: "100% Autor"
+      },
+      plus: {
+        zielgruppe: "Professionell",
+        korrektur: "Lektorat",
+        cover: "Custom-Cover",
+        satz: "Print + eBook",
+        epub: "Inklusive",
+        print: "Inklusive",
+        isbn: "Wahlrecht",
+        distribution: "Breiter",
+        klappentext: "Inklusive",
+        marketing: "Add-on",
+        social: "Optional",
+        support: "Add-on",
+        rechte: "100% Autor"
+      },
+      deluxe: {
+        zielgruppe: "Premium-Launch",
+        korrektur: "Intensiv",
+        cover: "Premium-Art",
+        satz: "Erweitert",
+        epub: "Inklusive",
+        print: "Inklusive",
+        isbn: "Wahlrecht",
+        distribution: "Maximal",
+        klappentext: "Ausgebaut",
+        marketing: "Kampagne",
+        social: "Kampagne",
+        support: "Supportphase",
+        rechte: "100% beim Autor"
+      },
+      eu_tr: {
+        zielgruppe: "EU + TR",
+        korrektur: "Separat",
+        cover: "Übernahme",
+        satz: "Übernahme",
+        epub: "Inklusive",
+        print: "EU + TR",
+        isbn: "Wahlrecht",
+        distribution: "Dual",
+        klappentext: "Metadaten",
+        marketing: "Dualer Launch",
+        social: "Beide Märkte",
+        support: "Dual-Reporting",
+        rechte: "100% beim Autor"
+      }
+    };
+
+    // =========================
+    // Kategorien
+    // =========================
+    const CATEGORIES = [
+      {
+        key: "zielgruppe",
+        title: "Zielgruppe",
+        hint: "Wofür ist das Paket gedacht?",
+        options: {
+          starter: "Für Debüt & erste Releases – schlank, klar, ohne Overhead.",
+          plus: "Für Print + eBook mit höherem Anspruch an Qualität und Setup.",
+          deluxe: "Anspruchsvolle Projekte, Premium-Launch",
+          eu_tr: "Autor:innen, die EU + TR gleichzeitig veröffentlichen wollen"
+        }
+      },
+      {
+        key: "korrektur",
+        title: "Korrektur / Lektorat",
+        hint: "Qualitätsstufe der Textbearbeitung",
+        options: {
+          starter: "Light-Korrektur bei Bedarf – du entscheidest nach Manuskript-Stand.",
+          plus: "Stilistisches Lektorat (1–2 Runden) für besseren Lesefluss.",
+          deluxe: "Intensiv-Lektorat (mehrere Runden + Schlusskorrektur)",
+          eu_tr: "— (separat zubuchbar)"
+        }
+      },
+      {
+        key: "cover",
+        title: "Cover Design",
+        hint: "Umfang & Anspruch des Covers",
+        options: {
+          starter: "Sauberer Look für schnellen Launch – effizient und klar.",
+          plus: "Recherche + Entwürfe + Feedback für stärkere Markt-Wirkung.",
+          deluxe: "Premium-Cover-Art (Illustration/Stock-Lizenz)",
+          eu_tr: "Nutzt gewähltes Cover aus Starter/Plus/Deluxe"
+        }
+      },
+      {
+        key: "satz",
+        title: "Satz (Layout)",
+        hint: "Formatierung/Layout",
+        options: {
+          starter: "Lesbares, solides Layout – Fokus auf Tempo und Stabilität.",
+          plus: "Druckreif + konsistent über Formate hinweg.",
+          deluxe: "Print + eBook-Satz (inkl. Abbildungen/Tabellen, definierter Umfang)",
+          eu_tr: "Übernimmt Satz aus Starter/Plus/Deluxe"
+        }
+      },
+      {
+        key: "epub",
+        title: "ePUB",
+        hint: "Technische Konvertierung",
+        options: {
+          starter: "Saubere Konvertierung mit stabiler Kapitelstruktur.",
+          plus: "Optimiert für Print+eBook-Setup und konsistenten Look.",
+          deluxe: "✓ inklusive",
+          eu_tr: "✓ inklusive"
+        }
+      },
+      {
+        key: "print",
+        title: "Print",
+        hint: "Print-Optionen",
+        options: {
+          starter: "Wenn du zuerst eBook launchst und Print später nachziehen willst.",
+          plus: "Print-Veröffentlichung ist bereits dabei.",
+          deluxe: "Print",
+          eu_tr: "Print (EU + TR Distribution)"
+        }
+      },
+      {
+        key: "isbn",
+        title: "ISBN",
+        hint: "ISBN-Handling",
+        options: {
+          starter: "Oft nicht nötig für KDP-eBook (ASIN). Optional für Shops/Print.",
+          plus: "Eigen-ISBN oder Verlags-ISBN – je nach Ziel & Branding.",
+          deluxe: "Wahlrecht: Eigen-ISBN oder Verlags-ISBN",
+          eu_tr: "Wahlrecht: Eigen-ISBN oder Verlags-ISBN"
+        }
+      },
+      {
+        key: "distribution",
+        title: "Distribution",
+        hint: "Wo veröffentlicht wird",
+        options: {
+          starter: "Schnell live über Amazon KDP (eBook).",
+          plus: "KDP (Print+eBook) + Aggregator (Tolino/Apple/Google).",
+          deluxe: "Amazon KDP + Aggregator + Author Central Setup",
+          eu_tr: "Duale Distribution: EU + TR Shops/Plattformen"
+        }
+      },
+      {
+        key: "klappentext",
+        title: "Klappentext / Kurzvita",
+        hint: "Textmaterial rund um das Buch",
+        options: {
+          starter: "Wenn du selbst schreibst, nutzen wir eine klare Struktur als Leitplanke.",
+          plus: "Verkaufsstark, passend zu Genre und Zielgruppe.",
+          deluxe: "Klappentext + Kurzvita + Landing/Autorenseite",
+          eu_tr: "Anpassung Metadaten für TR/EU"
+        }
+      },
+      {
+        key: "marketing",
+        title: "Marketing",
+        hint: "Launch & Kampagnen",
+        options: {
+          starter: "Erst organisch starten, später gezielt skalieren.",
+          plus: "Kampagnen-Bausteine je nach Budget & Ziel.",
+          deluxe: "Launch-Kampagne inkl. Reporting (Amazon/Meta)",
+          eu_tr: "Dualer Launch (TR + EU) ohne Übersetzung"
+        }
+      },
+      {
+        key: "social",
+        title: "Social Media / PR",
+        hint: "Social/PR-Begleitung",
+        options: {
+          starter: "Optional ein starker Start-Post für den Launch.",
+          plus: "Erweiterbar je nach Launch-Plan und Content-Bedarf.",
+          deluxe: "Kampagne + Report",
+          eu_tr: "Social/PR für beide Märkte (Basis)"
+        }
+      },
+      {
+        key: "support",
+        title: "Support",
+        hint: "Support nach Veröffentlichung",
+        options: {
+          starter: "Ideal, wenn du vieles selbst managen möchtest.",
+          plus: "Mehr Begleitung, wenn du sie brauchst.",
+          deluxe: "Supportphase (z. B. 90 Tage nach Launch)",
+          eu_tr: "Dual-Reporting zur Erstphase"
+        }
+      },
+      {
+        key: "rechte",
+        title: "Rechte",
+        hint: "Urheberrechte",
+        options: {
+          starter: "Volle Kontrolle über Inhalt, Preis und Strategie.",
+          plus: "Umsetzung durch uns – Rechte bleiben bei dir.",
+          deluxe: "100% beim Autor",
+          eu_tr: "100% beim Autor"
+        }
+      }
+    ];
+
+    // =========================
+    // State (Konfigurator)
+    // =========================
+    const state = Object.create(null);
+    CATEGORIES.forEach(c => state[c.key] = null);
+
+    const $cats = document.getElementById("cats");
+    const $sumList = document.getElementById("sumList");
+    const $tbody = document.getElementById("overviewTbody");
+    const $progressPill = document.getElementById("progressPill");
+    const $cfgJson = document.getElementById("cfgJson");
+    const $cfgText = document.getElementById("cfgText");
+
+    const clampText = (s) => (s || "").toString().replace(/\s+/g, " ").trim();
+    const labelFor = (id) => (PACKS.find(p => p.id === id)?.label || id);
+
+    // =========================
+    // Render: builder categories
+    // =========================
+    function renderCategories(){
+      $cats.innerHTML = "";
+
+      CATEGORIES.forEach(cat => {
+        const chosen = state[cat.key];
+
+        const el = document.createElement("div");
+        el.className = "cat";
+        el.innerHTML = `
+          <div class="cat-top">
+            <div class="cat-title">
+              <strong>${cat.title}</strong>
+              <span>${cat.hint}</span>
+            </div>
+            <div class="choice" title="${chosen ? labelFor(chosen) : "Noch nicht gewählt"}">
+              ${chosen ? labelFor(chosen) : "Bitte auswählen"}
+            </div>
+          </div>
+          <div class="options">
+            ${PACKS.map(p => {
+              const active = chosen === p.id ? "is-active" : "";
+              const txt = clampText(cat.options[p.id]);
+              return `
+                <label class="opt ${active}">
+                  <input type="radio" name="${cat.key}" value="${p.id}" ${chosen===p.id ? "checked" : ""} />
+                  <div class="opt-name">
+                    <strong>${p.label}</strong>
+                    <span class="tag">${chosen===p.id ? "Ausgewählt" : "Option"}</span>
+                  </div>
+                  <p class="opt-desc">${txt}</p>
+                </label>
+              `;
+            }).join("")}
+          </div>
+        `;
+
+        el.addEventListener("change", (e) => {
+          const v = e?.target?.value;
+          if(!v) return;
+          state[cat.key] = v;
+          renderAll();
+        });
+
+        $cats.appendChild(el);
+      });
+    }
+
+    // =========================
+    // Render: right summary list
+    // =========================
+    function renderSummary(){
+      $sumList.innerHTML = "";
+
+      CATEGORIES.forEach(cat => {
+        const chosen = state[cat.key];
+        const txt = chosen ? `${labelFor(chosen)} – ${clampText(cat.options[chosen])}` : "Noch nicht gewählt";
+
+        const row = document.createElement("div");
+        row.className = "sum-item";
+        row.innerHTML = `
+          <div class="sum-dot ${chosen ? "on" : ""}"></div>
+          <div>
+            <strong>${cat.title}</strong>
+            <span>${txt}</span>
+          </div>
+        `;
+        $sumList.appendChild(row);
+      });
+    }
+
+    // =========================
+    // Render: comparison table (Starter + Plus + Config)
+    // =========================
+    function cell(packId, catKey, cat){
+      const headline = KW?.[packId]?.[catKey] || labelFor(packId);
+      const text = clampText(cat.options[packId] || "—");
+      return `<span class="main">${headline}</span><span class="sub">${text}</span>`;
+    }
+
+    function cellConfig(catKey, cat){
+      const chosen = state[catKey];
+      if(!chosen){
+        return `<span class="main">—</span><span class="sub">Bitte auswählen</span>`;
+      }
+      const headline = `${labelFor(chosen)}`;
+      const text = clampText(cat.options[chosen] || "");
+      return `<span class="main">${headline}</span><span class="sub">${text}</span>`;
+    }
+
+    function renderTable(){
+      $tbody.innerHTML = "";
+
+      CATEGORIES.forEach(cat => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><span class="main">${cat.title}</span><span class="sub">${cat.hint}</span></td>
+          <td>${cell("starter", cat.key, cat)}</td>
+          <td>${cell("plus", cat.key, cat)}</td>
+          <td>${cellConfig(cat.key, cat)}</td>
+        `;
+        $tbody.appendChild(tr);
+      });
+    }
+
+    // =========================
+    // Progress + payload
+    // =========================
+    function updateProgressAndPayload(){
+      const total = CATEGORIES.length;
+      const done = CATEGORIES.reduce((acc, c) => acc + (state[c.key] ? 1 : 0), 0);
+      $progressPill.textContent = `${done}/${total} gewählt`;
+
+      const payload = {
+        created_at: new Date().toISOString(),
+        selections: CATEGORIES.map(cat => ({
+          key: cat.key,
+          category: cat.title,
+          chosen: state[cat.key] || null,
+          chosen_label: state[cat.key] ? labelFor(state[cat.key]) : null,
+          chosen_text: state[cat.key] ? clampText(cat.options[state[cat.key]]) : null
+        }))
+      };
+
+      const lines = payload.selections.map(s => {
+        const val = s.chosen ? `${s.chosen_label}: ${s.chosen_text}` : "— nicht gewählt —";
+        return `${s.category}: ${val}`;
+      });
+
+      $cfgJson.value = JSON.stringify(payload);
+      $cfgText.value = lines.join("\n");
+    }
+
+    function renderAll(){
+      renderCategories();
+      renderSummary();
+      renderTable();
+      updateProgressAndPayload();
+    }
+
+    // =========================
+    // Buttons
+    // =========================
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      CATEGORIES.forEach(c => state[c.key] = null);
+      renderAll();
+      document.getElementById("builder").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    document.getElementById("jumpTableStarter").addEventListener("click", () => {
+      document.getElementById("vergleich").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    document.getElementById("jumpTablePlus").addEventListener("click", () => {
+      document.getElementById("vergleich").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(document.getElementById("cfgText").value || "");
+        showToast("✅ Konfiguration kopiert");
+      }catch(e){
+        showToast("⚠️ Kopieren nicht möglich");
+      }
+    });
+
+    // =========================
+    // Netlify submit (AJAX) + toast
+    // =========================
+    const $form = document.getElementById("netlifyForm");
+    const $submitBtn = document.getElementById("submitBtn");
+
+    function showToast(msg){
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("is-on");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => t.classList.remove("is-on"), 2200);
+    }
+
+    $form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      updateProgressAndPayload();
+
+      $submitBtn.disabled = true;
+      $submitBtn.style.opacity = ".85";
+
+      try{
+        const fd = new FormData($form);
+        const res = await fetch(window.location.pathname, { method: "POST", body: fd });
+
+        if(res.ok){
+          showToast("✅ Nachricht gesendet");
+          $form.reset();
+        } else {
+          showToast("⚠️ Senden fehlgeschlagen");
+        }
+      } catch(err){
+        showToast("⚠️ Netzwerkfehler");
+      } finally {
+        $submitBtn.disabled = false;
+        $submitBtn.style.opacity = "1";
+      }
+    });
+
+    // init
+    renderAll();
+  </script>
+</body>
+</html>
