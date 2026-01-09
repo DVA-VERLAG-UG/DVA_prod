@@ -457,6 +457,30 @@
   will-change: transform, opacity;
 }
 
+/* ✅ Desktop: Social-Bar auch dunkel (wie Mobile) */
+@media (min-width: 769px){
+  #dvFloatSocial.dv-float-social{
+    background: rgba(10,12,20,.72);
+    border: 1px solid rgba(255,255,255,.16);
+    box-shadow: 0 12px 30px rgba(0,0,0,.40);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  }
+
+  /* optional: Buttons/Icons in der Bar etwas „tiefer“ wie Mobile */
+  #dvFloatSocial.dv-float-social a{
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+  }
+
+  /* toggle button darf auch dunkler bleiben */
+  #dvFloatSocial.dv-float-social .dv-float-toggle{
+    background: rgba(0,0,0,.32);
+    border: 1px solid rgba(255,255,255,.16);
+  }
+}
+
+
 /* desktop toggle */
 #dvFloatSocial .dv-float-toggle{
   width: 36px;
