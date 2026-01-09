@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Pakete vergleichen | DVAYD Publishing</title>
+  <meta name="description" content="Vergleiche Buch veröffentlichen Starter, Self-Publishing Plus und den Konfigurator von DVAYD Publishing." />
+  <link rel="canonical" href="https://www.dvayd.com/de/pakete/" />
+
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/favicon.png">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/js/header.js" defer></script>
+  <script src="/js/footer.js" defer></script>
+
+  <style>
+    :root{
+      --max: 1180px;
+
+      /* Light */
+      --bg: #eef2f7;
+      --panel: #ffffff;
+
+      --ink: #0f172a;
+      --muted: rgba(15,23,42,.62);
+
+      --border: rgba(15,23,42,.10);
+      --border2: rgba(15,23,42,.14);
+
+      --row: rgba(15,23,42,.03);
+
+      --violet: #8b5cf6;
+      --violetSoft: rgba(139,92,246,.14);
+      --violetHover: rgba(139,92,246,.22);
+
+      --radius: 14px;
+      --radius2: 12px;
+
+      --hdr-h: 72px;
+    }
+
+    /* ✅ Night mode: not pure black, still high contrast */
+    html[data-theme="dim"]{
+      --bg:
+        radial-gradient(900px 520px at 15% 20%, rgba(139,92,246,.14), transparent 60%),
+        radial-gradient(700px 420px at 85% 40%, rgba(99,102,241,.10), transparent 62%),
+        #111827; /* slate-ish, not black */
+
+      --panel: rgba(255,255,255,.06);
+
+      --ink: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+
+      --border: rgba(255,255,255,.14);
+      --border2: rgba(255,255,255,.18);
+      --row: rgba(255,255,255,.06);
+
+      --violetSoft: rgba(139,92,246,.18);
+      --violetHover: rgba(139,92,246,.28);
+    }
+
+    body{ background: var(--bg); color: var(--ink); }
+
+    .dvayd-page{
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+      padding: calc(var(--hdr-h) + 26px) 0 80px;
+    }
+
+    .dvayd-page, .dvayd-page *{ color: inherit; }
+    .muted{ color: var(--muted) !important; }
+
+    .plan{ scroll-margin-top: calc(var(--hdr-h) + 16px); }
+    .compare{ scroll-margin-top: calc(var(--hdr-h) + 16px); }
+
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 18px;
+      margin-top: 8px;
+      margin-bottom: 14px;
+    }
+    .h1{
+      margin: 0 0 6px;
+      font-size: clamp(26px, 3.0vw, 42px);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+    .sub{
+      margin: 0;
+      max-width: 900px;
+      line-height: 1.55;
+      font-size: 14.5px;
+      color: var(--muted);
+    }
+
+    .btn{
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.66);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-weight: 800;
+      letter-spacing: .01em;
+      cursor: pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease, color .15s ease;
+      white-space: nowrap;
+      text-decoration: none;
+      backdrop-filter: blur(10px) saturate(1.15);
+      -webkit-backdrop-filter: blur(10px) saturate(1.15);
+    }
+    html[data-theme="dim"] .btn{
+      background: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.92);
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(139,92,246,.55);
+      background: var(--violetHover);
+      box-shadow: 0 10px 26px rgba(139,92,246,.14);
+      color: #ffffff;
+    }
+    .btn.primary{
+      border-color: rgba(139,92,246,.40);
+      background: var(--violetSoft);
+      color: var(--ink);
+    }
+    html[data-theme="dim"] .btn.primary{ color: rgba(255,255,255,.92); }
+    .btn.primary:hover{
+      border-color: rgba(139,92,246,.70);
+      background: rgba(139,92,246,.32);
+      color: #ffffff;
+      box-shadow: 0 12px 30px rgba(139,92,246,.20);
+    }
+
+    .plans{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .plan{
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--panel);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height: 170px;
+    }
+    .plan.is-featured{
+      border-color: rgba(139,92,246,.55);
+      box-shadow: 0 0 0 1px rgba(139,92,246,.22);
+    }
+    .planHead{
+      padding: 14px 14px 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .planName{
+      margin: 0;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,.02);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    html[data-theme="dim"] .tag{ background: rgba(255,255,255,.06); }
+    .tag.pop{
+      border-color: rgba(139,92,246,.35);
+      background: rgba(139,92,246,.12);
+      color: var(--violet);
+    }
+
+    .planMain{
+      padding: 0 14px 12px;
+      display:grid;
+      gap: 8px;
+    }
+    .planTitle{
+      margin: 0;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+    .planDesc{
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+      max-width: 46ch;
+    }
+    .planPriceRow{
+      margin-top: 6px;
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .priceMeta{ display:flex; flex-direction:column; gap: 2px; }
+    .priceLabel{
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .price{
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .priceSub{
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .planFoot{
+      margin-top:auto;
+      padding: 12px 14px 14px;
+      border-top: 1px solid var(--border);
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .expand{
+      display:grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows .22s ease;
+    }
+    .expand.open{ grid-template-rows: 1fr; }
+    .expandInner{ overflow:hidden; }
+
+    .inlineForm{
+      padding-top: 10px;
+      display:grid;
+      gap: 10px;
+    }
+    .fieldRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+    }
+    .field label{
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+    .field input{
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--ink);
+      padding: 0 12px;
+      outline: none;
+    }
+    html[data-theme="dim"] .field input{ color: rgba(255,255,255,.92); }
+    .field input:focus{
+      border-color: rgba(139,92,246,.70);
+      box-shadow: 0 0 0 3px rgba(139,92,246,.18);
+    }
+    .inlineActions{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .miniNote{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+      margin-right:auto;
+    }
+    .toast{
+      display:none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(139,92,246,.28);
+      background: rgba(139,92,246,.10);
+      color: var(--ink);
+      font-weight: 800;
+    }
+    html[data-theme="dim"] .toast{ color: rgba(255,255,255,.92); }
+    .toast.is-show{ display:block; }
+
+    .compare{
+      margin-top: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--panel);
+      overflow:hidden;
+    }
+    .compareHead{
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .compareTitle{
+      margin: 0;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+    .compareSub{
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 920px;
+      line-height: 1.5;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,.02);
+      font-size: 12.5px;
+      font-weight: 800;
+      white-space: nowrap;
+      color: var(--muted);
+    }
+    html[data-theme="dim"] .pill{ background: rgba(255,255,255,.06); }
+
+    .tableWrap{
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    table{
+      width:100%;
+      min-width: 980px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13.5px;
+    }
+    thead th{
+      text-align:left;
+      padding: 12px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: rgba(15,23,42,.02);
+    }
+    html[data-theme="dim"] thead th{ background: rgba(255,255,255,.05); }
+
+    tbody td{
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.45;
+    }
+    tbody tr:nth-child(even) td{ background: var(--row); }
+
+    .feat{ width: 24%; font-weight: 900; }
+    .col{ width: 25.333%; }
+
+    /* ✅ cell format: bold keyword + short description */
+    .k{
+      font-weight: 900;
+      display:block;
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+    .d{
+      display:block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    /* ✅ third column (Configurator) stays empty */
+    .emptyCol{
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .tick{
+      display:inline-grid;
+      place-items:center;
+      width: 18px; height: 18px;
+      border-radius: 99px;
+      background: rgba(34,197,94,.18);
+      border: 1px solid rgba(34,197,94,.30);
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1;
+      margin-right: 8px;
+      color: rgba(34,197,94,.95);
+    }
+
+    .bottomCtas{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      background: rgba(15,23,42,.02);
+    }
+    html[data-theme="dim"] .bottomCtas{ background: rgba(255,255,255,.05); }
+
+    .ctaCard{
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      background: var(--panel);
+      padding: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      min-height: 66px;
+    }
+    .ctaMeta{
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .ctaMeta .k2{
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .ctaMeta .v{
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ctaMeta .p{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px){
+      .dvayd-page{ width: min(var(--max), calc(100% - 32px)); }
+      .topbar{ flex-direction:column; }
+      .plans{ grid-template-columns: 1fr; }
+      .fieldRow{ grid-template-columns: 1fr; }
+      table{ min-width: 900px; }
+      .bottomCtas{ grid-template-columns: 1fr; }
+      .ctaCard{ flex-direction: column; align-items: stretch; }
+      .ctaCard .btn{ width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <header id="site-header"></header>
+
+  <main class="dvayd-page">
+    <div class="topbar">
+      <div>
+        <h1 class="h1">Pakete vergleichen</h1>
+        <p class="sub">
+          Klicke auf „Anfragen“. Dann erweitern sich darunter Name + E-Mail und du kannst die Anfrage direkt abschicken.
+        </p>
+      </div>
+      <div class="ctaTop">
+        <button class="btn primary js-open-inline" type="button" data-target="plan-best">Self-Publishing Plus anfragen</button>
+      </div>
+    </div>
+
+    <section class="plans" aria-label="Pakete">
+      <!-- Starter -->
+      <article class="plan" id="plan-basis" aria-label="Buch veröffentlichen Starter">
+        <div class="planHead">
+          <h2 class="planName">Buch veröffentlichen Starter</h2>
+          <span class="tag">Starter</span>
+        </div>
+        <div class="planMain">
+          <p class="planTitle">Der schnelle Einstieg</p>
+          <p class="planDesc">Schneller Launch mit klaren Basics. Ideal für den ersten Release.</p>
+          <div class="planPriceRow">
+            <div class="priceMeta">
+              <div class="priceLabel">Preis</div>
+              <div class="price">ab 0 €</div>
+            </div>
+            <div class="priceSub muted">Optional erweiterbar</div>
+          </div>
+        </div>
+        <div class="planFoot">
+          <button class="btn js-open-inline" type="button" data-target="plan-basis">Anfragen</button>
+
+          <div class="expand" data-expand-for="plan-basis" aria-hidden="true">
+            <div class="expandInner">
+              <form class="inlineForm js-netlify-form" name="pakete-anfrage-starter" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                <input type="hidden" name="form-name" value="pakete-anfrage-starter">
+                <p style="display:none;">
+                  <label>Don’t fill this out if you're human: <input name="bot-field"></label>
+                </p>
+
+                <input type="hidden" name="paket" value="Buch veröffentlichen Starter">
+                <input type="hidden" name="preis" value="ab 0 €">
+                <input type="hidden" name="quelle" value="Pakete-Seite">
+
+                <!-- ✅ OWNER-ONLY HARD CODING -->
+                <input type="hidden" name="owner_info" value="Ausgewählt: Der schnelle Einstieg (Buch veröffentlichen Starter)">
+                <input type="hidden" name="paket_code" value="starter_schneller_einstieg">
+
+                <div class="fieldRow">
+                  <div class="field">
+                    <label>Name</label>
+                    <input name="name" type="text" autocomplete="name" required>
+                  </div>
+                  <div class="field">
+                    <label>E-Mail</label>
+                    <input name="email" type="email" autocomplete="email" required>
+                  </div>
+                </div>
+
+                <div class="inlineActions">
+                  <div class="miniNote">Wir melden uns kurz bei dir mit den nächsten Schritten.</div>
+                  <button class="btn primary" type="submit">Absenden</button>
+                </div>
+
+                <div class="toast">✅ Gesendet – danke! Wir melden uns in Kürze.</div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Plus -->
+      <article class="plan is-featured" id="plan-best" aria-label="Self-Publishing Plus">
+        <div class="planHead">
+          <h2 class="planName">Self-Publishing Plus</h2>
+          <span class="tag pop">Popular</span>
+        </div>
+        <div class="planMain">
+          <p class="planTitle">Print & eBook, professioneller</p>
+          <p class="planDesc">Mehr Qualität im Text + Layout. Breitere Distribution möglich.</p>
+          <div class="planPriceRow">
+            <div class="priceMeta">
+              <div class="priceLabel">Preis</div>
+              <div class="price">ab 999 €</div>
+            </div>
+            <div class="priceSub muted">Bestes Preis-Leistung</div>
+          </div>
+        </div>
+        <div class="planFoot">
+          <button class="btn primary js-open-inline" type="button" data-target="plan-best">Anfragen</button>
+
+          <div class="expand" data-expand-for="plan-best" aria-hidden="true">
+            <div class="expandInner">
+              <form class="inlineForm js-netlify-form" name="pakete-anfrage-plus" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                <input type="hidden" name="form-name" value="pakete-anfrage-plus">
+                <p style="display:none;">
+                  <label>Don’t fill this out if you're human: <input name="bot-field"></label>
+                </p>
+
+                <input type="hidden" name="paket" value="Self-Publishing Plus">
+                <input type="hidden" name="preis" value="ab 999 €">
+                <input type="hidden" name="quelle" value="Pakete-Seite">
+
+                <!-- ✅ OWNER-ONLY HARD CODING -->
+                <input type="hidden" name="owner_info" value="Ausgewählt: Print & eBook, professioneller (Self-Publishing Plus)">
+                <input type="hidden" name="paket_code" value="plus_print_ebook_professionell">
+                <input type="hidden" name="format_wunsch" value="Print & eBook">
+
+                <div class="fieldRow">
+                  <div class="field">
+                    <label>Name</label>
+                    <input name="name" type="text" autocomplete="name" required>
+                  </div>
+                  <div class="field">
+                    <label>E-Mail</label>
+                    <input name="email" type="email" autocomplete="email" required>
+                  </div>
+                </div>
+
+                <div class="inlineActions">
+                  <div class="miniNote">Wir melden uns kurz bei dir mit den nächsten Schritten.</div>
+                  <button class="btn primary" type="submit">Anfrage absenden</button>
+                </div>
+
+                <div class="toast">✅ Gesendet – danke! Wir melden uns in Kürze.</div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Configurator -->
+      <article class="plan" id="plan-conf" aria-label="Konfigurator">
+        <div class="planHead">
+          <h2 class="planName">Konfigurator</h2>
+          <span class="tag">Custom</span>
+        </div>
+        <div class="planMain">
+          <p class="planTitle">Individuell zusammenstellen</p>
+          <p class="planDesc">Du wählst Leistungen frei. Preis nach Umfang und Ziel.</p>
+          <div class="planPriceRow">
+            <div class="priceMeta">
+              <div class="priceLabel">Preis</div>
+              <div class="price">Preis nach Umfang</div>
+            </div>
+            <div class="priceSub muted">auf neuer Seite</div>
+          </div>
+        </div>
+        <div class="planFoot">
+          <a class="btn primary" href="/de/konfigurator/">Jetzt Konfigurator starten</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- Comparison -->
+    <section class="compare" aria-label="Leistungen im Überblick">
+      <div class="compareHead">
+        <div>
+          <h3 class="compareTitle">Leistungen im Überblick</h3>
+          <p class="compareSub">
+            Pro Kategorie: ein Schlagwort in <strong>fett</strong> + kurze Erklärung. Die Konfigurator-Spalte bleibt leer.
+          </p>
+        </div>
+        <div class="pill">klar · kompakt</div>
+      </div>
+
+      <div class="tableWrap" aria-label="Vergleichstabelle">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature / Leistung</th>
+              <th>Buch veröffentlichen Starter</th>
+              <th>Self-Publishing Plus</th>
+              <th>Konfigurator</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feat">Zielgruppe</td>
+              <td class="col"><span class="k">Schneller Start</span><span class="d">Für Debüt & erste Releases – schlank, klar, ohne Overhead.</span></td>
+              <td class="col"><span class="k">Professionell</span><span class="d">Für Print + eBook mit höherem Anspruch an Qualität und Setup.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Korrektur / Lektorat</td>
+              <td class="col"><span class="k">Optional</span><span class="d">Light-Korrektur bei Bedarf – du entscheidest nach Manuskript-Stand.</span></td>
+              <td class="col"><span class="k"><span class="tick">✓</span>Lektorat</span><span class="d">Stilistisches Lektorat (1–2 Runden) für besseren Lesefluss.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Cover Design</td>
+              <td class="col"><span class="k">Template-Cover</span><span class="d">Sauberer Look für schnellen Launch – effizient und klar.</span></td>
+              <td class="col"><span class="k"><span class="tick">✓</span>Custom-Cover</span><span class="d">Recherche + Entwürfe + Feedback für stärkere Markt-Wirkung.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Satz (Layout)</td>
+              <td class="col"><span class="k">eBook Standard</span><span class="d">Lesbares, solides Layout – Fokus auf Tempo und Stabilität.</span></td>
+              <td class="col"><span class="k"><span class="tick">✓</span>Print + eBook</span><span class="d">Druckreif + konsistent über Formate hinweg.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">ePUB</td>
+              <td class="col"><span class="k"><span class="tick">✓</span>Inklusive</span><span class="d">Saubere Konvertierung mit stabiler Kapitelstruktur.</span></td>
+              <td class="col"><span class="k"><span class="tick">✓</span>Inklusive</span><span class="d">Optimiert für Print+eBook-Setup und konsistenten Look.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Print</td>
+              <td class="col"><span class="k">Add-on</span><span class="d">Wenn du zuerst eBook launchst und Print später nachziehen willst.</span></td>
+              <td class="col"><span class="k"><span class="tick">✓</span>Inklusive</span><span class="d">Print-Veröffentlichung ist bereits dabei.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">ISBN</td>
+              <td class="col"><span class="k">Flexibel</span><span class="d">Oft nicht nötig für KDP-eBook (ASIN). Optional für Shops/Print.</span></td>
+              <td class="col"><span class="k">Wahlrecht</span><span class="d">Eigen-ISBN oder Verlags-ISBN – je nach Ziel & Branding.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Distribution</td>
+              <td class="col"><span class="k">KDP Fokus</span><span class="d">Schnell live über Amazon KDP (eBook).</span></td>
+              <td class="col"><span class="k">Breiter</span><span class="d">KDP (Print+eBook) + Aggregator (Tolino/Apple/Google).</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Klappentext</td>
+              <td class="col"><span class="k">Optional</span><span class="d">Wenn du selbst schreibst, nutzen wir eine klare Struktur als Leitplanke.</span></td>
+              <td class="col"><span class="k"><span class="tick">✓</span>Inklusive</span><span class="d">Verkaufsstark, passend zu Genre und Zielgruppe.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Marketing</td>
+              <td class="col"><span class="k">Zubuchbar</span><span class="d">Erst organisch starten, später gezielt skalieren.</span></td>
+              <td class="col"><span class="k">Add-on</span><span class="d">Kampagnen-Bausteine je nach Budget & Ziel.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Social Media / PR</td>
+              <td class="col"><span class="k">Basis-Post</span><span class="d">Optional ein starker Start-Post für den Launch.</span></td>
+              <td class="col"><span class="k">Optional</span><span class="d">Erweiterbar je nach Launch-Plan und Content-Bedarf.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Support</td>
+              <td class="col"><span class="k">Schlank</span><span class="d">Ideal, wenn du vieles selbst managen möchtest.</span></td>
+              <td class="col"><span class="k">Add-on</span><span class="d">Mehr Begleitung, wenn du sie brauchst.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+
+            <tr>
+              <td class="feat">Rechte</td>
+              <td class="col"><span class="k">100% Autor</span><span class="d">Volle Kontrolle über Inhalt, Preis und Strategie.</span></td>
+              <td class="col"><span class="k">100% Autor</span><span class="d">Umsetzung durch uns – Rechte bleiben bei dir.</span></td>
+              <td class="col emptyCol">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bottomCtas" aria-label="Preise & Aktionen">
+        <div class="ctaCard">
+          <div class="ctaMeta">
+            <div class="k2">Starter</div>
+            <div class="v">ab 0 €</div>
+            <div class="p">Schneller Start</div>
+          </div>
+          <button class="btn js-open-inline" type="button" data-target="plan-basis">Anfragen</button>
+        </div>
+
+        <div class="ctaCard">
+          <div class="ctaMeta">
+            <div class="k2">Plus</div>
+            <div class="v">ab 999 €</div>
+            <div class="p">Print + eBook</div>
+          </div>
+          <button class="btn primary js-open-inline" type="button" data-target="plan-best">Anfragen</button>
+        </div>
+
+        <div class="ctaCard">
+          <div class="ctaMeta">
+            <div class="k2">Konfigurator</div>
+            <div class="v">Preis nach Umfang</div>
+            <div class="p">Individuell</div>
+          </div>
+          <a class="btn primary" href="/de/konfigurator/">Jetzt Konfigurator starten</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script>
+    (function(){
+      function closeAll(){
+        document.querySelectorAll('.expand.open').forEach(el=>{
+          el.classList.remove('open');
+          el.setAttribute('aria-hidden','true');
+        });
+      }
+
+      function openFor(targetId){
+        const exp = document.querySelector('.expand[data-expand-for="'+targetId+'"]');
+        if(!exp) return;
+
+        const isOpen = exp.classList.contains('open');
+        closeAll();
+        if(isOpen) return;
+
+        exp.classList.add('open');
+        exp.setAttribute('aria-hidden','false');
+
+        setTimeout(()=>{
+          const first = exp.querySelector('input[name="name"]');
+          if(first) first.focus({ preventScroll: true });
+        }, 160);
+      }
+
+      document.addEventListener('click', (e)=>{
+        const btn = e.target.closest('.js-open-inline');
+        if(!btn) return;
+
+        const targetId = btn.getAttribute('data-target');
+        if(!targetId) return;
+
+        const card = document.getElementById(targetId);
+        if(card){
+          card.scrollIntoView({ behavior:'smooth', block:'start' });
+        }
+        openFor(targetId);
+      });
+
+      function encode(data){
+        return Object.keys(data).map(k => encodeURIComponent(k) + "=" + encodeURIComponent(data[k])).join("&");
+      }
+
+      document.querySelectorAll('form.js-netlify-form').forEach((form)=>{
+        const toast = form.querySelector('.toast');
+
+        form.addEventListener('submit', async (e)=>{
+          e.preventDefault();
+          if(toast) toast.classList.remove('is-show');
+
+          const fd = new FormData(form);
+          const data = {};
+          fd.forEach((v,k)=>{ data[k]=v; });
+
+          try{
+            const res = await fetch(window.location.pathname, {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: encode(data)
+            });
+
+            if(res.ok){
+              form.reset();
+              if(toast){
+                toast.classList.add('is-show');
+                setTimeout(()=>toast.classList.remove('is-show'), 4200);
+              }
+            }else{
+              form.submit();
+            }
+          }catch(err){
+            form.submit();
+          }
+        });
+      });
+
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape') closeAll();
+      });
+    })();
+  </script>
+</body>
+</html>

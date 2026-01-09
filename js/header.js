@@ -2,14 +2,14 @@
 // js/header.js
 (() => {
   const ROUTES = {
-    de: { home:"/de/", about:"/de/ueber-uns/", contact:"/de/kontakt/", projects:"/de/projekte/", services:"/de/konfigurator/", process:"/de/prozess/", blog:"/de/blog/" },
+    de: { home:"/de/", about:"/de/ueber-uns/", contact:"/de/kontakt/", projects:"/de/projekte/", services:"/de/pakete/", process:"/de/prozess/", blog:"/de/blog/" },
     en: { home:"/en/", about:"/en/about/", contact:"/en/contact/", projects:"/en/projects/", services:"/en/configurator/", process:"/en/process/", blog:"/en/blog/" },
     tr: { home:"/tr/", about:"/tr/hakkimizda/", contact:"/tr/iletisim/", projects:"/tr/projeler/", services:"/tr/configurator/", process:"/tr/surec/", blog:"/tr/blog/" },
     fr: { home:"/fr/", about:"/fr/a-propos/", contact:"/fr/contact/", projects:"/fr/projets/", services:"/fr/configurator/", process:"/fr/processus/", blog:"/fr/blog/" },
   };
 
   const LABELS = {
-    de: { home:"Startseite", about:"Über uns (coming soon)", contact:"Kontakt", projects:"Projekte(coming soon)", services:"Konfigurator", process:"Prozess(coming soon)", blog:"Blog(coming soon)", search:"Suche", theme:"Dim", search_ph:"Suchbegriff eingeben", menu:"Menü" },
+    de: { home:"Startseite", about:"Über uns (coming soon)", contact:"Kontakt", projects:"Projekte(coming soon)", services:"Pakete", process:"Prozess(coming soon)", blog:"Blog(coming soon)", search:"Suche", theme:"Dim", search_ph:"Suchbegriff eingeben", menu:"Menü" },
     en: { home:"Home",      about:"About (coming soon)",     contact:"Contact", projects:"Projects(coming soon)", services:"Configurator", process:"Process(coming soon)", blog:"Blog(coming soon)", search:"Search", theme:"Dim", search_ph:"Search…", menu:"Menu" },
     tr: { home:"Ana Sayfa", about:"Hakkımızda (coming soon)", contact:"İletişim", projects:"Projeler(coming soon)", services:"Configurator", process:"Süreç(coming soon)", blog:"Blog(coming soon)", search:"Ara", theme:"Dim", search_ph:"Ara…", menu:"Menü" },
     fr: { home:"Accueil",   about:"À propos (coming soon)",   contact:"Contact", projects:"Projets(coming soon)", services:"Configurator", process:"Processus(coming soon)", blog:"Blog(coming soon)", search:"Recherche", theme:"Dim", search_ph:"Rechercher…", menu:"Menu" },
