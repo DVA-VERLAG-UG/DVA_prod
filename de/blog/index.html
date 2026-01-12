@@ -1,455 +1,360 @@
+<!-- =========================================================
+     FILE: /de/blog/index.html
+     Blog list (auto from Google Sheet CSV) + header/footer
+     ========================================================= -->
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-  <title>DVA-YD.com – In Aufbau</title>
-  <meta name="description" content="DVA Verlag – Website im Aufbau. Kontakt aufnehmen und informiert bleiben." />
-  <meta name="robots" content="noindex, nofollow" />
+  <title>Blog | DVAYD Publishing</title>
+  <meta name="description" content="Blog – Beiträge, Updates und Insights von DVAYD Publishing." />
+  <link rel="canonical" href="https://www.dvayd.com/de/blog/" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
-  <!-- Global styles (inkl. globalem Cursor) -->
+  <!-- Global styles -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- Header + Footer (injected) -->
+  <!-- Header + Footer (generated) -->
   <script src="/js/header.js" defer></script>
   <script src="/js/footer.js" defer></script>
 
-  <!-- Pagefind (Header Search) -->
+  <!-- Pagefind (header search) -->
   <script src="/_pagefind/pagefind.js" defer></script>
 
   <style>
     :root{
-      --fg:#ffffff;
-      --muted:rgba(255,255,255,.7);
-      --blur:14px;
-      --glass: rgba(0,0,0,.45);
-      --line: rgba(255,255,255,.15);
-      --ok:#00ff99;
-      --err:#ff5b5b;
+      --blog-max: 1180px;
+      --blog-panel: rgba(255,255,255,.10);
+      --blog-panel2: rgba(255,255,255,.16);
+      --blog-border: rgba(255,255,255,.18);
+      --blog-ink: rgba(255,255,255,.96);
+      --blog-muted: rgba(255,255,255,.70);
+      --blog-shadow: 0 18px 50px rgba(0,0,0,.45);
+      --blog-radius: 18px;
     }
 
-    *{ box-sizing:border-box; margin:0; padding:0; }
-
-    html, body{
-      height:100%;
-      background:#000;
-      color:var(--fg);
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      cursor:auto; /* ✅ use global cursor */
+    .blog-wrap{
+      width: min(var(--blog-max), calc(100% - 48px));
+      margin: 0 auto;
+      padding: calc(var(--hdr-h,72px) + 38px) 0 84px;
     }
 
-    /* ✅ Layout so footer is always BELOW the page */
-    body{
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
+    .blog-hero{ display:flex; justify-content:space-between; align-items:flex-end; gap:18px; margin-bottom: 18px; }
+    .blog-title{ margin:0; font-size: clamp(28px, 4.2vw, 44px); letter-spacing: .2px; color: var(--blog-ink); line-height:1.05; }
+    .blog-sub{ margin: 10px 0 0; max-width: 72ch; color: var(--blog-muted); line-height: 1.55; font-size: 15px; }
+
+    .blog-controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 22px 0 16px; }
+    .blog-input, .blog-select{
+      background: var(--blog-panel);
+      border: 1px solid var(--blog-border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--blog-ink);
+      outline: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      backdrop-filter: blur(10px) saturate(1.2);
+      -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    }
+    .blog-input{ min-width: 240px; flex: 1; }
+    .blog-select{ min-width: 180px; }
+    .blog-count{ color: var(--blog-muted); font-size: 13px; margin-left:auto; }
+
+    .blog-state{
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px dashed rgba(255,255,255,.22);
+      color: var(--blog-muted);
+      background: rgba(255,255,255,.06);
     }
 
-    /* Header injection mount */
-    #site-header{
-      position: relative;
-      z-index: 5; /* above video */
-    }
-
-    /* Main takes remaining space; footer goes after */
-    main{
-      flex: 1 0 auto;
-      padding-top: var(--hdr-h, 72px); /* avoid overlap with fixed header */
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Footer injection mount (normal flow, not fixed) */
-    #site-footer{
-      flex: 0 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* ---------- Video Background (behind everything) ---------- */
-    .video-bg{
-      position:fixed;
-      inset:0;
-      z-index:0;
-      pointer-events:none;
-    }
-    .video-bg video{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .overlay{
-      position:fixed;
-      inset:0;
-      z-index:1;
-      background:rgba(0,0,0,.55);
-      pointer-events:none;
-    }
-
-    /* ---------- Under construction section ---------- */
-    .uc-wrap{
-      min-height: calc(100vh - var(--hdr-h, 72px));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: clamp(18px, 4vw, 44px);
-      text-align:center;
-    }
-
-    .card{
-      max-width:760px;
-      width:100%;
-      padding: clamp(28px, 4vw, 56px) clamp(20px, 4vw, 48px);
-      backdrop-filter: blur(var(--blur));
-      -webkit-backdrop-filter: blur(var(--blur));
-      background: var(--glass);
-      border-radius:22px;
-      border:1px solid var(--line);
-      box-shadow:0 40px 120px rgba(0,0,0,.6);
-      animation: fadeUp 1.2s ease forwards;
-    }
-
-    .logo{
-      width:180px;
-      max-height:70px;
-      object-fit:contain;
-      display:block;
-      margin:0 auto 1.5rem;
-      padding:14px 18px;
-      border-radius:14px;
-      transition: transform .25s ease;
-    }
-    .logo:hover{ transform: scale(1.05); }
-
-    h1{
-      font-size: clamp(2rem, 5vw, 3.1rem);
-      font-weight:900;
-      margin-bottom:.45rem;
-    }
-    h2{
-      font-size:1.08rem;
-      font-weight:500;
-      color:var(--muted);
-      margin-bottom:1.6rem;
-    }
-
-    .divider{
-      width:80px;
-      height:2px;
-      background:#fff;
-      margin:0 auto 1.6rem;
-      opacity:.7;
-    }
-
-    p{
-      font-size:1.02rem;
-      line-height:1.6;
-      color:var(--muted);
-      margin-bottom:1.35rem;
-    }
-
-    .status{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      font-size:.82rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      opacity:.9;
-      margin-bottom:1.4rem;
-    }
-    .dot{
-      width:10px;
-      height:10px;
-      background:var(--ok);
-      border-radius:50%;
-      animation:pulse 1.8s infinite;
-    }
-
-    .cta-row{
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      appearance:none;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
-      color:#fff;
-      padding:12px 16px;
-      border-radius:14px;
-      font-weight:850;
-      cursor:pointer;
-      text-decoration:none;
-      transition:transform .15s ease, background .2s ease, opacity .2s ease;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .btn:hover{ transform:translateY(-1px); background:rgba(255,255,255,.1); }
-    .btn.primary{
-      background:rgba(0,255,153,.12);
-      border-color:rgba(0,255,153,.4);
-    }
-    .btn[disabled]{ opacity:.55; cursor:not-allowed; transform:none; }
-
-    /* ---------- Contact Panel ---------- */
-    .panel{
-      margin-top:16px;
-      text-align:left;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.35);
+    .blog-grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; margin-top: 14px; }
+    .blog-card{
+      grid-column: span 4;
+      background: linear-gradient(180deg, var(--blog-panel2), var(--blog-panel));
+      border: 1px solid var(--blog-border);
+      border-radius: var(--blog-radius);
       overflow:hidden;
-      max-height:0;
-      opacity:0;
-      transform:translateY(8px);
-      transition:max-height .45s ease, opacity .25s ease, transform .25s ease;
+      box-shadow: var(--blog-shadow);
+      transform: translateZ(0);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
     }
-    .panel.is-open{
-      max-height:560px;
-      opacity:1;
-      transform:translateY(0);
+    .blog-card:hover{
+      transform: translateY(-4px);
+      border-color: rgba(139,92,246,.55);
+      background: linear-gradient(180deg, rgba(139,92,246,.16), var(--blog-panel));
+    }
+    .blog-cover{ aspect-ratio: 16/9; width:100%; display:block; background: rgba(255,255,255,.06); object-fit: cover; }
+
+    .blog-card-body{ padding: 14px 14px 16px; display:flex; flex-direction:column; gap:10px; min-height: 190px; }
+    .blog-meta{ display:flex; gap:10px; align-items:center; color: var(--blog-muted); font-size: 12.5px; flex-wrap: wrap; }
+    .blog-pill{
+      border: 1px solid rgba(255,255,255,.18);
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.82);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 240px;
+    }
+    .blog-h2{ margin:0; font-size: 16px; line-height: 1.25; letter-spacing: .2px; color: var(--blog-ink); }
+    .blog-excerpt{
+      margin:0; color: var(--blog-muted); line-height: 1.45; font-size: 14px;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
 
-    .panel-inner{
-      padding:16px;
-      display:grid;
-      gap:10px;
+    .blog-row{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .blog-btn{
+      display:inline-flex; align-items:center; gap:8px; text-decoration:none; color: var(--blog-ink);
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      padding: 10px 12px;
+      border-radius: 12px;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      will-change: transform;
+    }
+    .blog-btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.14);
+      border-color: rgba(139,92,246,.55);
     }
 
-    .field{ display:grid; gap:6px; }
-    label{ font-size:.82rem; font-weight:700; }
-    input, textarea{
-      width:100%;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.06);
-      color:#fff;
-      padding:12px;
-      font:inherit;
-    }
-    textarea{ min-height:110px; resize:vertical; }
-
-    .panel-actions{
-      display:flex;
-      gap:10px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-
-    /* ✅ Toast: shown after AJAX submit (no redirect) */
-    .toast{
-      display:none;
-      margin-top:10px;
-      padding:12px;
-      border-radius:14px;
-      font-weight:800;
-      line-height:1.35;
-    }
-    .toast.ok{
-      display:block;
-      background:rgba(0,255,153,.10);
-      border:1px solid rgba(0,255,153,.35);
-      color:#fff;
-    }
-    .toast.err{
-      display:block;
-      background:rgba(255,91,91,.10);
-      border:1px solid rgba(255,91,91,.35);
-      color:#fff;
-    }
-
-    @keyframes pulse{
-      0%{ transform:scale(1); opacity:1; }
-      50%{ transform:scale(1.4); opacity:.4; }
-      100%{ transform:scale(1); opacity:1; }
-    }
-    @keyframes fadeUp{
-      from{ opacity:0; transform:translateY(20px); }
-      to{ opacity:1; transform:translateY(0); }
+    @media (max-width: 980px){ .blog-card{ grid-column: span 6; } }
+    @media (max-width: 640px){
+      .blog-wrap{ width: min(var(--blog-max), calc(100% - 28px)); padding-top: calc(var(--hdr-h,72px) + 24px); }
+      .blog-hero{ flex-direction: column; align-items: flex-start; }
+      .blog-count{ margin-left: 0; }
+      .blog-card{ grid-column: span 12; }
+      .blog-input{ min-width: 0; }
     }
   </style>
 </head>
 
 <body>
-  <!-- Injected Header -->
   <header id="site-header"></header>
 
-  <!-- Video Background -->
-  <div class="video-bg" aria-hidden="true">
-    <video id="bgvid" autoplay muted loop playsinline preload="auto">
-      <source src="/assets/images/under_construction.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="overlay" aria-hidden="true"></div>
-
   <main>
-    <section class="uc-wrap">
-      <div class="card">
-        <img src="/assets/images/dva-logo.png" alt="DVA Verlag Logo" class="logo">
-
-        <h1>DVA-YD.com</h1>
-        <h2>DVA Verlag – In Aufbau</h2>
-
-        <div class="divider"></div>
-
-        <p>
-          Wir arbeiten derzeit an einem neuen digitalen Auftritt.<br>
-          Bald sind wir für Sie verfügbar.
-        </p>
-
-        <div class="status">
-          <span class="dot"></span>
-          <span>Website in Arbeit</span>
+    <section class="blog-wrap" id="top">
+      <div class="blog-hero">
+        <div>
+          <h1 class="blog-title">Blog</h1>
+          <p class="blog-sub">Neue Beiträge erscheinen automatisch, sobald sie im Google Sheet hinzugefügt werden.</p>
         </div>
-
-        <div class="cta-row">
-          <button class="btn primary" id="openContact" type="button">Kontakt aufnehmen</button>
-          <a class="btn" href="/de/">Zur Startseite</a>
-        </div>
-
-        <div class="panel" id="contactPanel" aria-hidden="true">
-          <div class="panel-inner">
-
-            <!-- ✅ Netlify Form (no redirect; handled via fetch in JS) -->
-            <form id="contactForm"
-                  name="kontakt-uc"
-                  method="POST"
-                  data-netlify="true"
-                  netlify-honeypot="bot-field"
-                  autocomplete="on">
-              <input type="hidden" name="form-name" value="kontakt-uc">
-
-              <!-- honeypot -->
-              <p style="display:none">
-                <label>Don’t fill this out: <input name="bot-field" /></label>
-              </p>
-
-              <div class="field">
-                <label for="uc_name">Name</label>
-                <input id="uc_name" name="name" required>
-              </div>
-
-              <div class="field">
-                <label for="uc_email">E-Mail</label>
-                <input id="uc_email" type="email" name="email" required>
-              </div>
-
-              <div class="field">
-                <label for="uc_msg">Nachricht</label>
-                <textarea id="uc_msg" name="nachricht" required></textarea>
-              </div>
-
-              <div class="panel-actions">
-                <button class="btn" type="button" id="closeContact">Schließen</button>
-                <button class="btn primary" id="submitBtn" type="submit">Senden</button>
-              </div>
-
-              <!-- ✅ will show after submit -->
-              <div class="toast" id="toast" role="status" aria-live="polite"></div>
-            </form>
-
-          </div>
-        </div>
-
       </div>
+
+      <div class="blog-controls">
+        <input id="q" class="blog-input" type="search" placeholder="Suchen (Titel / Teaser / Tags) …" autocomplete="off" />
+        <select id="tag" class="blog-select">
+          <option value="">Alle Tags</option>
+        </select>
+        <div id="count" class="blog-count"></div>
+      </div>
+
+      <div id="state" class="blog-state">Lade Beiträge …</div>
+      <section id="grid" class="blog-grid" aria-live="polite"></section>
     </section>
   </main>
 
-  <!-- Injected Footer (normal flow, under page) -->
   <footer id="site-footer"></footer>
 
   <script>
-    /* video playback */
-    const video = document.getElementById("bgvid");
-    video?.play().catch(()=>{});
+    /* ===========================
+       CONFIG – your published CSV link
+       =========================== */
+    const SHEET_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4g1gNsiyY4k2A052LR7EaVUYFqrWGWNITOPqw5bGG_PTogiP84C44VQJpKn-HC2vxHin4fTy_puU0/pub?gid=0&single=true&output=csv";
 
-    /* contact panel toggle */
-    const openBtn = document.getElementById("openContact");
-    const closeBtn = document.getElementById("closeContact");
-    const panel = document.getElementById("contactPanel");
+    /*
+      First row headers expected:
+      slug,title,excerpt,content,date,author,cover,tags
+    */
 
-    openBtn?.addEventListener("click", () => {
-      panel.classList.add("is-open");
-      panel.setAttribute("aria-hidden","false");
-      setTimeout(() => document.getElementById("uc_name")?.focus(), 120);
-    });
+    const els = {
+      q: document.getElementById("q"),
+      tag: document.getElementById("tag"),
+      count: document.getElementById("count"),
+      state: document.getElementById("state"),
+      grid: document.getElementById("grid"),
+    };
 
-    closeBtn?.addEventListener("click", () => {
-      panel.classList.remove("is-open");
-      panel.setAttribute("aria-hidden","true");
-    });
+    let ALL = [];
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        panel.classList.remove("is-open");
-        panel.setAttribute("aria-hidden","true");
-      }
-    });
-
-    /* ✅ Netlify submit via AJAX (no redirect) + "message sent" toast */
-    const form = document.getElementById("contactForm");
-    const toast = document.getElementById("toast");
-    const submitBtn = document.getElementById("submitBtn");
-
-    function showToast(type, msg){
-      toast.className = "toast " + type;
-      toast.textContent = msg;
-      toast.style.display = "block";
+    function esc(str){
+      return String(str ?? "").replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
     }
 
-    form?.addEventListener("submit", async (e) => {
-      e.preventDefault(); // ✅ stop redirect
+    function norm(s){
+      return String(s ?? "").toLowerCase().trim();
+    }
 
-      // clear previous
-      toast.className = "toast";
-      toast.textContent = "";
-      toast.style.display = "none";
+    function splitTags(s){
+      return String(s ?? "")
+        .split(",")
+        .map(t => t.trim())
+        .filter(Boolean);
+    }
 
-      // disable button
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Sende...";
+    // Robust CSV parser (handles quotes/commas/newlines)
+    function parseCSV(text){
+      const rows = [];
+      let row = [];
+      let cur = "";
+      let inQuotes = false;
 
-      try {
-        const data = new FormData(form);
+      for(let i=0;i<text.length;i++){
+        const c = text[i];
+        const n = text[i+1];
 
-        // Netlify expects "application/x-www-form-urlencoded"
-        const body = new URLSearchParams();
-        for (const [k, v] of data.entries()) body.append(k, v);
-
-        const res = await fetch("/", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: body.toString()
-        });
-
-        if (!res.ok) throw new Error("Bad response");
-
-        // ✅ success UI (no redirect)
-        showToast("ok", "Danke! Ihre Nachricht wurde gesendet.");
-        form.reset();
-
-        // optional: close after a moment
-        // setTimeout(() => { panel.classList.remove("is-open"); panel.setAttribute("aria-hidden","true"); }, 1400);
-
-      } catch (err) {
-        showToast("err", "Ups – das hat leider nicht geklappt. Bitte versuchen Sie es erneut.");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Senden";
+        if(inQuotes){
+          if(c === '"' && n === '"'){ cur += '"'; i++; }
+          else if(c === '"'){ inQuotes = false; }
+          else { cur += c; }
+        } else {
+          if(c === '"'){ inQuotes = true; }
+          else if(c === ","){ row.push(cur); cur=""; }
+          else if(c === "\n"){ row.push(cur); rows.push(row); row=[]; cur=""; }
+          else if(c === "\r"){ /* ignore */ }
+          else { cur += c; }
+        }
       }
-    });
-  </script>
+      row.push(cur);
+      rows.push(row);
+      return rows.filter(r => r.some(cell => String(cell).trim() !== ""));
+    }
 
+    function fillTagDropdown(posts){
+      const tags = new Set();
+      posts.forEach(p => (p.tags || []).forEach(t => tags.add(t)));
+      const sorted = Array.from(tags).sort((a,b)=>a.localeCompare(b, "de"));
+
+      els.tag.innerHTML =
+        `<option value="">Alle Tags</option>` +
+        sorted.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
+    }
+
+    function render(posts){
+      if(!posts.length){
+        els.grid.innerHTML = "";
+        els.state.textContent = "Keine Beiträge gefunden.";
+        els.state.style.display = "block";
+        els.count.textContent = "";
+        return;
+      }
+
+      els.state.style.display = "none";
+      els.count.textContent = `${posts.length} Beitrag${posts.length === 1 ? "" : "e"}`;
+
+      els.grid.innerHTML = posts.map(p => `
+        <article class="blog-card">
+          ${p.cover
+            ? `<img class="blog-cover" src="${esc(p.cover)}" alt="">`
+            : `<div class="blog-cover" aria-hidden="true"></div>`
+          }
+          <div class="blog-card-body">
+            <div class="blog-meta">
+              ${p.date ? `<span>${esc(p.date)}</span>` : ``}
+              ${p.author ? `<span>·</span><span>${esc(p.author)}</span>` : ``}
+              ${p.tags?.[0]
+                ? `<span class="blog-pill" title="${esc(p.tags.join(", "))}">
+                    ${esc(p.tags[0])}${p.tags.length>1 ? " +" + (p.tags.length-1) : ""}
+                   </span>`
+                : ``
+              }
+            </div>
+
+            <h2 class="blog-h2">${esc(p.title)}</h2>
+            <p class="blog-excerpt">${esc(p.excerpt || "")}</p>
+
+            <div class="blog-row">
+              <a class="blog-btn" href="/de/blog/post.html?slug=${encodeURIComponent(p.slug)}">
+                Lesen <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function applyFilters(){
+      const q = norm(els.q.value);
+      const tag = els.tag.value;
+
+      let out = ALL;
+
+      if(tag){
+        out = out.filter(p => (p.tags || []).includes(tag));
+      }
+      if(q){
+        out = out.filter(p => {
+          const hay = norm([p.title, p.excerpt, (p.tags||[]).join(" ")].join(" "));
+          return hay.includes(q);
+        });
+      }
+
+      render(out);
+    }
+
+    (async function init(){
+      try{
+        els.state.textContent = "Lade Beiträge …";
+
+        const res = await fetch(SHEET_CSV_URL, { cache: "no-store" });
+        const csv = await res.text();
+
+        const rows = parseCSV(csv);
+        if(rows.length < 2) throw new Error("CSV has no data rows");
+
+        const header = rows[0].map(h => norm(h));
+        const idx = (name) => header.indexOf(norm(name));
+
+        const iSlug = idx("slug");
+        const iTitle = idx("title");
+        const iExcerpt = idx("excerpt");
+        const iDate = idx("date");
+        const iAuthor = idx("author");
+        const iCover = idx("cover");
+        const iTags = idx("tags");
+
+        if(iSlug === -1 || iTitle === -1) throw new Error("Missing required headers: slug, title");
+
+        const posts = rows.slice(1).map(r => ({
+          slug:   r[iSlug] || "",
+          title:  r[iTitle] || "",
+          excerpt:r[iExcerpt] || "",
+          date:   r[iDate] || "",
+          author: r[iAuthor] || "",
+          cover:  r[iCover] || "",
+          tags:   splitTags(r[iTags] || ""),
+        }))
+        .filter(p => p.slug && p.title);
+
+        posts.sort((a,b) => (b.date || "").localeCompare(a.date || ""));
+
+        ALL = posts;
+        fillTagDropdown(ALL);
+        render(ALL);
+
+        els.q.addEventListener("input", applyFilters);
+        els.tag.addEventListener("change", applyFilters);
+
+      } catch(err){
+        console.error(err);
+        els.grid.innerHTML = "";
+        els.state.style.display = "block";
+        els.state.textContent =
+          "Fehler beim Laden der Beiträge. Prüfe: (1) Sheet ist 'Published', (2) gid stimmt, (3) Header heißt slug,title,excerpt,content,date,author,cover,tags.";
+      }
+    })();
+  </script>
 </body>
 </html>
