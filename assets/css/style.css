@@ -3916,3 +3916,69 @@ html[data-theme="dim"] .ct-social a:hover{
 .u-card:hover{
   transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + var(--lift, -24px)), 0px) scale(1.02) !important;
 }
+/* =========================
+   UPDATES – FIX (position + visibility) – PASTE AT VERY END
+   ========================= */
+
+/* Layout: links Text, rechts Stack – aber Stack nicht so weit rechts */
+.updates-inner{
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(18px, 3vw, 44px);
+}
+
+/* Stack: NICHT mehr nach rechts “driften” */
+.updates-stack{
+  position: relative;
+  display: grid;
+  grid-template-areas: "stack";
+  justify-items: start;
+  align-items: center;
+
+  width: min(560px, 100%);
+  min-height: 420px;
+
+  /* vorher war’s bei dir zu viel */
+  transform: translateX(-60px) !important;
+
+  /* absolut flat */
+  perspective: none !important;
+  transform-style: flat !important;
+
+  /* wichtig: nichts abschneiden */
+  overflow: visible !important;
+}
+
+/* Cards: straight erzwingen (egal was vorher kommt) */
+.u-card{
+  --rx: 0deg !important;
+  --ry: 0deg !important;
+  --rz: 0deg !important;
+
+  transform: translate3d(var(--x,0px), calc(var(--y,0px) + var(--lift,0px)), 0px) !important;
+  will-change: transform;
+}
+
+/* Overlap so, dass die hinteren Karten gut sichtbar bleiben */
+.u1{ z-index: 3; --x: 0px;  --y: 0px; }
+.u2{ z-index: 2; --x: 44px; --y: -18px; opacity: .94; filter: none; }
+.u3{ z-index: 1; --x: 88px; --y: -36px; opacity: .86; filter: none; }
+
+/* Hover: nur Lift, kein Tilt */
+.u-card:hover{
+  z-index: 10;
+  --lift: -26px;
+  transform: translate3d(var(--x,0px), calc(var(--y,0px) + var(--lift,-26px)), 0px) scale(1.02) !important;
+}
+
+/* Mobile: Stack wieder “zentrierter” */
+@media (max-width: 900px){
+  .updates-inner{ grid-template-columns: 1fr; }
+  .updates-stack{
+    transform: translateX(0px) !important;
+    min-height: 360px;
+  }
+}
