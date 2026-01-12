@@ -702,7 +702,7 @@
                   <img src="/assets/images/team/mark-mils.jpg" alt="Mark Mils" loading="lazy">
                 </div>
                 <div class="quote-meta">
-                  <div class="quote-name">Mark Mils</div>
+                  <div class="quote-name">Cristiano Ronaldo</div>
                   <div class="quote-role">Founder &amp; CEO</div>
                 </div>
               </div>
@@ -726,37 +726,37 @@
         <!-- =========================================================
              Updates (with arrows)
              ========================================================= -->
-        <section class="updates-section" id="wissen">
-          <div class="updates-inner">
-            <div class="updates-head">
-              <div class="seo-kicker">Sektion 6 • Updates</div>
-              <h2 class="updates-title">Neuigkeiten von DVAYD.</h2>
-              <p class="updates-sub">
-                Kurze Updates, neue Artikel und wichtige Hinweise – kompakt auf einer Karte.
-              </p>
+       <!-- =========================================================
+     Updates (Sektion 6)
+     ========================================================= -->
+<section class="updates-section" id="wissen">
+  <div class="updates-inner">
+    <div class="updates-head">
+      <div class="seo-kicker">Sektion 6 • Updates</div>
+      <h2 class="updates-title">Neuigkeiten von DVAYD.</h2>
+      <p class="updates-sub">
+        Kurze Updates, neue Artikel und wichtige Hinweise – kompakt auf einer Karte.
+      </p>
 
-              <div class="updates-actions">
-                <a class="btn primary" href="/de/blog/">Alle Updates ansehen</a>
-                <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
+      <div class="updates-actions">
+        <a class="btn primary" href="/de/blog/">Alle Updates ansehen</a>
+        <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
 
-                <div class="updates-nav" aria-label="Artikel blättern">
-                  <button class="updates-btn" id="updatesPrev" type="button" aria-label="Vorheriger Artikel">‹</button>
-                  <button class="updates-btn" id="updatesNext" type="button" aria-label="Nächster Artikel">›</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="updates-stack" id="updatesStack" aria-label="Aktuelle Updates als Kartenstapel">
-              <!-- cards are filled by JS -->
-              <a class="u-card u1" id="uCard1" href="#"></a>
-              <a class="u-card u2" id="uCard2" href="#"></a>
-              <a class="u-card u3" id="uCard3" href="#"></a>
-            </div>
-          </div>
-        </section>
-
+        <div class="updates-nav" aria-label="Artikel blättern">
+          <button class="updates-btn" id="updatesPrev" type="button" aria-label="Vorheriger Artikel">‹</button>
+          <button class="updates-btn" id="updatesNext" type="button" aria-label="Nächster Artikel">›</button>
+        </div>
       </div>
-    </section>
+    </div>
+
+    <div class="updates-stack" id="updatesStack" aria-label="Aktuelle Updates als Kartenstapel">
+      <a class="u-card u1" id="uCard1" href="#"></a>
+      <a class="u-card u2" id="uCard2" href="#"></a>
+      <a class="u-card u3" id="uCard3" href="#"></a>
+    </div>
+  </div>
+</section>
+
 
   </main>
 
@@ -905,54 +905,81 @@
     }
   ];
 
-  // ✅ 1) Google Sheet config
-  const SHEET_ID = "1iiFlfzJM7pct_Fzf-yFPVJciThUy3HQyYodRnVnQNsE";
-  const GID = "0"; // numeric tab id
+// ✅ PUBLISHED SHEET (public) token (from your pubhtml URL)
+const PUB_KEY = "2PACX-1vRZUfynIAecfAUcJI97u0blLg1Le7KGsVvwyJMBF5lM7VjcUDx7UBZAHL9oKsgGXVYRFN7pghkUQbqi";
+const GID = "0";
 
-  // ✅ 2) Fetch published sheet as JSON via GViz (no API key)
-  async function loadItemsFromSheet(){
-    const url =
-      `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${GID}&tqx=out:json`;
+// ✅ Fetch published sheet as CSV (most reliable)
+async function loadItemsFromSheet(){
+  const url =
+    `https://docs.google.com/spreadsheets/d/e/${PUB_KEY}/pub?gid=${GID}&single=true&output=csv`;
 
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error("Sheet fetch failed");
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error("Sheet CSV fetch failed");
 
-    const txt = await res.text();
-    // GViz returns: google.visualization.Query.setResponse({...});
-    const json = JSON.parse(txt.substring(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
+  const csv = await res.text();
 
-    const cols = (json.table.cols || []).map(c => (c.label || "").trim());
-    const rows = json.table.rows || [];
+  // --- tiny CSV parser (handles quotes/commas) ---
+  function parseCSV(text){
+    const rows = [];
+    let row = [], cur = "", inQ = false;
 
-    const idx = (name) => cols.indexOf(name);
+    for (let i=0; i<text.length; i++){
+      const ch = text[i];
+      const next = text[i+1];
 
-    // helper to read cell value
-    const cell = (r, i) => {
-      const c = r.c?.[i];
-      return (c && (c.v ?? c.f)) != null ? String(c.v ?? c.f) : "";
-    };
+      if (inQ){
+        if (ch === '"' && next === '"'){ cur += '"'; i++; continue; }
+        if (ch === '"'){ inQ = false; continue; }
+        cur += ch; continue;
+      }
 
-    const items = rows
-      .map(r => {
-        const item = {
-          href: cell(r, idx("href")),
-          badge: cell(r, idx("badge")) || "Update",
-          type: cell(r, idx("type")) || "Update",
-          dot: cell(r, idx("dot")) || "rgba(99,102,241,.95)",
-          dotGlow: cell(r, idx("dotGlow")) || "rgba(99,102,241,.20)",
-          img: cell(r, idx("img")),
-          title: cell(r, idx("title")),
-          text: cell(r, idx("text")),
-          date: cell(r, idx("date")) || ""
-        };
-        // ignore empty rows
-        if (!item.title || !item.text) return null;
-        return item;
-      })
-      .filter(Boolean);
-
-    return items.length ? items : FALLBACK_ITEMS;
+      if (ch === '"'){ inQ = true; continue; }
+      if (ch === ","){ row.push(cur); cur=""; continue; }
+      if (ch === "\n"){
+        row.push(cur); rows.push(row);
+        row = []; cur=""; continue;
+      }
+      if (ch === "\r"){ continue; }
+      cur += ch;
+    }
+    if (cur.length || row.length){ row.push(cur); rows.push(row); }
+    return rows;
   }
+
+  const rows = parseCSV(csv);
+  if (!rows.length) throw new Error("Empty CSV");
+
+  const headers = rows[0].map(h => (h || "").trim());
+  const idx = (name) => headers.indexOf(name);
+
+  const get = (r, name) => {
+    const i = idx(name);
+    return i >= 0 ? String(r[i] ?? "").trim() : "";
+  };
+
+  // tolerate typo: "tittle" -> title
+  const titleKey = idx("title") >= 0 ? "title" : (idx("tittle") >= 0 ? "tittle" : "title");
+
+  const items = rows.slice(1).map(r => {
+    const item = {
+      href: get(r, "href"),
+      badge: get(r, "badge") || "Update",
+      type: get(r, "type") || "Update",
+      dot: get(r, "dot") || "rgba(99,102,241,.95)",
+      dotGlow: get(r, "dotGlow") || "rgba(99,102,241,.20)",
+      img: get(r, "img"),
+      title: get(r, titleKey),
+      text: get(r, "text"),
+      date: get(r, "date") || ""
+    };
+    if (!item.title || !item.text) return null;
+    return item;
+  }).filter(Boolean);
+
+  return items.length ? items : FALLBACK_ITEMS;
+}
+
 
   // ✅ 3) State
   let items = [...FALLBACK_ITEMS];
