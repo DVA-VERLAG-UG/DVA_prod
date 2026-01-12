@@ -3883,3 +3883,36 @@ html[data-theme="dim"] .ct-social a:hover{
 @media (prefers-reduced-motion: reduce){
   .u-card{ transition: none; }
 }
+/* =========================
+   UPDATES – FORCE STRAIGHT (NO TILT ANYWHERE)
+   Paste THIS at the VERY END of your CSS
+   ========================= */
+
+/* 1) Kill any 3D perspective/tilt on the container */
+#wissen .updates-stack,
+#updatesStack.updates-stack,
+.updates-stack{
+  perspective: none !important;
+  transform-style: flat !important;
+  /* falls irgendwo rotateX/rotateY auf dem stack liegt: */
+  transform: translateX(-14px) !important;
+}
+
+/* 2) Force cards to never rotate, even if old rules exist */
+#wissen .u-card,
+#uCard1.u-card, #uCard2.u-card, #uCard3.u-card,
+.u-card{
+  --rx: 0deg !important;
+  --ry: 0deg !important;
+  --rz: 0deg !important;
+
+  /* ganz wichtig: wenn irgendwo rotate(...) im transform steckt,
+     überschreiben wir transform komplett auf "nur translate" */
+  transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + var(--lift, 0px)), var(--z, 0px)) !important;
+}
+
+/* 3) Hover bleibt “straight” */
+#wissen .u-card:hover,
+.u-card:hover{
+  transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + var(--lift, -24px)), 0px) scale(1.02) !important;
+}
