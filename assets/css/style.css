@@ -3982,3 +3982,54 @@ html[data-theme="dim"] .ct-social a:hover{
     min-height: 360px;
   }
 }
+
+/* =========================================================
+   UPDATES – HARD OVERRIDE (ID-based, wins against everything)
+   Paste at VERY END (or inline <style> right before </body>)
+   ========================================================= */
+
+/* 1) Stack darf nix abschneiden + muss links sitzen */
+#updatesStack{
+  position: relative !important;
+  overflow: visible !important;
+
+  /* LINKS schieben (statt transform, damit Grid/Transforms nicht reinfunken) */
+  margin-left: -60px !important;
+
+  /* 3D komplett aus */
+  perspective: none !important;
+  transform-style: flat !important;
+  transform: none !important;
+}
+
+/* 2) Cards: JEDE Rotation/3D killen */
+#updatesStack .u-card,
+#uCard1, #uCard2, #uCard3{
+  /* Variablen neutralisieren */
+  --rx: 0deg !important;
+  --ry: 0deg !important;
+  --rz: 0deg !important;
+
+  /* falls irgendwo rotate(...) in transform steckt -> hart überschreiben */
+  transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + var(--lift, 0px)), 0px) !important;
+
+  /* sicherstellen, dass keine “Parent-3D” wirkt */
+  transform-style: flat !important;
+  backface-visibility: hidden !important;
+}
+
+/* 3) Stack-Offsets (mehr sichtbar, weniger “weg”) */
+#uCard1{ z-index: 3 !important; --x: 0px !important;  --y: 0px !important;  opacity: 1 !important;  filter: none !important; }
+#uCard2{ z-index: 2 !important; --x: 46px !important; --y: -18px !important; opacity: .95 !important; filter: none !important; }
+#uCard3{ z-index: 1 !important; --x: 92px !important; --y: -36px !important; opacity: .88 !important; filter: none !important; }
+
+/* 4) Hover: nur Lift (keine Rotation) */
+#updatesStack .u-card:hover{
+  --lift: -26px !important;
+  transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + var(--lift, 0px)), 0px) scale(1.02) !important;
+}
+
+/* 5) Mobile: margin-left wieder neutral */
+@media (max-width: 900px){
+  #updatesStack{ margin-left: 0px !important; }
+}
