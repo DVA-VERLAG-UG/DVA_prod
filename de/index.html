@@ -48,6 +48,242 @@
       object-position: center top;
       transform: translateY(6px);
     }
+
+    /* =========================================================
+       Updates: Stacked Update Cards (plain HTML)
+       + Arrow navigation + more text + smoother animations
+       ========================================================= */
+    .updates-section{
+      padding: 18px 0 0;
+    }
+    .updates-inner{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 22px;
+      align-items:center;
+    }
+    @media (max-width: 900px){
+      .updates-inner{ grid-template-columns: 1fr; gap: 18px; }
+    }
+
+    .updates-head .seo-kicker{ margin-bottom: 10px; }
+    .updates-title{
+      font-size: clamp(26px, 3.2vw, 40px);
+      line-height: 1.1;
+      margin: 0 0 10px;
+      color: var(--ink, #fff);
+    }
+    .updates-sub{
+      margin: 0 0 16px;
+      opacity: .9;
+      max-width: 55ch;
+    }
+
+    .updates-actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      align-items:center;
+    }
+
+    /* Arrow controls */
+    .updates-nav{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      margin-left: auto;
+    }
+    @media (max-width: 900px){
+      .updates-nav{ margin-left: 0; }
+    }
+    .updates-btn{
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px) saturate(1.15);
+      -webkit-backdrop-filter: blur(10px) saturate(1.15);
+      box-shadow: 0 14px 30px rgba(0,0,0,.18);
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      user-select:none;
+    }
+    .updates-btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.28);
+    }
+    .updates-btn:active{ transform: translateY(0); }
+    .updates-btn:disabled{ opacity:.45; cursor:not-allowed; }
+
+    /* stack container */
+    .updates-stack{
+      display:grid;
+      place-items:center;
+      min-height: 350px;
+      position: relative;
+      grid-template-areas: "stack";
+    }
+
+    /* card base */
+    .u-card{
+      --t: skewY(-8deg);   /* base transform */
+      --y: 0px;            /* extra lift */
+
+      position: relative;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: min(380px, 92vw);
+      height: 190px;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(10px) saturate(1.15);
+      -webkit-backdrop-filter: blur(10px) saturate(1.15);
+      box-shadow: 0 18px 60px rgba(0,0,0,.20);
+
+      transform: var(--t) translateY(var(--y));
+      will-change: transform, opacity, filter;
+
+      /* smoother easing (less choppy) */
+      transition:
+        transform .75s cubic-bezier(.16, 1, .3, 1),
+        opacity  .35s ease,
+        filter   .45s ease,
+        border-color .35s ease,
+        background   .35s ease;
+
+      text-decoration:none;
+      color: inherit;
+      overflow:hidden;
+    }
+
+    /* right fade like in the screenshot */
+    .u-card::after{
+      content:"";
+      position:absolute;
+      top:-6%;
+      right:-6px;
+      height:112%;
+      width: 70%;
+      background: linear-gradient(to left, rgba(10,12,20,.90), rgba(10,12,20,0));
+      pointer-events:none;
+      opacity: .65;
+    }
+
+    .u-top{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      position:relative;
+      z-index: 1;
+    }
+    .u-pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      white-space: nowrap;
+    }
+    .u-dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(99,102,241,.9);
+      box-shadow: 0 0 0 3px rgba(99,102,241,.20);
+    }
+    .u-tag{
+      font-weight: 600;
+      opacity:.95;
+    }
+
+    .u-mid{
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      position:relative;
+      z-index: 1;
+      margin-top: 8px;
+    }
+    .u-img{
+      width: 74px;
+      height: 74px;
+      border-radius: 14px;
+      flex: 0 0 auto;
+      background: center/cover no-repeat;
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+    }
+    .u-text h3{
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+    .u-text p{
+      margin: 8px 0 0;
+      font-size: 14px;
+      opacity: .86;
+
+      /* show more text but keep clamp */
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .u-date{
+      position:relative;
+      z-index: 1;
+      font-size: 13px;
+      opacity: .75;
+      margin-top: 10px;
+    }
+
+    /* stack positioning (base transforms) */
+    .u1{ grid-area: stack; --t: skewY(-8deg); }
+    .u2{
+      grid-area: stack;
+      --t: translateX(54px) translateY(18px) skewY(-8deg);
+      filter: grayscale(1);
+    }
+    .u3{
+      grid-area: stack;
+      --t: translateX(108px) translateY(36px) skewY(-8deg);
+      filter: grayscale(1);
+      opacity: .95;
+    }
+
+    /* hover behavior: animate only --y (smooth) */
+    .u1:hover{ --y: -16px; border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.10); }
+    .u2:hover{ --y: -16px; filter: grayscale(0); border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.10); }
+    .u3:hover{ --y: -16px; filter: grayscale(0); border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.10); }
+
+    /* switching state: smooth dip + fade */
+    .updates-stack.is-switching .u-card{
+      --y: 10px;
+      opacity: .82;
+      filter: grayscale(1);
+    }
+
+    /* mobile offsets */
+    @media (max-width: 520px){
+      .u2{ --t: translateX(28px) translateY(16px) skewY(-8deg); }
+      .u3{ --t: translateX(56px) translateY(32px) skewY(-8deg); }
+      .updates-stack{ min-height: 330px; }
+      .u-card{ height: 198px; }
+    }
   </style>
 </head>
 
@@ -487,51 +723,34 @@
           </div>
         </section>
 
-        <section class="seo-section" id="wissen">
-          <div class="seo-inner">
-            <div class="seo-head">
-              <div class="seo-kicker">Sektion 6 • SEO-Content</div>
-              <h2 class="seo-title">Wissenswertes für Autoren.</h2>
-              <p class="seo-sub">
-                Kurze Antworten auf häufige Fragen – damit du schneller vorankommst und wir Kompetenz zeigen.
+        <!-- =========================================================
+             Updates (with arrows)
+             ========================================================= -->
+        <section class="updates-section" id="wissen">
+          <div class="updates-inner">
+            <div class="updates-head">
+              <div class="seo-kicker">Sektion 6 • Updates</div>
+              <h2 class="updates-title">Neuigkeiten von DVAYD.</h2>
+              <p class="updates-sub">
+                Kurze Updates, neue Artikel und wichtige Hinweise – kompakt auf einer Karte.
               </p>
-            </div>
 
-            <div class="seo-shell" aria-label="Wissenswertes Karussell">
-              <button class="seo-nav prev" type="button" aria-label="Zurück">‹</button>
+              <div class="updates-actions">
+                <a class="btn primary" href="/de/blog/">Alle Updates ansehen</a>
+                <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
 
-              <div class="seo-viewport" tabindex="0">
-                <div class="seo-track">
-                  <a class="seo-card" href="/de/blog/isbn-fuer-amazon/">
-                    <div class="seo-media" style="background:url('/assets/blog/isbn.jpg') center/cover no-repeat;">
-                      <div class="seo-badge">ISBN & Amazon</div>
-                    </div>
-                    <div class="seo-body">
-                      <h3>Brauche ich eine ISBN für Amazon?</h3>
-                      <p>Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf…</p>
-                      <span class="seo-link">Mehr lesen →</span>
-                    </div>
-                  </a>
-
-                  <a class="seo-card" href="/de/blog/buchvertrieb-tuerkei/">
-                    <div class="seo-media" style="background:url('/assets/blog/tuerkei-vertrieb.jpg') center/cover no-repeat;">
-                      <div class="seo-badge">Vertrieb TR</div>
-                    </div>
-                    <div class="seo-body">
-                      <h3>Wie funktioniert der Buchvertrieb in der Türkei?</h3>
-                      <p>Buchhandel, Online-Plattformen, kulturelle Unterschiede…</p>
-                      <span class="seo-link">Mehr lesen →</span>
-                    </div>
-                  </a>
+                <div class="updates-nav" aria-label="Artikel blättern">
+                  <button class="updates-btn" id="updatesPrev" type="button" aria-label="Vorheriger Artikel">‹</button>
+                  <button class="updates-btn" id="updatesNext" type="button" aria-label="Nächster Artikel">›</button>
                 </div>
               </div>
+            </div>
 
-              <button class="seo-nav next" type="button" aria-label="Weiter">›</button>
-
-              <div class="seo-actions">
-                <a class="btn primary" href="/de/blog/">Alle Artikel ansehen</a>
-                <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
-              </div>
+            <div class="updates-stack" id="updatesStack" aria-label="Aktuelle Updates als Kartenstapel">
+              <!-- cards are filled by JS -->
+              <a class="u-card u1" id="uCard1" href="#"></a>
+              <a class="u-card u2" id="uCard2" href="#"></a>
+              <a class="u-card u3" id="uCard3" href="#"></a>
             </div>
           </div>
         </section>
@@ -624,7 +843,7 @@
 })();
   </script>
 
-  <!-- SEO Carousel Script -->
+  <!-- SEO Carousel Script (safe to keep) -->
   <script>
 (() => {
   const shell = document.querySelector(".seo-shell");
@@ -657,6 +876,147 @@
       if (e.key === "ArrowRight") next.click();
     });
   }
+})();
+  </script>
+
+  <!-- ✅ Updates deck navigation (SMOOTHER) -->
+  <script>
+(() => {
+  const stack = document.getElementById("updatesStack");
+  const prevBtn = document.getElementById("updatesPrev");
+  const nextBtn = document.getElementById("updatesNext");
+
+  const c1 = document.getElementById("uCard1");
+  const c2 = document.getElementById("uCard2");
+  const c3 = document.getElementById("uCard3");
+  if (!stack || !prevBtn || !nextBtn || !c1 || !c2 || !c3) return;
+
+  // You can add as many articles as you want here:
+  const items = [
+    {
+      href: "/de/blog/isbn-fuer-amazon/",
+      badge: "Neu",
+      type: "Update",
+      dot: "rgba(99,102,241,.95)",
+      dotGlow: "rgba(99,102,241,.20)",
+      img: "https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=300&q=70",
+      title: "ISBN & Amazon: was du wirklich brauchst",
+      text: "Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf. Hier bekommst du die kurze, klare Antwort und die wichtigsten Entscheidungen, bevor du veröffentlichst.",
+      date: "Heute"
+    },
+    {
+      href: "/de/blog/buchvertrieb-tuerkei/",
+      badge: "Beliebt",
+      type: "Artikel",
+      dot: "rgba(34,197,94,.95)",
+      dotGlow: "rgba(34,197,94,.18)",
+      img: "https://images.unsplash.com/photo-1455885666463-5d5dbff2c7a4?auto=format&fit=crop&w=300&q=70",
+      title: "Buchvertrieb Türkei: so funktioniert’s",
+      text: "Welche Plattformen wirklich relevant sind, wie sich Leser-Verhalten unterscheidet und welche Erwartungen realistisch sind – plus typische Fehler, die viele Autoren am Anfang machen.",
+      date: "Vor 2 Tagen"
+    },
+    {
+      href: "/de/konfigurator/",
+      badge: "Feature",
+      type: "Tool",
+      dot: "rgba(99,102,241,.95)",
+      dotGlow: "rgba(99,102,241,.20)",
+      img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=300&q=70",
+      title: "Verlags-Konfigurator: Paket in 2–4 Minuten",
+      text: "Wähle pro Kategorie eine Option, sieh die Prognose und sende direkt eine unverbindliche Anfrage. Kein Login, keine Registrierung – einfach schnell Klarheit bekommen.",
+      date: "Diese Woche"
+    },
+    {
+      href: "/de/kontakt/",
+      badge: "Neu",
+      type: "Hinweis",
+      dot: "rgba(34,197,94,.95)",
+      dotGlow: "rgba(34,197,94,.18)",
+      img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=300&q=70",
+      title: "Kostenloser Manuskript-Check (limitierte Slots)",
+      text: "Wenn du unsicher bist, ob dein Manuskript schon bereit ist: Wir geben dir eine ehrliche Einschätzung und klare nächste Schritte. Schnell, persönlich und ohne Verpflichtung.",
+      date: "Neu"
+    }
+  ];
+
+  let index = 0;
+
+  function clampIndex(i){
+    const n = items.length;
+    return ((i % n) + n) % n;
+  }
+
+  function cardMarkup(item){
+    return `
+      <div class="u-top">
+        <span class="u-pill">
+          <span class="u-dot" style="background:${item.dot}; box-shadow:0 0 0 3px ${item.dotGlow}"></span>
+          <span class="u-tag">${item.badge}</span>
+        </span>
+        <span style="opacity:.85; font-weight:600;">${item.type}</span>
+      </div>
+
+      <div class="u-mid">
+        <div class="u-img" style="background-image:url('${item.img}');"></div>
+        <div class="u-text">
+          <h3>${item.title}</h3>
+          <p>${item.text}</p>
+        </div>
+      </div>
+
+      <div class="u-date">${item.date}</div>
+    `;
+  }
+
+  function render(){
+    const a = items[clampIndex(index)];
+    const b = items[clampIndex(index + 1)];
+    const c = items[clampIndex(index + 2)];
+
+    c1.href = a.href; c1.innerHTML = cardMarkup(a);
+    c2.href = b.href; c2.innerHTML = cardMarkup(b);
+    c3.href = c.href; c3.innerHTML = cardMarkup(c);
+  }
+
+  let isAnimating = false;
+
+  function switchTo(newIndex){
+    if (isAnimating) return;
+    isAnimating = true;
+
+    stack.classList.add("is-switching");
+
+    // start smooth dip
+    requestAnimationFrame(() => {
+      // swap content mid-motion (smooth)
+      setTimeout(() => {
+        index = clampIndex(newIndex);
+        render();
+
+        // glide back up
+        requestAnimationFrame(() => {
+          stack.classList.remove("is-switching");
+
+          // unlock after easing finishes
+          setTimeout(() => { isAnimating = false; }, 520);
+        });
+      }, 180);
+    });
+  }
+
+  prevBtn.addEventListener("click", () => switchTo(index - 1));
+  nextBtn.addEventListener("click", () => switchTo(index + 1));
+
+  // keyboard support when focused anywhere on the section
+  document.addEventListener("keydown", (e) => {
+    const active = document.activeElement;
+    const inUpdates = active && (active.closest && active.closest("#wissen"));
+    if (!inUpdates) return;
+    if (e.key === "ArrowLeft") prevBtn.click();
+    if (e.key === "ArrowRight") nextBtn.click();
+  });
+
+  render();
 })();
   </script>
 

@@ -347,6 +347,147 @@
 }
 #site-header .drawer nav a:hover{ background: rgba(255,255,255,.07); }
 
+/* =========================================================
+   ✅ LIGHT MODE HEADER OVERRIDES
+   When <html> does NOT have data-theme="dim"
+   ========================================================= */
+html:not([data-theme="dim"]) #site-header .hdr.is-scrolled{
+  background: rgba(255,255,255,.55);
+  border-bottom: 1px solid rgba(15,23,42,.10);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+}
+
+html:not([data-theme="dim"]) #site-header .brand{
+  color:#0f172a;
+}
+html:not([data-theme="dim"]) #site-header .brand img{
+  filter: none;
+}
+html:not([data-theme="dim"]) #site-header .brand span{
+  text-shadow: none;
+  opacity: .92;
+}
+
+html:not([data-theme="dim"]) #site-header .site-search{
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(15,23,42,.12);
+  box-shadow: 0 14px 40px rgba(2,16,41,.10), inset 0 1px 0 rgba(255,255,255,.7);
+}
+html:not([data-theme="dim"]) #site-header .site-search:hover{
+  background: rgba(255,255,255,.82);
+}
+
+html:not([data-theme="dim"]) #site-header .site-search input{
+  color:#0f172a;
+}
+html:not([data-theme="dim"]) #site-header .site-search input::placeholder{
+  color: rgba(15,23,42,.45);
+}
+
+html:not([data-theme="dim"]) #site-header .site-search .search-icon img{
+  /* if your icon is white, this makes it dark in light mode */
+  filter: invert(1) brightness(.25);
+  opacity: .9;
+}
+html:not([data-theme="dim"]) #site-header .site-search .search-icon:hover img{
+  opacity: 1;
+}
+
+html:not([data-theme="dim"]) #site-header .search-dd{
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(15,23,42,.10);
+  box-shadow: 0 30px 90px rgba(2,16,41,.16), inset 0 1px 0 rgba(255,255,255,.75);
+}
+html:not([data-theme="dim"]) #site-header .dd-row{
+  color: rgba(15,23,42,.92);
+}
+html:not([data-theme="dim"]) #site-header .dd-row:hover{
+  background: rgba(15,23,42,.06);
+  color:#0f172a;
+}
+html:not([data-theme="dim"]) #site-header .dd-row.is-active{
+  background: rgba(15,23,42,.08);
+  box-shadow: 0 12px 40px rgba(2,16,41,.10), inset 0 1px 0 rgba(255,255,255,.7);
+}
+html:not([data-theme="dim"]) #site-header .dd-empty,
+html:not([data-theme="dim"]) #site-header .dd-loading{
+  color: rgba(15,23,42,.80);
+}
+html:not([data-theme="dim"]) #site-header .search-dd mark{
+  background: rgba(15,23,42,.10);
+  color:#0f172a;
+}
+
+html:not([data-theme="dim"]) #site-header .theme-btn{
+  background: rgba(15,23,42,.05);
+  border: 1px solid rgba(15,23,42,.12);
+  color:#0f172a;
+  box-shadow: 0 12px 30px rgba(2,16,41,.10), inset 0 1px 0 rgba(255,255,255,.7);
+  filter: none;
+}
+
+html:not([data-theme="dim"]) #site-header .langs{
+  color:#0f172a;
+  text-shadow: none;
+}
+html:not([data-theme="dim"]) #site-header .langs a{
+  color:#0f172a;
+  opacity:.65;
+}
+html:not([data-theme="dim"]) #site-header .langs a.is-active{
+  opacity:1;
+}
+
+html:not([data-theme="dim"]) #site-header .burger .icon{
+  filter: none;
+}
+html:not([data-theme="dim"]) #site-header .burger .icon i{
+  background: rgba(15,23,42,.92);
+}
+
+/* =========================================================
+   ✅ LIGHT MODE: Drawer / Menu (right side)
+   ========================================================= */
+html:not([data-theme="dim"]) #site-header .overlay{
+  background: rgba(15,23,42,.06);
+}
+
+html:not([data-theme="dim"]) #site-header .drawer{
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,255,255,.78)),
+    radial-gradient(900px 650px at 30% 10%, rgba(99,102,241,.06), rgba(255,255,255,0)),
+    radial-gradient(900px 700px at 80% 80%, rgba(139,92,246,.05), rgba(255,255,255,0));
+  border-left: 1px solid rgba(15,23,42,.10);
+  box-shadow: -16px 0 60px rgba(2,16,41,.12), inset 0 1px 0 rgba(255,255,255,.75);
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+}
+
+html:not([data-theme="dim"]) #site-header .drawer-top{
+  color:#0f172a;
+}
+html:not([data-theme="dim"]) #site-header .drawer-top .title{
+  color:#0f172a;
+}
+
+html:not([data-theme="dim"]) #site-header .close{
+  background: rgba(15,23,42,.05);
+  border: 1px solid rgba(15,23,42,.12);
+  color:#0f172a;
+  box-shadow: 0 12px 30px rgba(2,16,41,.10), inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+html:not([data-theme="dim"]) #site-header .drawer nav a{
+  color: rgba(15,23,42,.92);
+}
+html:not([data-theme="dim"]) #site-header .drawer nav a:hover{
+  background: rgba(15,23,42,.06);
+  color:#0f172a;
+}
+
+
+
 /* =========================
    RESPONSIVE
    ========================= */
