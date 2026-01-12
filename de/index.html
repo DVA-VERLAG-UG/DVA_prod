@@ -879,8 +879,7 @@
 })();
   </script>
 
-  <!-- ✅ Updates deck navigation (SMOOTHER) -->
-  <script>
+<script>
 (() => {
   const stack = document.getElementById("updatesStack");
   const prevBtn = document.getElementById("updatesPrev");
@@ -891,30 +890,8 @@
   const c3 = document.getElementById("uCard3");
   if (!stack || !prevBtn || !nextBtn || !c1 || !c2 || !c3) return;
 
-  // You can add as many articles as you want here:
-  const items = [
-    {
-      href: "/de/blog/isbn-fuer-amazon/",
-      badge: "Neu",
-      type: "Update",
-      dot: "rgba(99,102,241,.95)",
-      dotGlow: "rgba(99,102,241,.20)",
-      img: "https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=300&q=70",
-      title: "ISBN & Amazon: was du wirklich brauchst",
-      text: "Amazon verspricht Einfachheit – doch ISBN, Imprint und Rechte werfen schnell Fragen auf. Hier bekommst du die kurze, klare Antwort und die wichtigsten Entscheidungen, bevor du veröffentlichst.",
-      date: "Heute"
-    },
-    {
-      href: "/de/blog/buchvertrieb-tuerkei/",
-      badge: "Beliebt",
-      type: "Artikel",
-      dot: "rgba(34,197,94,.95)",
-      dotGlow: "rgba(34,197,94,.18)",
-      img: "https://images.unsplash.com/photo-1455885666463-5d5dbff2c7a4?auto=format&fit=crop&w=300&q=70",
-      title: "Buchvertrieb Türkei: so funktioniert’s",
-      text: "Welche Plattformen wirklich relevant sind, wie sich Leser-Verhalten unterscheidet und welche Erwartungen realistisch sind – plus typische Fehler, die viele Autoren am Anfang machen.",
-      date: "Vor 2 Tagen"
-    },
+  // ✅ FALLBACK (falls Sheet mal nicht lädt)
+  const FALLBACK_ITEMS = [
     {
       href: "/de/konfigurator/",
       badge: "Feature",
@@ -923,22 +900,62 @@
       dotGlow: "rgba(99,102,241,.20)",
       img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=300&q=70",
       title: "Verlags-Konfigurator: Paket in 2–4 Minuten",
-      text: "Wähle pro Kategorie eine Option, sieh die Prognose und sende direkt eine unverbindliche Anfrage. Kein Login, keine Registrierung – einfach schnell Klarheit bekommen.",
+      text: "Wähle pro Kategorie eine Option, sieh die Prognose und sende direkt eine unverbindliche Anfrage.",
       date: "Diese Woche"
-    },
-    {
-      href: "/de/kontakt/",
-      badge: "Neu",
-      type: "Hinweis",
-      dot: "rgba(34,197,94,.95)",
-      dotGlow: "rgba(34,197,94,.18)",
-      img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=300&q=70",
-      title: "Kostenloser Manuskript-Check (limitierte Slots)",
-      text: "Wenn du unsicher bist, ob dein Manuskript schon bereit ist: Wir geben dir eine ehrliche Einschätzung und klare nächste Schritte. Schnell, persönlich und ohne Verpflichtung.",
-      date: "Neu"
     }
   ];
 
+  // ✅ 1) Google Sheet config
+  const SHEET_ID = "1iiFlfzJM7pct_Fzf-yFPVJciThUy3HQyYodRnVnQNsE";
+  const GID = "0"; // numeric tab id
+
+  // ✅ 2) Fetch published sheet as JSON via GViz (no API key)
+  async function loadItemsFromSheet(){
+    const url =
+      `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${GID}&tqx=out:json`;
+
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error("Sheet fetch failed");
+
+    const txt = await res.text();
+    // GViz returns: google.visualization.Query.setResponse({...});
+    const json = JSON.parse(txt.substring(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
+
+    const cols = (json.table.cols || []).map(c => (c.label || "").trim());
+    const rows = json.table.rows || [];
+
+    const idx = (name) => cols.indexOf(name);
+
+    // helper to read cell value
+    const cell = (r, i) => {
+      const c = r.c?.[i];
+      return (c && (c.v ?? c.f)) != null ? String(c.v ?? c.f) : "";
+    };
+
+    const items = rows
+      .map(r => {
+        const item = {
+          href: cell(r, idx("href")),
+          badge: cell(r, idx("badge")) || "Update",
+          type: cell(r, idx("type")) || "Update",
+          dot: cell(r, idx("dot")) || "rgba(99,102,241,.95)",
+          dotGlow: cell(r, idx("dotGlow")) || "rgba(99,102,241,.20)",
+          img: cell(r, idx("img")),
+          title: cell(r, idx("title")),
+          text: cell(r, idx("text")),
+          date: cell(r, idx("date")) || ""
+        };
+        // ignore empty rows
+        if (!item.title || !item.text) return null;
+        return item;
+      })
+      .filter(Boolean);
+
+    return items.length ? items : FALLBACK_ITEMS;
+  }
+
+  // ✅ 3) State
+  let items = [...FALLBACK_ITEMS];
   let index = 0;
 
   function clampIndex(i){
@@ -973,41 +990,37 @@
     const b = items[clampIndex(index + 1)];
     const c = items[clampIndex(index + 2)];
 
-    c1.href = a.href; c1.innerHTML = cardMarkup(a);
-    c2.href = b.href; c2.innerHTML = cardMarkup(b);
-    c3.href = c.href; c3.innerHTML = cardMarkup(c);
+    c1.href = a.href || "#"; c1.innerHTML = cardMarkup(a);
+    c2.href = b.href || "#"; c2.innerHTML = cardMarkup(b);
+    c3.href = c.href || "#"; c3.innerHTML = cardMarkup(c);
+
+    // disable arrows if only 1 item
+    const disabled = items.length <= 1;
+    prevBtn.disabled = disabled;
+    nextBtn.disabled = disabled;
   }
 
   let isAnimating = false;
 
   function switchTo(newIndex){
-    if (isAnimating) return;
+    if (isAnimating || items.length <= 1) return;
     isAnimating = true;
 
     stack.classList.add("is-switching");
-
-    // start smooth dip
-    requestAnimationFrame(() => {
-      // swap content mid-motion (smooth)
-      setTimeout(() => {
-        index = clampIndex(newIndex);
-        render();
-
-        // glide back up
-        requestAnimationFrame(() => {
-          stack.classList.remove("is-switching");
-
-          // unlock after easing finishes
-          setTimeout(() => { isAnimating = false; }, 520);
-        });
-      }, 180);
-    });
+    setTimeout(() => {
+      index = clampIndex(newIndex);
+      render();
+      requestAnimationFrame(() => {
+        stack.classList.remove("is-switching");
+        setTimeout(() => { isAnimating = false; }, 520);
+      });
+    }, 180);
   }
 
   prevBtn.addEventListener("click", () => switchTo(index - 1));
   nextBtn.addEventListener("click", () => switchTo(index + 1));
 
-  // keyboard support when focused anywhere on the section
+  // keyboard support
   document.addEventListener("keydown", (e) => {
     const active = document.activeElement;
     const inUpdates = active && (active.closest && active.closest("#wissen"));
@@ -1016,9 +1029,23 @@
     if (e.key === "ArrowRight") nextBtn.click();
   });
 
+  // ✅ initial render (fallback), then load from sheet
   render();
+  loadItemsFromSheet()
+    .then((loaded) => {
+      items = loaded;
+      index = 0;
+      render();
+    })
+    .catch((err) => {
+      console.warn("Updates: Google Sheet load failed, using fallback.", err);
+      items = [...FALLBACK_ITEMS];
+      index = 0;
+      render();
+    });
 })();
-  </script>
+</script>
+
 
   <footer id="site-footer"></footer>
 
