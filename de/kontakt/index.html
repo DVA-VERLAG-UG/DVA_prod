@@ -1,5 +1,39 @@
+
 <!doctype html>
 <html lang="de">
+  <style>
+  /* Kontakt-Submit: mehr Kontrast + klarer Hover */
+  .ct-actions{ gap: 12px; }
+  .ct-submit{
+    background: linear-gradient(180deg, rgba(37,99,235,1), rgba(29,78,216,1)) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,.18) !important;
+    box-shadow:
+      0 18px 40px rgba(2,16,41,.22),
+      0 8px 18px rgba(37,99,235,.25) !important;
+    font-weight: 800;
+    letter-spacing: .02em;
+  }
+  .ct-submit:hover{
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+  }
+  .ct-submit:active{
+    transform: translateY(0px);
+    filter: brightness(.98);
+  }
+  .ct-submit:focus-visible{
+    outline: 3px solid rgba(99,102,241,.45);
+    outline-offset: 3px;
+  }
+
+  /* Mobile: Button besser sichtbar + volle Breite */
+  @media (max-width: 520px){
+    .ct-actions{ align-items: stretch; }
+    .ct-submit{ width: 100%; }
+  }
+</style>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -118,23 +152,20 @@
             </p>
 
             <div class="ct-field">
-              <label for="k_name">Dein Name <span class="ct-req">*</span></label>
-              <input id="k_name" name="name" type="text" required placeholder="Vor- und Nachname" />
+              <input id="k_name" name="name" type="text" required placeholder="Vor- und Nachname *" />
             </div>
 
             <div class="ct-field">
-              <label for="k_email">E-Mail Adresse <span class="ct-req">*</span></label>
-              <input id="k_email" name="email" type="email" required placeholder="name@mail.com" />
+              <input id="k_email" name="email" type="email" required placeholder="name@mail.com *" />
             </div>
 
             <div class="ct-field">
-              <label for="k_project">Projekt / Buch-Titel <span class="ct-req">*</span></label>
-              <input id="k_project" name="projekt" type="text" required placeholder="z.B. Roman, Biografie, Sachbuch…" />
+              <!-- ✅ jetzt OPTIONAL: required entfernt -->
+              <input id="k_project" name="projekt" type="text" placeholder="Projekt / Buch-Titel (optional) z.B. Roman, Biografie, Sachbuch…" />
             </div>
 
             <div class="ct-field">
-              <label for="k_msg">Worum geht’s? <span class="ct-req">*</span></label>
-              <textarea id="k_msg" name="nachricht" required placeholder="Status (Idee/Manuskript/fertig), Genre, Zielmarkt (DE/TR), Zeitraum, Fragen…"></textarea>
+              <textarea id="k_msg" name="nachricht" required placeholder="Worum geht’s? * Status (Idee/Manuskript/fertig), Genre, Zielmarkt (DE/TR), Zeitraum, Fragen…"></textarea>
             </div>
 
             <div class="ct-actions">
@@ -175,7 +206,7 @@
 
           <div class="ct-side-small">
             Du willst direkt ein Paket zusammenstellen?
-            <a href="/de/konfigurator/">Konfigurator starten →</a>
+            <a href="/de/pakete/">Pakete entdecken →</a>
           </div>
         </aside>
 
@@ -229,3 +260,4 @@
   <footer id="site-footer"></footer>
 </body>
 </html>
+
