@@ -1011,109 +1011,150 @@
   const c3 = document.getElementById("uCard3");
   if (!stack || !prevBtn || !nextBtn || !c1 || !c2 || !c3) return;
 
+  /* ✅ SAME BLOG CSV as /de/blog/index.html */
+  const SHEET_CSV_URL =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4g1gNsiyY4k2A052LR7EaVUYFqrWGWNITOPqw5bGG_PTogiP84C44VQJpKn-HC2vxHin4fTy_puU0/pub?gid=0&single=true&output=csv";
+
+  /* Fallback if CSV fails */
   const FALLBACK_ITEMS = [
     {
-      href: "/de/konfigurator/",
-      badge: "Feature",
-      type: "Tool",
+      href: "/de/blog/",
+      badge: "Update",
+      type: "Blog",
       dot: "rgba(99,102,241,.95)",
       dotGlow: "rgba(99,102,241,.20)",
       img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=300&q=70",
-      title: "Verlags-Konfigurator: Paket in 2–4 Minuten",
-      text: "Wähle pro Kategorie eine Option, sieh die Prognose und sende direkt eine unverbindliche Anfrage.",
-      date: "Diese Woche"
+      title: "Blog lädt gerade nicht",
+      text: "Bitte prüfe ob der Google Sheet Link veröffentlicht ist und ob die Spalten slug,title,excerpt,date,author,cover,tags existieren.",
+      date: "Gerade eben"
     }
   ];
 
-  const PUB_KEY = "2PACX-1vRZUfynIAecfAUcJI97u0blLg1Le7KGsVvwyJMBF5lM7VjcUDx7UBZAHL9oKsgGXVYRFN7pghkUQbqi";
-  const GID = "0";
+  /* ---------- helpers ---------- */
+  const esc = (str) => String(str ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
 
-  async function loadItemsFromSheet(){
-    const url = `https://docs.google.com/spreadsheets/d/e/${PUB_KEY}/pub?gid=${GID}&single=true&output=csv`;
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error("Sheet CSV fetch failed");
-    const csv = await res.text();
+  const norm = (s) => String(s ?? "").trim().toLowerCase();
 
-    function parseCSV(text){
-      const rows = [];
-      let row = [], cur = "", inQ = false;
-      for (let i=0; i<text.length; i++){
-        const ch = text[i];
-        const next = text[i+1];
-        if (inQ){
-          if (ch === '"' && next === '"'){ cur += '"'; i++; continue; }
-          if (ch === '"'){ inQ = false; continue; }
-          cur += ch; continue;
-        }
-        if (ch === '"'){ inQ = true; continue; }
-        if (ch === ","){ row.push(cur); cur=""; continue; }
-        if (ch === "\n"){ row.push(cur); rows.push(row); row = []; cur=""; continue; }
-        if (ch === "\r"){ continue; }
-        cur += ch;
-      }
-      if (cur.length || row.length){ row.push(cur); rows.push(row); }
-      return rows;
-    }
-
-    const rows = parseCSV(csv);
-    if (!rows.length) throw new Error("Empty CSV");
-
-    const headers = rows[0].map(h => (h || "").trim());
-    const idx = (name) => headers.indexOf(name);
-    const get = (r, name) => {
-      const i = idx(name);
-      return i >= 0 ? String(r[i] ?? "").trim() : "";
-    };
-
-    const titleKey = idx("title") >= 0 ? "title" : (idx("tittle") >= 0 ? "tittle" : "title");
-
-    const items = rows.slice(1).map(r => {
-      const item = {
-        href: get(r, "href"),
-        badge: get(r, "badge") || "Update",
-        type: get(r, "type") || "Update",
-        dot: get(r, "dot") || "rgba(99,102,241,.95)",
-        dotGlow: get(r, "dotGlow") || "rgba(99,102,241,.20)",
-        img: get(r, "img"),
-        title: get(r, titleKey),
-        text: get(r, "text"),
-        date: get(r, "date") || ""
-      };
-      if (!item.title || !item.text) return null;
-      return item;
-    }).filter(Boolean);
-
-    return items.length ? items : FALLBACK_ITEMS;
+  function splitTags(s){
+    return String(s ?? "")
+      .split(",")
+      .map(t => t.trim())
+      .filter(Boolean);
   }
 
-  let items = [...FALLBACK_ITEMS];
-  let index = 0;
-  const clampIndex = (i) => ((i % items.length) + items.length) % items.length;
+  // Robust CSV parser (quotes/commas/newlines)
+  function parseCSV(text){
+    const rows = [];
+    let row = [];
+    let cur = "";
+    let inQuotes = false;
+
+    for(let i=0;i<text.length;i++){
+      const c = text[i];
+      const n = text[i+1];
+
+      if(inQuotes){
+        if(c === '"' && n === '"'){ cur += '"'; i++; }
+        else if(c === '"'){ inQuotes = false; }
+        else { cur += c; }
+      } else {
+        if(c === '"'){ inQuotes = true; }
+        else if(c === ","){ row.push(cur); cur=""; }
+        else if(c === "\n"){ row.push(cur); rows.push(row); row=[]; cur=""; }
+        else if(c === "\r"){ /* ignore */ }
+        else { cur += c; }
+      }
+    }
+    row.push(cur);
+    rows.push(row);
+    return rows.filter(r => r.some(cell => String(cell).trim() !== ""));
+  }
 
   function cardMarkup(item){
+    const safeImg = item.img ? esc(item.img) : "";
     return `
       <div class="u-top">
         <span class="u-pill">
           <span class="u-dot" style="background:${item.dot}; box-shadow:0 0 0 3px ${item.dotGlow}"></span>
-          <span class="u-tag">${item.badge}</span>
+          <span class="u-tag">${esc(item.badge)}</span>
         </span>
-        <span style="opacity:.85; font-weight:600;">${item.type}</span>
+        <span style="opacity:.85; font-weight:600;">${esc(item.type)}</span>
       </div>
 
       <div class="u-mid">
-        <div class="u-img" style="background-image:url('${item.img}');"></div>
+        <div class="u-img" style="${safeImg ? `background-image:url('${safeImg}')` : ""}"></div>
         <div class="u-text">
-          <h3>${item.title}</h3>
-          <p>${item.text}</p>
+          <h3>${esc(item.title)}</h3>
+          <p>${esc(item.text)}</p>
         </div>
       </div>
 
-      <div class="u-date">${item.date}</div>
+      <div class="u-date">${esc(item.date)}</div>
     `;
   }
 
+  /* ---------- load from BLOG CSV ---------- */
+  async function loadLatest3FromBlogCSV(){
+    const res = await fetch(SHEET_CSV_URL, { cache: "no-store" });
+    if(!res.ok) throw new Error("Blog CSV fetch failed");
+    const csv = await res.text();
+
+    const rows = parseCSV(csv);
+    if(rows.length < 2) throw new Error("CSV has no data rows");
+
+    const header = rows[0].map(h => norm(h));
+    const idx = (name) => header.indexOf(norm(name));
+    const val = (r, name) => {
+      const i = idx(name);
+      return i >= 0 ? String(r[i] ?? "").trim() : "";
+    };
+
+    const posts = rows.slice(1).map(r => ({
+      slug:    val(r, "slug"),
+      title:   val(r, "title"),
+      excerpt: val(r, "excerpt"),
+      date:    val(r, "date"),
+      author:  val(r, "author"),
+      cover:   val(r, "cover"),
+      tags:    splitTags(val(r, "tags"))
+    }))
+    .filter(p => p.slug && p.title);
+
+    // Sort newest first (same as blog page)
+    posts.sort((a,b) => (b.date || "").localeCompare(a.date || ""));
+
+    // Take only newest 3
+    const latest = posts.slice(0, 3);
+    if(!latest.length) return FALLBACK_ITEMS;
+
+    // Map to card schema
+    return latest.map((p, i) => {
+      const primaryTag = p.tags?.[0] || "Update";
+      return {
+        href: `/de/blog/post.html?slug=${encodeURIComponent(p.slug)}`,
+        badge: primaryTag,
+        type: "Blog",
+        dot: "rgba(99,102,241,.95)",
+        dotGlow: "rgba(99,102,241,.20)",
+        img: p.cover || "",
+        title: p.title,
+        text: p.excerpt || "",
+        date: p.date || ""
+      };
+    });
+  }
+
+  /* ---------- render + nav (cycles within the 3) ---------- */
+  let items = [...FALLBACK_ITEMS];
+  let index = 0;
+
+  const clampIndex = (i) => ((i % items.length) + items.length) % items.length;
+
   function render(){
-    if (!items.length) return;
+    if(!items.length) return;
+
     const a = items[clampIndex(index)];
     const b = items[clampIndex(index + 1)];
     const c = items[clampIndex(index + 2)];
@@ -1129,7 +1170,7 @@
 
   let isAnimating = false;
   function switchTo(newIndex){
-    if (isAnimating || items.length <= 1) return;
+    if(isAnimating || items.length <= 1) return;
     isAnimating = true;
 
     stack.classList.add("is-switching");
@@ -1149,39 +1190,26 @@
   document.addEventListener("keydown", (e) => {
     const active = document.activeElement;
     const inUpdates = active && (active.closest && active.closest("#wissen"));
-    if (!inUpdates) return;
-    if (e.key === "ArrowLeft") prevBtn.click();
-    if (e.key === "ArrowRight") nextBtn.click();
+    if(!inUpdates) return;
+    if(e.key === "ArrowLeft") prevBtn.click();
+    if(e.key === "ArrowRight") nextBtn.click();
   });
 
+  // initial render
   render();
-  loadItemsFromSheet()
+
+  // load newest 3
+  loadLatest3FromBlogCSV()
     .then((loaded) => { items = loaded; index = 0; render(); })
-    .catch((err) => { console.warn("Updates: Google Sheet load failed, using fallback.", err); items = [...FALLBACK_ITEMS]; index = 0; render(); });
+    .catch((err) => {
+      console.warn("Updates: Blog CSV load failed, using fallback.", err);
+      items = [...FALLBACK_ITEMS];
+      index = 0;
+      render();
+    });
 })();
 </script>
 
-  <footer id="site-footer"></footer>
-
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      if (window.PagefindUI) new PagefindUI({ element: "#search", showSubResults: true });
-    });
-  </script>
-
-  <script>
-(() => {
-  const footer = document.querySelector(".dv-footer");
-  if (!footer) return;
-
-  let next = footer.nextElementSibling;
-  while (next) {
-    const toRemove = next;
-    next = next.nextElementSibling;
-    toRemove.remove();
-  }
-})();
-  </script>
 
   <!-- ✅ Auto-moving Add-on Carousel -->
   <script>
