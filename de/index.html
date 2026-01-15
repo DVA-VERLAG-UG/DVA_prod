@@ -11,499 +11,21 @@
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
-  <!-- Global styles -->
+  <!-- ✅ Global styles -->
   <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- ✅ Header generates its own CSS + Social Bar -->
   <script src="/js/header.js" defer></script>
 
-  <!-- Footer -->
+  <!-- Footer injection -->
   <script src="/js/footer.js" defer></script>
 
-  <!-- Pagefind (needed for header search import + optional UI below) -->
+  <!-- Pagefind -->
   <script src="/_pagefind/pagefind.js" defer></script>
 
-  <style>
-    .seo-wrap{
-      background:
-        radial-gradient(900px 520px at 15% 20%, rgba(139,92,246,.18), transparent 60%),
-        radial-gradient(700px 420px at 85% 40%, rgba(99,102,241,.16), transparent 62%),
-        linear-gradient(180deg, rgba(10,12,20,.85), rgba(10,12,20,.92));
-      padding: 70px 0 70px;
-    }
-    .seo-wrap-inner{
-      width:min(1180px, calc(100% - 40px));
-      margin:0 auto;
-    }
-    .seo-wrap .seo-section{
-      background: transparent !important;
-      padding-top: 28px;
-    }
-    .seo-wrap .quote-section{
-      padding: 0 0 10px;
-    }
-    .quote-avatar img{
-      object-fit: cover;
-      object-position: center top;
-      transform: translateY(6px);
-    }
-
-    /* =========================================================
-       Updates cards stack (unchanged)
-       ========================================================= */
-    .updates-section{ padding: 18px 0 0; }
-    .updates-inner{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 22px;
-      align-items:center;
-    }
-    @media (max-width: 900px){
-      .updates-inner{ grid-template-columns: 1fr; gap: 18px; }
-    }
-    .updates-head .seo-kicker{ margin-bottom: 10px; }
-    .updates-title{
-      font-size: clamp(26px, 3.2vw, 40px);
-      line-height: 1.1;
-      margin: 0 0 10px;
-      color: var(--ink, #fff);
-    }
-    .updates-sub{ margin: 0 0 16px; opacity: .9; max-width: 55ch; }
-    .updates-actions{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-      align-items:center;
-    }
-
-    .updates-nav{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      margin-left: auto;
-    }
-    @media (max-width: 900px){ .updates-nav{ margin-left: 0; } }
-    .updates-btn{
-      width: 44px; height: 44px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.08);
-      color: rgba(255,255,255,.92);
-      backdrop-filter: blur(10px) saturate(1.15);
-      -webkit-backdrop-filter: blur(10px) saturate(1.15);
-      box-shadow: 0 14px 30px rgba(0,0,0,.18);
-      cursor: pointer;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease;
-      display:flex; align-items:center; justify-content:center;
-      user-select:none;
-    }
-    .updates-btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.10);
-      border-color: rgba(255,255,255,.28);
-    }
-    .updates-btn:active{ transform: translateY(0); }
-    .updates-btn:disabled{ opacity:.45; cursor:not-allowed; }
-
-    .updates-stack{
-      display:grid;
-      place-items:center;
-      min-height: 350px;
-      position: relative;
-      grid-template-areas: "stack";
-    }
-
-    .u-card{
-      --t: skewY(-8deg);
-      --y: 0px;
-
-      position: relative;
-      display:flex;
-      flex-direction: column;
-      justify-content: space-between;
-      width: min(380px, 92vw);
-      height: 190px;
-      padding: 14px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.08);
-      backdrop-filter: blur(10px) saturate(1.15);
-      -webkit-backdrop-filter: blur(10px) saturate(1.15);
-      box-shadow: 0 18px 60px rgba(0,0,0,.20);
-      transform: var(--t) translateY(var(--y));
-      will-change: transform, opacity, filter;
-      transition:
-        transform .75s cubic-bezier(.16, 1, .3, 1),
-        opacity  .35s ease,
-        filter   .45s ease,
-        border-color .35s ease,
-        background   .35s ease;
-      text-decoration:none;
-      color: inherit;
-      overflow:hidden;
-    }
-    .u-card::after{
-      content:"";
-      position:absolute;
-      top:-6%;
-      right:-6px;
-      height:112%;
-      width: 70%;
-      background: linear-gradient(to left, rgba(10,12,20,.90), rgba(10,12,20,0));
-      pointer-events:none;
-      opacity: .65;
-    }
-
-    .u-top{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      position:relative;
-      z-index: 1;
-    }
-    .u-pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 6px;
-      font-size: 13px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.10);
-      white-space: nowrap;
-    }
-    .u-dot{
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(99,102,241,.9);
-      box-shadow: 0 0 0 3px rgba(99,102,241,.20);
-    }
-    .u-tag{ font-weight: 600; opacity:.95; }
-
-    .u-mid{
-      display:flex;
-      gap: 12px;
-      align-items:flex-start;
-      position:relative;
-      z-index: 1;
-      margin-top: 8px;
-    }
-    .u-img{
-      width: 74px;
-      height: 74px;
-      border-radius: 14px;
-      flex: 0 0 auto;
-      background: center/cover no-repeat;
-      border: 1px solid rgba(255,255,255,.16);
-      box-shadow: 0 10px 24px rgba(0,0,0,.18);
-    }
-    .u-text h3{ margin: 0; font-size: 16px; line-height: 1.25; }
-    .u-text p{
-      margin: 8px 0 0;
-      font-size: 14px;
-      opacity: .86;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .u-date{
-      position:relative;
-      z-index: 1;
-      font-size: 13px;
-      opacity: .75;
-      margin-top: 10px;
-    }
-
-    .u1{ grid-area: stack; --t: skewY(-8deg); }
-    .u2{
-      grid-area: stack;
-      --t: translateX(54px) translateY(18px) skewY(-8deg);
-      filter: grayscale(1);
-    }
-    .u3{
-      grid-area: stack;
-      --t: translateX(108px) translateY(36px) skewY(-8deg);
-      filter: grayscale(1);
-      opacity: .95;
-    }
-
-    .u1:hover{ --y: -16px; border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.10); }
-    .u2:hover{ --y: -16px; filter: grayscale(0); border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.10); }
-    .u3:hover{ --y: -16px; filter: grayscale(0); border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.10); }
-
-    .updates-stack.is-switching .u-card{
-      --y: 10px;
-      opacity: .82;
-      filter: grayscale(1);
-    }
-
-    @media (max-width: 520px){
-      .u2{ --t: translateX(28px) translateY(16px) skewY(-8deg); }
-      .u3{ --t: translateX(56px) translateY(32px) skewY(-8deg); }
-      .updates-stack{ min-height: 330px; }
-      .u-card{ height: 198px; }
-    }
-
-    /* =========================================================
-       ✅ CONFIGURATOR PREVIEW: LIGHT / GLASSY (color match)
-       ========================================================= */
-
-    .cfg-preview{ position: relative; isolation: isolate; }
-
-    /* Soft glass behind carousel (match teaser card) */
-    .cfg-preview::before{
-      content:"";
-      position:absolute;
-      inset: 10px 10px 12px 10px;
-      border-radius: 22px;
-      background:
-        radial-gradient(520px 320px at 20% 18%, rgba(139,92,246,.10), transparent 62%),
-        radial-gradient(520px 320px at 80% 10%, rgba(99,102,241,.08), transparent 62%),
-        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.38));
-      border: 1px solid rgba(15,23,42,.10);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.55),
-        0 22px 60px rgba(2,16,41,.12);
-      z-index: 0;
-      pointer-events:none;
-    }
-
-    .cfg-preview-carousel{
-      position: relative;
-      z-index: 1;
-      margin-top: 10px;
-      border-radius: 22px;
-      border: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.55);
-      backdrop-filter: blur(14px) saturate(1.15);
-      -webkit-backdrop-filter: blur(14px) saturate(1.15);
-      box-shadow:
-        0 18px 50px rgba(2,16,41,.14),
-        0 6px 16px rgba(2,16,41,.10);
-      overflow: hidden;
-      color: #0f172a; /* darker text = readable */
-    }
-
-    .cfg-car-head{
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid rgba(15,23,42,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.45));
-    }
-    .cfg-car-kicker{
-      font-size: 11px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: rgba(15,23,42,.62);
-    }
-    .cfg-car-title{
-      margin: 8px 0 0;
-      font-size: 16px;
-      font-weight: 900;
-      color: rgba(15,23,42,.92);
-      letter-spacing: .01em;
-    }
-    .cfg-car-sub{
-      margin: 8px 0 0;
-      font-size: 13.5px;
-      color: rgba(15,23,42,.68);
-      max-width: 58ch;
-    }
-
-    .cfg-car-viewport{ overflow: hidden; padding: 14px 14px 12px; }
-
-    .cfg-car-track{
-      display:flex;
-      gap: 14px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      padding-bottom: 8px;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-x: contain;
-    }
-
-    .cfg-car-track:focus{ outline: none; }
-    .cfg-car-track::-webkit-scrollbar{ height: 8px; }
-    .cfg-car-track::-webkit-scrollbar-thumb{ background: rgba(15,23,42,.18); border-radius: 999px; }
-    .cfg-car-track::-webkit-scrollbar-track{ background: rgba(15,23,42,.06); border-radius: 999px; }
-
-    .cfg-addon{
-      scroll-snap-align: start;
-      flex: 0 0 auto;
-      width: min(340px, 84vw);
-      border-radius: 18px;
-      border: 1px solid rgba(15,23,42,.10);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.50));
-      box-shadow:
-        0 14px 34px rgba(2,16,41,.14),
-        0 6px 14px rgba(2,16,41,.08);
-      padding: 16px 16px;
-      position: relative;
-      overflow: hidden;
-      transition: transform .20s ease, border-color .20s ease, background .20s ease;
-      color: rgba(15,23,42,.92);
-    }
-
-    .cfg-addon::before{
-      content:"";
-      position:absolute;
-      inset:-25%;
-      background:
-        radial-gradient(420px 220px at 18% 18%, rgba(139,92,246,.12), transparent 62%),
-        radial-gradient(420px 220px at 82% 12%, rgba(99,102,241,.10), transparent 62%);
-      opacity: .55;
-      pointer-events:none;
-    }
-
-    .cfg-addon:hover{
-      transform: translateY(-3px);
-      border-color: rgba(15,23,42,.16);
-      background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.56));
-    }
-
-    .cfg-addon-top{
-      position:relative;
-      z-index: 1;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .cfg-addon-badge{
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
-      font-size: 12.5px;
-      padding: 7px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.55);
-      white-space: nowrap;
-      color: rgba(15,23,42,.82);
-    }
-
-    .cfg-addon-ico{
-      width: 30px;
-      height: 30px;
-      border-radius: 12px;
-      display:grid;
-      place-items:center;
-      border: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.75);
-      box-shadow: 0 10px 22px rgba(2,16,41,.10);
-      font-size: 15px;
-      line-height: 1;
-    }
-
-    .cfg-addon-for{
-      font-size: 12px;
-      opacity: .72;
-      font-weight: 800;
-      text-align:right;
-      white-space: nowrap;
-      color: rgba(15,23,42,.68);
-    }
-
-    .cfg-addon h3{
-      position:relative;
-      z-index: 1;
-      margin: 8px 0 0;
-      font-size: 16px;
-      line-height: 1.22;
-      letter-spacing: .01em;
-      color: rgba(15,23,42,.92);
-      text-shadow: none;
-    }
-
-    .cfg-addon p{
-      position:relative;
-      z-index: 1;
-      margin: 10px 0 0;
-      font-size: 13.5px;
-      line-height: 1.45;
-      color: rgba(15,23,42,.70);
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .cfg-car-nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      padding: 10px 14px 14px;
-      border-top: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.40);
-    }
-
-    .cfg-car-btns{ display:flex; gap: 10px; align-items:center; }
-
-    .cfg-car-btn{
-      width: 46px;
-      height: 46px;
-      border-radius: 999px;
-      border: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.70);
-      color: rgba(15,23,42,.88);
-      cursor: pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      user-select:none;
-      box-shadow: 0 10px 22px rgba(2,16,41,.10);
-      transition: transform .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease;
-    }
-    .cfg-car-btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.86);
-      border-color: rgba(15,23,42,.16);
-    }
-    .cfg-car-btn:disabled{ opacity:.45; cursor:not-allowed; }
-
-    .cfg-car-dots{
-      display:flex;
-      gap: 8px;
-      align-items:center;
-      justify-content:flex-end;
-      flex-wrap: wrap;
-    }
-    .cfg-dot{
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: rgba(15,23,42,.18);
-      border: 1px solid rgba(15,23,42,.10);
-      cursor: pointer;
-      transition: transform .18s ease, background .18s ease, opacity .18s ease;
-      opacity: .9;
-    }
-    .cfg-dot.is-active{
-      background: rgba(99,102,241,.95);
-      border-color: rgba(99,102,241,.30);
-      transform: scale(1.18);
-      opacity: 1;
-    }
-
-    @media (max-width: 520px){
-      .cfg-car-head{ padding: 14px 14px 12px; }
-      .cfg-car-viewport{ padding: 12px 12px 10px; }
-      .cfg-car-nav{ padding: 10px 12px 14px; }
-      .cfg-addon{ width: min(320px, 88vw); }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      .cfg-car-track{ scroll-behavior: auto; }
-      .cfg-addon, .cfg-car-btn{ transition: none; }
-    }
-  </style>
+  <!-- ✅ IMPORTANT:
+       Do NOT add inline CSS that resets .cfg-* or .vk-*,
+       otherwise your style.css section styles won’t show. -->
 </head>
 
 <body>
@@ -512,179 +34,245 @@
 
   <main>
 
-<section class="hero" id="top">
-  <div class="hero-content">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-content">
 
-    <div class="hero-copy">
-      <div class="kicker anim d1">DVAYD Publishing</div>
-      <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
+        <div class="hero-copy">
+          <div class="kicker anim d1">DVAYD Publishing</div>
+          <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
 
-      <p class="sub anim d3">
-        Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
-      </p>
+          <p class="sub anim d3">
+            Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
+          </p>
 
-      <div class="actions anim d4">
-        <a href="/de/pakete/" class="btn primary">Jetzt starten</a>
-        <a href="/de/pakete/" class="btn ghost">Pakete entdecken</a>
-      </div>
-    </div>
-
-    <div class="hero-contact-box anim d5">
-      <div class="hero-contact-head">
-        <strong>Unverbindlich anfragen</strong>
-        <span>Wir melden uns kurzfristig zurück.</span>
-      </div>
-
-      <div class="hero-contact-success" id="heroSuccess" style="display:none; margin-top:12px;">
-        <div style="padding:12px 14px; border-radius:14px; background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.25);">
-          <strong>Ihre Nachricht wurde gesendet.</strong>
-          <div style="opacity:.9; margin-top:4px;">Vielen Dank! Wir melden uns zeitnah zurück.</div>
+          <div class="actions anim d4">
+            <a href="/de/pakete/" class="btn primary">Jetzt starten</a>
+            <a href="/de/pakete/" class="btn ghost">Pakete entdecken</a>
+          </div>
         </div>
+
+        <div class="hero-contact-box anim d5">
+          <div class="hero-contact-head">
+            <strong>Unverbindlich anfragen</strong>
+            <span>Wir melden uns kurzfristig zurück.</span>
+          </div>
+
+          <div class="hero-contact-success" id="heroSuccess" style="display:none; margin-top:12px;">
+            <div style="padding:12px 14px; border-radius:14px; background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.25);">
+              <strong>Ihre Nachricht wurde gesendet.</strong>
+              <div style="opacity:.9; margin-top:4px;">Vielen Dank! Wir melden uns zeitnah zurück.</div>
+            </div>
+          </div>
+
+          <form
+            class="hero-contact-form"
+            id="heroContactForm"
+            name="hero-kontakt"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+          >
+            <input type="hidden" name="form-name" value="hero-kontakt" />
+            <p style="display:none">
+              <label>Don’t fill this out: <input name="bot-field" /></label>
+            </p>
+
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="E-Mail" required>
+
+            <button type="submit" class="btn primary">Kontakt aufnehmen</button>
+          </form>
+        </div>
+
       </div>
 
-      <form
-        class="hero-contact-form"
-        id="heroContactForm"
-        name="hero-kontakt"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-      >
-        <input type="hidden" name="form-name" value="hero-kontakt" />
-        <p style="display:none">
-          <label>Don’t fill this out: <input name="bot-field" /></label>
-        </p>
+      <script>
+        (function () {
+          const form = document.getElementById("heroContactForm");
+          const success = document.getElementById("heroSuccess");
+          if (!form) return;
 
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="email" name="email" placeholder="E-Mail" required>
-
-        <button type="submit" class="btn primary">Kontakt aufnehmen</button>
-      </form>
-    </div>
-
-  </div>
-
-  <script>
-    (function () {
-      const form = document.getElementById("heroContactForm");
-      const success = document.getElementById("heroSuccess");
-      if (!form) return;
-
-      function encode(data) {
-        return new URLSearchParams(data).toString();
-      }
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const btn = form.querySelector('button[type="submit"]');
-        const origText = btn ? btn.textContent : "";
-        if (btn) {
-          btn.disabled = true;
-          btn.textContent = "Senden…";
-        }
-
-        try {
-          const formData = new FormData(form);
-          const payload = {};
-          formData.forEach((v, k) => payload[k] = v);
-
-          const res = await fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: encode(payload)
-          });
-
-          if (!res.ok) throw new Error("Netlify submit failed");
-
-          form.reset();
-          if (success) success.style.display = "block";
-
-          setTimeout(() => {
-            if (success) success.style.display = "none";
-          }, 6000);
-
-        } catch (err) {
-          alert("Senden fehlgeschlagen. Bitte versuche es erneut.");
-          console.error(err);
-        } finally {
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = origText;
+          function encode(data) {
+            return new URLSearchParams(data).toString();
           }
-        }
-      });
-    })();
-  </script>
-</section>
 
+          form.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-    <!-- ========================= 
-      CTA SECTION: Konfigurator Teaser
-      ========================= -->
-    <section class="cfg-teaser" aria-labelledby="cfg-teaser-title">
-      <div class="cfg-wrap">
-        <div class="cfg-card">
-          <div class="cfg-copy">
-            <p class="cfg-kicker">Neu</p>
-            <h2 id="cfg-teaser-title" class="cfg-title">Verlags-Konfigurator</h2>
-            <p class="cfg-sub">
-              Stelle dein Publishing-Paket in wenigen Minuten zusammen: pro Kategorie eine Option auswählen,
-              Prognose sehen, und danach direkt eine unverbindliche Terminanfrage senden.
-            </p>
+            const btn = form.querySelector('button[type="submit"]');
+            const origText = btn ? btn.textContent : "";
+            if (btn) {
+              btn.disabled = true;
+              btn.textContent = "Senden…";
+            }
 
-            <ul class="cfg-bullets">
-              <li>✅ Klarer Paket-Überblick (Starter / Plus / Deluxe / EU-TR)</li>
-              <li>📈 Verkaufs-Prognose &amp; transparente Auswahl je Kategorie</li>
-              <li>🧾 Am Ende: Anfrage per Netlify Forms (ohne Verpflichtung)</li>
-            </ul>
+            try {
+              const formData = new FormData(form);
+              const payload = {};
+              formData.forEach((v, k) => payload[k] = v);
 
-            <div class="cfg-actions">
-              <a class="cfg-btn primary" href="/de/konfigurator/">
-                Konfigurator starten
-                <span aria-hidden="true">→</span>
-              </a>
-              <a class="cfg-btn ghost" href="/de/kontakt/">
-                Erst kurz beraten lassen
-              </a>
-            </div>
+              const res = await fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: encode(payload)
+              });
 
-            <p class="cfg-note">
-              Dauer: ca. 2–4 Minuten · Keine Registrierung · Unverbindlich
-            </p>
-          </div>
+              if (!res.ok) throw new Error("Netlify submit failed");
 
-          <div class="cfg-preview">
-            <div class="cfg-preview-carousel" aria-label="Zubuchbare Module als Carousel">
-              <div class="cfg-car-head">
-                <div class="cfg-car-kicker">ZUBUCHBAR</div>
-                <div class="cfg-car-title">Module, die du flexibel ergänzen kannst</div>
-                <div class="cfg-car-sub">Das Carousel bewegt sich automatisch. Hover/Touch pausiert. Pfeile & Punkte funktionieren ebenfalls.</div>
-              </div>
+              form.reset();
+              if (success) success.style.display = "block";
 
-              <div class="cfg-car-viewport">
-                <div class="cfg-car-track" id="cfgAddOnTrack" aria-label="Add-on Slider" tabindex="0"></div>
-              </div>
+              setTimeout(() => {
+                if (success) success.style.display = "none";
+              }, 6000);
 
-              <div class="cfg-car-nav" aria-label="Carousel Navigation">
-                <div class="cfg-car-btns">
-                  <button class="cfg-car-btn" id="cfgAddPrev" type="button" aria-label="Vorheriges Add-on">‹</button>
-                  <button class="cfg-car-btn" id="cfgAddNext" type="button" aria-label="Nächstes Add-on">›</button>
-                </div>
-                <div class="cfg-car-dots" id="cfgAddDots" aria-label="Positionspunkte"></div>
-              </div>
-            </div>
+            } catch (err) {
+              alert("Senden fehlgeschlagen. Bitte versuche es erneut.");
+              console.error(err);
+            } finally {
+              if (btn) {
+                btn.disabled = false;
+                btn.textContent = origText;
+              }
+            }
+          });
+        })();
+      </script>
+    </section>
 
-            <div class="cfg-preview-bottom">
-              <div class="cfg-chip">Zielgruppe</div>
-              <div class="cfg-chip">Korrektur / Lektorat</div>
-              <div class="cfg-chip">Cover Design</div>
-              <div class="cfg-chip">Satz (Layout)</div>
-            </div>
-          </div>
+    <!-- =========================================================
+         ✅ CFG TEASER: full-width marquee + overlay glass card
+         (HTML UPDATED: CTAs are OUTSIDE the glass card now)
+         ========================================================= -->
+    <section class="cfg-teaser cfg-liquid" aria-labelledby="cfg-teaser-title">
+
+      <!-- Full-width moving carousel (background layer) -->
+      <div class="cfg-marquee" aria-hidden="true">
+        <div class="cfg-marquee-band">
+          <div class="cfg-marquee-track" id="cfgAddOnTrack"></div>
         </div>
       </div>
+
+      <!-- Overlay layer -->
+      <div class="cfg-overlay">
+
+        <!-- Glass card -->
+        <div class="cfg-overlay-card">
+          <p class="cfg-kicker">Neu</p>
+          <h2 id="cfg-teaser-title" class="cfg-title">Verlags-Konfigurator</h2>
+          <p class="cfg-sub">
+            Stelle dein Publishing-Paket in wenigen Minuten zusammen: pro Kategorie eine Option auswählen,
+            Prognose sehen, und danach direkt eine unverbindliche Terminanfrage senden.
+          </p>
+
+          <ul class="cfg-bullets">
+            <li>✅ Klarer Paket-Überblick (Starter / Plus / Deluxe / EU-TR)</li>
+            <li>📈 Verkaufs-Prognose &amp; transparente Auswahl je Kategorie</li>
+            <li>🧾 Am Ende: Anfrage per Netlify Forms (ohne Verpflichtung)</li>
+          </ul>
+
+          <p class="cfg-note">Dauer: ca. 2–4 Minuten · Keine Registrierung · Unverbindlich</p>
+        </div>
+
+        <!-- ✅ CTAs moved OUTSIDE the card (so CSS can place bottom-right cleanly) -->
+        <div class="cfg-actions" aria-label="Konfigurator CTAs">
+          <a class="cfg-btn primary" href="/de/konfigurator/">
+            Konfigurator starten <span aria-hidden="true">→</span>
+          </a>
+          <a class="cfg-btn ghost" href="/de/kontakt/">
+            Erst kurz beraten lassen
+          </a>
+        </div>
+
+      </div>
+
+      <!-- JS: render add-ons + duplicate for seamless marquee -->
+      <script>
+      (function(){
+        const track = document.getElementById("cfgAddOnTrack");
+        if(!track) return;
+
+        const ADDONS = [
+          {
+            badge:"Add-on", ico:"✍️", title:"Lektorat (1–2 Runden)",
+            desc:"Stilsicheres Lektorat für besseren Lesefluss – ideal vor Print & eBook.",
+            for:"Plus / Premium",
+            img:"https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Add-on", ico:"🧩", title:"Print-Upgrade",
+            desc:"Wenn du zunächst als eBook startest und Print später nachziehen willst.",
+            for:"Starter",
+            img:"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Design", ico:"🎨", title:"Custom Cover Design",
+            desc:"Recherche + Entwürfe + Feedback – stärkerer Look und bessere Marktwirkung.",
+            for:"Plus / Premium",
+            img:"https://images.unsplash.com/photo-1526481280695-3c687fd5432c?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Alle", ico:"🧾", title:"ISBN (Eigen / Verlag)",
+            desc:"Eigen-ISBN oder Verlags-ISBN – je nach Ziel, Shops und Branding.",
+            for:"Alle",
+            img:"https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Add-on", ico:"📝", title:"Klappentext / Copy",
+            desc:"Verkaufsstark, passend zu Genre & Zielgruppe – klare Struktur als Leitplanke.",
+            for:"Alle",
+            img:"https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Optional", ico:"📣", title:"Marketing-Bausteine",
+            desc:"Kampagnen-Setup & Beratung – je nach Budget und Ziel sauber skalierbar.",
+            for:"Optional",
+            img:"https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Optional", ico:"📰", title:"PR / Social Media",
+            desc:"Erweiterbar je nach Launch-Plan: Posts, Presse-Text, Medien-Ansprache.",
+            for:"Optional",
+            img:"https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=70"
+          }
+        ];
+
+        const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({
+          "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+        }[c]));
+
+        function addonCard(a){
+          const safeBg = a.img ? `--bg: url('${esc(a.img)}');` : "";
+          return `
+            <article class="cfg-addon" style="${safeBg}" role="group" aria-label="${esc(a.title)}">
+              <div class="cfg-addon-top">
+                <span class="cfg-addon-badge">
+                  <span class="cfg-addon-ico" aria-hidden="true">${esc(a.ico)}</span>
+                  <span>${esc(a.badge)}</span>
+                </span>
+                <span class="cfg-addon-for">${esc(a.for)}</span>
+              </div>
+              <h3>${esc(a.title)}</h3>
+              <p>${esc(a.desc)}</p>
+            </article>
+          `;
+        }
+
+        function render(){
+          const doubled = [...ADDONS, ...ADDONS];
+          track.innerHTML = doubled.map(addonCard).join("");
+        }
+
+        render();
+      })();
+      </script>
+
     </section>
+
+    <!-- =========================================================
+         EXISTING SECTIONS (UNCHANGED)
+         ========================================================= -->
 
     <section class="placeholder-section" id="placeholder">
       <div class="placeholder-sticky">
@@ -835,25 +423,15 @@
             <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
             <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
             <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
-
-            <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
-            <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
-            <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
-            <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
-            <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
-
-            <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
-            <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
-            <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
-            <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
-            <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- SEO WRAP + QUOTE + UPDATES -->
     <section class="seo-wrap" id="wissen-block">
       <div class="seo-wrap-inner">
+
         <section class="quote-section" id="statement">
           <div class="quote-inner">
             <div class="quote-card" role="group" aria-label="Statement">
@@ -883,37 +461,40 @@
           </div>
         </section>
 
-<section class="updates-section" id="wissen">
-  <div class="updates-inner">
+        <section class="updates-section" id="wissen">
+          <div class="updates-inner">
 
-    <div class="updates-head">
-      <div class="seo-kicker">Sektion 6 • Updates</div>
-      <h2 class="updates-title">Neuigkeiten von DVAYD.</h2>
-      <p class="updates-sub">
-        Kurze Updates, neue Artikel und wichtige Hinweise – kompakt auf einer Karte.
-      </p>
+            <div class="updates-head">
+              <div class="seo-kicker">Sektion 6 • Updates</div>
+              <h2 class="updates-title">Neuigkeiten von DVAYD.</h2>
+              <p class="updates-sub">
+                Kurze Updates, neue Artikel und wichtige Hinweise – kompakt auf einer Karte.
+              </p>
 
-      <div class="updates-actions">
-        <a class="btn primary" href="/de/blog/">Alle Updates ansehen</a>
-        <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
+              <div class="updates-actions">
+                <a class="btn primary" href="/de/blog/">Alle Updates ansehen</a>
+                <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
+              </div>
+            </div>
+
+            <div class="updates-right">
+              <div class="updates-stack" id="updatesStack" aria-label="Aktuelle Updates als Kartenstapel">
+                <a class="u-card u1" id="uCard1" href="#"></a>
+                <a class="u-card u2" id="uCard2" href="#"></a>
+                <a class="u-card u3" id="uCard3" href="#"></a>
+              </div>
+
+              <div class="updates-nav updates-nav-below" aria-label="Artikel blättern">
+                <button class="updates-btn" id="updatesPrev" type="button" aria-label="Vorheriger Artikel">‹</button>
+                <button class="updates-btn" id="updatesNext" type="button" aria-label="Nächster Artikel">›</button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
       </div>
-    </div>
-
-    <div class="updates-right">
-      <div class="updates-stack" id="updatesStack" aria-label="Aktuelle Updates als Kartenstapel">
-        <a class="u-card u1" id="uCard1" href="#"></a>
-        <a class="u-card u2" id="uCard2" href="#"></a>
-        <a class="u-card u3" id="uCard3" href="#"></a>
-      </div>
-
-      <div class="updates-nav updates-nav-below" aria-label="Artikel blättern">
-        <button class="updates-btn" id="updatesPrev" type="button" aria-label="Vorheriger Artikel">‹</button>
-        <button class="updates-btn" id="updatesNext" type="button" aria-label="Nächster Artikel">›</button>
-      </div>
-    </div>
-
-  </div>
-</section>
+    </section>
 
   </main>
 
@@ -999,8 +580,8 @@
 })();
   </script>
 
-  <!-- Updates stack script (unchanged from your version) -->
-<script>
+  <!-- Updates stack script (unchanged) -->
+  <script>
 (() => {
   const stack = document.getElementById("updatesStack");
   const prevBtn = document.getElementById("updatesPrev");
@@ -1011,11 +592,9 @@
   const c3 = document.getElementById("uCard3");
   if (!stack || !prevBtn || !nextBtn || !c1 || !c2 || !c3) return;
 
-  /* ✅ SAME BLOG CSV as /de/blog/index.html */
   const SHEET_CSV_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4g1gNsiyY4k2A052LR7EaVUYFqrWGWNITOPqw5bGG_PTogiP84C44VQJpKn-HC2vxHin4fTy_puU0/pub?gid=0&single=true&output=csv";
 
-  /* Fallback if CSV fails */
   const FALLBACK_ITEMS = [
     {
       href: "/de/blog/",
@@ -1030,7 +609,6 @@
     }
   ];
 
-  /* ---------- helpers ---------- */
   const esc = (str) => String(str ?? "").replace(/[&<>"']/g, m => ({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
   }[m]));
@@ -1044,7 +622,6 @@
       .filter(Boolean);
   }
 
-  // Robust CSV parser (quotes/commas/newlines)
   function parseCSV(text){
     const rows = [];
     let row = [];
@@ -1095,7 +672,6 @@
     `;
   }
 
-  /* ---------- load from BLOG CSV ---------- */
   async function loadLatest3FromBlogCSV(){
     const res = await fetch(SHEET_CSV_URL, { cache: "no-store" });
     if(!res.ok) throw new Error("Blog CSV fetch failed");
@@ -1122,15 +698,12 @@
     }))
     .filter(p => p.slug && p.title);
 
-    // Sort newest first (same as blog page)
     posts.sort((a,b) => (b.date || "").localeCompare(a.date || ""));
 
-    // Take only newest 3
     const latest = posts.slice(0, 3);
     if(!latest.length) return FALLBACK_ITEMS;
 
-    // Map to card schema
-    return latest.map((p, i) => {
+    return latest.map((p) => {
       const primaryTag = p.tags?.[0] || "Update";
       return {
         href: `/de/blog/post.html?slug=${encodeURIComponent(p.slug)}`,
@@ -1146,7 +719,6 @@
     });
   }
 
-  /* ---------- render + nav (cycles within the 3) ---------- */
   let items = [...FALLBACK_ITEMS];
   let index = 0;
 
@@ -1187,18 +759,8 @@
   prevBtn.addEventListener("click", () => switchTo(index - 1));
   nextBtn.addEventListener("click", () => switchTo(index + 1));
 
-  document.addEventListener("keydown", (e) => {
-    const active = document.activeElement;
-    const inUpdates = active && (active.closest && active.closest("#wissen"));
-    if(!inUpdates) return;
-    if(e.key === "ArrowLeft") prevBtn.click();
-    if(e.key === "ArrowRight") nextBtn.click();
-  });
-
-  // initial render
   render();
 
-  // load newest 3
   loadLatest3FromBlogCSV()
     .then((loaded) => { items = loaded; index = 0; render(); })
     .catch((err) => {
@@ -1208,166 +770,8 @@
       render();
     });
 })();
-</script>
-
-
-  <!-- ✅ Auto-moving Add-on Carousel -->
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const track = document.getElementById("cfgAddOnTrack");
-    const prev = document.getElementById("cfgAddPrev");
-    const next = document.getElementById("cfgAddNext");
-    const dotsWrap = document.getElementById("cfgAddDots");
-    if (!track || !prev || !next || !dotsWrap) return;
-
-    const ADDONS = [
-      { badge: "Add-on", ico: "✍️", title: "Lektorat (1–2 Runden)", desc: "Stilsicheres Lektorat für besseren Lesefluss – ideal vor Print & eBook.", for: "Plus / Premium" },
-      { badge: "Add-on", ico: "🧩", title: "Print-Upgrade", desc: "Wenn du zunächst als eBook startest und Print später nachziehen willst.", for: "Starter" },
-      { badge: "Add-on", ico: "🎨", title: "Custom Cover Design", desc: "Recherche + Entwürfe + Feedback – stärkerer Look und bessere Marktwirkung.", for: "Plus / Premium" },
-      { badge: "Add-on", ico: "🧾", title: "ISBN (Eigen / Verlag)", desc: "Eigen-ISBN oder Verlags-ISBN – je nach Ziel, Shops und Branding.", for: "Alle" },
-      { badge: "Add-on", ico: "📝", title: "Klappentext / Copy", desc: "Verkaufsstark, passend zu Genre & Zielgruppe – klare Struktur als Leitplanke.", for: "Alle" },
-      { badge: "Add-on", ico: "📣", title: "Marketing-Bausteine", desc: "Kampagnen-Setup & Beratung – je nach Budget und Ziel sauber skalierbar.", for: "Optional" },
-      { badge: "Add-on", ico: "📰", title: "PR / Social Media", desc: "Erweiterbar je nach Launch-Plan: Posts, Presse-Text, Medien-Ansprache.", for: "Optional" }
-    ];
-
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const escapeHtml = (s) => String(s || "").replace(/[&<>"']/g, (c) => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-    }[c]));
-
-    function addonCard(a){
-      return `
-        <article class="cfg-addon" role="group" aria-label="${escapeHtml(a.title)}">
-          <div class="cfg-addon-top">
-            <span class="cfg-addon-badge">
-              <span class="cfg-addon-ico" aria-hidden="true">${escapeHtml(a.ico)}</span>
-              <span>${escapeHtml(a.badge)}</span>
-            </span>
-            <span class="cfg-addon-for">${escapeHtml(a.for)}</span>
-          </div>
-          <h3>${escapeHtml(a.title)}</h3>
-          <p>${escapeHtml(a.desc)}</p>
-        </article>
-      `;
-    }
-
-    function render(){
-      track.innerHTML = ADDONS.map(addonCard).join("");
-      renderDots(ADDONS.length);
-      track.scrollLeft = 0;
-      setActiveDot(0);
-      updateButtons();
-    }
-
-    function renderDots(n){
-      dotsWrap.innerHTML = "";
-      for (let i=0; i<n; i++){
-        const d = document.createElement("button");
-        d.type = "button";
-        d.className = "cfg-dot";
-        d.setAttribute("aria-label", "Zu Add-on " + (i+1));
-        d.addEventListener("click", () => scrollToIndex(i, true));
-        dotsWrap.appendChild(d);
-      }
-    }
-
-    function step(){
-      const first = track.querySelector(".cfg-addon");
-      if (!first) return 320;
-      const r = first.getBoundingClientRect();
-      return r.width + 14;
-    }
-
-    function maxIndex(){ return Math.max(0, ADDONS.length - 1); }
-
-    function currentIndex(){
-      const s = step();
-      if (!s) return 0;
-      return Math.max(0, Math.min(maxIndex(), Math.round(track.scrollLeft / s)));
-    }
-
-    function scrollToIndex(i, userInitiated){
-      const clamped = Math.max(0, Math.min(maxIndex(), i));
-      track.scrollTo({ left: clamped * step(), behavior: prefersReduced ? "auto" : "smooth" });
-      setActiveDot(clamped);
-      if (userInitiated) restartAutoplaySoon();
-    }
-
-    function setActiveDot(i){
-      const dots = dotsWrap.querySelectorAll(".cfg-dot");
-      dots.forEach((d, idx) => d.classList.toggle("is-active", idx === i));
-    }
-
-    function updateButtons(){
-      const max = track.scrollWidth - track.clientWidth - 2;
-      prev.disabled = track.scrollLeft <= 2;
-      next.disabled = track.scrollLeft >= max;
-    }
-
-    prev.addEventListener("click", () => scrollToIndex(currentIndex() - 1, true));
-    next.addEventListener("click", () => scrollToIndex(currentIndex() + 1, true));
-
-    let raf = 0;
-    track.addEventListener("scroll", () => {
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const idx = currentIndex();
-        setActiveDot(idx);
-        updateButtons();
-      });
-    }, { passive:true });
-
-    track.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") { e.preventDefault(); prev.click(); }
-      if (e.key === "ArrowRight") { e.preventDefault(); next.click(); }
-    });
-
-    let timer = 0;
-    let resumeTimer = 0;
-
-    function stopAutoplay(){
-      if (timer) clearInterval(timer);
-      timer = 0;
-    }
-
-    function startAutoplay(){
-      if (prefersReduced) return;
-      if (timer) return;
-      timer = setInterval(() => {
-        const idx = currentIndex();
-        const nextIdx = (idx >= maxIndex()) ? 0 : (idx + 1);
-        scrollToIndex(nextIdx, false);
-      }, 3200);
-    }
-
-    function restartAutoplaySoon(){
-      if (prefersReduced) return;
-      stopAutoplay();
-      if (resumeTimer) clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(() => startAutoplay(), 5200);
-    }
-
-    ["pointerenter","focusin","touchstart"].forEach(ev => {
-      track.addEventListener(ev, () => stopAutoplay(), { passive:true });
-    });
-    ["pointerleave","focusout","touchend","touchcancel"].forEach(ev => {
-      track.addEventListener(ev, () => startAutoplay(), { passive:true });
-    });
-
-    track.addEventListener("wheel", restartAutoplaySoon, { passive:true });
-
-    render();
-    startAutoplay();
-
-    window.addEventListener("resize", () => {
-      const idx = currentIndex();
-      scrollToIndex(idx, false);
-    });
-  });
   </script>
-  
-<footer id="site-footer"></footer>
 
+  <footer id="site-footer"></footer>
 </body>
 </html>
