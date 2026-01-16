@@ -79,22 +79,38 @@ html[data-theme="dim"]{
     /* ======================
        HERO – FULL BLEED
        ====================== */
-    .hero{
-      position:relative;
-      height:100vh;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      overflow:hidden;
-    }
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:-40px 0 -40px 0;
-      background:
-        linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
-        url("/assets/images/library.jpg") center top / cover no-repeat;
-    }
+.hero{
+  position: relative;
+
+  /* ✅ was: height:100vh; min-height:100vh; */
+  min-height: 120svh;                 /* full screen, mobile-safe */
+  padding-bottom: clamp(180px, 22vh, 320px); /* makes hero taller */
+
+  display: flex;
+  align-items: center;
+
+  /* ✅ was: overflow:hidden; */
+  overflow: visible;                  /* allows overlap / no clipping */
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+
+  /* ✅ was: inset:-40px 0 -40px 0; */
+  inset: 0;
+
+  /* ✅ fade out at the bottom so you don't get a “black band” */
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.35) 0%,
+      rgba(0,0,0,.22) 45%,
+      rgba(0,0,0,0) 100%
+    ),
+    url("/assets/images/library.jpg") center top / cover no-repeat;
+}
+
     /* ======================
    HERO – DIM MODE OVERLAY
    ====================== */
@@ -3748,13 +3764,25 @@ html[data-theme="dim"] .ct-social a:hover{
   .u-card{ height: 198px; }
 }
 
+
+
+
+
+
+
+
+
+
+
 /* =========================================================
    DVAYD — Verlags-Konfigurator + Full-Width Add-on Marquee
-   UPDATE: overlay card smaller + shifted left
-           CTA buttons OUTSIDE card to the right
-           more bottom padding before section 3
+   Mobile FIX (no desktop changes):
+   - Stop “mixing/overlapping” on phones by removing the hero-lift
+   - Make overlay flow normally on small screens (no absolute stacking)
+   - Keep desktop exactly as you built it
    (REPLACE your current block with this, at END of style.css)
    ========================================================= */
+
 
 /* ---------- Section base (background image) ---------- */
 .cfg-teaser.cfg-liquid{
@@ -3762,7 +3790,7 @@ html[data-theme="dim"] .ct-social a:hover{
   isolation: isolate;
   overflow: visible;
 
-  /* ✅ add more space to the next section (section 3) */
+  /* space to next section */
   padding: clamp(18px, 3vw, 34px) 0 clamp(80px, 8vw, 120px);
 
   background:
@@ -3770,6 +3798,9 @@ html[data-theme="dim"] .ct-social a:hover{
     url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=2400&q=70");
   background-size: cover;
   background-position: center;
+
+  /* ensure section is tall enough for overlay + floating CTAs (desktop) */
+  min-height: clamp(340px, 42vh, 560px);
 }
 
 .cfg-teaser.cfg-liquid::before{
@@ -3808,7 +3839,9 @@ html[data-theme="dim"] .ct-social a:hover{
   will-change: transform;
 }
 
-.cfg-teaser.cfg-liquid:hover .cfg-marquee-track{ animation-play-state: paused; }
+.cfg-marquee:hover .cfg-marquee-track{
+  animation-play-state: paused;
+}
 
 @keyframes cfgMarquee{
   from { transform: translateX(0); }
@@ -3919,33 +3952,27 @@ html[data-theme="dim"] .ct-social a:hover{
   overflow: hidden;
 }
 
-/* ---------- Overlay (card smaller + moved left) ---------- */
+/* ---------- Overlay (desktop layout) ---------- */
 .cfg-overlay{
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
 
-  /* ✅ align content to the left instead of centered */
   display:flex;
   justify-content:flex-start;
   align-items:flex-start;
 
-  /* space from left edge; keeps responsive */
   padding: clamp(14px, 2.5vw, 22px) 0 0 clamp(14px, 4vw, 56px);
 }
 
-/* ✅ Card: smaller + slightly less blur so it feels “premium” */
 .cfg-overlay-card{
   pointer-events: auto;
 
-  /* smaller */
   width: min(720px, calc(100% - 160px));
   max-width: 720px;
 
-  /* only ONE column now (buttons are outside) */
   display:block;
-
   padding: clamp(16px, 2vw, 22px);
   border-radius: 26px;
 
@@ -3958,6 +3985,9 @@ html[data-theme="dim"] .ct-social a:hover{
     0 28px 90px rgba(0,0,0,.38),
     0 10px 30px rgba(0,0,0,.20),
     inset 0 1px 0 rgba(255,255,255,.14);
+
+  /* reserve space so floating CTAs never overlap the card (desktop only) */
+  margin-right: clamp(300px, 36vw, 360px);
 }
 
 .cfg-kicker{
@@ -3994,19 +4024,18 @@ html[data-theme="dim"] .ct-social a:hover{
   font-size: 13px;
 }
 
-/* ---------- ✅ CTA buttons OUTSIDE the card (to the right) ---------- */
-/* This targets the existing .cfg-actions element (still inside overlay) */
+/* ---------- CTA buttons (desktop: floating bottom-right) ---------- */
 .cfg-actions{
   pointer-events: auto;
 
   position: absolute;
-  right: clamp(16px, 4vw, 60px);
-  bottom: clamp(54px, 10vh, 120px);
+  right: clamp(20px, 5vw, 72px);
+  bottom: clamp(28px, 6vh, 64px);
 
   display:flex;
   flex-direction: column;
   gap: 12px;
-  align-items: stretch;
+
   width: min(280px, 34vw);
 }
 
@@ -4052,27 +4081,117 @@ html[data-theme="dim"] .ct-social a:hover{
 }
 .cfg-btn.ghost{ background: rgba(255,255,255,.08); }
 
-/* ---------- ensure section is tall enough for overlay + floating CTAs ---------- */
-.cfg-teaser.cfg-liquid{
-  min-height: clamp(340px, 42vh, 560px);
+/* =========================================================
+   HERO bleed + CFG lift (desktop)
+   ========================================================= */
+:root{
+  --cfg-lift: clamp(140px, 22vh, 220px);
+  --hero-bleed: clamp(180px, 22vh, 320px);
 }
 
-/* ---------- Mobile: stack CTAs under the card ---------- */
-@media (max-width: 900px){
+/* hero has extra space below */
+.hero{
+  position: relative;
+  overflow: visible !important;
+  padding-bottom: var(--hero-bleed) !important;
+}
+
+/* extend hero background below hero */
+.hero::before{
+  inset: 0 0 calc(-1 * var(--hero-bleed)) 0 !important;
+  z-index: 0;
+}
+
+/* keep hero content above background */
+.hero > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* cfg sits on hero background (no own bg) */
+.cfg-teaser.cfg-liquid{
+  background: transparent !important;
+}
+.cfg-teaser.cfg-liquid::before{
+  content: none !important;
+}
+
+/* lift cfg up into hero (desktop) */
+.cfg-teaser.cfg-liquid{
+  z-index: 5;
+  transform: translateY(calc(-1 * var(--cfg-lift)));
+  margin-top: calc(-1 * var(--cfg-lift));
+  padding-bottom: clamp(70px, 7vw, 110px);
+}
+
+/* =========================================================
+   ✅ MOBILE FIX — stop overlap/mixing (phones)
+   Keeps desktop unchanged.
+   ========================================================= */
+@media (max-width: 700px){
+
+  /* 1) Disable the hero-lift on phones so nothing stacks on top of each other */
+  .cfg-teaser.cfg-liquid{
+    transform: none !important;
+    margin-top: 0 !important;
+
+    /* restore a real background on mobile so it looks intentional */
+    background:
+      linear-gradient(180deg, rgba(8,10,16,.74), rgba(8,10,16,.90)),
+      url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=2400&q=70") !important;
+    background-size: cover !important;
+    background-position: center !important;
+
+    padding: 18px 0 28px !important;
+    min-height: auto !important;
+  }
+
+  .cfg-teaser.cfg-liquid::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:-20% !important;
+    background:
+      radial-gradient(900px 520px at 20% 10%, rgba(255,255,255,.08), transparent 60%),
+      radial-gradient(700px 420px at 80% 65%, rgba(255,255,255,.06), transparent 62%) !important;
+    opacity:.9 !important;
+    pointer-events:none !important;
+    z-index:0 !important;
+  }
+
+  /* 2) Make overlay flow in normal document order instead of absolute stacking */
   .cfg-overlay{
-    padding-left: 16px;
-    padding-right: 16px;
+    position: relative !important;
+    inset: auto !important;
+    padding: 14px 16px 0 !important;
+    pointer-events: auto; /* so taps work naturally */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .cfg-overlay-card{
-    width: min(760px, calc(100% - 32px));
-    max-width: none;
+    width: 100% !important;
+    max-width: none !important;
+    margin-right: 0 !important;
   }
 
+  /* 3) CTAs become a normal block below the card */
   .cfg-actions{
-    position: static;
-    width: min(520px, calc(100% - 32px));
-    margin: 14px 0 0 0;
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* 4) Slightly tighten typography so it doesn’t feel cramped */
+  .cfg-title{ font-size: clamp(22px, 7vw, 32px) !important; }
+  .cfg-sub{ max-width: none !important; }
+
+  /* 5) Reduce hero bleed on phones so the top area doesn’t feel “crowded” */
+  .hero{
+    padding-bottom: 24px !important;
+  }
+  .hero::before{
+    inset: 0 !important;
   }
 }
 
@@ -4081,48 +4200,3 @@ html[data-theme="dim"] .ct-social a:hover{
   .cfg-marquee-track{ animation: none; }
   .cfg-addon, .cfg-btn{ transition: none; }
 }
-
-/* =========================================================
-   FINAL TWEAK — Move CTA buttons to bottom-right
-   ========================================================= */
-
-/* anchor the overlay as reference */
-.cfg-overlay{
-  position: absolute;
-  inset: 0;
-}
-
-/* move CTA buttons to bottom-right of the section */
-.cfg-actions{
-  pointer-events: auto;
-
-  position: absolute;
-  right: clamp(20px, 5vw, 72px);
-  bottom: clamp(28px, 6vh, 64px);
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  width: min(280px, 34vw);
-}
-
-/* ensure they never overlap the card */
-.cfg-overlay-card{
-  margin-right: clamp(300px, 36vw, 360px);
-}
-
-/* mobile: stack CTAs under card again */
-@media (max-width: 900px){
-  .cfg-actions{
-    position: static;
-    width: 100%;
-    margin-top: 16px;
-  }
-
-  .cfg-overlay-card{
-    margin-right: 0;
-  }
-}
-
-
