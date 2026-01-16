@@ -3219,16 +3219,25 @@ html[data-theme="dim"] .ct-social img{
 html[data-theme="dim"] .ct-social a:hover{
   background: rgba(139,92,246,.22);
 }
+
+
 /* =========================================================
-   Updates – Layout fix:
-   ✅ left text uses less width
-   ✅ cards shift left (stay within border)
-   ✅ arrows can sit below stack (optional class)
-   ========================================================= */
-/* =========================================================
-   Updates – Straight cards (NO TILT) + left aligned
+   UPDATES / NEWS CARDS — CONSOLIDATED (KEEP ORIGINAL LOOK)
+   ✅ keeps the small left image (.u-img) + pill/header layout
+   ✅ cards stay straight (no skew/tilt)
+   ✅ fixes mobile right-overflow (no horizontal scroll)
+   Replace your current mixed block with THIS one block.
    ========================================================= */
 
+/* ---- Stop mobile horizontal scroll caused by translated stack cards ---- */
+
+
+/* If you have a section wrapper, this helps clip transforms safely */
+.updates-section{ overflow-x: clip; }
+
+/* =========================
+   LAYOUT
+   ========================= */
 .updates-inner{
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
@@ -3247,7 +3256,9 @@ html[data-theme="dim"] .ct-social a:hover{
   flex-wrap:wrap;
 }
 
-/* ✅ STACK: keep inside border, shift left, but NO rotateX */
+/* =========================
+   STACK (straight, left aligned)
+   ========================= */
 .updates-stack{
   position: relative;
   display: grid;
@@ -3258,33 +3269,33 @@ html[data-theme="dim"] .ct-social a:hover{
   width: min(560px, 100%);
   min-height: 420px;
 
-  /* keep the left nudge */
+  /* desktop nudge */
   transform: translateX(-14px);
   transform-origin: center;
 
-  /* no 3D tilt */
+  /* no 3D */
   perspective: none;
   transform-style: flat;
+
+  overflow: visible;
 }
 
 /* =========================
    CARD BASE (straight)
    ========================= */
 .u-card{
+  /* stack offsets */
   --x: 0px;
   --y: 0px;
   --lift: 0px;
-  --z: 0px;
-
-  /* ✅ force straight */
-  --rx: 0deg;
-  --ry: 0deg;
-  --rz: 0deg;
 
   grid-area: stack;
   position: relative;
 
-  width: min(430px, 94vw);
+  /* KEY: never exceed viewport on mobile */
+  width: min(430px, 100%);
+  max-width: calc(100vw - 32px);
+
   height: 230px;
   padding: 16px;
 
@@ -3301,19 +3312,22 @@ html[data-theme="dim"] .ct-social a:hover{
 
   box-shadow: 0 22px 80px rgba(0,0,0,.35);
 
-  /* ✅ no rotation, only translate */
-  transform: translate3d(var(--x), calc(var(--y) + var(--lift)), var(--z));
+  /* no rotation, only translate */
+  transform: translate3d(var(--x), calc(var(--y) + var(--lift)), 0);
 
   will-change: transform, opacity;
   transition:
     transform .45s cubic-bezier(.16,1,.3,1),
     opacity .25s ease,
     background .25s ease,
-    border-color .25s ease;
+    border-color .25s ease,
+    filter .25s ease;
 
   text-decoration: none;
   color: inherit;
+
   overflow: hidden;
+  contain: paint; /* helps avoid tiny overflow in some browsers */
 }
 
 /* right fade */
@@ -3328,19 +3342,118 @@ html[data-theme="dim"] .ct-social a:hover{
 }
 
 /* =========================
-   STACK ORDER (overlap) – still stacked, but straight
+   CARD CONTENT (RESTORED: pill + image + text)
+   ========================= */
+.u-top{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.u-pill{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.10);
+  white-space: nowrap;
+}
+
+.u-dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(99,102,241,.95);
+  box-shadow: 0 0 0 3px rgba(99,102,241,.20);
+}
+
+.u-tag{
+  font-weight: 800;
+  opacity: .95;
+}
+
+.u-mid{
+  display:flex;
+  gap: 12px;
+  align-items:flex-start;
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+}
+
+/* ✅ This is the small image that disappeared before */
+.u-img{
+  width: 74px;
+  height: 74px;
+  border-radius: 14px;
+  flex: 0 0 auto;
+
+  /* expects inline style or CSS variable to set image:
+     style="background-image:url(...)" OR --img:url(...)
+  */
+  background: var(--img) center/cover no-repeat;
+  border: 1px solid rgba(255,255,255,.16);
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+}
+
+/* if you set it as background-image directly, keep it */
+.u-img[style*="background-image"]{
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.u-text{ min-width: 0; } /* prevents text pushing layout wider */
+
+.u-text h3{
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 900;
+}
+
+.u-text p{
+  margin: 8px 0 0;
+  font-size: 14px;
+  opacity: .86;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  /* prevents long words/urls causing overflow */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.u-date{
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  opacity: .75;
+  margin-top: 10px;
+}
+
+/* =========================
+   STACK ORDER (overlap)
    ========================= */
 .u1{ z-index:3; --x: 0px;   --y: 0px; }
 .u2{ z-index:2; --x: 62px;  --y: -26px; opacity:.92; filter: grayscale(.7); }
 .u3{ z-index:1; --x: 124px; --y: -52px; opacity:.82; filter: grayscale(.9); }
 
 /* =========================
-   HOVER – lift + slight scale (still straight)
+   HOVER (lift only)
    ========================= */
 .u-card:hover{
   z-index: 10;
   --lift: -24px;
-  --z: 0px;              /* keep flat */
   transform: translate3d(var(--x), calc(var(--y) + var(--lift)), 0) scale(1.02);
 
   filter: grayscale(0);
@@ -3355,7 +3468,7 @@ html[data-theme="dim"] .ct-social a:hover{
   opacity:.95;
 }
 
-/* switching */
+/* optional switching state */
 .updates-stack.is-switching .u-card{
   --lift: 12px;
   opacity:.75;
@@ -3363,407 +3476,225 @@ html[data-theme="dim"] .ct-social a:hover{
 }
 
 /* =========================
-   MOBILE
+   RESPONSIVE (NO overflow)
    ========================= */
 @media (max-width: 900px){
-  .updates-inner{ grid-template-columns: 1fr; gap: 18px; }
-  .updates-head{ max-width: 640px; }
-  .updates-stack{
-    transform: translateX(-18px);
-    min-height: 360px;
+  .updates-inner{
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
+  .updates-head{ max-width: 640px; }
+
+  /* remove negative nudge on smaller screens */
+  .updates-stack{
+    transform: none;
+    min-height: 360px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* reduce offsets so stacked cards never push out */
+  .u2{ --x: 36px; --y: -22px; }
+  .u3{ --x: 72px; --y: -44px; }
 }
 
 @media (max-width: 520px){
-  .u-card{ height: 220px; }
-  .u2{ --x: 36px; --y: -22px; }
-  .u3{ --x: 72px; --y: -44px; }
+  .u-card{
+    height: 220px;
+    padding: 14px;
+    max-width: calc(100vw - 24px); /* extra safety */
+  }
+
+  .u-img{
+    width: 68px;
+    height: 68px;
+    border-radius: 13px;
+  }
+
+  /* safest offsets for tiny screens */
+  .u2{ --x: 22px; --y: -18px; }
+  .u3{ --x: 44px; --y: -36px; }
+
+  /* avoid any accidental overflow from long text */
+  .u-text h3, .u-text p{ max-width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce){
   .u-card{ transition: none; }
 }
-/* =========================
-   UPDATES – FORCE STRAIGHT (NO TILT ANYWHERE)
-   Paste THIS at the VERY END of your CSS
-   ========================= */
 
-/* 1) Kill any 3D perspective/tilt on the container */
-#wissen .updates-stack,
-#updatesStack.updates-stack,
-.updates-stack{
-  perspective: none !important;
-  transform-style: flat !important;
-  /* falls irgendwo rotateX/rotateY auf dem stack liegt: */
-  transform: translateX(-14px) !important;
+
+
+/* =========================================================
+   UPDATES – ARROWS PURPLE HOVER (THEME MATCH)
+   Safe override – arrows only
+   ========================================================= */
+
+/* If you already have a primary purple variable, use it.
+   Fallback included so nothing breaks. */
+:root{
+  --accent-purple: var(--primary, #8b5cf6);
 }
 
-/* 2) Force cards to never rotate, even if old rules exist */
-#wissen .u-card,
-#uCard1.u-card, #uCard2.u-card, #uCard3.u-card,
-.u-card{
-  --rx: 0deg !important;
-  --ry: 0deg !important;
-  --rz: 0deg !important;
+/* Hover + focus-visible */
+.updates-btn:hover,
+.updates-btn:focus-visible{
+  background: color-mix(in srgb, var(--accent-purple) 22%, rgba(255,255,255,.08));
+  border-color: color-mix(in srgb, var(--accent-purple) 55%, rgba(255,255,255,.18));
+  color: #fff;
 
-  /* ganz wichtig: wenn irgendwo rotate(...) im transform steckt,
-     überschreiben wir transform komplett auf "nur translate" */
-  transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + var(--lift, 0px)), var(--z, 0px)) !important;
+  box-shadow:
+    0 18px 44px color-mix(in srgb, var(--accent-purple) 35%, rgba(0,0,0,.35)),
+    inset 0 1px 0 rgba(255,255,255,.18);
 }
 
-/* 3) Hover bleibt “straight” */
-#wissen .u-card:hover,
-.u-card:hover{
-  transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + var(--lift, -24px)), 0px) scale(1.02) !important;
-}
-/* =========================
-   UPDATES – FIX (position + visibility) – PASTE AT VERY END
-   ========================= */
-
-/* Layout: links Text, rechts Stack – aber Stack nicht so weit rechts */
-.updates-inner{
-  width: min(1180px, calc(100% - 48px));
-  margin: 0 auto;
-  display: grid;
-  align-items: center;
-  grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
-  gap: clamp(18px, 3vw, 44px);
+/* SVG arrow inherits color cleanly */
+.updates-btn svg{
+  stroke: currentColor;
 }
 
-/* Stack: NICHT mehr nach rechts “driften” */
-.updates-stack{
-  position: relative;
-  display: grid;
-  grid-template-areas: "stack";
-  justify-items: start;
-  align-items: center;
-
-  width: min(560px, 100%);
-  min-height: 420px;
-
-  /* vorher war’s bei dir zu viel */
-  transform: translateX(-60px) !important;
-
-  /* absolut flat */
-  perspective: none !important;
-  transform-style: flat !important;
-
-  /* wichtig: nichts abschneiden */
-  overflow: visible !important;
+/* Active (pressed) – slightly darker */
+.updates-btn:active{
+  background: color-mix(in srgb, var(--accent-purple) 28%, rgba(255,255,255,.06));
 }
 
-/* Cards: straight erzwingen (egal was vorher kommt) */
-.u-card{
-  --rx: 0deg !important;
-  --ry: 0deg !important;
-  --rz: 0deg !important;
-
-  transform: translate3d(var(--x,0px), calc(var(--y,0px) + var(--lift,0px)), 0px) !important;
-  will-change: transform;
-}
-
-/* Overlap so, dass die hinteren Karten gut sichtbar bleiben */
-.u1{ z-index: 3; --x: 0px;  --y: 0px; }
-.u2{ z-index: 2; --x: 44px; --y: -18px; opacity: .94; filter: none; }
-.u3{ z-index: 1; --x: 88px; --y: -36px; opacity: .86; filter: none; }
-
-/* Hover: nur Lift, kein Tilt */
-.u-card:hover{
-  z-index: 10;
-  --lift: -26px;
-  transform: translate3d(var(--x,0px), calc(var(--y,0px) + var(--lift,-26px)), 0px) scale(1.02) !important;
-}
-
-/* Mobile: Stack wieder “zentrierter” */
-@media (max-width: 900px){
-  .updates-inner{ grid-template-columns: 1fr; }
-  .updates-stack{
-    transform: translateX(0px) !important;
-    min-height: 360px;
-  }
+/* Disabled arrows never turn purple */
+.updates-btn:disabled:hover{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.18);
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.20);
+  color: rgba(255,255,255,.65);
 }
 
 /* =========================================================
-   UPDATES – HARD OVERRIDE (ID-based, wins against everything)
-   Paste at VERY END (or inline <style> right before </body>)
+   PATCH — Restore scroll effects + stop Updates horizontal scroll
+   Put this at the VERY END of style.css
    ========================================================= */
 
-/* 1) Stack darf nix abschneiden + muss links sitzen */
-#updatesStack{
-  position: relative !important;
-  overflow: visible !important;
+/* 1) Undo any global overflow-x that can break scroll/hero effects */
+html{ overflow-x: visible !important; }
+body{ overflow-x: visible !important; }
 
-  /* LINKS schieben (statt transform, damit Grid/Transforms nicht reinfunken) */
-  margin-left: -60px !important;
-
-  /* 3D komplett aus */
-  perspective: none !important;
-  transform-style: flat !important;
-  transform: none !important;
+/* 2) Clip ONLY the Updates section (prevents right-scroll from stacked cards) */
+.updates-section{
+  overflow-x: clip;
 }
 
-/* 2) Cards: JEDE Rotation/3D killen */
-#updatesStack .u-card,
-#uCard1, #uCard2, #uCard3{
-  /* Variablen neutralisieren */
-  --rx: 0deg !important;
-  --ry: 0deg !important;
-  --rz: 0deg !important;
-
-  /* falls irgendwo rotate(...) in transform steckt -> hart überschreiben */
-  transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + var(--lift, 0px)), 0px) !important;
-
-  /* sicherstellen, dass keine “Parent-3D” wirkt */
-  transform-style: flat !important;
-  backface-visibility: hidden !important;
+/* Fallback for browsers that don’t support overflow-x: clip */
+@supports not (overflow-x: clip){
+  .updates-section{ overflow-x: hidden; }
 }
 
-/* 3) Stack-Offsets (mehr sichtbar, weniger “weg”) */
-#uCard1{ z-index: 3 !important; --x: 0px !important;  --y: 0px !important;  opacity: 1 !important;  filter: none !important; }
-#uCard2{ z-index: 2 !important; --x: 46px !important; --y: -18px !important; opacity: .95 !important; filter: none !important; }
-#uCard3{ z-index: 1 !important; --x: 92px !important; --y: -36px !important; opacity: .88 !important; filter: none !important; }
+/* 3) Extra safety: ensure stack/card widths can’t exceed viewport */
+.updates-stack{ max-width: 100%; }
+.updates-stack *{ max-width: 100%; }
+.u-card{ max-width: calc(100vw - 32px); }
 
-/* 4) Hover: nur Lift (keine Rotation) */
-#updatesStack .u-card:hover{
-  --lift: -26px !important;
-  transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + var(--lift, 0px)), 0px) scale(1.02) !important;
-}
-
-/* 5) Mobile: margin-left wieder neutral */
-@media (max-width: 900px){
-  #updatesStack{ margin-left: 0px !important; }
-}
-
-/* =========================================================
-   SECTION 6 – UPDATES / BLOG (RESTORE FORMATTING)
-   Put this AFTER your general styles
-   ========================================================= */
-
-/* Layout */
-.updates-section{ padding: 18px 0 0; }
-
-.updates-inner{
-  display:grid;
-  grid-template-columns: 1.05fr .95fr;
-  gap: 22px;
-  align-items:center;
-}
-
-@media (max-width: 900px){
-  .updates-inner{ grid-template-columns: 1fr; gap: 18px; }
-}
-
-.updates-head .seo-kicker{ margin-bottom: 10px; }
-
-.updates-title{
-  font-size: clamp(26px, 3.2vw, 40px);
-  line-height: 1.1;
-  margin: 0 0 10px;
-  color: var(--ink, #fff);
-}
-
-.updates-sub{ margin: 0 0 16px; opacity: .9; max-width: 55ch; }
-
-.updates-actions{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  align-items:center;
-}
-
-/* Nav (arrows container) */
+/* 4) Theme-matching arrow buttons (scoped; won’t affect other buttons) */
 .updates-nav{
   display:flex;
   gap: 10px;
   align-items:center;
-  margin-left: auto;
 }
-@media (max-width: 900px){ .updates-nav{ margin-left: 0; } }
 
-/* ✅ Arrow buttons (RESTORED) */
 .updates-btn{
-  width: 44px; height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.18);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
   background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
   color: rgba(255,255,255,.92);
+
   backdrop-filter: blur(10px) saturate(1.15);
   -webkit-backdrop-filter: blur(10px) saturate(1.15);
-  box-shadow: 0 14px 30px rgba(0,0,0,.18);
+
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.12);
+
   cursor: pointer;
-  transition: transform .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease;
-  display:flex; align-items:center; justify-content:center;
-  user-select:none;
+  user-select: none;
+
+  transition:
+    transform .18s ease,
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    opacity .18s ease;
 }
+
 .updates-btn:hover{
   transform: translateY(-1px);
-  background: rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.28);
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.30);
+  box-shadow:
+    0 16px 36px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.16);
 }
+
 .updates-btn:active{ transform: translateY(0); }
-.updates-btn:disabled{ opacity:.45; cursor:not-allowed; }
 
-/* Stack area */
-.updates-stack{
-  display:grid;
-  place-items:center;
-  min-height: 350px;
-  position: relative;
-  grid-template-areas: "stack";
+.updates-btn:disabled{
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 8px 18px rgba(0,0,0,.20);
 }
 
-/* Cards (RESTORED glass + stack) */
-.u-card{
-  --t: skewY(-8deg);
-  --y: 0px;
+.updates-btn svg{
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.5;
+}
 
-  position: relative;
-  display:flex;
-  flex-direction: column;
-  justify-content: space-between;
 
-  width: min(380px, 92vw);
-  height: 190px;
-  padding: 14px 14px;
+/* =========================================================
+   UPDATES – ARROWS PURPLE HOVER (THEME MATCH)
+   Safe override – arrows only
+   ========================================================= */
 
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.18);
+/* If you already have a primary purple variable, use it.
+   Fallback included so nothing breaks. */
+:root{
+  --accent-purple: var(--primary, #8b5cf6);
+}
+
+/* Hover + focus-visible */
+.updates-btn:hover,
+.updates-btn:focus-visible{
+  background: color-mix(in srgb, var(--accent-purple) 22%, rgba(255,255,255,.08));
+  border-color: color-mix(in srgb, var(--accent-purple) 55%, rgba(255,255,255,.18));
+  color: #fff;
+
+  box-shadow:
+    0 18px 44px color-mix(in srgb, var(--accent-purple) 35%, rgba(0,0,0,.35)),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+/* SVG arrow inherits color cleanly */
+.updates-btn svg{
+  stroke: currentColor;
+}
+
+/* Active (pressed) – slightly darker */
+.updates-btn:active{
+  background: color-mix(in srgb, var(--accent-purple) 28%, rgba(255,255,255,.06));
+}
+
+/* Disabled arrows never turn purple */
+.updates-btn:disabled:hover{
   background: rgba(255,255,255,.08);
-  backdrop-filter: blur(10px) saturate(1.15);
-  -webkit-backdrop-filter: blur(10px) saturate(1.15);
-  box-shadow: 0 18px 60px rgba(0,0,0,.20);
-
-  transform: var(--t) translateY(var(--y));
-  will-change: transform, opacity, filter;
-  transition:
-    transform .75s cubic-bezier(.16, 1, .3, 1),
-    opacity  .35s ease,
-    filter   .45s ease,
-    border-color .35s ease,
-    background   .35s ease;
-
-  text-decoration:none;
-  color: inherit;
-  overflow:hidden;
+  border-color: rgba(255,255,255,.18);
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.20);
+  color: rgba(255,255,255,.65);
 }
-
-.u-card::after{
-  content:"";
-  position:absolute;
-  top:-6%;
-  right:-6px;
-  height:112%;
-  width: 70%;
-  background: linear-gradient(to left, rgba(10,12,20,.90), rgba(10,12,20,0));
-  pointer-events:none;
-  opacity: .65;
-}
-
-/* Card content */
-.u-top{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-  position:relative;
-  z-index: 1;
-}
-
-.u-pill{
-  display:inline-flex;
-  align-items:center;
-  gap: 6px;
-  font-size: 13px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.10);
-  white-space: nowrap;
-}
-
-.u-dot{
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(99,102,241,.9);
-  box-shadow: 0 0 0 3px rgba(99,102,241,.20);
-}
-
-.u-tag{ font-weight: 600; opacity:.95; }
-
-.u-mid{
-  display:flex;
-  gap: 12px;
-  align-items:flex-start;
-  position:relative;
-  z-index: 1;
-  margin-top: 8px;
-}
-
-.u-img{
-  width: 74px;
-  height: 74px;
-  border-radius: 14px;
-  flex: 0 0 auto;
-  background: center/cover no-repeat;
-  border: 1px solid rgba(255,255,255,.16);
-  box-shadow: 0 10px 24px rgba(0,0,0,.18);
-}
-
-.u-text h3{ margin: 0; font-size: 16px; line-height: 1.25; }
-
-.u-text p{
-  margin: 8px 0 0;
-  font-size: 14px;
-  opacity: .86;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.u-date{
-  position:relative;
-  z-index: 1;
-  font-size: 13px;
-  opacity: .75;
-  margin-top: 10px;
-}
-
-/* Stack positions */
-.u1{ grid-area: stack; --t: skewY(-8deg); }
-.u2{
-  grid-area: stack;
-  --t: translateX(54px) translateY(18px) skewY(-8deg);
-  filter: grayscale(1);
-}
-.u3{
-  grid-area: stack;
-  --t: translateX(108px) translateY(36px) skewY(-8deg);
-  filter: grayscale(1);
-  opacity: .95;
-}
-
-/* Hover lift */
-.u1:hover{ --y: -16px; border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.10); }
-.u2:hover{ --y: -16px; filter: grayscale(0); border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.10); }
-.u3:hover{ --y: -16px; filter: grayscale(0); border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.10); }
-
-/* Switching state (optional, if your JS toggles it) */
-.updates-stack.is-switching .u-card{
-  --y: 10px;
-  opacity: .82;
-  filter: grayscale(1);
-}
-
-/* Mobile tweaks */
-@media (max-width: 520px){
-  .u2{ --t: translateX(28px) translateY(16px) skewY(-8deg); }
-  .u3{ --t: translateX(56px) translateY(32px) skewY(-8deg); }
-  .updates-stack{ min-height: 330px; }
-  .u-card{ height: 198px; }
-}
-
 
 
 
