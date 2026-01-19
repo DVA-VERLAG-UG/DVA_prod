@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <title>DVAYD Publishing – Dein Buch, deine Geschichte</title>
+  <meta name="description" content="Dein Buch, deine Geschichte – weltweit veröffentlicht mit DVAYD. Publishing, Design und Marketing aus einer Hand." />
+
+  <!-- Favicon (nur EINMAL) -->
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/favicon.png">
+
+  <!-- ✅ Global styles -->
+  <link rel="stylesheet" href="index_style.css">
+
+  <!-- ✅ Header generates its own CSS + Social Bar -->
+  <script src="/js/header.js" defer></script>
+
+  <!-- Footer injection -->
+  <script src="/js/footer.js" defer></script>
+
+  <!-- Pagefind -->
+  <script src="/_pagefind/pagefind.js" defer></script>
+
+  <!-- ✅ IMPORTANT:
+       Do NOT add inline CSS that resets .cfg-* or .vk-*,
+       otherwise your style.css section styles won’t show. -->
+</head>
+
+<body>
+  <div id="search"></div>
+  <header id="site-header"></header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-content">
+
+        <div class="hero-copy">
+          <div class="kicker anim d1">DVAYD Publishing</div>
+          <h1 class="anim d2">Dein Buch – weltweit veröffentlicht mit DVAYD.</h1>
+
+          <p class="sub anim d3">
+            Wir sind die Brücke zwischen Europa und der Türkei. Von der ersten Zeile bis zum fertigen Buch im Handel – behalte 100 % deiner Rechte und profitiere von unserer Expertise als Familienverlag
+          </p>
+
+          <div class="actions anim d4">
+            <a href="/de/pakete/" class="btn primary">Jetzt starten</a>
+            <a href="/de/pakete/" class="btn ghost">Pakete entdecken</a>
+          </div>
+        </div>
+
+        <div class="hero-contact-box anim d5">
+          <div class="hero-contact-head">
+            <strong>Unverbindlich anfragen</strong>
+            <span>Wir melden uns kurzfristig zurück.</span>
+          </div>
+
+          <div class="hero-contact-success" id="heroSuccess" style="display:none; margin-top:12px;">
+            <div style="padding:12px 14px; border-radius:14px; background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.25);">
+              <strong>Ihre Nachricht wurde gesendet.</strong>
+              <div style="opacity:.9; margin-top:4px;">Vielen Dank! Wir melden uns zeitnah zurück.</div>
+            </div>
+          </div>
+
+          <form
+            class="hero-contact-form"
+            id="heroContactForm"
+            name="hero-kontakt"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+          >
+            <input type="hidden" name="form-name" value="hero-kontakt" />
+            <p style="display:none">
+              <label>Don’t fill this out: <input name="bot-field" /></label>
+            </p>
+
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="E-Mail" required>
+
+            <button type="submit" class="btn primary">Kontakt aufnehmen</button>
+          </form>
+        </div>
+
+      </div>
+
+      <script>
+        (function () {
+          const form = document.getElementById("heroContactForm");
+          const success = document.getElementById("heroSuccess");
+          if (!form) return;
+
+          function encode(data) {
+            return new URLSearchParams(data).toString();
+          }
+
+          form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const btn = form.querySelector('button[type="submit"]');
+            const origText = btn ? btn.textContent : "";
+            if (btn) {
+              btn.disabled = true;
+              btn.textContent = "Senden…";
+            }
+
+            try {
+              const formData = new FormData(form);
+              const payload = {};
+              formData.forEach((v, k) => payload[k] = v);
+
+              const res = await fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: encode(payload)
+              });
+
+              if (!res.ok) throw new Error("Netlify submit failed");
+
+              form.reset();
+              if (success) success.style.display = "block";
+
+              setTimeout(() => {
+                if (success) success.style.display = "none";
+              }, 6000);
+
+            } catch (err) {
+              alert("Senden fehlgeschlagen. Bitte versuche es erneut.");
+              console.error(err);
+            } finally {
+              if (btn) {
+                btn.disabled = false;
+                btn.textContent = origText;
+              }
+            }
+          });
+        })();
+      </script>
+    </section>
+
+    <!-- =========================================================
+         ✅ CFG TEASER: full-width marquee + overlay glass card
+         (HTML UPDATED: CTAs are OUTSIDE the glass card now)
+         ========================================================= -->
+    <section class="cfg-teaser cfg-liquid" aria-labelledby="cfg-teaser-title">
+
+      <!-- Full-width moving carousel (background layer) -->
+      <div class="cfg-marquee" aria-hidden="true">
+        <div class="cfg-marquee-band">
+          <div class="cfg-marquee-track" id="cfgAddOnTrack"></div>
+        </div>
+      </div>
+
+      <!-- Overlay layer -->
+      <div class="cfg-overlay">
+
+        <!-- Glass card -->
+        <div class="cfg-overlay-card">
+          <p class="cfg-kicker">Neu</p>
+          <h2 id="cfg-teaser-title" class="cfg-title">Verlags-Konfigurator</h2>
+          <p class="cfg-sub">
+            Stelle dein Publishing-Paket in wenigen Minuten zusammen: pro Kategorie eine Option auswählen,
+            Prognose sehen, und danach direkt eine unverbindliche Terminanfrage senden.
+          </p>
+
+          <ul class="cfg-bullets">
+            <li>✅ Klarer Paket-Überblick (Starter / Plus / Deluxe / EU-TR)</li>
+            <li>📈 Verkaufs-Prognose &amp; transparente Auswahl je Kategorie</li>
+            <li>🧾 Am Ende: Anfrage per Netlify Forms (ohne Verpflichtung)</li>
+          </ul>
+
+          <p class="cfg-note">Dauer: ca. 2–4 Minuten · Keine Registrierung · Unverbindlich</p>
+        </div>
+
+        <!-- ✅ CTAs moved OUTSIDE the card (so CSS can place bottom-right cleanly) -->
+        <div class="cfg-actions" aria-label="Konfigurator CTAs">
+          <a class="cfg-btn primary" href="/de/konfigurator/">
+            Konfigurator starten <span aria-hidden="true">→</span>
+          </a>
+          <a class="cfg-btn ghost" href="/de/kontakt/">
+            Erst kurz beraten lassen
+          </a>
+        </div>
+
+      </div>
+
+      <!-- JS: render add-ons + duplicate for seamless marquee -->
+      <script>
+      (function(){
+        const track = document.getElementById("cfgAddOnTrack");
+        if(!track) return;
+
+        const ADDONS = [
+          {
+            badge:"Add-on", ico:"✍️", title:"Lektorat (1–2 Runden)",
+            desc:"Stilsicheres Lektorat für besseren Lesefluss – ideal vor Print & eBook.",
+            for:"Plus / Premium",
+            img:"https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Add-on", ico:"🧩", title:"Print-Upgrade",
+            desc:"Wenn du zunächst als eBook startest und Print später nachziehen willst.",
+            for:"Starter",
+            img:"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Design", ico:"🎨", title:"Custom Cover Design",
+            desc:"Recherche + Entwürfe + Feedback – stärkerer Look und bessere Marktwirkung.",
+            for:"Plus / Premium",
+            img:"https://images.unsplash.com/photo-1526481280695-3c687fd5432c?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Alle", ico:"🧾", title:"ISBN (Eigen / Verlag)",
+            desc:"Eigen-ISBN oder Verlags-ISBN – je nach Ziel, Shops und Branding.",
+            for:"Alle",
+            img:"https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Add-on", ico:"📝", title:"Klappentext / Copy",
+            desc:"Verkaufsstark, passend zu Genre & Zielgruppe – klare Struktur als Leitplanke.",
+            for:"Alle",
+            img:"https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Optional", ico:"📣", title:"Marketing-Bausteine",
+            desc:"Kampagnen-Setup & Beratung – je nach Budget und Ziel sauber skalierbar.",
+            for:"Optional",
+            img:"https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=70"
+          },
+          {
+            badge:"Optional", ico:"📰", title:"PR / Social Media",
+            desc:"Erweiterbar je nach Launch-Plan: Posts, Presse-Text, Medien-Ansprache.",
+            for:"Optional",
+            img:"https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=70"
+          }
+        ];
+
+        const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({
+          "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+        }[c]));
+
+        function addonCard(a){
+          const safeBg = a.img ? `--bg: url('${esc(a.img)}');` : "";
+          return `
+            <article class="cfg-addon" style="${safeBg}" role="group" aria-label="${esc(a.title)}">
+              <div class="cfg-addon-top">
+                <span class="cfg-addon-badge">
+                  <span class="cfg-addon-ico" aria-hidden="true">${esc(a.ico)}</span>
+                  <span>${esc(a.badge)}</span>
+                </span>
+                <span class="cfg-addon-for">${esc(a.for)}</span>
+              </div>
+              <h3>${esc(a.title)}</h3>
+              <p>${esc(a.desc)}</p>
+            </article>
+          `;
+        }
+
+        function render(){
+          const doubled = [...ADDONS, ...ADDONS];
+          track.innerHTML = doubled.map(addonCard).join("");
+        }
+
+        render();
+      })();
+      </script>
+
+    </section>
+
+    <!-- =========================================================
+         EXISTING SECTIONS (UNCHANGED)
+         ========================================================= -->
+
+    <section class="placeholder-section" id="placeholder">
+      <div class="placeholder-sticky">
+        <div class="slider-head">
+          <div class="slider-kicker">Sektion 3 • Verkaufsargumentation</div>
+          <h2 class="slider-title">Warum Autoren auf DVAYD vertrauen</h2>
+        </div>
+
+        <div class="placeholder-track" aria-label="Slider DVAYD">
+          <div class="placeholder-slide slide-a">
+            <div class="slide-overlay">
+              <div class="slide-card">
+                <div class="slide-chip">Familienverlag</div>
+                <h3>Persönlich statt anonym.</h3>
+                <p>
+                  Wir sind kein anonymer Großverlag. Bei uns bist du Teil der Familie.
+                  Wir begleiten dich mit Herzblut durch den gesamten Prozess – von der ersten Zeile bis zur Veröffentlichung.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="placeholder-slide slide-b">
+            <div class="slide-overlay">
+              <div class="slide-card">
+                <div class="slide-chip">Brücke DE ↔ TR</div>
+                <h3>Deutschland &amp; Türkei – ein Plan.</h3>
+                <p>
+                  Exklusiv bei uns: Veröffentliche dein Werk simultan in Europa und der Türkei.
+                  Wir kennen beide Märkte und öffnen dir die Tür zum internationalen Erfolg.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="placeholder-slide slide-c">
+            <div class="slide-overlay">
+              <div class="slide-card">
+                <div class="slide-chip">Reichweite &amp; Handel</div>
+                <h3>Vom Manuskript in den Handel.</h3>
+                <p>
+                  Lektorat, Design, ISBN, Listing (Amazon &amp; Buchhandel) und optional Marketing:
+                  Dein Buch wird professionell veröffentlicht – weltweit bestellbar.
+                </p>
+
+                <div class="seo-row" aria-label="SEO Keywords">
+                  <span class="seo-tag">Self-Publishing Türkei</span>
+                  <span class="seo-tag">Buchverlag Deutschland Türkei</span>
+                  <span class="seo-tag">Buch international verkaufen</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="process-glass" id="prozess">
+      <div class="process-glass-inner">
+        <header class="pg-head">
+          <div class="pg-kicker">Sektion 4 • Der Prozess</div>
+          <h2 class="pg-title">In 5 Schritten zum Buch</h2>
+          <p class="pg-sub">Klar strukturiert. Hochwertig umgesetzt. Weltweit bestellbar.</p>
+        </header>
+
+        <div class="pg-shell" aria-label="In 5 Schritten zum Buch">
+          <div class="pg-line" aria-hidden="true">
+            <span class="pg-node n1"></span>
+            <span class="pg-node n2"></span>
+            <span class="pg-node n3"></span>
+            <span class="pg-node n4"></span>
+            <span class="pg-node n5"></span>
+          </div>
+
+          <ol class="pg-steps">
+            <li class="pg-step">
+              <div class="pg-dot" aria-hidden="true">
+                <img src="/assets/icons/timeline/weiss/schreiben.png" alt="">
+              </div>
+              <div class="pg-text">
+                <strong>Manuskript-Check</strong>
+                <span>Wir sichten dein Werk kostenlos und geben dir klare nächste Schritte.</span>
+              </div>
+            </li>
+
+            <li class="pg-step">
+              <div class="pg-dot" aria-hidden="true">
+                <img src="/assets/icons/timeline/weiss/lupe.png" alt="">
+              </div>
+              <div class="pg-text">
+                <strong>Feinschliff</strong>
+                <span>Professionelles Lektorat &amp; Korrektorat – sauber, stilsicher, konsistent.</span>
+              </div>
+            </li>
+
+            <li class="pg-step">
+              <div class="pg-dot" aria-hidden="true">
+                <img src="/assets/icons/timeline/weiss/design.png" alt="">
+              </div>
+              <div class="pg-text">
+                <strong>Design</strong>
+                <span>Cover &amp; Layout, die Vertrauen schaffen und sich hochwertig anfühlen.</span>
+              </div>
+            </li>
+
+            <li class="pg-step">
+              <div class="pg-dot" aria-hidden="true">
+                <img src="/assets/icons/timeline/weiss/buch.png" alt="">
+              </div>
+              <div class="pg-text">
+                <strong>Produktion</strong>
+                <span>ISBN + Listing (Amazon &amp; Buchhandel) – professionell umgesetzt.</span>
+              </div>
+            </li>
+
+            <li class="pg-step">
+              <div class="pg-dot" aria-hidden="true">
+                <img src="/assets/icons/timeline/weiss/erfolg.png" alt="">
+              </div>
+              <div class="pg-text">
+                <strong>Marketing &amp; Erfolg</strong>
+                <span>Dein Buch ist weltweit bestellbar – optional mit gezieltem Marketing.</span>
+              </div>
+            </li>
+          </ol>
+
+          <div class="pg-actions">
+            <a href="/de/kontakt/" class="btn primary">Kostenloses Gespräch</a>
+            <a href="/de/projekte/" class="btn ghost">Pakete entdecken</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="logo-section" id="logos">
+      <div class="logo-inner">
+        <div class="logo-marquee" aria-label="Endloses Logo Karussell">
+          <div class="logo-track">
+            <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
+            <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
+            <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
+            <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
+            <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
+
+            <div class="logo-item"><img src="/assets/logos/amazon.png" alt="Amazon"></div>
+            <div class="logo-item"><img src="/assets/logos/google-books.png" alt="Google Books"></div>
+            <div class="logo-item"><img src="/assets/logos/thalia.png" alt="Thalia"></div>
+            <div class="logo-item"><img src="/assets/logos/hugendubel.png" alt="Hugendubel"></div>
+            <div class="logo-item"><img src="/assets/logos/kobo.png" alt="Kobo"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEO WRAP + QUOTE + UPDATES -->
+    <section class="seo-wrap" id="wissen-block">
+      <div class="seo-wrap-inner">
+
+        <section class="quote-section" id="statement">
+          <div class="quote-inner">
+            <div class="quote-card" role="group" aria-label="Statement">
+              <div class="quote-person">
+                <div class="quote-avatar">
+                  <img src="/assets/images/team/mark-mils.jpg" alt="Mark Mils" loading="lazy">
+                </div>
+                <div class="quote-meta">
+                  <div class="quote-name">Cristiano Ronaldo</div>
+                  <div class="quote-role">Founder &amp; CEO</div>
+                </div>
+              </div>
+
+              <div class="quote-content">
+                <p class="quote-text">
+                  <span class="quote-mark">“</span>
+                  Wir glauben an Bücher mit Seele: Klarer Prozess, ehrliche Beratung und ein Ergebnis,
+                  das sich im Handel behauptet — ohne dass du deine Rechte abgibst.
+                  <span class="quote-mark">”</span>
+                </p>
+                <div class="quote-cta">
+                  <a class="btn ghost" href="#upload">Manuskript kostenlos prüfen</a>
+                  <a class="btn primary" href="/de/kontakt/">Kostenloses Gespräch</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="updates-section" id="wissen">
+          <div class="updates-inner">
+
+            <div class="updates-head">
+              <div class="seo-kicker">Sektion 6 • Updates</div>
+              <h2 class="updates-title">Neuigkeiten von DVAYD.</h2>
+              <p class="updates-sub">
+                Kurze Updates, neue Artikel und wichtige Hinweise – kompakt auf einer Karte.
+              </p>
+
+              <div class="updates-actions">
+                <a class="btn primary" href="/de/blog/">Alle Updates ansehen</a>
+                <a class="btn ghost" href="/de/kontakt/">Kostenloses Gespräch</a>
+              </div>
+            </div>
+
+            <div class="updates-right">
+              <div class="updates-stack" id="updatesStack" aria-label="Aktuelle Updates als Kartenstapel">
+                <a class="u-card u1" id="uCard1" href="#"></a>
+                <a class="u-card u2" id="uCard2" href="#"></a>
+                <a class="u-card u3" id="uCard3" href="#"></a>
+              </div>
+
+              <div class="updates-nav updates-nav-below" aria-label="Artikel blättern">
+                <button class="updates-btn" id="updatesPrev" type="button" aria-label="Vorheriger Artikel">‹</button>
+                <button class="updates-btn" id="updatesNext" type="button" aria-label="Nächster Artikel">›</button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div class="cursor-invert" id="cursorInvert" aria-hidden="true"></div>
+  <div class="cursor-text" id="cursorText" aria-hidden="true"></div>
+
+  <!-- Cursor + slider script (unchanged) -->
+  <script>
+(function(){
+  const circle = document.getElementById("cursorInvert");
+  const textEl = document.getElementById("cursorText");
+  const section = document.getElementById("placeholder");
+  const track = document.querySelector(".placeholder-track");
+
+  const isTouch = window.matchMedia("(hover: none)").matches;
+
+  if (!circle || !textEl || isTouch) {
+    // skip cursor on touch
+  } else {
+    document.documentElement.classList.add("has-custom-cursor");
+
+    let x = window.innerWidth / 2, y = window.innerHeight / 2;
+    let tx = x, ty = y;
+
+    function render(){
+      circle.style.left = x + "px";
+      circle.style.top  = y + "px";
+      textEl.style.left = x + "px";
+      textEl.style.top  = y + "px";
+    }
+    render();
+
+    (function loop(){
+      x += (tx - x) * 0.18;
+      y += (ty - y) * 0.18;
+      render();
+      requestAnimationFrame(loop);
+    })();
+
+    window.addEventListener("mousemove", (e) => {
+      tx = e.clientX;
+      ty = e.clientY;
+    }, { passive:true });
+  }
+
+  document.documentElement.classList.add("has-custom-cursor");
+  if (!section || !track) return;
+
+  const slides = Array.from(track.querySelectorAll(".placeholder-slide"));
+
+  function resetAllSlides(){
+    slides.forEach(s => {
+      s.style.setProperty("--px", "0px");
+      s.style.setProperty("--py", "0px");
+      s.style.setProperty("--scale", "1");
+    });
+  }
+
+  function setActiveSlide(idx){
+    slides.forEach((s,i) => s.classList.toggle("is-active", i === idx));
+  }
+
+  function clamp01(v){ return Math.max(0, Math.min(1, v)); }
+
+  function updateSlider(){
+    const rect = section.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const end = section.offsetHeight - vh;
+    const scrolled = -rect.top;
+    const p = clamp01(end > 0 ? (scrolled / end) : 0);
+
+    track.style.transform = `translateX(${-p * 2 * window.innerWidth}px)`;
+    const idx = Math.max(0, Math.min(2, Math.round(p * 2)));
+    setActiveSlide(idx);
+
+    const stickyVisible = rect.top <= 0 && rect.bottom >= vh;
+    if (!stickyVisible) resetAllSlides();
+  }
+
+  window.addEventListener("scroll", updateSlider, { passive:true });
+  window.addEventListener("resize", updateSlider);
+  updateSlider();
+})();
+  </script>
+
+  <!-- Updates stack script (unchanged) -->
+  <script>
+(() => {
+  const stack = document.getElementById("updatesStack");
+  const prevBtn = document.getElementById("updatesPrev");
+  const nextBtn = document.getElementById("updatesNext");
+
+  const c1 = document.getElementById("uCard1");
+  const c2 = document.getElementById("uCard2");
+  const c3 = document.getElementById("uCard3");
+  if (!stack || !prevBtn || !nextBtn || !c1 || !c2 || !c3) return;
+
+  const SHEET_CSV_URL =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4g1gNsiyY4k2A052LR7EaVUYFqrWGWNITOPqw5bGG_PTogiP84C44VQJpKn-HC2vxHin4fTy_puU0/pub?gid=0&single=true&output=csv";
+
+  const FALLBACK_ITEMS = [
+    {
+      href: "/de/blog/",
+      badge: "Update",
+      type: "Blog",
+      dot: "rgba(99,102,241,.95)",
+      dotGlow: "rgba(99,102,241,.20)",
+      img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=300&q=70",
+      title: "Blog lädt gerade nicht",
+      text: "Bitte prüfe ob der Google Sheet Link veröffentlicht ist und ob die Spalten slug,title,excerpt,date,author,cover,tags existieren.",
+      date: "Gerade eben"
+    }
+  ];
+
+  const esc = (str) => String(str ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+
+  const norm = (s) => String(s ?? "").trim().toLowerCase();
+
+  function splitTags(s){
+    return String(s ?? "")
+      .split(",")
+      .map(t => t.trim())
+      .filter(Boolean);
+  }
+
+  function parseCSV(text){
+    const rows = [];
+    let row = [];
+    let cur = "";
+    let inQuotes = false;
+
+    for(let i=0;i<text.length;i++){
+      const c = text[i];
+      const n = text[i+1];
+
+      if(inQuotes){
+        if(c === '"' && n === '"'){ cur += '"'; i++; }
+        else if(c === '"'){ inQuotes = false; }
+        else { cur += c; }
+      } else {
+        if(c === '"'){ inQuotes = true; }
+        else if(c === ","){ row.push(cur); cur=""; }
+        else if(c === "\n"){ row.push(cur); rows.push(row); row=[]; cur=""; }
+        else if(c === "\r"){ /* ignore */ }
+        else { cur += c; }
+      }
+    }
+    row.push(cur);
+    rows.push(row);
+    return rows.filter(r => r.some(cell => String(cell).trim() !== ""));
+  }
+
+  function cardMarkup(item){
+    const safeImg = item.img ? esc(item.img) : "";
+    return `
+      <div class="u-top">
+        <span class="u-pill">
+          <span class="u-dot" style="background:${item.dot}; box-shadow:0 0 0 3px ${item.dotGlow}"></span>
+          <span class="u-tag">${esc(item.badge)}</span>
+        </span>
+        <span style="opacity:.85; font-weight:600;">${esc(item.type)}</span>
+      </div>
+
+      <div class="u-mid">
+        <div class="u-img" style="${safeImg ? `background-image:url('${safeImg}')` : ""}"></div>
+        <div class="u-text">
+          <h3>${esc(item.title)}</h3>
+          <p>${esc(item.text)}</p>
+        </div>
+      </div>
+
+      <div class="u-date">${esc(item.date)}</div>
+    `;
+  }
+
+  async function loadLatest3FromBlogCSV(){
+    const res = await fetch(SHEET_CSV_URL, { cache: "no-store" });
+    if(!res.ok) throw new Error("Blog CSV fetch failed");
+    const csv = await res.text();
+
+    const rows = parseCSV(csv);
+    if(rows.length < 2) throw new Error("CSV has no data rows");
+
+    const header = rows[0].map(h => norm(h));
+    const idx = (name) => header.indexOf(norm(name));
+    const val = (r, name) => {
+      const i = idx(name);
+      return i >= 0 ? String(r[i] ?? "").trim() : "";
+    };
+
+    const posts = rows.slice(1).map(r => ({
+      slug:    val(r, "slug"),
+      title:   val(r, "title"),
+      excerpt: val(r, "excerpt"),
+      date:    val(r, "date"),
+      author:  val(r, "author"),
+      cover:   val(r, "cover"),
+      tags:    splitTags(val(r, "tags"))
+    }))
+    .filter(p => p.slug && p.title);
+
+    posts.sort((a,b) => (b.date || "").localeCompare(a.date || ""));
+
+    const latest = posts.slice(0, 3);
+    if(!latest.length) return FALLBACK_ITEMS;
+
+    return latest.map((p) => {
+      const primaryTag = p.tags?.[0] || "Update";
+      return {
+        href: `/de/blog/post.html?slug=${encodeURIComponent(p.slug)}`,
+        badge: primaryTag,
+        type: "Blog",
+        dot: "rgba(99,102,241,.95)",
+        dotGlow: "rgba(99,102,241,.20)",
+        img: p.cover || "",
+        title: p.title,
+        text: p.excerpt || "",
+        date: p.date || ""
+      };
+    });
+  }
+
+  let items = [...FALLBACK_ITEMS];
+  let index = 0;
+
+  const clampIndex = (i) => ((i % items.length) + items.length) % items.length;
+
+  function render(){
+    if(!items.length) return;
+
+    const a = items[clampIndex(index)];
+    const b = items[clampIndex(index + 1)];
+    const c = items[clampIndex(index + 2)];
+
+    c1.href = a.href || "#"; c1.innerHTML = cardMarkup(a);
+    c2.href = b.href || "#"; c2.innerHTML = cardMarkup(b);
+    c3.href = c.href || "#"; c3.innerHTML = cardMarkup(c);
+
+    const disabled = items.length <= 1;
+    prevBtn.disabled = disabled;
+    nextBtn.disabled = disabled;
+  }
+
+  let isAnimating = false;
+  function switchTo(newIndex){
+    if(isAnimating || items.length <= 1) return;
+    isAnimating = true;
+
+    stack.classList.add("is-switching");
+    setTimeout(() => {
+      index = clampIndex(newIndex);
+      render();
+      requestAnimationFrame(() => {
+        stack.classList.remove("is-switching");
+        setTimeout(() => { isAnimating = false; }, 520);
+      });
+    }, 180);
+  }
+
+  prevBtn.addEventListener("click", () => switchTo(index - 1));
+  nextBtn.addEventListener("click", () => switchTo(index + 1));
+
+  render();
+
+  loadLatest3FromBlogCSV()
+    .then((loaded) => { items = loaded; index = 0; render(); })
+    .catch((err) => {
+      console.warn("Updates: Blog CSV load failed, using fallback.", err);
+      items = [...FALLBACK_ITEMS];
+      index = 0;
+      render();
+    });
+})();
+  </script>
+
+  <footer id="site-footer"></footer>
+</body>
+</html>
