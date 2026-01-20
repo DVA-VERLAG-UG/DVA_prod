@@ -12,7 +12,9 @@
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
   <!-- ✅ Global styles -->
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="index_style.css">
+
 
   <!-- ✅ Header generates its own CSS + Social Bar -->
   <script src="/js/header.js" defer></script>
@@ -28,7 +30,7 @@
        otherwise your style.css section styles won’t show. -->
 </head>
 
-<body>
+<body class="page-index">
   <div id="search"></div>
   <header id="site-header"></header>
 
@@ -502,6 +504,7 @@
   <div class="cursor-text" id="cursorText" aria-hidden="true"></div>
 
   <!-- Cursor + slider script (unchanged) -->
+  <!-- Cursor + slider script with hover expansion -->
   <script>
 (function(){
   const circle = document.getElementById("cursorInvert");
@@ -538,6 +541,32 @@
       tx = e.clientX;
       ty = e.clientY;
     }, { passive:true });
+
+    // ✅ NEW: Expand cursor on hover over clickable elements
+    const clickableSelectors = 
+      'a, button, .btn, .trust-item, .cfg-addon, .cfg-btn, ' +
+      '.slide-card, .pg-step, .logo-item, .u-card, .updates-btn, ' +
+      '.pg-dot, [role="button"], input[type="submit"], ' +
+      'input[type="button"], .hero-contact-form input, .hero-contact-form button';
+
+    function addHoverListeners(){
+      document.querySelectorAll(clickableSelectors).forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          circle.classList.add('is-big');
+        }, { passive: true });
+        
+        el.addEventListener('mouseleave', () => {
+          circle.classList.remove('is-big');
+        }, { passive: true });
+      });
+    }
+
+    // Initial setup
+    addHoverListeners();
+
+    // Re-run after dynamic content loads
+    setTimeout(addHoverListeners, 1000); // After carousel loads
+    setTimeout(addHoverListeners, 2000); // After updates load
   }
 
   document.documentElement.classList.add("has-custom-cursor");

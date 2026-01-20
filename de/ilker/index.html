@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>DVAYD – Mach dein Manuskript unsterblich</title>
+  <meta name="description" content="Gedruckt in Istanbul. Zertifiziert in Bremen. Wir bringen dein Buch weltweit in den Handel." />
+
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    :root {
+      --font-head: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --color-dark: #111111;
+      --color-gray: #666666;
+      --color-light-gray: #f4f6f8;
+      --color-white: #ffffff;
+      --color-brand: #2563EB;
+    }
+    
+    body { margin: 0; padding: 0; font-family: var(--font-body); color: var(--color-dark); background: var(--color-white); line-height: 1.6; font-size: 18px; overflow-x: hidden; }
+    h1, h2, h3 { font-family: var(--font-head); margin: 0 0 1rem 0; color: var(--color-dark); }
+    a { text-decoration: none; color: inherit; }
+    * { box-sizing: border-box; }
+    
+    /* Typo */
+    .h1-hero { font-weight: 800; font-size: 36px; line-height: 1.1; letter-spacing: -1px; }
+    .h2-section { font-weight: 700; font-size: 28px; margin-bottom: 24px; }
+    .h3-label { font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--color-gray); margin-bottom: 20px; display: block; }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-head); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: all 0.3s ease; cursor: pointer; border: none; }
+    .btn-primary { background: var(--color-dark); color: #fff; height: 52px; width: 100%; font-size: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+    .btn-secondary { background: transparent; color: var(--color-dark); border: 2px solid var(--color-dark); height: 48px; width: 100%; font-size: 14px; }
+
+    /* Layout */
+    section { padding: 80px 20px; } 
+    .bg-white { background-color: var(--color-white); }
+    .bg-light { background-color: var(--color-light-gray); border-top: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; }
+    .bg-black { background-color: #000000; color: #ffffff; }
+    .container { max-width: 1200px; margin: 0 auto; position: relative; }
+    .grid-2 { display: grid; gap: 50px; }
+
+    /* Sticky Socials */
+    .sticky-socials { position: fixed; right: 0; top: 50%; transform: translateY(-50%); display: none; flex-direction: column; gap: 0; z-index: 100; background: #fff; box-shadow: -5px 0 20px rgba(0,0,0,0.05); border-top-left-radius: 8px; border-bottom-left-radius: 8px; overflow: hidden; }
+    .social-link { display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; color: var(--color-dark); transition: all 0.2s; font-size: 18px; }
+    .social-link:hover { background: var(--color-light-gray); color: var(--color-brand); }
+    .social-label { writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); padding: 20px 0; font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid #eee; cursor: default; }
+
+    /* Components */
+    .hero { min-height: 85vh; display: flex; align-items: center; background: #f8f9fa; }
+    .hero-seal { display: inline-block; background: #e0e7ff; color: #1e3a8a; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 25px; font-family: var(--font-head); }
+    
+    /* Loader & Slider */
+    @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+    .skeleton { background: #f6f7f8; background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%); background-repeat: no-repeat; background-size: 1000px 100%; animation: shimmer 2s infinite linear; }
+    .marquee { overflow: hidden; white-space: nowrap; }
+    .marquee-track { display: flex; gap: 20px; animation: scroll 40s linear infinite; }
+    .cover-placeholder { min-width: 160px; height: 240px; border-radius: 2px; opacity: 0.8; transition: opacity 0.3s; }
+    @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* Configurator */
+    .config-wrapper { display: grid; gap: 40px; }
+    .config-tool { background: #fff; padding: 30px; border: 1px solid #e5e5e5; border-radius: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+    .progress-bar-bg { height: 10px; background: #eee; border-radius: 5px; overflow: hidden; margin: 10px 0 30px 0; }
+    .progress-bar-fill { height: 100%; background: #ef4444; width: 10%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.6s ease; }
+    .radio-card label { display: block; padding: 18px; border: 2px solid #eee; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .radio-card input:checked + label { border-color: var(--color-dark); background: #fafafa; }
+    .radio-card input { display: none; }
+    .radio-group { display: grid; gap: 15px; margin-bottom: 25px; }
+
+    @media (min-width: 768px) {
+      .h1-hero { font-size: 64px; max-width: 850px; }
+      .btn-primary, .btn-secondary { width: auto; padding: 0 45px; height: 56px; font-size: 16px; }
+      .grid-2 { grid-template-columns: 1fr 1fr; align-items: center; }
+      .config-wrapper { grid-template-columns: 1.6fr 1fr; }
+      .sticky-socials { display: flex; } 
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "DVAYD",
+    "url": "https://dvaprod.netlify.app/",
+    "description": "Internationales Publishing-Haus."
+  }
+  </script>
+</head>
+
+<body>
+
+  <div id="cinematic-intro" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#111; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);">
+    <div id="intro-text" style="color:#fff; font-family:'Montserrat', sans-serif; font-weight:800; font-size:24px; letter-spacing:4px; text-transform:uppercase;">ISTANBUL</div>
+  </div>
+
+  <div class="sticky-socials">
+    <div class="social-label">FOLLOW US</div>
+    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+    <a href="mailto:kontakt@dvayd.de" class="social-link"><i class="far fa-envelope"></i></a>
+  </div>
+
+  <div id="search"></div>
+  <header id="site-header"></header>
+
+  <main>
+    <section class="hero skeleton bg-light"> 
+      <div class="container">
+        <div class="hero-seal">Quality Checked • Bremen • Edition DVAYD</div>
+        <h1 class="h1-hero">Mach dein Manuskript unsterblich.</h1>
+        <p style="font-size: 20px; max-width: 600px; margin-bottom: 40px; color: #444;">
+          Gedruckt in Istanbul. Zertifiziert in Bremen. Gelesen auf der ganzen Welt. 
+          Wir haben bereits über 220 Autoren erfolgreich in den Buchmarkt gebracht.
+        </p>
+        <div>
+          <a href="#konfigurator" class="btn btn-primary">MEINE ZERTIFIZIERUNG STARTEN</a>
+          <p style="font-size: 13px; color: #666; margin-top: 15px; font-weight: 500;">
+            <i class="fas fa-check" style="color: #22c55e;"></i> 100% Rechte bei dir &nbsp; 
+            <i class="fas fa-check" style="color: #22c55e;"></i> Deutscher Vertrag
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-black" style="padding: 60px 0;">
+      <div class="container" style="text-align: center;">
+        <span class="h3-label" style="color: #888;">UNSERE LEGION – ÜBER 220 ERFOLGSGESCHICHTEN</span>
+      </div>
+      <div class="marquee" style="margin-top: 20px;">
+        <div class="marquee-track">
+          <div class="cover-placeholder skeleton"></div><div class="cover-placeholder skeleton"></div>
+          <div class="cover-placeholder skeleton"></div><div class="cover-placeholder skeleton"></div>
+          <div class="cover-placeholder skeleton"></div><div class="cover-placeholder skeleton"></div>
+          <div class="cover-placeholder skeleton"></div><div class="cover-placeholder skeleton"></div>
+          <div class="cover-placeholder skeleton"></div><div class="cover-placeholder skeleton"></div>
+          <div class="cover-placeholder skeleton"></div><div class="cover-placeholder skeleton"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white">
+      <div class="container">
+        <h2 class="h2-section">German Engineering.<br>Bosphorus Speed.</h2>
+        <div class="grid-2">
+          <div>
+            <div class="skeleton" style="width:100%; height:280px; border-radius:8px; margin-bottom:25px;"></div>
+            <h3>Der Motor (Istanbul)</h3>
+            <p style="color: #555;">Hier entsteht dein Buch. Wir nutzen internationale High-Tech Druckstraßen für Premium-Qualität und Geschwindigkeiten, bei denen lokale Druckereien nicht mithalten können.</p>
+          </div>
+          <div>
+            <h3>Das Netzwerk (Bremen)</h3>
+            <p style="color: #555;">Hier sichern wir deinen Zugang. Unser Team in Bremen prüft Qualität, vergibt die ISBN und schaltet dein Buch für das gesamte internationale Händler-Verzeichnis frei.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-light">
+      <div class="container">
+        <h3 class="h3-label" style="text-align: center;">Gelistet in den größten Ökosystemen der Welt</h3>
+        <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; opacity: 0.5; margin-top: 30px;">
+          <div class="skeleton" style="width:120px; height:40px;"></div>
+          <div class="skeleton" style="width:120px; height:40px;"></div>
+          <div class="skeleton" style="width:120px; height:40px;"></div>
+          <div class="skeleton" style="width:120px; height:40px;"></div>
+          <div class="skeleton" style="width:120px; height:40px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="konfigurator" class="bg-white">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 50px;">
+           <h2 class="h2-section">Dein Buch. Dein Weg.<br>Wähle deine Strategie.</h2>
+        </div>
+        
+        <div class="config-wrapper">
+          <div class="config-tool">
+            <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 13px; text-transform: uppercase;">
+              <span>Dein Markt-Potenzial</span>
+              <span id="score-text" style="color: #ef4444;">Lokal begrenzt</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progress-bar"></div>
+            </div>
+
+            <form name="strategy-config" method="POST" data-netlify="true" id="strategyForm">
+              <input type="hidden" name="form-name" value="strategy-config" />
+              
+              <p style="font-weight: 700; margin-bottom: 15px;">1. Format wählen</p>
+              <div class="radio-group">
+                <div class="radio-card"><input type="radio" name="format" id="f1" value="ebook" checked onclick="calcScore()"><label for="f1">E-Book Basis</label></div>
+                <div class="radio-card"><input type="radio" name="format" id="f2" value="print" onclick="calcScore()"><label for="f2">Gedrucktes Buch & E-Book</label></div>
+              </div>
+
+              <p style="font-weight: 700; margin-bottom: 15px;">2. Qualität</p>
+              <div class="radio-group">
+                <div class="radio-card"><input type="radio" name="lektorat" id="l1" value="roh" checked onclick="calcScore()"><label for="l1">Rohfassung</label></div>
+                <div class="radio-card"><input type="radio" name="lektorat" id="l2" value="profi" onclick="calcScore()"><label for="l2">Profi-Lektorat</label></div>
+              </div>
+
+              <p style="font-weight: 700; margin-bottom: 15px;">3. Sichtbarkeit</p>
+              <div class="radio-group">
+                <div class="radio-card"><input type="radio" name="vertrieb" id="v1" value="online" checked onclick="calcScore()"><label for="v1">Nur Online</label></div>
+                <div class="radio-card"><input type="radio" name="vertrieb" id="v2" value="global" onclick="calcScore()"><label for="v2">Weltweites Händler-Netzwerk</label></div>
+              </div>
+
+              <div style="margin-top: 30px;">
+                 <input type="email" name="email" placeholder="Deine E-Mail Adresse" required 
+                        style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px; font-size: 16px;">
+                 <button type="submit" class="btn btn-primary">STRATEGIE PRÜFEN LASSEN</button>
+              </div>
+            </form>
+
+            <div id="successMsg" style="display:none; background: #dcfce7; color: #166534; padding: 20px; border-radius: 6px; margin-top: 20px; font-weight: 600; text-align: center;">
+              🚀 Stark. Wir melden uns binnen 24h.
+            </div>
+          </div>
+
+          <div style="background: var(--color-light-gray); padding: 40px; border-radius: 8px; align-self: start; border: 1px solid #eee;">
+            <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 15px;">Das Bestseller-Setup 🏆</h3>
+            <p style="font-size: 15px; color: #555; margin-bottom: 25px;">Nutze die Strategie, die unsere Top-Autoren erfolgreich gemacht hat.</p>
+            <ul style="list-style: none; padding: 0; margin-bottom: 35px; font-weight: 500;">
+              <li>✅ Print & E-Book Produktion</li>
+              <li>✅ Professionelles Lektorat</li>
+              <li>✅ Maximale Reichweite</li>
+            </ul>
+            <a href="#konfigurator" onclick="activateBestseller()" class="btn btn-secondary">SETUP ÜBERNEHMEN</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-light">
+      <div class="container">
+        <div class="grid-2">
+          <div>
+             <h2 class="h2-section">Warum wir keine Konkurrenz haben.</h2>
+             <p>Die meisten Dienstleister verwalten nur Dateien. Wir schaffen Marktzugänge. Während andere sich in Bürokratie verlieren, haben wir eine direkte Pipeline zwischen Produktion und Vertrieb gebaut.</p>
+             <p style="margin-top: 30px; font-weight: 700;">Das Team von DVAYD</p>
+          </div>
+          <div class="skeleton" style="min-height: 350px; border-radius: 8px;"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="/js/header.js"></script>
+  <script src="/js/footer.js"></script>
+
+  <script>
+    // A. SECURITY: WATCHDOG & RIGHT-CLICK BLOCK
+    document.addEventListener('contextmenu', event => {
+      event.preventDefault();
+      alert('⛔ STOP.\n\nDieser Inhalt ist urheberrechtlich geschützt.\nDu kannst hier nicht kopieren. Nice try.');
+    });
+
+    console.log('%c STOP! ✋', 'color:red; font-size:30px; font-weight:bold;');
+    console.log('%cErwischt. Du schaust dir unseren Code an.\n\nNetter Versuch. Du kannst HTML kopieren, aber nicht unsere Vision.\n\nBist du Entwickler? Bewirb dich: kontakt@dvayd.de', 'color:#111; font-size:14px;');
+
+    // B. CINEMATIC INTRO LOGIC
+    window.addEventListener('load', () => {
+      const text = document.getElementById('intro-text');
+      const screen = document.getElementById('cinematic-intro');
+      
+      setTimeout(() => { text.innerText = "BREMEN"; }, 600);
+      setTimeout(() => { text.innerText = "WORLDWIDE"; text.style.color = "#2563EB"; }, 1200);
+      setTimeout(() => { screen.style.transform = "translateY(-100%)"; }, 1800);
+    });
+
+    // C. CONFIGURATOR LOGIC
+    function calcScore() {
+      let score = 10;
+      let color = "#ef4444";
+      let text = "Lokal begrenzt";
+      const f2 = document.getElementById('f2').checked;
+      const l2 = document.getElementById('l2').checked;
+      const v2 = document.getElementById('v2').checked;
+
+      if(f2) score += 20;
+      if(l2) score += 35;
+      if(v2) score += 35;
+
+      if(score > 40) { color = "#eab308"; text = "Solide Reichweite"; }
+      if(score > 85) { color = "#22c55e"; text = "GLOBAL PLAYER STATUS 🚀"; }
+
+      document.getElementById('progress-bar').style.width = score + "%";
+      document.getElementById('progress-bar').style.backgroundColor = color;
+      document.getElementById('score-text').innerText = text;
+      document.getElementById('score-text').style.color = color;
+    }
+
+    function activateBestseller() {
+      document.getElementById('f2').click();
+      document.getElementById('l2').click();
+      document.getElementById('v2').click();
+      document.querySelector('.config-tool').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    const form = document.getElementById("strategyForm");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button');
+      btn.innerText = "Wird gesendet...";
+      btn.disabled = true;
+      const formData = new FormData(form);
+      fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData).toString()
+      }).then(() => {
+        form.style.display = "none";
+        document.getElementById("successMsg").style.display = "block";
+        document.querySelector('.progress-bar-bg').style.display = 'none';
+      }).catch((error) => {
+        alert("Fehler.");
+        btn.disabled = false;
+      });
+    });
+  </script>
+</body>
+</html>
