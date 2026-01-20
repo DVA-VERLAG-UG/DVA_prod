@@ -2966,3 +2966,38 @@ html[data-theme="dim"] .updates-section .lp-title{
 html[data-theme="dim"] .updates-section .lp-cta{
   color: rgba(255,255,255,.9) !important;
 }
+
+/* =========================================================
+   FIX: Updates buttons visibility in DIM (dark background)
+   ========================================================= */
+
+/* Default (light) — keep as is, just ensure readable */
+.updates-section .updates-actions .btn{
+  color: #0b0f19 !important;
+  border-color: rgba(11,15,25,.18) !important;
+  background: rgba(11,15,25,.06) !important;
+}
+
+/* DIM (dark) — make buttons visible */
+html[data-theme="dim"] .updates-section .updates-actions .btn{
+  color: rgba(255,255,255,.92) !important;
+  border-color: rgba(255,255,255,.22) !important;
+  background: rgba(255,255,255,.08) !important;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35) !important;
+}
+
+/* Slightly stronger primary in dark */
+html[data-theme="dim"] .updates-section .updates-actions .btn.primary{
+  background: rgba(255,255,255,.12) !important;
+  border-color: rgba(255,255,255,.28) !important;
+}
+
+/* Hover states (both modes) */
+.updates-section .updates-actions .btn:hover{
+  transform: translateY(-1px);
+}
+
+html[data-theme="dim"] .updates-section .updates-actions .btn:hover{
+  background: rgba(139,92,246,.22) !important;
+  border-color: rgba(139,92,246,.35) !important;
+}
