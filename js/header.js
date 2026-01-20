@@ -598,7 +598,7 @@ html:not([data-theme="dim"]) #site-header .drawer nav a:hover{
 }
 
 /* =========================================================
-   ✅ FLOATING SOCIAL BAR - Vertical Pill Design
+   ✅ FLOATING SOCIAL BAR - Vertical Pill Design (DESKTOP)
    ========================================================= */
 #dvFloatSocial.dv-float-social{
   position: fixed;
@@ -690,11 +690,6 @@ html[data-theme="dim"] #dvFloatSocial img{
   /* no collapse functionality in this design */
 }
 
-/* scroll hide - DISABLED on desktop, keep visible */
-#dvFloatSocial.dv-float-social.is-scroll-hidden{
-  /* Always visible on desktop */
-}
-
 /* ---- mobile language control (inside same container) ---- */
 #dvFloatSocial .dv-lang{
   display:none; /* default off (desktop) */
@@ -703,13 +698,30 @@ html[data-theme="dim"] #dvFloatSocial img{
   width: 38px;
   height: 38px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.16);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.92);
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(0,0,0,.04);
+  color: #000;
   cursor:pointer;
   display:grid;
   place-items:center;
   font-size: 16px;
+  transition: background .2s ease, border-color .2s ease;
+}
+
+html[data-theme="dim"] #dvFloatSocial .dv-lang-btn{
+  border-color: rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+}
+
+#dvFloatSocial .dv-lang-btn:hover{
+  background: rgba(0,0,0,.08);
+  border-color: rgba(0,0,0,.16);
+}
+
+html[data-theme="dim"] #dvFloatSocial .dv-lang-btn:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.24);
 }
 
 #dvFloatSocial .dv-lang-panel{
@@ -719,14 +731,21 @@ html[data-theme="dim"] #dvFloatSocial img{
   display:none;
   padding: 10px;
   border-radius: 14px;
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 14px 40px rgba(0,0,0,.12);
+  gap: 8px;
+  white-space: nowrap;
+}
+
+html[data-theme="dim"] #dvFloatSocial .dv-lang-panel{
   background: rgba(10,12,20,.72);
   border: 1px solid rgba(255,255,255,.14);
   backdrop-filter: blur(12px) saturate(1.2);
   -webkit-backdrop-filter: blur(12px) saturate(1.2);
   box-shadow: 0 14px 40px rgba(0,0,0,.45);
-  gap: 8px;
-  white-space: nowrap;
 }
+
 #dvFloatSocial .dv-lang-panel.is-open{ display:flex; }
 
 #dvFloatSocial .dv-lang-panel a{
@@ -740,10 +759,17 @@ html[data-theme="dim"] #dvFloatSocial img{
   letter-spacing: .08em;
   text-transform: uppercase;
 
+  background: rgba(0,0,0,.04);
+  border: 1px solid rgba(0,0,0,.10);
+  color: rgba(0,0,0,.88);
+}
+
+html[data-theme="dim"] #dvFloatSocial .dv-lang-panel a{
   background: rgba(255,255,255,.06);
   border: 1px solid rgba(255,255,255,.12);
   color: rgba(255,255,255,.88);
 }
+
 #dvFloatSocial .dv-lang-panel a.is-active{
   background: rgba(139,92,246,.22);
   border-color: rgba(139,92,246,.35);
@@ -755,16 +781,23 @@ html[data-theme="dim"] #dvFloatSocial img{
   #dvFloatToggle{ display: none !important; }
 }
 
-/* ✅ Mobile bottom pill variant + show language control */
+/* =========================================================
+   ✅ MOBILE BOTTOM PILL VARIANT - ALWAYS VISIBLE
+   ========================================================= */
 @media (max-width: 768px), (hover: none) {
 
   #dvFloatSocial.dv-float-social{
-    display:flex !important;
+    /* ✅ CRITICAL: Force display and visibility */
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 
     position: fixed !important;
     left: 50% !important;
     bottom: calc(14px + env(safe-area-inset-bottom)) !important;
     top: auto !important;
+    right: auto !important;
 
     transform: translateX(-50%) !important;
 
@@ -793,6 +826,15 @@ html[data-theme="dim"] #dvFloatSocial img{
     transition: transform .22s ease, opacity .22s ease !important;
   }
 
+  /* Dark mode on mobile */
+  html[data-theme="dim"] #dvFloatSocial.dv-float-social{
+    background: rgba(15,23,42,.90) !important;
+    border: 1px solid rgba(255,255,255,.14) !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,.35) !important;
+    backdrop-filter: blur(12px) saturate(1.2) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+  }
+
   /* hide "FOLLOW US" text on mobile */
   #dvFloatSocial .dv-follow-text{
     display: none !important;
@@ -812,10 +854,11 @@ html[data-theme="dim"] #dvFloatSocial img{
     height: 20px !important;
   }
 
-  /* show mobile language block inside the same bar (right side) */
+  /* ✅ Show mobile language block inside the same bar (right side) */
   #dvFloatSocial .dv-lang{
-    display:flex !important;
-    align-items:center !important;
+    display: flex !important;
+    visibility: visible !important;
+    align-items: center !important;
     gap: 8px !important;
     flex: 0 0 auto !important;
     margin-left: 6px !important;
@@ -828,7 +871,7 @@ html[data-theme="dim"] #dvFloatSocial img{
     bottom: calc(100% + 10px) !important;
   }
 
-  /* ✅ FIX: on mobile, is-scroll-hidden must also hide opacity/pointer-events */
+  /* ✅ SCROLL HIDE: Only hide when scrolling down on mobile */
   #dvFloatSocial.dv-float-social.is-scroll-hidden{
     opacity: 0 !important;
     visibility: hidden !important;
@@ -839,9 +882,13 @@ html[data-theme="dim"] #dvFloatSocial img{
 
 /* extra-small: make icons slightly smaller if needed */
 @media (max-width: 360px){
+  #dvFloatSocial.dv-float-social{
+    padding: 10px 14px !important;
+    gap: 8px !important;
+  }
   #dvFloatSocial.dv-float-social a{ width:34px !important; height:34px !important; }
   #dvFloatSocial.dv-float-social img{ width:16px !important; height:16px !important; }
-  #dvFloatSocial .dv-lang-btn{ width:34px !important; height:34px !important; }
+  #dvFloatSocial .dv-lang-btn{ width:34px !important; height:34px !important; font-size:14px !important; }
 }
 
 /* ===== Visual separator between social icons and language ===== */
@@ -858,6 +905,16 @@ html[data-theme="dim"] #dvFloatSocial img{
   top: 6px;
   bottom: 6px;
   width:1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(0,0,0,.25),
+    transparent
+  );
+  opacity:.6;
+}
+
+html[data-theme="dim"] #dvFloatSocial .dv-lang::before{
   background: linear-gradient(
     180deg,
     transparent,
@@ -924,7 +981,7 @@ function socialHTML() {
         <!-- ✅ MOBILE LANG SWITCH (same container, right side) -->
         <div class="dv-lang" id="dvFloatLang" aria-label="Language switch (mobile)">
           <button class="dv-lang-btn" id="dvLangBtn" type="button" aria-label="Sprache wählen" aria-expanded="false">
-            <img src="/assets/icons/language.png" alt="Language" class="dv-lang-ico">
+            🌐
           </button>
           <div class="dv-lang-panel" id="dvLangPanel" role="menu" aria-label="Sprachen">
             <a data-lang-float="de" role="menuitem">DE</a>
@@ -1020,7 +1077,8 @@ function socialHTML() {
     wrapper.innerHTML = socialHTML();
     document.body.appendChild(wrapper.firstElementChild);
   }
-function initSocialBarLogic() {
+
+  function initSocialBarLogic() {
     const bar = document.getElementById("dvFloatSocial");
     const langBtn = document.getElementById("dvLangBtn");
     const langPanel = document.getElementById("dvLangPanel");
@@ -1049,52 +1107,72 @@ function initSocialBarLogic() {
       toggleLang();
     });
 
-    // Hide on scroll down, show on scroll up (MOBILE ONLY)
-    let lastY = window.scrollY || 0;
-    let ticking = false;
+    // ✅ SCROLL BEHAVIOR: Hide when scrolling down, show when scrolling up (mobile only)
+    let lastScrollY = window.scrollY || 0;
+    let scrollTicking = false;
 
-    function hideBar(){ 
-      // Only hide on mobile
+    function hideBar(){
+      // Only apply scroll hide on mobile
       if (window.innerWidth <= 768) {
-        bar.classList.add("is-scroll-hidden"); 
-        closeLang(); 
+        bar.classList.add("is-scroll-hidden");
+        closeLang();
       }
     }
-    function showBar(){ 
-      bar.classList.remove("is-scroll-hidden"); 
+    function showBar(){
+      bar.classList.remove("is-scroll-hidden");
     }
 
-    function onScroll(){
-      // Skip scroll hiding on desktop
-      if (window.innerWidth > 768) return;
-      
-      const y = window.scrollY || 0;
-      const delta = y - lastY;
-      lastY = y;
+    function onScrollSocial(){
+      // Skip scroll hiding entirely on desktop
+      if (window.innerWidth > 768) {
+        showBar(); // Always show on desktop
+        return;
+      }
 
-      if (Math.abs(delta) < 3) return;
-      if (delta > 0) hideBar();
-      else showBar();
+      const currentY = window.scrollY || 0;
+
+      // Show at the very top
+      if (currentY < 10) {
+        showBar();
+        lastScrollY = currentY;
+        return;
+      }
+
+      const delta = currentY - lastScrollY;
+
+      // Only react to significant scroll movements
+      if (Math.abs(delta) < 5) return;
+
+      // Scrolling down: hide
+      if (delta > 0) {
+        hideBar();
+      }
+      // Scrolling up: show
+      else {
+        showBar();
+      }
+
+      lastScrollY = currentY;
     }
 
     window.addEventListener("scroll", () => {
-      if (ticking) return;
-      ticking = true;
+      if (scrollTicking) return;
+      scrollTicking = true;
       requestAnimationFrame(() => {
-        onScroll();
-        ticking = false;
+        onScrollSocial();
+        scrollTicking = false;
       });
     }, { passive:true });
 
+    // Close language panel on outside click
     document.addEventListener("click", (e) => {
-      // close language if click outside the bar
       if (!bar.contains(e.target)) closeLang();
     });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeLang();
     });
 
-    // initial visible
+    // ✅ Ensure bar is initially visible
     showBar();
   }
 
@@ -1124,7 +1202,7 @@ function initSocialBarLogic() {
     const mount = document.getElementById("site-header");
     if (!mount) return;
 
-    // ensure social bar exists on every page
+    // ✅ Ensure social bar exists on every page
     ensureSocialBarExists();
     initSocialBarLogic();
 

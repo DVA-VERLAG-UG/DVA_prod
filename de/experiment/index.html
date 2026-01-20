@@ -12,7 +12,6 @@
   <link rel="apple-touch-icon" href="/assets/images/favicon.png">
 
   <!-- ✅ Global styles -->
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="index_style.css">
 
 
@@ -28,6 +27,7 @@
   <!-- ✅ IMPORTANT:
        Do NOT add inline CSS that resets .cfg-* or .vk-*,
        otherwise your style.css section styles won’t show. -->
+  
 </head>
 
 <body class="page-index">
@@ -430,38 +430,352 @@
       </div>
     </section>
 
-    <!-- SEO WRAP + QUOTE + UPDATES -->
-    <section class="seo-wrap" id="wissen-block">
-      <div class="seo-wrap-inner">
 
-        <section class="quote-section" id="statement">
-          <div class="quote-inner">
-            <div class="quote-card" role="group" aria-label="Statement">
-              <div class="quote-person">
-                <div class="quote-avatar">
-                  <img src="/assets/images/team/mark-mils.jpg" alt="Mark Mils" loading="lazy">
-                </div>
-                <div class="quote-meta">
-                  <div class="quote-name">Cristiano Ronaldo</div>
-                  <div class="quote-role">Founder &amp; CEO</div>
-                </div>
-              </div>
+<!-- =========================
+     AUTHORS / FEEDBACK (STACK + SHEET)
+     ========================= -->
+<section class="af-section" id="autoren-feedback"
+  data-sheet-csv="https://docs.google.com/spreadsheets/d/e/2PACX-1vRRfz-kgH7uOy4miA8uCWcsGkWH6g5ZJedSxk5SxFSD_nCGLRqjjbAvI25-OhrsDXu2x6kNuMTGuygR/pub?gid=0&single=true&output=csv">
 
-              <div class="quote-content">
-                <p class="quote-text">
-                  <span class="quote-mark">“</span>
-                  Wir glauben an Bücher mit Seele: Klarer Prozess, ehrliche Beratung und ein Ergebnis,
-                  das sich im Handel behauptet — ohne dass du deine Rechte abgibst.
-                  <span class="quote-mark">”</span>
-                </p>
-                <div class="quote-cta">
-                  <a class="btn ghost" href="#upload">Manuskript kostenlos prüfen</a>
-                  <a class="btn primary" href="/de/kontakt/">Kostenloses Gespräch</a>
-                </div>
-              </div>
+  <div class="af-layout">
+
+    <!-- Left column -->
+    <div class="af-left">
+      <div class="af-eyebrow">FEEDBACK</div>
+      <div class="af-subtitle">HAPPY CLIENTS.</div>
+
+      <p class="af-blurb">
+        Wir helfen Autoren, ihr Buchprojekt professionell umzusetzen — mit Klarheit im Prozess,
+        transparenter Zusammenarbeit und einem Ergebnis, das sich im Handel behauptet.
+      </p>
+    </div>
+
+    <!-- Right column -->
+    <div class="af-right">
+
+      <!-- STACK (3 layers like screenshot) -->
+      <div class="af-stack" aria-live="polite">
+
+        <!-- Back card 2 (furthest) -->
+        <article class="af-card af-card--back2" aria-hidden="true">
+          <div class="af-card-head">
+            <h3 class="af-card-title" id="afTitle2">—</h3>
+          </div>
+
+          <p class="af-card-text" id="afText2">—</p>
+
+          <div class="af-divider" aria-hidden="true"></div>
+
+          <div class="af-person">
+            <div class="af-avatar" id="afAvatar2" role="img" aria-label="Portrait"></div>
+            <div class="af-person-meta">
+              <div class="af-name" id="afName2">—</div>
+              <div class="af-role" id="afRole2">—</div>
             </div>
           </div>
-        </section>
+        </article>
+
+        <!-- Back card 1 (middle) -->
+        <article class="af-card af-card--back1" aria-hidden="true">
+          <div class="af-card-head">
+            <h3 class="af-card-title" id="afTitle1">—</h3>
+          </div>
+
+          <p class="af-card-text" id="afText1">—</p>
+
+          <div class="af-divider" aria-hidden="true"></div>
+
+          <div class="af-person">
+            <div class="af-avatar" id="afAvatar1" role="img" aria-label="Portrait"></div>
+            <div class="af-person-meta">
+              <div class="af-name" id="afName1">—</div>
+              <div class="af-role" id="afRole1">—</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Front card (active) -->
+        <article class="af-card af-card--front">
+          <div class="af-card-head">
+            <h3 class="af-card-title" id="afTitle">Loading…</h3>
+          </div>
+
+          <p class="af-card-text" id="afText">Loading…</p>
+
+          <div class="af-divider" aria-hidden="true"></div>
+
+          <div class="af-person">
+            <div class="af-avatar" id="afAvatar" role="img" aria-label="Portrait"></div>
+            <div class="af-person-meta">
+              <div class="af-name" id="afName">—</div>
+              <div class="af-role" id="afRole">—</div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Controls -->
+      <div class="af-controls" aria-label="Feedback Navigation">
+        <button class="af-arrow af-prev" type="button" aria-label="Vorheriges Feedback">‹</button>
+
+        <div class="af-dots" id="afDots" aria-label="Feedback Position">
+          <!-- JS will render dots here -->
+        </div>
+
+        <button class="af-arrow af-next" type="button" aria-label="Nächstes Feedback">›</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================
+       INLINE JS: Google Sheet -> Feedback Slider (STACK)
+       ========================= -->
+  <script>
+  (() => {
+    const section = document.getElementById("autoren-feedback");
+    if (!section) return;
+
+    const CSV_URL = section.getAttribute("data-sheet-csv");
+    if (!CSV_URL) return;
+
+    // Front
+    const elTitle  = document.getElementById("afTitle");
+    const elText   = document.getElementById("afText");
+    const elName   = document.getElementById("afName");
+    const elRole   = document.getElementById("afRole");
+    const elAvatar = document.getElementById("afAvatar");
+
+    // Back 1
+    const elTitle1  = document.getElementById("afTitle1");
+    const elText1   = document.getElementById("afText1");
+    const elName1   = document.getElementById("afName1");
+    const elRole1   = document.getElementById("afRole1");
+    const elAvatar1 = document.getElementById("afAvatar1");
+
+    // Back 2
+    const elTitle2  = document.getElementById("afTitle2");
+    const elText2   = document.getElementById("afText2");
+    const elName2   = document.getElementById("afName2");
+    const elRole2   = document.getElementById("afRole2");
+    const elAvatar2 = document.getElementById("afAvatar2");
+
+    const btnPrev  = section.querySelector(".af-prev");
+    const btnNext  = section.querySelector(".af-next");
+    const dotsWrap = document.getElementById("afDots");
+
+    const pageLang = (document.documentElement.lang || "de").trim().toLowerCase();
+    const norm = (s) => String(s ?? "").trim().toLowerCase();
+
+    function parseCSV(text){
+      const rows = [];
+      let row = [];
+      let cur = "";
+      let inQuotes = false;
+
+      for(let i=0;i<text.length;i++){
+        const c = text[i];
+        const n = text[i+1];
+
+        if(inQuotes){
+          if(c === '"' && n === '"'){ cur += '"'; i++; }
+          else if(c === '"'){ inQuotes = false; }
+          else { cur += c; }
+        } else {
+          if(c === '"'){ inQuotes = true; }
+          else if(c === ","){ row.push(cur); cur=""; }
+          else if(c === "\n"){ row.push(cur); rows.push(row); row=[]; cur=""; }
+          else if(c === "\r"){ /* ignore */ }
+          else { cur += c; }
+        }
+      }
+      row.push(cur);
+      rows.push(row);
+      return rows.filter(r => r.some(cell => String(cell).trim() !== ""));
+    }
+
+    function toBool(v){
+      const s = norm(v);
+      return s === "true" || s === "1" || s === "yes" || s === "ja";
+    }
+
+    function toNum(v, fallback=9999){
+      const n = Number(String(v ?? "").trim());
+      return Number.isFinite(n) ? n : fallback;
+    }
+
+    function pickLang(list){
+      const exact = list.filter(x => norm(x.lang) === pageLang);
+      return exact.length ? exact : list;
+    }
+
+    function safeBgUrl(url){
+      const u = String(url || "").trim();
+      if(!u) return "";
+      // basic quote safety
+      return u.replace(/"/g, "%22");
+    }
+
+    let items = [];
+    let idx = 0;
+
+    function renderDots(){
+      if (!dotsWrap) return;
+      dotsWrap.innerHTML = "";
+      items.forEach((_, i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "af-dot" + (i === idx ? " is-active" : "");
+        b.setAttribute("aria-label", `Feedback ${i+1}`);
+        b.addEventListener("click", () => { idx = i; render(); }, { passive:true });
+        dotsWrap.appendChild(b);
+      });
+    }
+
+    function setActiveDot(){
+      if (!dotsWrap) return;
+      dotsWrap.querySelectorAll(".af-dot").forEach((d, i) => {
+        d.classList.toggle("is-active", i === idx);
+      });
+    }
+
+    function applyTo(i, els){
+      if (!items.length) return;
+      const it = items[i % items.length];
+
+      if (els.title) els.title.textContent = it.title || "";
+      if (els.text)  els.text.textContent  = it.text  || "";
+      if (els.name)  els.name.textContent  = it.name  || "";
+      if (els.role)  els.role.textContent  = it.role  || "";
+
+      if (els.avatar){
+        const img = safeBgUrl(it.image);
+        if (img){
+          els.avatar.style.backgroundImage = `url("${img}")`;
+          els.avatar.classList.add("has-img");
+        } else {
+          els.avatar.style.backgroundImage = "none";
+          els.avatar.classList.remove("has-img");
+        }
+      }
+    }
+
+    function render(){
+      if (!items.length) return;
+
+      // front = idx, back1 = idx+1, back2 = idx+2
+      applyTo(idx, {
+        title: elTitle, text: elText, name: elName, role: elRole, avatar: elAvatar
+      });
+      applyTo(idx + 1, {
+        title: elTitle1, text: elText1, name: elName1, role: elRole1, avatar: elAvatar1
+      });
+      applyTo(idx + 2, {
+        title: elTitle2, text: elText2, name: elName2, role: elRole2, avatar: elAvatar2
+      });
+
+      setActiveDot();
+    }
+
+    function prev(){
+      if (!items.length) return;
+      idx = (idx - 1 + items.length) % items.length;
+      render();
+    }
+
+    function next(){
+      if (!items.length) return;
+      idx = (idx + 1) % items.length;
+      render();
+    }
+
+    if (btnPrev) btnPrev.addEventListener("click", prev);
+    if (btnNext) btnNext.addEventListener("click", next);
+
+    // Optional: keyboard arrows when section focused
+    section.tabIndex = 0;
+    section.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    });
+
+    async function load(){
+      const res = await fetch(CSV_URL, { cache: "no-store" });
+      if(!res.ok) throw new Error("CSV fetch failed");
+      const csv = await res.text();
+
+      const rows = parseCSV(csv);
+      if(rows.length < 2) throw new Error("No data rows");
+
+      const header = rows[0].map(h => norm(h));
+      const col = (name) => header.indexOf(norm(name));
+      const val = (r, name) => {
+        const i = col(name);
+        return i >= 0 ? String(r[i] ?? "").trim() : "";
+      };
+
+      let data = rows.slice(1).map(r => ({
+        id:      val(r, "id"),
+        name:    val(r, "name"),
+        role:    val(r, "role"),
+        title:   val(r, "title"),
+        text:    val(r, "text"),
+        image:   val(r, "image"),
+        company: val(r, "company"),
+        rating:  val(r, "rating"),
+        lang:    val(r, "lang"),
+        order:   val(r, "order"),
+        active:  val(r, "active")
+      }));
+
+      data = data
+        .filter(d => d.name && d.title && d.text)
+        .filter(d => toBool(d.active));
+
+      data = pickLang(data);
+      data.sort((a,b) => toNum(a.order) - toNum(b.order));
+
+      items = data.length ? data : [{
+        title:"Feedback",
+        text:"Noch keine aktiven Einträge im Google Sheet. Bitte prüfe active=TRUE.",
+        name:"DVAYD",
+        role:"Publishing",
+        image:""
+      }];
+
+      idx = 0;
+      renderDots();
+      render();
+    }
+
+    load().catch(err => console.warn("AF load failed:", err));
+  })();
+  </script>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- SEO WRAP + QUOTE + UPDATES -->
 
         <section class="updates-section" id="wissen">
           <div class="updates-inner">
@@ -480,23 +794,76 @@
             </div>
 
             <div class="updates-right">
-              <div class="updates-stack" id="updatesStack" aria-label="Aktuelle Updates als Kartenstapel">
-                <a class="u-card u1" id="uCard1" href="#"></a>
-                <a class="u-card u2" id="uCard2" href="#"></a>
-                <a class="u-card u3" id="uCard3" href="#"></a>
-              </div>
 
-              <div class="updates-nav updates-nav-below" aria-label="Artikel blättern">
-                <button class="updates-btn" id="updatesPrev" type="button" aria-label="Vorheriger Artikel">‹</button>
-                <button class="updates-btn" id="updatesNext" type="button" aria-label="Nächster Artikel">›</button>
-              </div>
-            </div>
+              <!-- NEW: vertical “latest posts” list (alternating image left/right) -->
+              <div class="latest-posts" id="latestPosts" aria-label="Aktuelle Posts">
 
-          </div>
+                <!-- Row 1 (image left) -->
+                <article class="lp-item is-left" id="lp1">
+                  <a class="lp-media" id="lp1Link" href="#" aria-label="Artikel öffnen">
+                    <div class="lp-image" id="lp1Img" role="img" aria-label=""></div>
+                  </a>
+
+                  <div class="lp-body">
+                    <div class="lp-meta">
+                      <span class="lp-date" id="lp1Date">—</span>
+                      <span class="lp-sep">•</span>
+                      <span class="lp-tag" id="lp1Tag">Update</span>
+                    </div>
+
+                    <h3 class="lp-title" id="lp1Title">Titel lädt…</h3>
+                    <p class="lp-text" id="lp1Text">Kurzbeschreibung lädt…</p>
+
+                    <a class="lp-cta" id="lp1Cta" href="#">View Case</a>
+                  </div>
+                </article>
+
+                <!-- Row 2 (image right) -->
+                <article class="lp-item is-right" id="lp2">
+                  <a class="lp-media" id="lp2Link" href="#" aria-label="Artikel öffnen">
+                    <div class="lp-image" id="lp2Img" role="img" aria-label=""></div>
+                  </a>
+
+                  <div class="lp-body">
+                    <div class="lp-meta">
+                      <span class="lp-date" id="lp2Date">—</span>
+                      <span class="lp-sep">•</span>
+                      <span class="lp-tag" id="lp2Tag">Update</span>
+                    </div>
+
+                    <h3 class="lp-title" id="lp2Title">Titel lädt…</h3>
+                    <p class="lp-text" id="lp2Text">Kurzbeschreibung lädt…</p>
+
+                    <a class="lp-cta" id="lp2Cta" href="#">View Case</a>
+                  </div>
+                </article>
+
+                <!-- Row 3 (image left) -->
+                <article class="lp-item is-left" id="lp3">
+                  <a class="lp-media" id="lp3Link" href="#" aria-label="Artikel öffnen">
+                    <div class="lp-image" id="lp3Img" role="img" aria-label=""></div>
+                  </a>
+
+                  <div class="lp-body">
+                    <div class="lp-meta">
+                      <span class="lp-date" id="lp3Date">—</span>
+                      <span class="lp-sep">•</span>
+                      <span class="lp-tag" id="lp3Tag">Update</span>
+                    </div>
+
+                    <h3 class="lp-title" id="lp3Title">Titel lädt…</h3>
+                    <p class="lp-text" id="lp3Text">Kurzbeschreibung lädt…</p>
+
+                    <a class="lp-cta" id="lp3Cta" href="#">View Case</a>
+                  </div>
+                </article>
+
+              </div> <!-- /latest-posts -->
+            </div> <!-- /updates-right -->
+
+          </div> <!-- ✅ /updates-inner -->
         </section>
 
-      </div>
-    </section>
 
   </main>
 
@@ -610,31 +977,19 @@
   </script>
 
   <!-- Updates stack script (unchanged) -->
-  <script>
+ <script>
 (() => {
-  const stack = document.getElementById("updatesStack");
-  const prevBtn = document.getElementById("updatesPrev");
-  const nextBtn = document.getElementById("updatesNext");
-
-  const c1 = document.getElementById("uCard1");
-  const c2 = document.getElementById("uCard2");
-  const c3 = document.getElementById("uCard3");
-  if (!stack || !prevBtn || !nextBtn || !c1 || !c2 || !c3) return;
-
   const SHEET_CSV_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4g1gNsiyY4k2A052LR7EaVUYFqrWGWNITOPqw5bGG_PTogiP84C44VQJpKn-HC2vxHin4fTy_puU0/pub?gid=0&single=true&output=csv";
 
-  const FALLBACK_ITEMS = [
+  const FALLBACK = [
     {
       href: "/de/blog/",
-      badge: "Update",
-      type: "Blog",
-      dot: "rgba(99,102,241,.95)",
-      dotGlow: "rgba(99,102,241,.20)",
-      img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=300&q=70",
+      tag: "Update",
+      date: "Gerade eben",
+      cover: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=70",
       title: "Blog lädt gerade nicht",
-      text: "Bitte prüfe ob der Google Sheet Link veröffentlicht ist und ob die Spalten slug,title,excerpt,date,author,cover,tags existieren.",
-      date: "Gerade eben"
+      text: "Bitte prüfe ob der Google Sheet Link veröffentlicht ist und ob die Spalten slug,title,excerpt,date,author,cover,tags existieren."
     }
   ];
 
@@ -678,30 +1033,7 @@
     return rows.filter(r => r.some(cell => String(cell).trim() !== ""));
   }
 
-  function cardMarkup(item){
-    const safeImg = item.img ? esc(item.img) : "";
-    return `
-      <div class="u-top">
-        <span class="u-pill">
-          <span class="u-dot" style="background:${item.dot}; box-shadow:0 0 0 3px ${item.dotGlow}"></span>
-          <span class="u-tag">${esc(item.badge)}</span>
-        </span>
-        <span style="opacity:.85; font-weight:600;">${esc(item.type)}</span>
-      </div>
-
-      <div class="u-mid">
-        <div class="u-img" style="${safeImg ? `background-image:url('${safeImg}')` : ""}"></div>
-        <div class="u-text">
-          <h3>${esc(item.title)}</h3>
-          <p>${esc(item.text)}</p>
-        </div>
-      </div>
-
-      <div class="u-date">${esc(item.date)}</div>
-    `;
-  }
-
-  async function loadLatest3FromBlogCSV(){
+  async function loadLatest3(){
     const res = await fetch(SHEET_CSV_URL, { cache: "no-store" });
     if(!res.ok) throw new Error("Blog CSV fetch failed");
     const csv = await res.text();
@@ -721,86 +1053,72 @@
       title:   val(r, "title"),
       excerpt: val(r, "excerpt"),
       date:    val(r, "date"),
-      author:  val(r, "author"),
       cover:   val(r, "cover"),
       tags:    splitTags(val(r, "tags"))
     }))
     .filter(p => p.slug && p.title);
 
     posts.sort((a,b) => (b.date || "").localeCompare(a.date || ""));
-
     const latest = posts.slice(0, 3);
-    if(!latest.length) return FALLBACK_ITEMS;
+    if(!latest.length) return FALLBACK;
 
-    return latest.map((p) => {
-      const primaryTag = p.tags?.[0] || "Update";
-      return {
-        href: `/de/blog/post.html?slug=${encodeURIComponent(p.slug)}`,
-        badge: primaryTag,
-        type: "Blog",
-        dot: "rgba(99,102,241,.95)",
-        dotGlow: "rgba(99,102,241,.20)",
-        img: p.cover || "",
-        title: p.title,
-        text: p.excerpt || "",
-        date: p.date || ""
-      };
-    });
+    return latest.map(p => ({
+      href: `/de/blog/post.html?slug=${encodeURIComponent(p.slug)}`,
+      tag: (p.tags?.[0] || "Update"),
+      date: (p.date || ""),
+      cover: (p.cover || ""),
+      title: (p.title || ""),
+      text: (p.excerpt || "")
+    }));
   }
 
-  let items = [...FALLBACK_ITEMS];
-  let index = 0;
+  function applyRow(i, item){
+    const n = i + 1;
 
-  const clampIndex = (i) => ((i % items.length) + items.length) % items.length;
+    const link = document.getElementById(`lp${n}Link`);
+    const img  = document.getElementById(`lp${n}Img`);
+    const date = document.getElementById(`lp${n}Date`);
+    const tag  = document.getElementById(`lp${n}Tag`);
+    const title= document.getElementById(`lp${n}Title`);
+    const text = document.getElementById(`lp${n}Text`);
+    const cta  = document.getElementById(`lp${n}Cta`);
 
-  function render(){
-    if(!items.length) return;
+    if(!link || !img || !date || !tag || !title || !text || !cta) return;
 
-    const a = items[clampIndex(index)];
-    const b = items[clampIndex(index + 1)];
-    const c = items[clampIndex(index + 2)];
+    const href = item.href || "#";
+    link.href = href;
+    cta.href = href;
 
-    c1.href = a.href || "#"; c1.innerHTML = cardMarkup(a);
-    c2.href = b.href || "#"; c2.innerHTML = cardMarkup(b);
-    c3.href = c.href || "#"; c3.innerHTML = cardMarkup(c);
+    date.textContent = item.date || "";
+    tag.textContent = item.tag || "Update";
+    title.textContent = item.title || "";
+    text.textContent = item.text || "";
 
-    const disabled = items.length <= 1;
-    prevBtn.disabled = disabled;
-    nextBtn.disabled = disabled;
+    // Use background-image for easy “cover” styling later
+    const cover = item.cover ? esc(item.cover) : "";
+    img.style.backgroundImage = cover ? `url('${cover}')` : "none";
+    img.setAttribute("aria-label", item.title ? esc(item.title) : "");
   }
 
-  let isAnimating = false;
-  function switchTo(newIndex){
-    if(isAnimating || items.length <= 1) return;
-    isAnimating = true;
+  // Initial placeholders (optional)
+  const starter = [...FALLBACK, ...FALLBACK, ...FALLBACK].slice(0,3);
+  starter.forEach((it, i) => applyRow(i, it));
 
-    stack.classList.add("is-switching");
-    setTimeout(() => {
-      index = clampIndex(newIndex);
-      render();
-      requestAnimationFrame(() => {
-        stack.classList.remove("is-switching");
-        setTimeout(() => { isAnimating = false; }, 520);
-      });
-    }, 180);
-  }
-
-  prevBtn.addEventListener("click", () => switchTo(index - 1));
-  nextBtn.addEventListener("click", () => switchTo(index + 1));
-
-  render();
-
-  loadLatest3FromBlogCSV()
-    .then((loaded) => { items = loaded; index = 0; render(); })
-    .catch((err) => {
-      console.warn("Updates: Blog CSV load failed, using fallback.", err);
-      items = [...FALLBACK_ITEMS];
-      index = 0;
-      render();
+  loadLatest3()
+    .then(items => {
+      const list = [...items, ...FALLBACK, ...FALLBACK].slice(0,3);
+      list.forEach((it, i) => applyRow(i, it));
+    })
+    .catch(err => {
+      console.warn("Latest posts load failed, using fallback.", err);
+      const list = [...FALLBACK, ...FALLBACK, ...FALLBACK].slice(0,3);
+      list.forEach((it, i) => applyRow(i, it));
     });
 })();
-  </script>
+</script>
+
 
   <footer id="site-footer"></footer>
 </body>
 </html>
+
